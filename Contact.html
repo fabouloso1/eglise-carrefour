@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Contact — Église de Dieu de la Prophétie de Carrefour</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .contact-hero { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 70px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+    .contact-hero::before { content: '\f0e0'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: -40px; top: -40px; font-size: 220px; opacity: 0.04; color: white; }
+    .contact-hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(241,196,15,0.15); border: 1px solid rgba(241,196,15,0.35); color: var(--gold); padding: 6px 18px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
+    .contact-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 14px; }
+    .contact-hero p { font-size: 1.05rem; opacity: 0.82; max-width: 500px; margin: 0 auto; }
+
+    .breadcrumb { background: white; border-bottom: 1px solid var(--border); padding: 12px 24px; }
+    .breadcrumb-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--text-muted); }
+    .breadcrumb a { color: var(--text-muted); transition: var(--transition); }
+    .breadcrumb a:hover { color: var(--primary); }
+    .breadcrumb i { font-size: 0.65rem; color: #bbb; }
+    .breadcrumb span { color: var(--primary); font-weight: 600; }
+
+    .contact-main { max-width: 1100px; margin: 0 auto; padding: 50px 24px 80px; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 32px; }
+
+    /* Infos côté gauche */
+    .contact-info { display: flex; flex-direction: column; gap: 20px; }
+    .info-card { background: white; border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); display: flex; align-items: flex-start; gap: 18px; transition: var(--transition); }
+    .info-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: rgba(241,196,15,0.4); }
+    .info-icon { width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1.1rem; flex-shrink: 0; }
+    .info-card h3 { color: var(--primary); font-size: 0.95rem; margin-bottom: 5px; }
+    .info-card p, .info-card a { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; text-decoration: none; transition: var(--transition); }
+    .info-card a:hover { color: var(--primary); }
+
+    .horaires-card { background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: var(--radius); padding: 28px; color: white; }
+    .horaires-card h3 { color: var(--gold); font-size: 1rem; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .horaires-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .horaires-list li { display: flex; justify-content: space-between; font-size: 0.88rem; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .horaires-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .h-day { font-weight: 600; color: rgba(255,255,255,0.9); }
+    .h-time { color: var(--gold); font-weight: 500; }
+
+    /* Formulaire côté droit */
+    .contact-form-wrap { background: white; border-radius: var(--radius); padding: 40px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
+    .form-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--primary); margin-bottom: 8px; }
+    .form-subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 30px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 7px; font-weight: 600; color: var(--primary); font-size: 0.88rem; }
+    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px 16px; border: 1.5px solid #e0e0e0; border-radius: var(--radius-sm); font-family: 'Montserrat', sans-serif; font-size: 0.92rem; color: var(--text); transition: var(--transition); background: #fafafa; }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--gold); background: white; box-shadow: 0 0 0 3px rgba(241,196,15,0.12); }
+    .form-group textarea { min-height: 130px; resize: vertical; }
+    .submit-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 30px; font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .submit-btn:hover { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--primary); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(241,196,15,0.35); }
+    .success-msg { display: none; background: #e8f5e9; border-left: 4px solid #4caf50; border-radius: var(--radius-sm); padding: 20px 24px; text-align: center; margin-top: 20px; }
+    .success-msg i { color: #4caf50; font-size: 2rem; margin-bottom: 8px; display: block; }
+    .success-msg h3 { color: #2e7d32; margin-bottom: 5px; }
+    .success-msg p { color: #555; font-size: 0.9rem; }
+
+    /* Map */
+    .map-section { margin-top: 40px; background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
+    .map-section-header { padding: 24px 28px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+    .map-section-header i { color: var(--gold); font-size: 1.2rem; }
+    .map-section-header h2 { color: var(--primary); font-size: 1.2rem; }
+    .map-placeholder { background: linear-gradient(135deg, #e8eaf6, #f3e5f5); height: 280px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px; color: #7986cb; }
+    .map-placeholder i { font-size: 3rem; opacity: 0.5; }
+    .map-placeholder p { font-size: 0.9rem; opacity: 0.7; }
+
+    @media (max-width: 900px) {
+      .contact-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .contact-form-wrap { padding: 24px 18px; }
+    }
+  </style>
+  <!-- OneSignal Push Notifications -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "357202c0-41e0-42d7-a6bb-03be43ee63ff",
+      });
+    });
+  </script>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<!-- HERO -->
+<div class="contact-hero">
+  <div class="contact-hero-badge"><i class="fas fa-envelope"></i> Contactez-nous</div>
+  <h1>Nous sommes là pour vous</h1>
+  <p>Une question, un témoignage ou besoin de soutien ? Notre équipe est disponible pour vous.</p>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+    <i class="fas fa-chevron-right"></i>
+    <span>Contact</span>
+  </div>
+</div>
+
+<!-- CONTENU -->
+<div class="contact-main">
+  <div class="contact-grid">
+
+    <!-- GAUCHE : Infos -->
+    <div class="contact-info">
+      <div class="info-card">
+        <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+        <div>
+          <h3>Notre adresse</h3>
+          <p>#9, Carrefour waney 93, rue Appolon, Port-au-Prince Haïti<br>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon"><i class="fas fa-phone"></i></div>
+        <div>
+          <h3>Téléphone</h3>
+          <a href="tel:+50912345678">+509 3157-3591</a><br>
+          <a href="tel:+50912345678">+509 3653-9193</a>
+		   <a href="tel:+50912345678">+509 4028-0086</a>
+		   <a href="tel:+50912345678">+509 3407-6903</a>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon"><i class="fas fa-envelope"></i></div>
+        <div>
+          <h3>Email</h3>
+          <a href="/cdn-cgi/l/email-protection#fd989a91948e98bd9e9c8f8f989b92888fd39589"><span class="__cf_email__" data-cfemail="aecbc9c2c7ddcbeecdcfdcdccbc8c1dbdc80c6da">[email&#160;protected]</span></a>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon"><i class="fab fa-facebook"></i></div>
+        <div>
+          <h3>Réseaux sociaux</h3>
+          <a href="#">Facebook — Église de Carrefour</a><br>
+          <a href="#">YouTube — Cultes en direct</a>
+        </div>
+      </div>
+
+      <!-- Horaires rapides -->
+      <div class="horaires-card">
+        <h3><i class="fas fa-clock"></i> Horaires des cultes</h3>
+        <ul class="horaires-list">
+          <li><span class="h-day">Dimanche</span><span class="h-time">6h30 – 10h30</span></li>
+          <li><span class="h-day">Mardi</span><span class="h-time">16h00 – 18h00</span></li>
+          <li><span class="h-day">Jeudi</span><span class="h-time">14h00 – 18h00</span></li>
+    
+        </ul>
+      </div>
+    </div>
+
+    <!-- DROITE : Formulaire -->
+    <div class="contact-form-wrap">
+      <h2 class="form-title">Envoyez-nous un message</h2>
+      <p class="form-subtitle">Nous vous répondrons dans les plus brefs délais. Que Dieu vous bénisse !</p>
+
+      <form id="contactForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="prenom">Prénom *</label>
+            <input type="text" id="prenom" placeholder="Jean" required>
+          </div>
+          <div class="form-group">
+            <label for="nom">Nom *</label>
+            <input type="text" id="nom" placeholder="Dupont" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Adresse email *</label>
+          <input type="email" id="email" placeholder="votre@email.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="telephone">Téléphone (optionnel)</label>
+          <input type="tel" id="telephone" placeholder="+509 ...">
+        </div>
+
+        <div class="form-group">
+          <label for="sujet">Sujet *</label>
+          <select id="sujet" required>
+            <option value="">-- Choisissez un sujet --</option>
+            <option value="info">Informations générales</option>
+            <option value="priere">Demande de prière</option>
+            <option value="visite">Première visite</option>
+            <option value="don">Don & offrande</option>
+            <option value="autre">Autre</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Votre message *</label>
+          <textarea id="message" placeholder="Écrivez votre message ici..." required></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          <i class="fas fa-paper-plane"></i> Envoyer le message
+        </button>
+      </form>
+
+      <div class="success-msg" id="successMsg">
+        <i class="fas fa-check-circle"></i>
+        <h3>Message envoyé !</h3>
+        <p>Merci de nous avoir contactés. Nous vous répondrons très bientôt. Que Dieu vous bénisse !</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAP -->
+  <div class="map-section">
+    <div class="map-section-header">
+      <i class="fas fa-map-marker-alt"></i>
+      <h2>Nous trouver à Carrefour, Port-au-Prince, Haïti</h2>
+    </div>
+    <div class="map-placeholder">
+      <i class="fas fa-map-marked-alt"></i>
+      <p>Carte Google Maps — Remplacez avec votre iframe Maps</p>
+    </div>
+  </div>
+</div>
+
+<div id="foot-placeholder"></div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="nav.js"></script>
+<script>
+  NAV.init('Contact.html');
+
+  // Formulaire de con

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Église de Dieu de la Prophétie de Carrefour, Waney 93</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1c1c3c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Église Carrefour">
+  <link rel="apple-touch-icon" href="logo.png">
+  <!-- OneSignal Push Notifications -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "357202c0-41e0-42d7-a6bb-03be43ee63ff",
+      });
+    });
+  </script>
+</head>
+<body>
+
+<!-- ===== NAVIGATION ===== -->
+<nav class="menu" id="mainNav">
+  <div class="nav-inner">
+    <!-- Logo ti nan menu pou mobile -->
+    <a href="index.html" class="nav-brand">
+      <img src="logo.png" alt="Logo" class="nav-logo">
+    </a>
+
+    <!-- Bouton hamburger pou mobile -->
+    <button class="hamburger" id="hamburgerBtn" aria-label="Ouvri menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <!-- Liens menu -->
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="active"><i class="fas fa-home"></i> Accueil</a></li>
+
+      <!-- Dropdown À propos -->
+      <li class="dropdown">
+        <a href="Apropos.html" class="dropdown-toggle">
+          <i class="fas fa-church"></i> À propos <i class="fas fa-chevron-down dropdown-arrow"></i>
+        </a>
+        <ul class="submenu">
+          <li><a href="Horaires.html"><i class="fas fa-clock"></i> Horaires des cultes</a></li>
+          <li><a href="Galerie.html"><i class="fas fa-images"></i> Galerie & Vidéos</a></li>
+          <li><a href="Actualites.html"><i class="fas fa-newspaper"></i> Actualités</a></li>
+          <li><a href="Temoigner.html"><i class="fas fa-star"></i> Témoignages</a></li>
+        </ul>
+      </li>
+
+      <li><a href="Contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+      <li><a href="priere.html"><i class="fas fa-hands-praying"></i> Demande de prière</a></li>
+      <li><a href="don.html" class="nav-don"><i class="fas fa-heart"></i> Faire un don</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Overlay pou ferme menu mobile -->
+<div class="nav-overlay" id="navOverlay"></div>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="header-content">
+    <img src="logo.png" alt="Logo Église de Dieu de la Prophétie" class="logo">
+    <div class="header-text">
+      <h1>Église de Dieu de la Prophétie</h1>
+      <p class="header-subtitle">de Carrefour, waney 93</p>
+      <p class="header-verse">"Je puis tout par celui qui me fortifie" — Phil. 4:13</p>
+    </div>
+  </div>
+</header>
+
+<!-- ===== DIAPORAMA ===== -->
+<div class="slideshow-container">
+  <div class="mySlides">
+    <img src="images/image1.jpg" alt="Culte dominical">
+    <div class="slide-caption">
+      <i class="fas fa-cross"></i> Pasteur Anouis Jean
+    </div>
+  </div>
+  <div class="mySlides">
+    <img src="images/image2.jpg" alt="Étude biblique">
+    <div class="slide-caption">
+      <i class="fas fa-cross"></i> Pasteur Honore Pierre Jolius
+    </div>
+  </div>
+  <div class="mySlides">
+    <img src="images/image3.jpg" alt="Culte dominical">
+    <div class="slide-caption">
+      <i class="fas fa-cross"></i> Sœur Woodeline en prière
+    </div>
+  </div>
+  <div class="mySlides">
+    <img src="images/image4.jpg" alt="Étude biblique">
+    <div class="slide-caption">
+      <i class="fas fa-cross"></i> Évangéliste Guerrier Michel
+    </div>
+  </div>
+  <div class="mySlides">
+    <img src="images/image5.jpg" alt="Culte dominical">
+    <div class="slide-caption">
+      <i class="fas fa-cross"></i> Pasteur Anouis Jean
+    </div>
+  </div>
+  <div class="mySlides">
+    <img src="images/image6.jpg" alt="Étude biblique">
+    <div class="slide-caption">
+      <i class="fas fa-cross"></i> Pasteur Honore Pierre Jolius
+    </div>
+  </div>
+  <div class="mySlides">
+    <img src="images/image7.jpg" alt="Culte dominical">
+    <div class="slide-caption">
+      <i class="fas fa-cross"></i> Évangéliste Tidot Ameus
+    </div>
+  </div>
+  <div class="mySlides">
+    <img src="images/image8.jpg" alt="Étude biblique">
+    <div class="slide-caption">
+      <i class="fas fa-cross"></i> Pasteur Anouis Jean
+    </div>
+  </div>
+
+  <!-- Flèch navigation -->
+  <button class="slide-btn prev" onclick="changeSlide(-1)" aria-label="Précédent">&#10094;</button>
+  <button class="slide-btn next" onclick="changeSlide(1)" aria-label="Suivant">&#10095;</button>
+</div>
+
+<!-- Dots navigation -->
+<div class="dot-container">
+  <span class="dot active" onclick="goToSlide(0)"></span>
+  <span class="dot" onclick="goToSlide(1)"></span>
+  <span class="dot" onclick="goToSlide(2)"></span>
+  <span class="dot" onclick="goToSlide(3)"></span>
+  <span class="dot" onclick="goToSlide(4)"></span>
+  <span class="dot" onclick="goToSlide(5)"></span>
+  <span class="dot" onclick="goToSlide(6)"></span>
+  <span class="dot" onclick="goToSlide(7)"></span>
+</div>
+
+<!-- ===== KONTNI PRENSIPAL ===== -->
+<main>
+
+  <!-- Bannière bienvenu -->
+  <section class="welcome-banner">
+    <div class="welcome-icon"><i class="fas fa-dove"></i></div>
+    <div class="welcome-text">
+      <h2>Bienvenue dans notre famille</h2>
+      <p>Rejoignez-nous chaque dimanche pour adorer Dieu ensemble, grandir dans la foi et servir notre communauté.</p>
+    </div>
+    <a href="Horaires.html" class="welcome-btn">Voir nos horaires <i class="fas fa-arrow-right"></i></a>
+  </section>
+
+  <!-- Grille de liens rapides -->
+  <section class="quick-links">
+    <a href="priere.html" class="quick-card">
+      <i class="fas fa-hands-praying"></i>
+      <h3>Demande de prière</h3>
+      <p>Soumettez vos requêtes de prière</p>
+    </a>
+    <a href="Temoigner.html" class="quick-card">
+      <i class="fas fa-star"></i>
+      <h3>Témoignages</h3>
+      <p>Partagez ce que Dieu a fait</p>
+    </a>
+    <a href="Actualites.html" class="quick-card">
+      <i class="fas fa-newspaper"></i>
+      <h3>Actualités</h3>
+      <p>Dernières nouvelles de l'église</p>
+    </a>
+    <a href="Galerie.html" class="quick-card">
+      <i class="fas fa-images"></i>
+      <h3>Galerie</h3>
+      <p>Photos et vidéos de nos cultes</p>
+    </a>
+  </section>
+
+  <!-- Annonces -->
+  <section class="annonces">
+    <h2><i class="fas fa-bullhorn"></i> Annonces</h2>
+    <ul>
+      <li>
+        <span class="annonce-icon"><i class="fas fa-calendar-day"></i></span>
+        <div>
+          <strong>Veille de nuit</strong>
+          <span class="annonce-date">Vendredi — 20h00</span>
+        </div>
+      </li>
+      <li>
+        <span class="annonce-icon"><i class="fas fa-users"></i></span>
+        <div>
+          <strong>Réunion de la jeunesse</strong>
+          <span class="annonce-date">Dimanche apres midi — 16h00</span>
+        </div>
+      </li>
+      <li>
+        <span class="annonce-icon"><i class="fas fa-church"></i></span>
+        <div>
+          <strong>Culte principal</strong>
+          <span class="annonce-date">Dimanche — 6h00 à 10h00</span>
+        </div>
+      </li>
+    </ul>
+    <a href="Horaires.html" class="see-all-link">Voir tous les horaires <i class="fas fa-arrow-right"></i></a>
+  </section>
+
+  <!-- Verset du Jour -->
+  <section id="versetDuJour">
+    <div class="verset-icon"><i class="fas fa-book-open"></i></div>
+    <h2>Verset du Jour</h2>
+    <p id="verset">Je puis tout par celui qui me fortifie.</p>
+    <span id="verset-ref" class="verset-ref">— Philippiens 4:13</span>
+  </section>
+
+  <!-- Bouton Don -->
+  <section class="don-section">
+    <div class="don-inner">
+      <i class="fas fa-heart don-icon"></i>
+      <div>
+        <h3>Soutenir notre ministère</h3>
+        <p>Votre générosité nous aide à poursuivre notre mission évangélique.</p>
+      </div>
+      <a href="don.html" class="don-button">Faire un don <i class="fas fa-hand-holding-heart"></i></a>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="logo.png" alt="Logo" class="footer-logo">
+      <p class="footer-name">Église de Dieu de la Prophétie<br><span>de Carrefour, waney 93</span></p>
+    </div>
+
+    <div class="footer-links">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="Apropos.html">À propos</a></li>
+        <li><a href="Horaires.html">Horaires</a></li>
+        <li><a href="Contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-links">
+      <h4>Communauté</h4>
+      <ul>
+        <li><a href="priere.html">Demande de prière</a></li>
+        <li><a href="Temoigner.html">Témoignages</a></li>
+        <li><a href="Galerie.html">Galerie</a></li>
+        <li><a href="don.html">Faire un don</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-contact">
+      <h4>Nous trouver</h4>
+      <p><i class="fas fa-map-marker-alt"></i> Carrefour Port-au-Prince, Haïti, WI</p>
+      <p><i class="fas fa-phone"></i> +509 3157-3591, 3653-9193, 4028-0086, 3407-6903</p>
+      <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1c797b70756f795c7f7d6e6e797a73696e327468">[email&#160;protected]</a></p>
+      <div class="social-icons">
+        <a href="#" title="Facebook" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+        <a href="#" title="YouTube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="#" title="WhatsApp" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 Église de Dieu de la Prophétie de Carrefour waney 93— Tous droits réservés</p>
+  </div>
+</footer>
+
+
+<!-- ===== SCRIPTS ===== -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // ===== MENU HAMBURGER =====
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const navLinks = document.getElementById('navLinks');
+  const navOverlay = document.getElementById('navOverlay');
+
+  function openMenu() {
+    hamburgerBtn.classList.add('open');
+    navLinks.classList.add('open');
+    navOverlay.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    hamburgerBtn.classList.remove('open');
+    navLinks.classList.remove('open');
+    navOverlay.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  hamburgerBtn.addEventListener('click', () => {
+    if (navLinks.classList.contains('open')) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  navOverlay.addEventListener('click', closeMenu);
+
+  // ===== MENU DROPDOWN =====
+  var dropdowns = document.querySelectorAll('.dropdown');
+  dropdowns.forEach(function(dropdown) {
+    var toggle = dropdown.querySelector('.dropdown-toggle');
+    toggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      var isActive = dropdown.classList.contains('active');
+      dropdowns.forEach(function(d) { d.classList.remove('active'); });
+      if (!isActive) dropdown.classList.add('active');
+    });
+  });
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.dropdown'))
+      dropdowns.forEach(function(d) { d.classList.remove('active'); });
+  });
+
+  // Fèmen menu lè yo klike sou yon lyen (mobile)
+  navLinks.querySelectorAll('a:not(.dropdown-toggle)').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  // ===== VERSET DU JOUR =====
+  const versets = [
+    { texte: "Car Dieu a tant aimé le monde qu'il a donné son Fils unique, afin que quiconque croit en lui ne périsse point, mais qu'il ait la vie éternelle.", ref: "Jean 3:16" },
+    { texte: "L'Éternel est mon berger : je ne manquerai de rien.", ref: "Psaume 23:1" },
+    { texte: "Confie-toi en l'Éternel de tout ton cœur, et ne t'appuie pas sur ta sagesse ; reconnais-le dans toutes tes voies, et il aplanira tes sentiers.", ref: "Proverbes 3:5-6" },
+    { texte: "Je puis tout par celui qui me fortifie.", ref: "Philippiens 4:13" },
+    { texte: "Heureux ceux qui procurent la paix, car ils seront appelés fils de Dieu.", ref: "Matthieu 5:9" },
+    { texte: "Cherchez premièrement le royaume et la justice de Dieu ; et toutes ces choses vous seront données par-dessus.", ref: "Matthieu 6:33" },
+    { texte: "L'Éternel est ma lumière et mon salut : de qui aurais-je crainte ?", ref: "Psaume 27:1" }
+  ];
+
+  // Afiche verset — itilize DOMContentLoaded pou asire eleman yo chaje
+  function afficherVerset() {
+    const el = document.getElementById('verset');
+    const elRef = document.getElementById('verset-ref');
+    if (el && elRef) {
+      const idx = new Date().getDay(); // 0=Dimanch, 1=Lendi ... 6=Samdi
+      el.textContent = versets[idx].texte;
+      elRef.textContent = "— " + versets[idx].ref;
+    }
+  }
+
+  // Apele imedyatman ak tou apre DOM chaje (pou asire)
+  afficherVerset();
+  document.addEventListener('DOMContentLoaded', afficherVerset);
+
+  // ===== DIAPORAMA =====
+  var slideIndex = 1;
+
+  function showSlides(n) {
+    var slides = document.getElementsByClassName("mySlides");
+    var dots = document.getElementsByClassName("dot");
+    if (n > slides.length) { slideIndex = 1; }
+    if (n < 1) { slideIndex = slides.length; }
+    for (var i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+    for (var i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex - 1].style.display = "block";
+    dots[slideIndex - 1].className += " active";
+  }
+
+  function changeSlide(n) {
+    slideIndex += n;
+    showSlides(slideIndex);
+  }
+
+  function goToSlide(n) {
+    slideIndex = n;
+    showSlides(slideIndex);
+  }
+
+  showSlides(slideIndex);
+
+  setInterval(function() {
+    slideIndex++;
+    showSlides(slideIndex);
+  }, 4000);
+
+</script>
+</body>
+</html>

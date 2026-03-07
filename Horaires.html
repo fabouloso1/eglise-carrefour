@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Horaires — Église de Dieu de la Prophétie de Carrefour, waney 93</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .page-hero { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 70px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+    .page-hero::before { content: '\f017'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: -30px; top: -30px; font-size: 220px; opacity: 0.04; color: white; }
+    .page-hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(241,196,15,0.15); border: 1px solid rgba(241,196,15,0.35); color: var(--gold); padding: 6px 18px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
+    .page-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 14px; }
+    .page-hero p { font-size: 1.05rem; opacity: 0.82; max-width: 500px; margin: 0 auto; }
+
+    .breadcrumb { background: white; border-bottom: 1px solid var(--border); padding: 12px 24px; }
+    .breadcrumb-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--text-muted); }
+    .breadcrumb a { color: var(--text-muted); transition: var(--transition); }
+    .breadcrumb a:hover { color: var(--primary); }
+    .breadcrumb i { font-size: 0.65rem; color: #bbb; }
+    .breadcrumb span { color: var(--primary); font-weight: 600; }
+
+    .horaires-main { max-width: 1100px; margin: 0 auto; padding: 50px 24px 80px; }
+
+    /* Grille hebdomadaire */
+    .section-title { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--primary); text-align: center; margin-bottom: 8px; }
+    .section-subtitle { text-align: center; color: var(--text-muted); font-size: 0.92rem; margin-bottom: 36px; }
+
+    .schedule-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 60px; }
+    .schedule-card { background: white; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid var(--border); overflow: hidden; transition: var(--transition); }
+    .schedule-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+    .day-header { background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 22px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .day-header h2 { color: white; font-size: 1.2rem; font-family: 'Playfair Display', serif; }
+    .day-icon { width: 44px; height: 44px; background: rgba(241,196,15,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1.2rem; }
+    .schedule-list { list-style: none; padding: 0; }
+    .schedule-list li { padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 4px; transition: var(--transition); }
+    .schedule-list li:last-child { border-bottom: none; }
+    .schedule-list li:hover { background: rgba(241,196,15,0.04); }
+    .s-time { display: inline-flex; align-items: center; gap: 6px; background: rgba(241,196,15,0.12); color: var(--primary); font-size: 0.82rem; font-weight: 700; padding: 3px 10px; border-radius: 12px; width: fit-content; }
+    .s-event { color: var(--text); font-size: 0.9rem; font-weight: 600; }
+    .s-note { color: var(--text-muted); font-size: 0.8rem; font-weight: 400; }
+
+    /* Timeline événements spéciaux */
+    .events-section { margin-bottom: 60px; }
+    .timeline { position: relative; padding-left: 30px; }
+    .timeline::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--gold), transparent); }
+    .timeline-item { position: relative; margin-bottom: 28px; }
+    .timeline-item::before { content: ''; position: absolute; left: -24px; top: 6px; width: 12px; height: 12px; background: var(--gold); border-radius: 50%; border: 2px solid white; box-shadow: 0 0 0 3px rgba(241,196,15,0.3); }
+    .timeline-card { background: white; border-radius: var(--radius); padding: 24px 28px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); transition: var(--transition); }
+    .timeline-card:hover { transform: translateX(6px); box-shadow: var(--shadow-md); border-color: rgba(241,196,15,0.4); }
+    .t-date { display: inline-flex; align-items: center; gap: 6px; background: var(--gold); color: var(--primary); font-size: 0.78rem; font-weight: 700; padding: 4px 12px; border-radius: 12px; margin-bottom: 10px; }
+    .timeline-card h3 { color: var(--primary); font-size: 1.05rem; margin-bottom: 6px; }
+    .timeline-card p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; }
+
+    /* CTA rejoindre */
+    .cta-banner { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border-radius: var(--radius); padding: 40px; text-align: center; }
+    .cta-banner i { font-size: 2.5rem; color: var(--gold); margin-bottom: 16px; display: block; }
+    .cta-banner h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 12px; }
+    .cta-banner p { opacity: 0.85; font-size: 0.95rem; margin-bottom: 24px; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .cta-btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; border-radius: 30px; font-weight: 700; font-size: 0.92rem; transition: var(--transition); }
+    .cta-btn-primary { background: var(--gold); color: var(--primary); }
+    .cta-btn-primary:hover { background: var(--gold-dark); transform: translateY(-2px); }
+    .cta-btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.4); }
+    .cta-btn-outline:hover { background: rgba(255,255,255,0.1); border-color: white; transform: translateY(-2px); }
+
+    @media (max-width: 900px) { .schedule-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 480px) { .cta-buttons { flex-direction: column; align-items: center; } }
+  </style>
+  <!-- OneSignal Push Notifications -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "357202c0-41e0-42d7-a6bb-03be43ee63ff",
+      });
+    });
+  </script>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<div class="page-hero">
+  <div class="page-hero-badge"><i class="fas fa-clock"></i> Horaires</div>
+  <h1>Horaires des Cultes</h1>
+  <p>Rejoignez-nous pour adorer Dieu ensemble. Tous sont les bienvenus dans notre famille !</p>
+</div>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+    <i class="fas fa-chevron-right"></i>
+    <a href="Apropos.html">À propos</a>
+    <i class="fas fa-chevron-right"></i>
+    <span>Horaires</span>
+  </div>
+</div>
+
+<div class="horaires-main">
+
+  <!-- Programme hebdomadaire -->
+  <h2 class="section-title">Programme</h2>
+  <p class="section-subtitle">Nos activités régulières tout au long de la semaine</p>
+
+  <div class="schedule-grid">
+    <!-- Dimanche -->
+    <div class="schedule-card">
+      <div class="day-header">
+        <h2>Dimanche</h2>
+        <div class="day-icon"><i class="fas fa-church"></i></div>
+      </div>
+      <ul class="schedule-list">
+ 
+        <li>
+          <span class="s-time"><i class="fas fa-clock"></i> 6h30 – 7h30</span>
+          <span class="s-event">École du Dimanche</span>
+          <span class="s-note">Pour tous les âges</span>
+        </li>
+		        <li>
+          <span class="s-time"><i class="fas fa-clock"></i> 16h00 – 18h00</span>
+          <span class="s-event">Réunion de Jeunesse</span>
+          <span class="s-note">Chaque dimanche</span>
+        </li>
+        <li>
+          <span class="s-time"><i class="fas fa-clock"></i> 15h00 – 17h00</span>
+          <span class="s-event">Clube Pré-marital</span>
+          <span class="s-note">Chaque 1er dimanchei</span>
+        </li>
+		        <li>
+          <span class="s-time"><i class="fas fa-clock"></i> 14h00 – 18h00</span>
+          <span class="s-event">Clube des Mariés </span>
+          <span class="s-note">Chaque 4ième dimanche</span>
+        </li>
+      </ul>
+    </div>
+	
+	 <div class="schedule-card">
+      <div class="day-header">
+        <h2>Mardi et Jeudi</h2>
+        <div class="day-icon"><i class="fas fa-hands-praying"></i></div>
+      </div>
+      <ul class="schedule-list">
+	  <li>
+          <span class="s-time"><i class="fas fa-clock"></i> 16h00 – 18h00</span>
+          <span class="s-event">Chaque mardi Etude biblique </span>
+          <span class="s-note">Intervenant: Murat Louis</span>
+        </li>
+        <li>
+          <span class="s-time"><i class="fas fa-clock"></i> 16h00 – 18h00</span>
+          <span class="s-event">Kalme Tanpet</span>
+          <span class="s-note">Chaque Jeudi</span>
+        </li>
+        <li>
+          <span class="s-time"><i class="fas fa-clock"></i> 8h00 – 12h00</span>
+          <span class="s-event">Jeune des Dames</span>
+          <span class="s-note">chaque Jeudi</span>
+        </li>
+      </ul>
+    </div>
+
+
+    <!-- Vendredi -->
+    <div class="schedule-card">
+      <div class="day-header">
+        <h2>Vendredi</h2>
+        <div class="day-icon"><i class="fas fa-hands-praying"></i></div>
+      </div>
+      <ul class="schedule-list">
+	  <li>
+          <span class="s-time"><i class="fas fa-clock"></i> 8h00 – 12h00</span>
+          <span class="s-event">Jeune vendredi</span>
+          <span class="s-note">Pour toute l'église</span>
+        </li>
+        <li>
+          <span class="s-time"><i class="fas fa-clock"></i> 20h00 – Minuit</span>
+          <span class="s-event">Veille de nuit</span>
+          <span class="s-note">Toute l'église</span>
+        </li>
+        <li>
+          <span class="s-time"><i class="fas fa-clock"></i> 16h00 – 18h00</span>
+          <span class="s-event">Reunion des membres</span>
+          <span class="s-note">chaque dernier vendredi</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Samedi -->
+    <div class="schedule-card">
+      <div class="day-header">
+        <h2>Samedi</h2>
+        <div class="day-icon"><i class="fas fa-users"></i></div>
+      </div>
+      <ul class="schedule-list">
+        <li>
+          <span class="s-time"><i class="fas fa-clock"></i> 15h00 – 17h00</span>
+          <span class="s-event">Classe baptème</span>
+          <span class="s-note">Chaque samedi</span>
+        </li>
+        
+		 <li>
+          <span class="s-time"><i class="fas fa-clock"></i> 15h00 – 17h00</span>
+          <span class="s-event">Sainte cène </span>
+          <span class="s-note">Chaque 1er samedi</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Événements spéciaux -->
+  <div class="events-section">
+    <h2 class="section-title">Événements Spéciaux</h2>
+    <p class="section-subtitle">Ne manquez pas ces rendez-vous importants</p>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-card">
+          <div class="t-date"><i class="fas fa-calendar-day"></i> Du 15 au 28 Mars 2025</div>
+          <h3>Reveil Annuel des hommes Mariés</h3>
+          <p>Une semaine de réveil qui sera organiser avec les hommes Mariés de l'eglise. Un moment de grâce à ne pas manquer !</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-card">
+          <div class="t-date"><i class="fas fa-calendar-day"></i> 12 Avril 2026</div>
+          <h3>Grand concert de levée de fonds</h3>
+          <p>
+
+L’Association de Jeunesse de l’Église de Dieu de la Prophétie de Waney 93 (JEM) a le plaisir de vous inviter à un grand concert de levée de fonds qui se tiendra :<p>
+
+<h4>📅 Dimanche 12 Avril 2026</h4>
+<h5>🕓 À partir de 4h00 PM</h5>
+
+<p>Venez vivre un moment exceptionnel de louange, d’adoration et de communion fraternelle avec plusieurs groupes et chorales invités.<p>
+
+<h3>✨ À l’affiche :</h3>
+<h4>🎤 Les chorales :</h4>
+<h5>Gospel Vision (GV)</h5>
+<h5>Joshua</h5>
+
+
+<h3>🎶 Les groupes :</h3>
+
+<h5>Les Sarments de Yahweh</h5>
+
+<h5>Worship Power</h5>
+
+<h5>Les Élus</h5>
+
+
+🎟 Contribution : 500 Gourdes
+
+📌 Note importante :
+Les fonds recueillis lors de ce concert serviront à aménager et préparer un espace spécial pour le Département des Enfants, afin d’offrir aux enfants de l’église un environnement approprié pour leur formation spirituelle et leurs activités.
+
+🙏 Nous comptons sur votre présence et votre soutien pour faire de cette activité une grande réussite.
+
+Que Dieu vous bénisse abondamment !</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-card">
+          <div class="t-date"><i class="fas fa-calendar-day"></i> Décembre 2025</div>
+          <h3>Culte de Noël</h3>
+          <p>Célébrons ensemble la naissance de notre Seigneur Jésus-Christ avec un culte spécial, des cantiques et un programme pour les enfants.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-banner">
+    <i class="fas fa-church"></i>
+    <h2>Venez nous rejoindre !</h2>
+    <p>Que vous soyez nouveau dans la foi ou croyant de longue date, vous êtes les bienvenus dans notre famille. Nos portes sont ouvertes pour tous.</p>
+    <div class="cta-buttons">
+      <a href="Contact.html" class="cta-btn cta-btn-primary"><i class="fas fa-envelope"></i> Nous contacter</a>
+      <a href="priere.html" class="cta-btn cta-btn-outline"><i class="fas fa-hands-praying"></i> Demande de prière</a>
+    </div>
+  </div>
+
+</div>
+
+<div id="foot-placeholder"></div>
+
+<script src="nav.js"></script>
+<script>NAV.init('Horaires.html');</script>
+</body>
+</html>

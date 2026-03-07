@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galerie — Église de Dieu de la Prophétie de Carrefour</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .page-hero { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 70px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+    .page-hero::before { content: '\f03e'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: -30px; top: -30px; font-size: 220px; opacity: 0.04; color: white; }
+    .page-hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(241,196,15,0.15); border: 1px solid rgba(241,196,15,0.35); color: var(--gold); padding: 6px 18px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
+    .page-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 14px; }
+    .page-hero p { font-size: 1.05rem; opacity: 0.82; max-width: 500px; margin: 0 auto; }
+
+    .breadcrumb { background: white; border-bottom: 1px solid var(--border); padding: 12px 24px; }
+    .breadcrumb-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--text-muted); }
+    .breadcrumb a { color: var(--text-muted); transition: var(--transition); }
+    .breadcrumb a:hover { color: var(--primary); }
+    .breadcrumb i { font-size: 0.65rem; color: #bbb; }
+    .breadcrumb span { color: var(--primary); font-weight: 600; }
+
+    .galerie-main { max-width: 1200px; margin: 0 auto; padding: 50px 24px 80px; }
+
+    /* Tabs */
+    .gallery-tabs { display: flex; gap: 8px; margin-bottom: 36px; background: white; padding: 10px; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid var(--border); width: fit-content; }
+    .gallery-tab { padding: 10px 22px; border-radius: 10px; border: none; background: transparent; font-family: 'Montserrat', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 7px; }
+    .gallery-tab.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
+
+    .gallery-section { display: none; }
+    .gallery-section.active { display: block; }
+
+    /* Grille catégories */
+    .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; margin-bottom: 40px; }
+    .cat-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--border); cursor: pointer; transition: var(--transition); }
+    .cat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+    .cat-thumb { height: 180px; background: linear-gradient(135deg, var(--primary), var(--secondary)); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .cat-thumb img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+    .cat-icon-fallback { color: rgba(241,196,15,0.5); font-size: 3.5rem; z-index: 1; }
+    .cat-info { padding: 18px 20px; display: flex; align-items: center; justify-content: space-between; }
+    .cat-info h3 { color: var(--primary); font-size: 0.95rem; display: flex; align-items: center; gap: 8px; }
+    .cat-info h3 i { color: var(--gold); }
+    .cat-info span { color: var(--text-muted); font-size: 0.82rem; font-weight: 600; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .cat-info span i { color: var(--gold); font-size: 0.75rem; }
+
+    /* Bouton retour */
+    .btn-retour { display: inline-flex; align-items: center; gap: 8px; background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 25px; font-family: 'Montserrat', sans-serif; font-size: 0.88rem; font-weight: 600; cursor: pointer; margin-bottom: 24px; transition: var(--transition); }
+    .btn-retour:hover { background: var(--secondary); }
+
+    /* Grille photos */
+    .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 40px; }
+    .photo-item { border-radius: var(--radius-sm); overflow: hidden; position: relative; cursor: pointer; aspect-ratio: 1; background: linear-gradient(135deg, var(--primary), var(--secondary)); }
+    .photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease; }
+    .photo-item:hover img { transform: scale(1.07); }
+    .photo-overlay { position: absolute; inset: 0; background: rgba(18,18,42,0.65); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; opacity: 0; transition: var(--transition); color: white; text-align: center; padding: 16px; }
+    .photo-overlay i { font-size: 2rem; color: var(--gold); }
+    .photo-overlay p { font-size: 0.82rem; font-weight: 600; }
+    .photo-item:hover .photo-overlay { opacity: 1; }
+    .photo-placeholder-item { display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: rgba(241,196,15,0.35); }
+
+    /* Grille vidéos */
+    .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+    .video-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--border); transition: var(--transition); }
+    .video-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+    .video-thumb { height: 180px; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
+    .play-btn { width: 56px; height: 56px; background: rgba(241,196,15,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1.2rem; padding-left: 4px; transition: var(--transition); }
+    .video-thumb:hover .play-btn { transform: scale(1.1); background: var(--gold); }
+    .video-body { padding: 20px; }
+    .video-body h3 { color: var(--primary); font-size: 0.95rem; margin-bottom: 6px; line-height: 1.4; }
+    .video-body p { color: var(--text-muted); font-size: 0.82rem; line-height: 1.5; }
+    .video-body .v-date { display: inline-flex; align-items: center; gap: 5px; color: var(--gold); font-size: 0.78rem; font-weight: 600; margin-top: 10px; }
+
+    /* Lightbox */
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 9999; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
+    .lightbox.open { display: flex; }
+    .lightbox-close { position: absolute; top: 20px; right: 24px; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; transition: var(--transition); background: none; border: none; }
+    .lightbox-close:hover { opacity: 1; color: var(--gold); }
+    .lightbox img { max-width: 90vw; max-height: 80vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 60px rgba(0,0,0,0.8); }
+    .lightbox-caption { color: var(--gold); font-size: 0.92rem; margin-top: 16px; font-weight: 600; }
+    .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 2rem; cursor: pointer; background: rgba(255,255,255,0.1); border: none; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+    .lightbox-nav:hover { background: rgba(241,196,15,0.3); color: var(--gold); }
+    .lightbox-prev { left: 20px; }
+    .lightbox-next { right: 20px; }
+
+    @media (max-width: 768px) {
+      .photo-grid { grid-template-columns: repeat(2, 1fr); }
+      .cat-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-tabs { width: 100%; justify-content: center; }
+    }
+    @media (max-width: 480px) {
+      .photo-grid { grid-template-columns: repeat(2, 1fr); }
+      .cat-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<div class="page-hero">
+  <div class="page-hero-badge"><i class="fas fa-images"></i> Galerie</div>
+  <h1>Galerie &amp; Vidéos</h1>
+  <p>Revivez les moments de grâce et de louange de notre communauté en photos et vidéos.</p>
+</div>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+    <i class="fas fa-chevron-right"></i>
+    <a href="Apropos.html">À propos</a>
+    <i class="fas fa-chevron-right"></i>
+    <span>Galerie</span>
+  </div>
+</div>
+
+<div class="galerie-main">
+
+  <!-- Tabs -->
+  <div class="gallery-tabs">
+    <button class="gallery-tab active" data-tab="photos"><i class="fas fa-camera"></i> Photos</button>
+    <button class="gallery-tab" data-tab="videos"><i class="fas fa-video"></i> Vidéos</button>
+  </div>
+
+  <!-- ===== SECTION PHOTOS ===== -->
+  <div class="gallery-section active" id="tab-photos">
+
+    <!-- Vue: liste katégori yo -->
+    <div id="vue-categories">
+      <div class="cat-grid">
+
+        <div class="cat-card" onclick="ouvrirCategorie('dimanche')">
+          <div class="cat-thumb">
+            <img src="images/image11.jpg" alt="Culte du dimanche matin" onerror="this.style.display='none'">
+            <div class="cat-icon-fallback"><i class="fas fa-church"></i></div>
+          </div>
+          <div class="cat-info">
+            <h3><i class="fas fa-church"></i> Culte du dimanche matin</h3>
+            <span>8 photos <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </div>
+
+        <div class="cat-card" onclick="ouvrirCategorie('bapteme')">
+          <div class="cat-thumb" style="background:linear-gradient(135deg,#1a6b8a,#0d4d6b)">
+            <div class="cat-icon-fallback"><i class="fas fa-water"></i></div>
+          </div>
+          <div class="cat-info">
+            <h3><i class="fas fa-water"></i> Baptêmes 2025</h3>
+            <span>À venir <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </div>
+
+        <div class="cat-card" onclick="ouvrirCategorie('jeunes')">
+          <div class="cat-thumb" style="background:linear-gradient(135deg,#2d6a4f,#1b4332)">
+            <div class="cat-icon-fallback"><i class="fas fa-users"></i></div>
+          </div>
+          <div class="cat-info">
+            <h3><i class="fas fa-users"></i> Réunion des jeunes</h3>
+            <span>À venir <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </div>
+
+        <div class="cat-card" onclick="ouvrirCategorie('priere')">
+          <div class="cat-thumb" style="background:linear-gradient(135deg,#6b2d8a,#4a1d6b)">
+            <div class="cat-icon-fallback"><i class="fas fa-hands-praying"></i></div>
+          </div>
+          <div class="cat-info">
+            <h3><i class="fas fa-hands-praying"></i> Veillée de prière</h3>
+            <span>À venir <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Vue: foto yon kategori -->
+    <div id="vue-photos" style="display:none;">
+      <button class="btn-retour" onclick="retourCategories()">
+        <i class="fas fa-arrow-left"></i> Retour aux catégories
+      </button>
+      <h2 id="titre-categorie" style="color:var(--primary);font-family:'Playfair Display',serif;margin-bottom:24px;"></h2>
+      <div class="photo-grid" id="grille-photos"></div>
+    </div>
+
+  </div>
+
+  <!-- ===== SECTION VIDÉOS ===== -->
+  <div class="gallery-section" id="tab-videos">
+    <div class="video-grid">
+      <div class="video-card">
+        <div class="video-thumb">
+          <div class="play-btn"><i class="fas fa-play"></i></div>
+        </div>
+        <div class="video-body">
+          <h3>Message du dimanche — La Foi qui Déplace les Montagnes</h3>
+          <p>Prédication du Pasteur Anouis Jean. Un message puissant sur la foi et la persévérance.</p>
+          <span class="v-date"><i class="fas fa-calendar"></i> 6 Juin 2025</span>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb">
+          <div class="play-btn"><i class="fas fa-play"></i></div>
+        </div>
+        <div class="video-body">
+          <h3>Témoignage de conversion — Marc partage sa transformation</h3>
+          <p>Marc témoigne de comment sa vie a été radicalement transformée par la grâce de Dieu.</p>
+          <span class="v-date"><i class="fas fa-calendar"></i> 30 Mai 2025</span>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb">
+          <div class="play-btn"><i class="fas fa-play"></i></div>
+        </div>
+        <div class="video-body">
+          <h3>Culte de Louange — Service spécial de Pentecôte</h3>
+          <p>Revivez ce moment de grâce et d'onction lors de notre culte spécial de Pentecôte 2025.</p>
+          <span class="v-date"><i class="fas fa-calendar"></i> 19 Mai 2025</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="fermerLightbox()">✕</button>
+  <button class="lightbox-nav lightbox-prev" onclick="navLightbox(-1)"><i class="fas fa-chevron-left"></i></button>
+  <img id="lightbox-img" src="" alt="">
+  <p class="lightbox-caption" id="lightbox-caption"></p>
+  <button class="lightbox-nav lightbox-next" onclick="navLightbox(1)"><i class="fas fa-chevron-right"></i></button>
+</div>
+
+<div id="foot-placeholder"></div>
+
+<script src="nav.js"></script>
+<script>
+  NAV.init('Galerie.html');
+
+  // ===== TABS =====
+  document.querySelectorAll('.gallery-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.gallery-tab').forEach(function(t) { t.classList.remove('active'); });
+      document.querySelectorAll('.gallery-section').forEach(function(s) { s.classList.remove('active'); });
+      this.classList.add('active');
+      document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ===== DONE YO POU CHAK KATEGORI =====
+  var categories = {
+    'dimanche': {
+      titre: 'Culte du dimanche matin',
+      photos: [
+        { src: 'images/image11.jpg', caption: '' },
+        { src: 'images/image12.jpg', caption: '' },
+        { src: 'images/image13.jpg', caption: '' },
+        { src: 'images/image14.jpg', caption: '' },
+        { src: 'images/image15.jpg', caption: '' },
+        { src: 'images/image16.jpg', caption: '' },
+           { src: 'images/image17.jpg', caption: '' },
+		         { src: 'images/image18.jpg', caption: '' },
+				       { src: 'images/image19.jpg', caption: '' },
+					         { src: 'images/image20.jpg', caption: '' },
+							       { src: 'images/image21.jpg', caption: '' },
+								         { src: 'images/image22.jpg', caption: '' },
+										       { src: 'images/image23.jpg', caption: '' },
+											       
+													       { src: 'images/image25.jpg', caption: '' },
+														         { src: 'images/image26.jpg', caption: '' },
+																       { src: 'images/image27.jpg', caption: '' },
+								   
+      ]
+    },
+    'bapteme': {
+      titre: 'Baptêmes 2025',
+      photos: []
+    },
+    'jeunes': {
+      titre: 'Réunion des jeunes',
+      photos: []
+    },
+    'priere': {
+      titre: 'Veillée de prière',
+      photos: []
+    }
+  };
+
+  var photosActuelles = [];
+  var indexLightbox = 0;
+
+  function ouvrirCategorie(id) {
+    var cat = categories[id];
+    document.getElementById('vue-categories').style.display = 'none';
+    document.getElementById('vue-photos').style.display = 'block';
+    document.getElementById('titre-categorie').textContent = cat.titre;
+
+    var grille = document.getElementById('grille-photos');
+    grille.innerHTML = '';
+    photosActuelles = cat.photos;
+
+    if (cat.photos.length === 0) {
+      grille.innerHTML = '<p style="color:var(--text-muted);text-align:center;grid-column:1/-1;padding:40px 0;"><i class="fas fa-clock" style="font-size:2rem;display:block;margin-bottom:12px;color:var(--gold)"></i>Photos à venir bientôt...</p>';
+      return;
+    }
+
+    cat.photos.forEach(function(photo, i) {
+      var item = document.createElement('div');
+      item.className = 'photo-item';
+      (function(index) {
+        item.onclick = function() { ouvrirLightbox(index); };
+      })(i);
+      item.innerHTML =
+        '<img src="' + photo.src + '" alt="' + photo.caption + '" onerror="this.parentElement.classList.add(\'photo-placeholder-item\')">' +
+        '<div class="photo-overlay"><i class="fas fa-search-plus"></i><p>' + photo.caption + '</p></div>';
+      grille.appendChild(item);
+    });
+  }
+
+  function retourCategories() {
+    document.getElementById('vue-photos').style.display = 'none';
+    document.getElementById('vue-categories').style.display = 'block';
+  }
+
+  // ===== LIGHTBOX =====
+  function ouvrirLightbox(index) {
+    indexLightbox = index;
+    afficherLightbox();
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function afficherLightbox() {
+    var photo = photosActuelles[indexLightbox];
+    document.getElementById('lightbox-img').src = photo.src;
+    document.getElementById('lightbox-caption').textContent = photo.caption;
+  }
+
+  function navLightbox(dir) {
+    indexLightbox += dir;
+    if (indexLightbox < 0) indexLightbox = photosActuelles.length - 1;
+    if (indexLightbox >= photosActuelles.length) indexLightbox = 0;
+    afficherLightbox();
+  }
+
+  function fermerLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) fermerLightbox();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') fermerLightbox();
+    if (e.key === 'ArrowRight') navLightbox(1);
+    if (e.key === 'ArrowLeft') navLightbox(-1);
+  });
+</script>
+</body>
+</html>

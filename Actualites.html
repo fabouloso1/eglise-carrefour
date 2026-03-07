@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Actualités — Église de Dieu de la Prophétie de Carrefour</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .page-hero { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 70px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+    .page-hero::before { content: '\f1ea'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: -30px; top: -30px; font-size: 220px; opacity: 0.04; color: white; }
+    .page-hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(241,196,15,0.15); border: 1px solid rgba(241,196,15,0.35); color: var(--gold); padding: 6px 18px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
+    .page-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 14px; }
+    .page-hero p { font-size: 1.05rem; opacity: 0.82; max-width: 500px; margin: 0 auto; }
+
+    .breadcrumb { background: white; border-bottom: 1px solid var(--border); padding: 12px 24px; }
+    .breadcrumb-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--text-muted); }
+    .breadcrumb a { color: var(--text-muted); transition: var(--transition); }
+    .breadcrumb a:hover { color: var(--primary); }
+    .breadcrumb span { color: var(--primary); font-weight: 600; }
+
+    .actu-main { max-width: 1100px; margin: 0 auto; padding: 50px 24px 80px; }
+
+    .filter-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 36px; background: white; padding: 16px 20px; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
+    .filter-label { font-weight: 700; color: var(--primary); font-size: 0.85rem; margin-right: 4px; }
+    .filter-btn { padding: 7px 18px; border-radius: 20px; border: 1.5px solid var(--border); background: transparent; font-family: 'Montserrat', sans-serif; font-size: 0.82rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: var(--transition); }
+    .filter-btn.active, .filter-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+    .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-bottom: 50px; }
+    .news-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--border); transition: var(--transition); display: flex; flex-direction: column; }
+    .news-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+    .news-img-placeholder { height: 190px; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: rgba(241,196,15,0.5); }
+    .news-body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+    .news-body h3 { color: var(--primary); font-size: 1.05rem; margin-bottom: 10px; line-height: 1.4; }
+    .news-body > p { color: var(--text-muted); font-size: 0.87rem; line-height: 1.7; flex: 1; margin-bottom: 16px; }
+    .news-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid var(--border); }
+    .news-author { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--text-muted); }
+    .news-author i { color: var(--gold); }
+    .read-more { display: inline-flex; align-items: center; gap: 6px; color: var(--primary); font-size: 0.82rem; font-weight: 700; transition: var(--transition); border: none; border-bottom: 2px solid var(--gold); padding-bottom: 1px; background: none; font-family: 'Montserrat', sans-serif; cursor: pointer; }
+    .read-more:hover { color: var(--gold-dark); gap: 10px; }
+
+    .newsletter { background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: var(--radius); padding: 50px 40px; text-align: center; color: white; }
+    .newsletter i.nl-icon { font-size: 2.5rem; color: var(--gold); margin-bottom: 16px; display: block; }
+    .newsletter h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 10px; }
+    .newsletter p { opacity: 0.85; font-size: 0.92rem; margin-bottom: 28px; }
+    .newsletter-form { display: flex; gap: 10px; max-width: 500px; margin: 0 auto; }
+    .newsletter-form input { flex: 1; padding: 13px 18px; border-radius: 30px; border: none; font-family: 'Montserrat', sans-serif; font-size: 0.92rem; }
+    .newsletter-form button { padding: 13px 26px; background: var(--gold); color: var(--primary); border: none; border-radius: 30px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.92rem; cursor: pointer; white-space: nowrap; transition: var(--transition); display: flex; align-items: center; gap: 7px; }
+    .newsletter-form button:hover { background: var(--gold-dark); transform: translateY(-1px); }
+
+    /* === MODAL === */
+    .art-overlay { display: none; position: fixed; inset: 0; background: rgba(10,10,30,0.65); z-index: 1000; backdrop-filter: blur(3px); }
+    .art-overlay.show { display: block; }
+    .art-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -48%); width: min(720px, 94vw); max-height: 88vh; overflow-y: auto; background: white; border-radius: 20px; box-shadow: 0 24px 60px rgba(0,0,0,0.3); z-index: 1001; opacity: 0; transition: transform 0.28s cubic-bezier(.34,1.56,.64,1), opacity 0.22s ease; }
+    .art-modal.show { display: block; transform: translate(-50%, -50%); opacity: 1; }
+    .art-modal-header { background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 32px 32px 28px; position: relative; border-radius: 20px 20px 0 0; }
+    .art-modal-close { position: absolute; top: 16px; right: 18px; background: rgba(255,255,255,0.15); border: none; width: 36px; height: 36px; border-radius: 50%; color: white; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+    .art-modal-close:hover { background: rgba(255,255,255,0.3); }
+    .art-modal-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(241,196,15,0.2); color: var(--gold); border: 1px solid rgba(241,196,15,0.4); padding: 4px 14px; border-radius: 15px; font-size: 0.76rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+    .art-modal-header h2 { font-family: 'Playfair Display', serif; color: white; font-size: 1.5rem; line-height: 1.3; margin-bottom: 10px; }
+    .art-modal-meta { display: flex; align-items: center; gap: 16px; font-size: 0.82rem; color: rgba(255,255,255,0.65); flex-wrap: wrap; }
+    .art-modal-meta span { display: flex; align-items: center; gap: 5px; }
+    .art-modal-meta i { color: var(--gold); }
+    .art-modal-body { padding: 32px; }
+    .art-intro { font-size: 1rem; font-weight: 600; color: var(--primary); line-height: 1.7; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 2px solid var(--gold); }
+    .art-content { color: #555; font-size: 0.92rem; line-height: 1.9; }
+    .art-content p { margin-bottom: 14px; }
+    .art-content strong { color: var(--primary); }
+    .art-details { margin-top: 24px; display: flex; flex-direction: column; gap: 10px; }
+    .art-detail-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--light-bg); border-radius: 10px; border-left: 3px solid var(--gold); }
+    .art-detail-row i { color: var(--gold); width: 18px; text-align: center; flex-shrink: 0; }
+    .art-detail-row div strong { display: block; color: var(--primary); font-size: 0.82rem; margin-bottom: 1px; }
+    .art-detail-row div span { color: var(--text-muted); font-size: 0.85rem; }
+    .art-modal-footer { padding: 20px 32px 28px; display: flex; gap: 12px; flex-wrap: wrap; }
+    .art-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 25px; font-family: 'Montserrat', sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: var(--transition); border: none; text-decoration: none; }
+    .art-btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
+    .art-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(28,28,60,0.3); }
+    .art-btn-outline { background: transparent; color: var(--primary); border: 2px solid var(--border); }
+    .art-btn-outline:hover { border-color: var(--gold); color: var(--primary); }
+
+    @media (max-width: 600px) {
+      .newsletter { padding: 36px 20px; }
+      .newsletter-form { flex-direction: column; }
+      .news-grid { grid-template-columns: 1fr; }
+      .art-modal-body { padding: 22px 18px; }
+      .art-modal-header { padding: 24px 20px; }
+      .art-modal-footer { padding: 16px 18px 22px; }
+      .art-modal-meta { gap: 10px; }
+    }
+  </style>
+  <!-- OneSignal Push Notifications -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "357202c0-41e0-42d7-a6bb-03be43ee63ff",
+      });
+    });
+  </script>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<div class="page-hero">
+  <div class="page-hero-badge"><i class="fas fa-newspaper"></i> Actualités</div>
+  <h1>Actualités de l'Église</h1>
+  <p>Restez connectés à la vie de notre communauté. Événements, annonces et messages spirituels.</p>
+</div>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+    <i class="fas fa-chevron-right" style="font-size:0.65rem;color:#bbb;"></i>
+    <a href="Apropos.html">À propos</a>
+    <i class="fas fa-chevron-right" style="font-size:0.65rem;color:#bbb;"></i>
+    <span>Actualités</span>
+  </div>
+</div>
+
+<div class="actu-main">
+
+  <div class="filter-bar">
+    <span class="filter-label"><i class="fas fa-filter"></i> Filtrer :</span>
+    <button class="filter-btn active" data-filter="all">Tout</button>
+    <button class="filter-btn" data-filter="events">Événements</button>
+    <button class="filter-btn" data-filter="announcements">Annonces</button>
+    <button class="filter-btn" data-filter="spiritual">Spirituel</button>
+  </div>
+
+  <div class="news-grid" id="newsGrid">
+
+    <article class="news-card" data-category="events">
+      <div class="news-img-placeholder"><i class="fas fa-church"></i></div>
+      <div class="news-body">
+        <h3>Culte Spécial de Pentecôte</h3>
+        <p>Rejoignez-nous pour un culte spécial célébrant la Pentecôte avec des invités spéciaux et une onction particulière du Saint-Esprit.</p>
+        <div class="news-footer">
+          <span class="news-author"><i class="fas fa-calendar"></i> 15 Juin 2025</span>
+          <button class="read-more" onclick="openArticle('pentecote')">Lire plus <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </article>
+
+    <article class="news-card" data-category="announcements">
+      <div class="news-img-placeholder"><i class="fas fa-users"></i></div>
+      <div class="news-body">
+        <h3>Réunion des Leaders — 20 Juin</h3>
+        <p>Tous les leaders de ministères sont conviés à une réunion importante le 20 juin à 18h dans la salle annexe. Présence obligatoire.</p>
+        <div class="news-footer">
+          <span class="news-author"><i class="fas fa-calendar"></i> 10 Juin 2025</span>
+          <button class="read-more" onclick="openArticle('leaders')">Lire plus <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </article>
+
+    <article class="news-card" data-category="spiritual">
+      <div class="news-img-placeholder"><i class="fas fa-book-open"></i></div>
+      <div class="news-body">
+        <h3>Nouvelle Série : La Puissance de la Prière</h3>
+        <p>Ce dimanche commence une nouvelle série de messages sur "La Puissance de la Prière Persévérante". Ne manquez pas ce rendez-vous spirituel !</p>
+        <div class="news-footer">
+          <span class="news-author"><i class="fas fa-calendar"></i> 5 Juin 2025</span>
+          <button class="read-more" onclick="openArticle('priere_serie')">Lire plus <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </article>
+
+    <article class="news-card" data-category="events">
+      <div class="news-img-placeholder"><i class="fas fa-star"></i></div>
+      <div class="news-body">
+        <h3>Conférence Annuelle — Juillet 2025</h3>
+        <p>Une semaine d'enseignement et de réveil avec des orateurs invités. Programme complet et inscriptions disponibles à l'église.</p>
+        <div class="news-footer">
+          <span class="news-author"><i class="fas fa-calendar"></i> 1 Juin 2025</span>
+          <button class="read-more" onclick="openArticle('conference')">Lire plus <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </article>
+
+    <article class="news-card" data-category="announcements">
+      <div class="news-img-placeholder"><i class="fas fa-child"></i></div>
+      <div class="news-body">
+        <h3>Baptême des Enfants — Juillet</h3>
+        <p>Les parents désirant dédier leurs enfants au Seigneur peuvent s'inscrire auprès des pasteurs. Places limitées.</p>
+        <div class="news-footer">
+          <span class="news-author"><i class="fas fa-calendar"></i> 28 Mai 2025</span>
+          <button class="read-more" onclick="openArticle('bapteme')">Lire plus <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </article>
+
+    <article class="news-card" data-category="spiritual">
+      <div class="news-img-placeholder"><i class="fas fa-dove"></i></div>
+      <div class="news-body">
+        <h3>Jeûne et Prière — 3 Jours</h3>
+        <p>Notre église organise une période de jeûne et prière de 3 jours pour intercéder pour Haïti et nos familles.</p>
+        <div class="news-footer">
+          <span class="news-author"><i class="fas fa-calendar"></i> 20 Mai 2025</span>
+          <button class="read-more" onclick="openArticle('jeune')">Lire plus <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <div class="newsletter">
+    <i class="fas fa-envelope-open-text nl-icon"></i>
+    <h2>Restez informés</h2>
+    <p>Recevez nos actualités, annonces et messages d'encouragement directement par email.</p>
+    <form class="newsletter-form" id="newsletterForm">
+      <input type="email" placeholder="Votre adresse email" required>
+      <button type="submit"><i class="fas fa-paper-plane"></i> S'abonner</button>
+    </form>
+  </div>
+
+</div>
+
+<div id="foot-placeholder"></div>
+
+<!-- MODAL -->
+<div class="art-overlay" id="artOverlay" onclick="closeArticle()"></div>
+<div class="art-modal" id="artModal">
+  <div class="art-modal-header">
+    <button class="art-modal-close" onclick="closeArticle()"><i class="fas fa-times"></i></button>
+    <div class="art-modal-tag" id="artTag"></div>
+    <h2 id="artTitle"></h2>
+    <div class="art-modal-meta" id="artMeta"></div>
+  </div>
+  <div class="art-modal-body" id="artBody"></div>
+  <div class="art-modal-footer" id="artFooter"></div>
+</div>
+
+<script src="nav.js"></script>
+<script>
+  NAV.init('Actualites.html');
+
+  const ARTICLES = {
+    pentecote: {
+      tag: 'Événement',
+      titre: 'Culte Spécial de Pentecôte',
+      date: '15 Juin 2025', auteur: 'Équipe pastorale', cat: 'Événements',
+      intro: 'Rejoignez-nous pour un culte exceptionnel célébrant le jour de la Pentecôte avec des invités spéciaux et une onction particulière du Saint-Esprit.',
+      contenu: `<p>La Pentecôte est l'un des moments les plus importants du calendrier chrétien. C'est en ce jour que le Saint-Esprit est descendu sur les 120 disciples réunis au cénacle, marquant la naissance de l'Église de Christ.</p>
+        <p>Cette année, notre église prépare un <strong>culte spécial de Pentecôte</strong> qui promet d'être un moment de réveil et de renouvellement spirituel pour toute la congrégation.</p>
+        <p>Nous attendons une présence particulière du Saint-Esprit, une louange puissante et des témoignages édifiants. Amenez vos familles, vos amis et vos voisins — personne ne doit rater ce rendez-vous avec Dieu !</p>`,
+      details: [
+        { icon: 'fa-calendar', label: 'Date', valeur: 'Dimanche 15 Juin 2025' },
+        { icon: 'fa-clock', label: 'Heure', valeur: '6h00 – 10h00 (culte étendu)' },
+        { icon: 'fa-map-marker-alt', label: 'Lieu', valeur: 'Église de Dieu de la Prophétie — Carrefour' },
+        { icon: 'fa-user-tie', label: 'Orateur invité', valeur: 'À confirmer — annonce en culte' }
+      ],
+      bouton: { label: 'Demande de prière', lien: 'priere.html', icon: 'fa-hands-praying' }
+    },
+    leaders: {
+      tag: 'Annonce',
+      titre: 'Réunion des Leaders — 20 Juin',
+      date: '10 Juin 2025', auteur: 'Pasteur Anouis Jean', cat: 'Annonces',
+      intro: 'Tous les responsables de ministères et leaders de l\'église sont officiellement convoqués à une réunion stratégique le vendredi 20 juin 2025 à 18h00.',
+      contenu: `<p>Le Pasteur Anouis Jean convoque <strong>tous les leaders et responsables de ministères</strong> à une réunion importante pour discuter de la vision de l'église pour le second semestre 2025.</p>
+        <p>Seront abordés lors de cette réunion :</p>
+        <p><strong>• Bilan du premier semestre</strong> — Évaluation des activités et des progrès de chaque département.</p>
+        <p><strong>• Vision et objectifs</strong> — La direction spirituelle et les projets pour les 6 prochains mois.</p>
+        <p><strong>• Organisation de la Conférence Annuelle</strong> — Rôles, responsabilités et préparations nécessaires.</p>
+        <p>La <strong>présence est obligatoire</strong> pour tous les leaders. En cas d'impossibilité absolue, veuillez informer le secrétariat à l'avance.</p>`,
+      details: [
+        { icon: 'fa-calendar', label: 'Date', valeur: 'Vendredi 20 Juin 2025' },
+        { icon: 'fa-clock', label: 'Heure', valeur: '18h00 – 20h00' },
+        { icon: 'fa-map-marker-alt', label: 'Lieu', valeur: 'Salle annexe de l\'église' },
+        { icon: 'fa-exclamation-circle', label: 'Important', valeur: 'Présence obligatoire pour tous les leaders' }
+      ],
+      bouton: { label: 'Nous contacter', lien: 'Contact.html', icon: 'fa-envelope' }
+    },
+    priere_serie: {
+      tag: 'Spirituel',
+      titre: 'Nouvelle Série : La Puissance de la Prière Persévérante',
+      date: '5 Juin 2025', auteur: 'Pasteur Honore Pierre Jolius', cat: 'Spirituel',
+      intro: 'Une nouvelle série de messages bibliques sur un sujet fondamental pour tout croyant : la prière persévérante et son pouvoir extraordinaire dans la vie du chrétien.',
+      contenu: `<p>La prière est le souffle de l'âme chrétienne. Cette nouvelle série de messages veut nous équiper et nous encourager à aller plus loin dans notre vie de prière.</p>
+        <p><strong>Semaine 1 :</strong> "Pourquoi persévérer dans la prière ?" — Luc 18:1-8</p>
+        <p><strong>Semaine 2 :</strong> "Les obstacles à la prière efficace" — Jacques 4:2-3</p>
+        <p><strong>Semaine 3 :</strong> "La prière qui déplace les montagnes" — Marc 11:22-24</p>
+        <p><strong>Semaine 4 :</strong> "Prier selon la volonté de Dieu" — 1 Jean 5:14-15</p>
+        <p>Invitez vos proches — c'est un message pour toute la famille !</p>`,
+      details: [
+        { icon: 'fa-calendar', label: 'Début', valeur: 'Dimanche 8 Juin 2025' },
+        { icon: 'fa-clock', label: 'Heure', valeur: 'Cultes du dimanche — 6h00 et 9h30' },
+        { icon: 'fa-book-open', label: 'Thème', valeur: 'La Puissance de la Prière Persévérante' },
+        { icon: 'fa-user-tie', label: 'Prédicateur', valeur: 'Pasteur Honore Pierre Jolius' }
+      ],
+      bouton: { label: 'Demande de prière', lien: 'priere.html', icon: 'fa-hands-praying' }
+    },
+    conference: {
+      tag: 'Événement',
+      titre: 'Conférence Annuelle — Juillet 2025',
+      date: '1 Juin 2025', auteur: 'Équipe pastorale', cat: 'Événements',
+      intro: 'La grande Conférence Annuelle aura lieu en juillet 2025. Une semaine entière d\'enseignement, de réveil et de rencontres avec des orateurs invités nationaux.',
+      contenu: `<p>Chaque année, notre Conférence Annuelle est l'un des moments les plus attendus et les plus bénis de la vie de notre église.</p>
+        <p>Au programme de cette édition 2025 :</p>
+        <p><strong>• Enseignements bibliques</strong> chaque soir avec des orateurs invités de renom en Haïti.</p>
+        <p><strong>• Sessions de louange</strong> avec des groupes de musique chrétienne régionaux.</p>
+        <p><strong>• Prières d'intercession</strong> pour Haïti, nos familles et la nation.</p>
+        <p><strong>• Programme pour les jeunes</strong> — sessions spéciales chaque après-midi.</p>
+        <p><strong>• Soirée de témoignages</strong> — partagez ce que Dieu a fait dans votre vie.</p>`,
+      details: [
+        { icon: 'fa-calendar', label: 'Dates', valeur: '14 – 20 Juillet 2025' },
+        { icon: 'fa-clock', label: 'Heure', valeur: 'Sessions chaque soir à partir de 18h00' },
+        { icon: 'fa-map-marker-alt', label: 'Lieu', valeur: 'Église de Dieu de la Prophétie — Carrefour' },
+        { icon: 'fa-ticket', label: 'Entrée', valeur: 'Gratuite — ouvert à tous' }
+      ],
+      bouton: { label: 'Nous contacter', lien: 'Contact.html', icon: 'fa-envelope' }
+    },
+    bapteme: {
+      tag: 'Annonce',
+      titre: 'Baptême des Enfants — Juillet 2025',
+      date: '28 Mai 2025', auteur: 'Secrétariat de l\'église', cat: 'Annonces',
+      intro: 'Les parents qui souhaitent dédier leurs enfants au Seigneur lors d\'une cérémonie officielle sont invités à s\'inscrire auprès des pasteurs. Places limitées.',
+      contenu: `<p>La dédicace des enfants est un acte solennel par lequel les parents consacrent leur enfant au Seigneur, s'engageant à l'élever dans la foi chrétienne.</p>
+        <p>Cet acte s'inspire du geste de <strong>Hannah qui présenta Samuel à l'Éternel</strong> (1 Samuel 1:27-28) et de <strong>Marie et Joseph qui présentèrent Jésus au Temple</strong> (Luc 2:22).</p>
+        <p><strong>Qui peut inscrire son enfant ?</strong> Tous les parents membres ou régulièrement présents à l'église peuvent inscrire leurs enfants de 0 à 12 ans.</p>
+        <p><strong>Comment s'inscrire ?</strong> Parlez directement à l'un de nos pasteurs après le culte du dimanche ou contactez le secrétariat de l'église.</p>`,
+      details: [
+        { icon: 'fa-calendar', label: 'Date', valeur: 'Dimanche de Juillet 2025 (date exacte à confirmer)' },
+        { icon: 'fa-child', label: 'Âge', valeur: 'Enfants de 0 à 12 ans' },
+        { icon: 'fa-exclamation-circle', label: 'Places', valeur: 'Limitées — inscription obligatoire' },
+        { icon: 'fa-user-tie', label: 'Inscription', valeur: 'Auprès des pasteurs après le culte' }
+      ],
+      bouton: { label: 'Nous contacter', lien: 'Contact.html', icon: 'fa-envelope' }
+    },
+    jeune: {
+      tag: 'Spirituel',
+      titre: 'Jeûne et Prière — 3 Jours',
+      date: '20 Mai 2025', auteur: 'Groupe d\'Intercession', cat: 'Spirituel',
+      intro: 'Notre église organise une période de jeûne et prière collective de 3 jours pour intercéder pour Haïti, nos familles et l\'avancement du Royaume de Dieu.',
+      contenu: `<p>Le jeûne et la prière sont des armes spirituelles puissantes que Jésus lui-même a pratiquées. Face aux défis que traverse notre nation, notre église répond par la prière collective et le jeûne consacré.</p>
+        <p><strong>Thèmes d'intercession :</strong></p>
+        <p><strong>• Jour 1 :</strong> Intercession pour Haïti — paix, sécurité et restauration de la nation.</p>
+        <p><strong>• Jour 2 :</strong> Prière pour nos familles — unité, guérison et protection divine.</p>
+        <p><strong>• Jour 3 :</strong> Réveil spirituel — croissance de l'église et âmes à gagner pour Christ.</p>
+        <p>Chaque participant peut choisir son type de jeûne selon sa santé et sa conviction. L'essentiel est l'attitude du cœur devant Dieu.</p>`,
+      details: [
+        { icon: 'fa-calendar', label: 'Dates', valeur: '3 jours consécutifs — dates annoncées en culte' },
+        { icon: 'fa-clock', label: 'Réunions', valeur: 'Chaque soir à 18h30 pour la prière collective' },
+        { icon: 'fa-map-marker-alt', label: 'Lieu', valeur: 'Église de Dieu de la Prophétie — Carrefour' },
+        { icon: 'fa-hands-praying', label: 'Participation', valeur: 'Ouvert à tous les membres et amis de l\'église' }
+      ],
+      bouton: { label: 'Demande de prière', lien: 'priere.html', icon: 'fa-hands-praying' }
+    }
+  };
+
+  function openArticle(key) {
+    const a = ARTICLES[key];
+    if (!a) return;
+    document.getElementById('artTag').textContent = a.tag;
+    document.getElementById('artTitle').textContent = a.titre;
+    document.getElementById('artMeta').innerHTML = `
+      <span><i class="fas fa-calendar"></i> ${a.date}</span>
+      <span><i class="fas fa-user"></i> ${a.auteur}</span>
+      <span><i class="fas fa-tag"></i> ${a.cat}</span>`;
+    const detailsHTML = a.details.map(d => `
+      <div class="art-detail-row">
+        <i class="fas ${d.icon}"></i>
+        <div><strong>${d.label}</strong><span>${d.valeur}</span></div>
+      </div>`).join('');
+    document.getElementById('artBody').innerHTML = `
+      <p class="art-intro">${a.intro}</p>
+      <div class="art-content">${a.contenu}</div>
+      <div class="art-details">${detailsHTML}</div>`;
+    document.getElementById('artFooter').innerHTML = `
+      <a href="${a.bouton.lien}" class="art-btn art-btn-primary"><i class="fas ${a.bouton.icon}"></i> ${a.bouton.label}</a>
+      <button class="art-btn art-btn-outline" onclick="closeArticle()"><i class="fas fa-times"></i> Fermer</button>`;
+    document.getElementById('artOverlay').classList.add('show');
+    requestAnimationFrame(() => document.getElementById('artModal').classList.add('show'));
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeArticle() {
+    document.getElementById('artModal').classList.remove('show');
+    document.getElementById('artOverlay').classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeArticle(); });
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const filter = this.dataset.filter;
+      document.querySelectorAll('.news-card').forEach(card => {
+        card.style.display = (filter === 'all' || card.dataset.category === filter) ? 'flex' : 'none';
+      });
+    });
+  });
+
+  document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    this.innerHTML = '<p style="color:var(--gold);font-weight:700;font-size:1rem;"><i class="fas fa-check-circle"></i> Merci ! Vous êtes abonné(e). Que Dieu vous bénisse !</p>';
+  });
+</script>
+</body>
+</html>

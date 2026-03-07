@@ -1,0 +1,22 @@
+{
+  "name": "Église de Dieu de la Prophétie de Carrefour",
+  "short_name": "Église Carrefour",
+  "description": "Sit ofisyèl Église de Dieu de la Prophétie de Carrefour",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#1c1c3c",
+  "theme_color": "#1c1c3c",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
