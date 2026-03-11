@@ -389,61 +389,23 @@
   <!-- Options de don -->
   <div class="don-options">
 
-    <!-- Virement Bancaire -->
+    <!-- MonCash -->
     <div class="don-card">
-      <div class="don-card-header">
-        <div class="don-card-icon"><i class="fas fa-university"></i></div>
+      <div class="don-card-header" style="background: linear-gradient(135deg, #c0392b, #e74c3c);">
+        <div class="don-card-icon" style="background:rgba(255,255,255,0.2);">
+          <img src="images/moncash.png" alt="MonCash" style="width:40px;height:40px;object-fit:contain;">
+        </div>
         <div>
-          <h2>Virement Bancaire</h2>
-          <p>Transfert sécurisé via banque</p>
-        </div>
-      </div>
-      <div class="don-card-body">
-        <div class="detail-row">
-          <span class="detail-label">Titulaire</span>
-          <span class="detail-value" style="font-family:'Montserrat',sans-serif;">Église de Dieu de la Prophétie</span>
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">IBAN</span>
-          <span class="detail-value">
-            FR76 3000 4000 0100 1234 5678 900
-            <button class="copy-btn" onclick="copyText(this, 'FR7630004000010012345678900')" title="Copier">
-              <i class="fas fa-copy"></i>
-            </button>
-          </span>
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">BIC</span>
-          <span class="detail-value">
-            BNPAFRPPXXX
-            <button class="copy-btn" onclick="copyText(this, 'BNPAFRPPXXX')" title="Copier">
-              <i class="fas fa-copy"></i>
-            </button>
-          </span>
-        </div>
-        <div class="qr-wrap">
-          <p><i class="fas fa-qrcode"></i> Scannez pour copier l'IBAN</p>
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=FR7630004000010012345678900&color=1c1c3c&bgcolor=ffffff"
-               alt="QR Code IBAN">
-        </div>
-      </div>
-    </div>
-
-    <!-- Mobile Money -->
-    <div class="don-card">
-      <div class="don-card-header">
-        <div class="don-card-icon"><i class="fas fa-mobile-alt"></i></div>
-        <div>
-          <h2>Mobile Money</h2>
-          <p>MonCash, Lajan Kach, etc.</p>
+          <h2 style="color:white;">MonCash</h2>
+          <p style="color:rgba(255,255,255,0.8);">Digicel Mon Cash</p>
         </div>
       </div>
       <div class="don-card-body">
         <div class="detail-row">
           <span class="detail-label">Numéro</span>
           <span class="detail-value">
-            +509 36 12 34 56
-            <button class="copy-btn" onclick="copyText(this, '+50936123456')" title="Copier">
+            +509 3157 3591
+            <button class="copy-btn" onclick="copyText(this, '31573591')" title="Copier">
               <i class="fas fa-copy"></i>
             </button>
           </span>
@@ -454,16 +416,45 @@
             Indiquez <strong style="color:var(--primary);">"Don Église"</strong> dans le message
           </span>
         </div>
+        <div class="qr-wrap">
+          <p><i class="fas fa-qrcode"></i> Scannez pou voye lajan</p>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=31573591&color=c0392b&bgcolor=ffffff"
+               alt="QR Code MonCash">
+        </div>
+      </div>
+    </div>
+
+    <!-- NatCash -->
+    <div class="don-card">
+      <div class="don-card-header" style="background: linear-gradient(135deg, #e67e00, #f39c12);">
+        <div class="don-card-icon" style="background:rgba(255,255,255,0.2);">
+          <img src="images/natcash.png" alt="NatCash" style="width:40px;height:40px;object-fit:contain;">
+        </div>
+        <div>
+          <h2 style="color:white;">NatCash</h2>
+          <p style="color:rgba(255,255,255,0.8);">Natcom NatCash</p>
+        </div>
+      </div>
+      <div class="don-card-body">
         <div class="detail-row">
-          <span class="detail-label">Contact</span>
-          <span class="detail-value" style="font-family:'Montserrat',sans-serif; font-size:0.85rem;">
-            Trésorier : +509 36 98 76 54
+          <span class="detail-label">Numéro</span>
+          <span class="detail-value">
+            +509 4028 0086
+            <button class="copy-btn" onclick="copyText(this, '40280086')" title="Copier">
+              <i class="fas fa-copy"></i>
+            </button>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Référence</span>
+          <span class="detail-value" style="font-family:'Montserrat',sans-serif; font-size:0.85rem; color:#555;">
+            Indiquez <strong style="color:var(--primary);">"Don Église"</strong> dans le message
           </span>
         </div>
         <div class="qr-wrap">
-          <p><i class="fas fa-qrcode"></i> Scannez pour appeler / envoyer</p>
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=tel:+50936123456&color=1c1c3c&bgcolor=ffffff"
-               alt="QR Code Mobile Money">
+          <p><i class="fas fa-qrcode"></i> Scannez pou voye lajan</p>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=40280086&color=e67e00&bgcolor=ffffff"
+               alt="QR Code NatCash">
         </div>
       </div>
     </div>
