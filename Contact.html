@@ -1,9 +1,12 @@
+**`Contact.html`** — kopye tout sa:
+
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Contact — Église de Dieu de la Prophétie de Carrefour</title>
+  <title data-i18n-title="contact_page_title">Contact — Église de Dieu de la Prophétie de Carrefour</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
@@ -15,18 +18,14 @@
     .contact-hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(241,196,15,0.15); border: 1px solid rgba(241,196,15,0.35); color: var(--gold); padding: 6px 18px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
     .contact-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 14px; }
     .contact-hero p { font-size: 1.05rem; opacity: 0.82; max-width: 500px; margin: 0 auto; }
-
     .breadcrumb { background: white; border-bottom: 1px solid var(--border); padding: 12px 24px; }
     .breadcrumb-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--text-muted); }
     .breadcrumb a { color: var(--text-muted); transition: var(--transition); }
     .breadcrumb a:hover { color: var(--primary); }
     .breadcrumb i { font-size: 0.65rem; color: #bbb; }
     .breadcrumb span { color: var(--primary); font-weight: 600; }
-
     .contact-main { max-width: 1100px; margin: 0 auto; padding: 50px 24px 80px; }
     .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 32px; }
-
-    /* Infos côté gauche */
     .contact-info { display: flex; flex-direction: column; gap: 20px; }
     .info-card { background: white; border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); display: flex; align-items: flex-start; gap: 18px; transition: var(--transition); }
     .info-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: rgba(241,196,15,0.4); }
@@ -34,7 +33,6 @@
     .info-card h3 { color: var(--primary); font-size: 0.95rem; margin-bottom: 5px; }
     .info-card p, .info-card a { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; text-decoration: none; transition: var(--transition); }
     .info-card a:hover { color: var(--primary); }
-
     .horaires-card { background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: var(--radius); padding: 28px; color: white; }
     .horaires-card h3 { color: var(--gold); font-size: 1rem; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
     .horaires-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
@@ -42,8 +40,6 @@
     .horaires-list li:last-child { border-bottom: none; padding-bottom: 0; }
     .h-day { font-weight: 600; color: rgba(255,255,255,0.9); }
     .h-time { color: var(--gold); font-weight: 500; }
-
-    /* Formulaire côté droit */
     .contact-form-wrap { background: white; border-radius: var(--radius); padding: 40px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
     .form-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--primary); margin-bottom: 8px; }
     .form-subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 30px; }
@@ -59,8 +55,6 @@
     .success-msg i { color: #4caf50; font-size: 2rem; margin-bottom: 8px; display: block; }
     .success-msg h3 { color: #2e7d32; margin-bottom: 5px; }
     .success-msg p { color: #555; font-size: 0.9rem; }
-
-    /* Map */
     .map-section { margin-top: 40px; background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
     .map-section-header { padding: 24px 28px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
     .map-section-header i { color: var(--gold); font-size: 1.2rem; }
@@ -68,23 +62,14 @@
     .map-placeholder { background: linear-gradient(135deg, #e8eaf6, #f3e5f5); height: 280px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px; color: #7986cb; }
     .map-placeholder i { font-size: 3rem; opacity: 0.5; }
     .map-placeholder p { font-size: 0.9rem; opacity: 0.7; }
-
-    @media (max-width: 900px) {
-      .contact-grid { grid-template-columns: 1fr; }
-      .form-row { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 480px) {
-      .contact-form-wrap { padding: 24px 18px; }
-    }
+    @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } }
+    @media (max-width: 480px) { .contact-form-wrap { padding: 24px 18px; } }
   </style>
-  <!-- OneSignal Push Notifications -->
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
   <script>
     window.OneSignalDeferred = window.OneSignalDeferred || [];
     OneSignalDeferred.push(async function(OneSignal) {
-      await OneSignal.init({
-        appId: "357202c0-41e0-42d7-a6bb-03be43ee63ff",
-      });
+      await OneSignal.init({ appId: "357202c0-41e0-42d7-a6bb-03be43ee63ff" });
     });
   </script>
 </head>
@@ -92,138 +77,130 @@
 
 <div id="nav-placeholder"></div>
 
-<!-- HERO -->
 <div class="contact-hero">
-  <div class="contact-hero-badge"><i class="fas fa-envelope"></i> Contactez-nous</div>
-  <h1>Nous sommes là pour vous</h1>
-  <p>Une question, un témoignage ou besoin de soutien ? Notre équipe est disponible pour vous.</p>
+  <div class="contact-hero-badge"><i class="fas fa-envelope"></i> <span data-i18n="contact_badge">Contactez-nous</span></div>
+  <h1 data-i18n="contact_hero_title">Nous sommes là pour vous</h1>
+  <p data-i18n="contact_hero_text">Une question, un témoignage ou besoin de soutien ? Notre équipe est disponible pour vous.</p>
 </div>
 
-<!-- BREADCRUMB -->
 <div class="breadcrumb">
   <div class="breadcrumb-inner">
-    <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+    <a href="index.html"><i class="fas fa-home"></i> <span data-i18n="nav_accueil">Accueil</span></a>
     <i class="fas fa-chevron-right"></i>
-    <span>Contact</span>
+    <span data-i18n="nav_contact">Contact</span>
   </div>
 </div>
 
-<!-- CONTENU -->
 <div class="contact-main">
   <div class="contact-grid">
 
-    <!-- GAUCHE : Infos -->
     <div class="contact-info">
       <div class="info-card">
         <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
         <div>
-          <h3>Notre adresse</h3>
-          <p>#9, Carrefour waney 93, rue Appolon, Port-au-Prince Haïti<br>
+          <h3 data-i18n="contact_address_title">Notre adresse</h3>
+          <p>#9, Carrefour waney 93, rue Appolon, Port-au-Prince Haïti</p>
         </div>
       </div>
 
       <div class="info-card">
         <div class="info-icon"><i class="fas fa-phone"></i></div>
         <div>
-          <h3>Téléphone</h3>
-          <a href="tel:+50912345678">+509 3157-3591</a><br>
-          <a href="tel:+50912345678">+509 3653-9193</a>
-		   <a href="tel:+50912345678">+509 4028-0086</a>
-		   <a href="tel:+50912345678">+509 3407-6903</a>
+          <h3 data-i18n="contact_phone_title">Téléphone</h3>
+          <a href="tel:+50931573591">+509 3157-3591</a><br>
+          <a href="tel:+50936539193">+509 3653-9193</a><br>
+          <a href="tel:+50940280086">+509 4028-0086</a><br>
+          <a href="tel:+50934076903">+509 3407-6903</a>
         </div>
       </div>
 
       <div class="info-card">
         <div class="info-icon"><i class="fas fa-envelope"></i></div>
         <div>
-          <h3>Email</h3>
-          <a href="/cdn-cgi/l/email-protection#fd989a91948e98bd9e9c8f8f989b92888fd39589"><span class="__cf_email__" data-cfemail="aecbc9c2c7ddcbeecdcfdcdccbc8c1dbdc80c6da">[email&#160;protected]</span></a>
+          <h3 data-i18n="contact_email_title">Email</h3>
+          <a href="mailto:anouisjean@yahoo.fr">anouisjean@yahoo.fr</a>
         </div>
       </div>
 
       <div class="info-card">
         <div class="info-icon"><i class="fab fa-facebook"></i></div>
         <div>
-          <h3>Réseaux sociaux</h3>
-          <a href="#">Facebook — Église de Carrefour</a><br>
-          <a href="#">YouTube — Cultes en direct</a>
+          <h3 data-i18n="contact_social_title">Réseaux sociaux</h3>
+          <a href="#" data-i18n="contact_facebook">Facebook — Église de Carrefour</a><br>
+          <a href="#" data-i18n="contact_youtube">YouTube — Cultes en direct</a>
         </div>
       </div>
 
-      <!-- Horaires rapides -->
       <div class="horaires-card">
-        <h3><i class="fas fa-clock"></i> Horaires des cultes</h3>
+        <h3><i class="fas fa-clock"></i> <span data-i18n="contact_schedule_title">Horaires des cultes</span></h3>
         <ul class="horaires-list">
-          <li><span class="h-day">Dimanche</span><span class="h-time">6h30 – 10h30</span></li>
-          <li><span class="h-day">Mardi</span><span class="h-time">16h00 – 18h00</span></li>
-          <li><span class="h-day">Jeudi</span><span class="h-time">14h00 – 18h00</span></li>
-    
+          <li><span class="h-day" data-i18n="contact_sunday">Dimanche</span><span class="h-time">6h30 – 10h30</span></li>
+          <li><span class="h-day" data-i18n="contact_tuesday">Mardi</span><span class="h-time">16h00 – 18h00</span></li>
+          <li><span class="h-day" data-i18n="contact_thursday">Jeudi</span><span class="h-time">14h00 – 18h00</span></li>
         </ul>
       </div>
     </div>
 
-    <!-- DROITE : Formulaire -->
     <div class="contact-form-wrap">
-      <h2 class="form-title">Envoyez-nous un message</h2>
-      <p class="form-subtitle">Nous vous répondrons dans les plus brefs délais. Que Dieu vous bénisse !</p>
+      <h2 class="form-title" data-i18n="contact_form_title">Envoyez-nous un message</h2>
+      <p class="form-subtitle" data-i18n="contact_form_subtitle">Nous vous répondrons dans les plus brefs délais. Que Dieu vous bénisse !</p>
 
       <form id="contactForm">
         <div class="form-row">
           <div class="form-group">
-            <label for="prenom">Prénom *</label>
+            <label for="prenom" data-i18n="contact_firstname">Prénom *</label>
             <input type="text" id="prenom" placeholder="Jean" required>
           </div>
           <div class="form-group">
-            <label for="nom">Nom *</label>
+            <label for="nom" data-i18n="contact_lastname">Nom *</label>
             <input type="text" id="nom" placeholder="Dupont" required>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="email">Adresse email *</label>
+          <label for="email" data-i18n="contact_email_label">Adresse email *</label>
           <input type="email" id="email" placeholder="votre@email.com" required>
         </div>
 
         <div class="form-group">
-          <label for="telephone">Téléphone (optionnel)</label>
+          <label for="telephone" data-i18n="contact_phone_label">Téléphone (optionnel)</label>
           <input type="tel" id="telephone" placeholder="+509 ...">
         </div>
 
         <div class="form-group">
-          <label for="sujet">Sujet *</label>
+          <label for="sujet" data-i18n="contact_subject_label">Sujet *</label>
           <select id="sujet" required>
-            <option value="">-- Choisissez un sujet --</option>
-            <option value="info">Informations générales</option>
-            <option value="priere">Demande de prière</option>
-            <option value="visite">Première visite</option>
-            <option value="don">Don & offrande</option>
-            <option value="autre">Autre</option>
+            <option value="" data-i18n="contact_subject_choose">-- Choisissez un sujet --</option>
+            <option value="info" data-i18n="contact_subject_info">Informations générales</option>
+            <option value="priere" data-i18n="contact_subject_prayer">Demande de prière</option>
+            <option value="visite" data-i18n="contact_subject_visit">Première visite</option>
+            <option value="don" data-i18n="contact_subject_don">Don & offrande</option>
+            <option value="autre" data-i18n="contact_subject_other">Autre</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="message">Votre message *</label>
-          <textarea id="message" placeholder="Écrivez votre message ici..." required></textarea>
+          <label for="message" data-i18n="contact_message_label">Votre message *</label>
+          <textarea id="message" data-i18n-ph="contact_message_ph" placeholder="Écrivez votre message ici..." required></textarea>
         </div>
 
         <button type="submit" class="submit-btn">
-          <i class="fas fa-paper-plane"></i> Envoyer le message
+          <i class="fas fa-paper-plane"></i> <span data-i18n="contact_send_btn">Envoyer le message</span>
         </button>
       </form>
 
       <div class="success-msg" id="successMsg">
         <i class="fas fa-check-circle"></i>
-        <h3>Message envoyé !</h3>
-        <p>Merci de nous avoir contactés. Nous vous répondrons très bientôt. Que Dieu vous bénisse !</p>
+        <h3 data-i18n="contact_success_title">Message envoyé !</h3>
+        <p data-i18n="contact_success_text">Merci de nous avoir contactés. Nous vous répondrons très bientôt. Que Dieu vous bénisse !</p>
       </div>
     </div>
   </div>
 
-  <!-- MAP -->
   <div class="map-section">
     <div class="map-section-header">
       <i class="fas fa-map-marker-alt"></i>
-      <h2>Nous trouver à Carrefour, Port-au-Prince, Haïti</h2>
+      <h2 data-i18n="contact_map_title">Nous trouver à Carrefour, Port-au-Prince, Haïti</h2>
     </div>
     <div class="map-placeholder">
       <i class="fas fa-map-marked-alt"></i>
@@ -234,8 +211,130 @@
 
 <div id="foot-placeholder"></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="nav.js"></script>
+<script src="lang.js"></script>
+<script src="nav.js"></script>
 <script>
   NAV.init('Contact.html');
+  document.addEventListener('DOMContentLoaded', function() {
+    if (window.initLang) initLang();
+  });
 
-  // Formulaire de con
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    this.style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+  });
+</script>
+</body>
+</html>
+```
+
+---
+
+Epi ajoute sa yo nan **`lang.js`** — mete yo anvan liy `footer_rights` nan chak lang:
+
+**Nan seksyon `fr:`**
+```js
+    contact_page_title: "Contact — Église de Dieu de la Prophétie de Carrefour",
+    contact_badge: "Contactez-nous",
+    contact_hero_title: "Nous sommes là pour vous",
+    contact_hero_text: "Une question, un témoignage ou besoin de soutien ? Notre équipe est disponible pour vous.",
+    contact_address_title: "Notre adresse", contact_phone_title: "Téléphone",
+    contact_email_title: "Email", contact_social_title: "Réseaux sociaux",
+    contact_facebook: "Facebook — Église de Carrefour",
+    contact_youtube: "YouTube — Cultes en direct",
+    contact_schedule_title: "Horaires des cultes",
+    contact_sunday: "Dimanche", contact_tuesday: "Mardi", contact_thursday: "Jeudi",
+    contact_form_title: "Envoyez-nous un message",
+    contact_form_subtitle: "Nous vous répondrons dans les plus brefs délais. Que Dieu vous bénisse !",
+    contact_firstname: "Prénom *", contact_lastname: "Nom *",
+    contact_email_label: "Adresse email *", contact_phone_label: "Téléphone (optionnel)",
+    contact_subject_label: "Sujet *", contact_subject_choose: "-- Choisissez un sujet --",
+    contact_subject_info: "Informations générales", contact_subject_prayer: "Demande de prière",
+    contact_subject_visit: "Première visite", contact_subject_don: "Don & offrande",
+    contact_subject_other: "Autre", contact_message_label: "Votre message *",
+    contact_message_ph: "Écrivez votre message ici...",
+    contact_send_btn: "Envoyer le message",
+    contact_success_title: "Message envoyé !",
+    contact_success_text: "Merci de nous avoir contactés. Nous vous répondrons très bientôt. Que Dieu vous bénisse !",
+    contact_map_title: "Nous trouver à Carrefour, Port-au-Prince, Haïti",
+```
+
+**Nan seksyon `en:`**
+```js
+    contact_page_title: "Contact — Church of God of Prophecy of Carrefour",
+    contact_badge: "Contact us", contact_hero_title: "We are here for you",
+    contact_hero_text: "A question, a testimony or need support? Our team is available for you.",
+    contact_address_title: "Our address", contact_phone_title: "Phone",
+    contact_email_title: "Email", contact_social_title: "Social media",
+    contact_facebook: "Facebook — Church of Carrefour",
+    contact_youtube: "YouTube — Live services",
+    contact_schedule_title: "Service schedule",
+    contact_sunday: "Sunday", contact_tuesday: "Tuesday", contact_thursday: "Thursday",
+    contact_form_title: "Send us a message",
+    contact_form_subtitle: "We will reply as soon as possible. God bless you!",
+    contact_firstname: "First name *", contact_lastname: "Last name *",
+    contact_email_label: "Email address *", contact_phone_label: "Phone (optional)",
+    contact_subject_label: "Subject *", contact_subject_choose: "-- Choose a subject --",
+    contact_subject_info: "General information", contact_subject_prayer: "Prayer request",
+    contact_subject_visit: "First visit", contact_subject_don: "Donation & offering",
+    contact_subject_other: "Other", contact_message_label: "Your message *",
+    contact_message_ph: "Write your message here...",
+    contact_send_btn: "Send message", contact_success_title: "Message sent!",
+    contact_success_text: "Thank you for contacting us. We will reply very soon. God bless you!",
+    contact_map_title: "Find us in Carrefour, Port-au-Prince, Haiti",
+```
+
+**Nan seksyon `es:`**
+```js
+    contact_page_title: "Contacto — Iglesia de Dios de la Profecía de Carrefour",
+    contact_badge: "Contáctenos", contact_hero_title: "Estamos aquí para usted",
+    contact_hero_text: "¿Una pregunta, un testimonio o necesita apoyo? Nuestro equipo está disponible.",
+    contact_address_title: "Nuestra dirección", contact_phone_title: "Teléfono",
+    contact_email_title: "Correo electrónico", contact_social_title: "Redes sociales",
+    contact_facebook: "Facebook — Iglesia de Carrefour",
+    contact_youtube: "YouTube — Cultos en vivo",
+    contact_schedule_title: "Horarios de culto",
+    contact_sunday: "Domingo", contact_tuesday: "Martes", contact_thursday: "Jueves",
+    contact_form_title: "Envíenos un mensaje",
+    contact_form_subtitle: "Le responderemos lo antes posible. ¡Que Dios le bendiga!",
+    contact_firstname: "Nombre *", contact_lastname: "Apellido *",
+    contact_email_label: "Correo electrónico *", contact_phone_label: "Teléfono (opcional)",
+    contact_subject_label: "Asunto *", contact_subject_choose: "-- Elija un asunto --",
+    contact_subject_info: "Información general", contact_subject_prayer: "Solicitud de oración",
+    contact_subject_visit: "Primera visita", contact_subject_don: "Donación & ofrenda",
+    contact_subject_other: "Otro", contact_message_label: "Su mensaje *",
+    contact_message_ph: "Escriba su mensaje aquí...",
+    contact_send_btn: "Enviar mensaje", contact_success_title: "¡Mensaje enviado!",
+    contact_success_text: "Gracias por contactarnos. Le responderemos muy pronto. ¡Que Dios le bendiga!",
+    contact_map_title: "Encuéntrenos en Carrefour, Port-au-Prince, Haití",
+```
+
+**Nan seksyon `ht:`**
+```js
+    contact_page_title: "Kontakt — Legliz Bondye Pwofesi Kafou",
+    contact_badge: "Kontakte nou", contact_hero_title: "Nou la pou ou",
+    contact_hero_text: "Yon kesyon, yon temwayaj oswa bezwen sipò? Ekip nou an disponib pou ou.",
+    contact_address_title: "Adrès nou", contact_phone_title: "Telefòn",
+    contact_email_title: "Imèl", contact_social_title: "Rezo sosyal",
+    contact_facebook: "Facebook — Legliz Kafou",
+    contact_youtube: "YouTube — Kilt an dirèk",
+    contact_schedule_title: "Orè kilt yo",
+    contact_sunday: "Dimanch", contact_tuesday: "Madi", contact_thursday: "Jedi",
+    contact_form_title: "Voye nou yon mesaj",
+    contact_form_subtitle: "Nou ap reponn ou pi vit posib. Ke Bondye beni ou!",
+    contact_firstname: "Prenon *", contact_lastname: "Non *",
+    contact_email_label: "Adrès imèl *", contact_phone_label: "Telefòn (opsyonèl)",
+    contact_subject_label: "Sijè *", contact_subject_choose: "-- Chwazi yon sijè --",
+    contact_subject_info: "Enfòmasyon jeneral", contact_subject_prayer: "Demann priyè",
+    contact_subject_visit: "Premye vizit", contact_subject_don: "Don & ofrann",
+    contact_subject_other: "Lòt", contact_message_label: "Mesaj ou *",
+    contact_message_ph: "Ekri mesaj ou isit la...",
+    contact_send_btn: "Voye mesaj la", contact_success_title: "Mesaj voye!",
+    contact_success_text: "Mèsi pou kontakte nou. Nou ap reponn ou trè byento. Ke Bondye beni ou!",
+    contact_map_title: "Jwenn nou Kafou, Pòtoprens, Ayiti",
+```
+
+---
+
+**2 fichye pou mete sou GitHub:** `Contact.html` + `lang.js` ✅
