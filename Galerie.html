@@ -351,11 +351,13 @@
     afficherLightbox();
     document.getElementById('lightbox').classList.add('open');
     document.body.style.overflow = 'hidden';
-    // Fèmen menu a
-    var nav = document.getElementById('mainNav');
-    if (nav) nav.classList.remove('open', 'active', 'show');
-    var overlay = document.querySelector('.nav-overlay');
-    if (overlay) overlay.style.display = 'none';
+    // Fèmen menu a - itilize menm metòd nav.js la
+    var hamburgerBtn = document.getElementById('hamburgerBtn');
+    var navLinks = document.getElementById('navLinks');
+    var navOverlay = document.getElementById('navOverlay');
+    if (hamburgerBtn) hamburgerBtn.classList.remove('open');
+    if (navLinks) navLinks.classList.remove('open');
+    if (navOverlay) navOverlay.classList.remove('show');
   }
 
   function afficherLightbox() {
