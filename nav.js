@@ -36,6 +36,18 @@ const NAV = (() => {
         <a href="index.html" class="nav-brand"><img src="logo.png" alt="Logo" class="nav-logo"></a>
         <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
         <ul class="nav-links" id="navLinks">${items}</ul>
+        <!-- Bouton Lang -->
+        <div class="lang-switcher" id="langSwitcher">
+          <button class="lang-btn" id="langBtn" onclick="toggleLangMenu()" title="Changer la langue">
+            🌐
+          </button>
+          <div class="lang-menu" id="langMenu">
+            <button class="lang-option" data-lang="fr" onclick="applyLang('fr');toggleLangMenu()">🇫🇷 Français</button>
+            <button class="lang-option" data-lang="en" onclick="applyLang('en');toggleLangMenu()">🇬🇧 English</button>
+            <button class="lang-option" data-lang="es" onclick="applyLang('es');toggleLangMenu()">🇪🇸 Español</button>
+            <button class="lang-option" data-lang="ht" onclick="applyLang('ht');toggleLangMenu()">🇭🇹 Kreyòl</button>
+          </div>
+        </div>
       </div>
     </nav>
     <div class="nav-overlay" id="navOverlay"></div>`;
@@ -115,7 +127,20 @@ const NAV = (() => {
     window.addEventListener('scroll', () => {
       document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
     });
+
+    // Fèmen lang menu si ou klike deyò
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.lang-switcher')) {
+        var m = document.getElementById('langMenu');
+        if (m) m.classList.remove('open');
+      }
+    });
   }
+
+  window.toggleLangMenu = function() {
+    var m = document.getElementById('langMenu');
+    if (m) m.classList.toggle('open');
+  };
 
   return {
     init(activePage) {

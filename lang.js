@@ -1,0 +1,463 @@
+// ===== SISTÈM TRADIKSYON KONPLÈ =====
+const TRANSLATIONS = {
+  fr: {
+    lang: "fr",
+    // Nav
+    nav_accueil: "Accueil",
+    nav_apropos: "À propos",
+    nav_horaires: "Horaires des cultes",
+    nav_galerie: "Galerie & Vidéos",
+    nav_actualites: "Actualités",
+    nav_temoignages: "Témoignages",
+    nav_contact: "Contact",
+    nav_priere: "Demande de prière",
+    nav_don: "Faire un don",
+    // Header
+    header_subtitle: "de Carrefour, waney 93",
+    header_verse: "\"Je puis tout par celui qui me fortifie\" — Phil. 4:13",
+    // Slider captions
+    slide1: "Pasteur Anouis Jean",
+    slide2: "Pasteur Honore Pierre Jolius",
+    slide3: "Sœur Woodeline en prière",
+    slide4: "Évangéliste Guerrier Michel",
+    slide5: "Pasteur Anouis Jean",
+    slide6: "Pasteur Honore Pierre Jolius",
+    slide7: "Évangéliste Tidot Ameus",
+    slide8: "Pasteur Anouis Jean",
+    // Welcome
+    welcome_title: "Bienvenue dans notre famille",
+    welcome_text: "Rejoignez-nous chaque dimanche pour adorer Dieu ensemble, grandir dans la foi et servir notre communauté.",
+    welcome_btn: "Voir nos horaires",
+    // Quick links
+    quick_priere_title: "Demande de prière",
+    quick_priere_text: "Soumettez vos requêtes de prière",
+    quick_temo_title: "Témoignages",
+    quick_temo_text: "Partagez ce que Dieu a fait",
+    quick_actu_title: "Actualités",
+    quick_actu_text: "Dernières nouvelles de l'église",
+    quick_galerie_title: "Galerie",
+    quick_galerie_text: "Photos et vidéos de nos cultes",
+    // Annonces
+    annonces_title: "Annonces",
+    annonce1_title: "Veille de nuit",
+    annonce1_date: "Vendredi — 20h00",
+    annonce2_title: "Réunion de la jeunesse",
+    annonce2_date: "Dimanche après-midi — 16h00",
+    annonce3_title: "Culte principal",
+    annonce3_date: "Dimanche — 6h00 à 10h00",
+    see_all_horaires: "Voir tous les horaires",
+    // Verset
+    verset_title: "Verset du Jour",
+    versets: [
+      { texte: "Car Dieu a tant aimé le monde qu'il a donné son Fils unique, afin que quiconque croit en lui ne périsse point, mais qu'il ait la vie éternelle.", ref: "Jean 3:16" },
+      { texte: "L'Éternel est mon berger : je ne manquerai de rien.", ref: "Psaume 23:1" },
+      { texte: "Confie-toi en l'Éternel de tout ton cœur, et ne t'appuie pas sur ta sagesse.", ref: "Proverbes 3:5-6" },
+      { texte: "Je puis tout par celui qui me fortifie.", ref: "Philippiens 4:13" },
+      { texte: "Heureux ceux qui procurent la paix, car ils seront appelés fils de Dieu.", ref: "Matthieu 5:9" },
+      { texte: "Cherchez premièrement le royaume et la justice de Dieu ; et toutes ces choses vous seront données par-dessus.", ref: "Matthieu 6:33" },
+      { texte: "L'Éternel est ma lumière et mon salut : de qui aurais-je crainte ?", ref: "Psaume 27:1" }
+    ],
+    // Don
+    don_title: "Soutenir notre ministère",
+    don_text: "Votre générosité nous aide à poursuivre notre mission évangélique.",
+    don_btn: "Faire un don",
+    // Footer
+    footer_nav_title: "Navigation",
+    footer_community_title: "Communauté",
+    footer_find_title: "Nous trouver",
+    footer_rights: "© 2025 Église de Dieu de la Prophétie de Carrefour waney 93 — Tous droits réservés",
+    // Actualites page
+    actu_page_title: "Actualités — Église de Dieu de la Prophétie de Carrefour",
+    actu_hero_title: "Actualités de l'Église",
+    actu_hero_text: "Restez connectés à la vie de notre communauté. Événements, annonces et messages spirituels.",
+    actu_filter_label: "Filtrer :",
+    actu_filter_all: "Tout",
+    actu_filter_events: "Événements",
+    actu_filter_annonces: "Annonces",
+    actu_filter_spiritual: "Spirituel",
+    actu1_title: "Culte Spécial de Pentecôte",
+    actu1_text: "Rejoignez-nous pour un culte spécial célébrant la Pentecôte avec des invités spéciaux et une onction particulière du Saint-Esprit.",
+    actu2_title: "Réunion des Leaders — 20 Juin",
+    actu2_text: "Tous les leaders de ministères sont conviés à une réunion importante le 20 juin à 18h dans la salle annexe. Présence obligatoire.",
+    actu3_title: "Nouvelle Série : La Puissance de la Prière",
+    actu3_text: "Ce dimanche commence une nouvelle série de messages sur \"La Puissance de la Prière Persévérante\". Ne manquez pas ce rendez-vous spirituel !",
+    actu4_title: "Conférence Annuelle — Juillet 2025",
+    actu4_text: "Une semaine d'enseignement et de réveil avec des orateurs invités. Programme complet et inscriptions disponibles à l'église.",
+    actu5_title: "Baptême des Enfants — Juillet",
+    actu5_text: "Les parents désirant dédier leurs enfants au Seigneur peuvent s'inscrire auprès des pasteurs. Places limitées.",
+    actu6_title: "Jeûne et Prière — 3 Jours",
+    actu6_text: "Notre église organise une période de jeûne et prière de 3 jours pour intercéder pour Haïti et nos familles.",
+    actu_read_more: "Lire plus",
+    actu_newsletter_title: "Restez informés",
+    actu_newsletter_text: "Recevez nos actualités, annonces et messages d'encouragement directement par email.",
+    actu_email_ph: "Votre adresse email",
+    actu_subscribe: "S'abonner",
+    actu_close: "Fermer",
+    actu_subscribed: "Merci ! Vous êtes abonné(e). Que Dieu vous bénisse !",
+    articles: {
+      pentecote: { tag:'Événement', titre:'Culte Spécial de Pentecôte', date:'15 Juin 2025', auteur:'Équipe pastorale', cat:'Événements', intro:"Rejoignez-nous pour un culte exceptionnel célébrant le jour de la Pentecôte avec des invités spéciaux et une onction particulière du Saint-Esprit.", contenu:`<p>La Pentecôte est l'un des moments les plus importants du calendrier chrétien. C'est en ce jour que le Saint-Esprit est descendu sur les 120 disciples réunis au cénacle, marquant la naissance de l'Église de Christ.</p><p>Cette année, notre église prépare un <strong>culte spécial de Pentecôte</strong> qui promet d'être un moment de réveil et de renouvellement spirituel.</p><p>Amenez vos familles, vos amis et vos voisins — personne ne doit rater ce rendez-vous avec Dieu !</p>`, details:[{icon:'fa-calendar',label:'Date',valeur:'Dimanche 15 Juin 2025'},{icon:'fa-clock',label:'Heure',valeur:'6h00 – 10h00'},{icon:'fa-map-marker-alt',label:'Lieu',valeur:'Église de Dieu de la Prophétie — Carrefour'},{icon:'fa-user-tie',label:'Orateur invité',valeur:'À confirmer'}], bouton:{label:'Demande de prière',lien:'priere.html',icon:'fa-hands-praying'} },
+      leaders: { tag:'Annonce', titre:'Réunion des Leaders — 20 Juin', date:'10 Juin 2025', auteur:'Pasteur Anouis Jean', cat:'Annonces', intro:"Tous les responsables de ministères et leaders sont officiellement convoqués à une réunion stratégique le vendredi 20 juin 2025 à 18h00.", contenu:`<p>Le Pasteur Anouis Jean convoque <strong>tous les leaders et responsables de ministères</strong> à une réunion importante.</p><p><strong>• Bilan du premier semestre</strong></p><p><strong>• Vision et objectifs</strong> pour les 6 prochains mois.</p><p><strong>• Organisation de la Conférence Annuelle</strong></p><p>La <strong>présence est obligatoire</strong> pour tous les leaders.</p>`, details:[{icon:'fa-calendar',label:'Date',valeur:'Vendredi 20 Juin 2025'},{icon:'fa-clock',label:'Heure',valeur:'18h00 – 20h00'},{icon:'fa-map-marker-alt',label:'Lieu',valeur:"Salle annexe de l'église"},{icon:'fa-exclamation-circle',label:'Important',valeur:'Présence obligatoire'}], bouton:{label:'Nous contacter',lien:'Contact.html',icon:'fa-envelope'} },
+      priere_serie: { tag:'Spirituel', titre:'Nouvelle Série : La Puissance de la Prière', date:'5 Juin 2025', auteur:'Pasteur Honore Pierre Jolius', cat:'Spirituel', intro:"Une nouvelle série de messages bibliques sur la prière persévérante et son pouvoir extraordinaire.", contenu:`<p><strong>Semaine 1 :</strong> "Pourquoi persévérer dans la prière ?" — Luc 18:1-8</p><p><strong>Semaine 2 :</strong> "Les obstacles à la prière efficace" — Jacques 4:2-3</p><p><strong>Semaine 3 :</strong> "La prière qui déplace les montagnes" — Marc 11:22-24</p><p><strong>Semaine 4 :</strong> "Prier selon la volonté de Dieu" — 1 Jean 5:14-15</p>`, details:[{icon:'fa-calendar',label:'Début',valeur:'Dimanche 8 Juin 2025'},{icon:'fa-clock',label:'Heure',valeur:'Cultes du dimanche — 6h00 et 9h30'},{icon:'fa-book-open',label:'Thème',valeur:'La Puissance de la Prière Persévérante'},{icon:'fa-user-tie',label:'Prédicateur',valeur:'Pasteur Honore Pierre Jolius'}], bouton:{label:'Demande de prière',lien:'priere.html',icon:'fa-hands-praying'} },
+      conference: { tag:'Événement', titre:'Conférence Annuelle — Juillet 2025', date:'1 Juin 2025', auteur:'Équipe pastorale', cat:'Événements', intro:"La grande Conférence Annuelle aura lieu en juillet 2025. Une semaine entière d'enseignement, de réveil et de rencontres.", contenu:`<p><strong>• Enseignements bibliques</strong> chaque soir avec des orateurs invités.</p><p><strong>• Sessions de louange</strong> avec des groupes chrétiens régionaux.</p><p><strong>• Prières d'intercession</strong> pour Haïti et nos familles.</p><p><strong>• Programme pour les jeunes</strong> chaque après-midi.</p><p><strong>• Soirée de témoignages</strong></p>`, details:[{icon:'fa-calendar',label:'Dates',valeur:'14 – 20 Juillet 2025'},{icon:'fa-clock',label:'Heure',valeur:'Sessions chaque soir à partir de 18h00'},{icon:'fa-map-marker-alt',label:'Lieu',valeur:'Église de Dieu de la Prophétie — Carrefour'},{icon:'fa-ticket',label:'Entrée',valeur:'Gratuite — ouvert à tous'}], bouton:{label:'Nous contacter',lien:'Contact.html',icon:'fa-envelope'} },
+      bapteme: { tag:'Annonce', titre:'Baptême des Enfants — Juillet 2025', date:'28 Mai 2025', auteur:"Secrétariat de l'église", cat:'Annonces', intro:"Les parents qui souhaitent dédier leurs enfants au Seigneur sont invités à s'inscrire auprès des pasteurs.", contenu:`<p>La dédicace des enfants est un acte solennel par lequel les parents consacrent leur enfant au Seigneur.</p><p><strong>Qui peut inscrire ?</strong> Tous les parents membres de l'église, enfants de 0 à 12 ans.</p><p><strong>Comment s'inscrire ?</strong> Parlez à un pasteur après le culte du dimanche.</p>`, details:[{icon:'fa-calendar',label:'Date',valeur:'Dimanche de Juillet 2025'},{icon:'fa-child',label:'Âge',valeur:'Enfants de 0 à 12 ans'},{icon:'fa-exclamation-circle',label:'Places',valeur:'Limitées — inscription obligatoire'},{icon:'fa-user-tie',label:'Inscription',valeur:'Auprès des pasteurs après le culte'}], bouton:{label:'Nous contacter',lien:'Contact.html',icon:'fa-envelope'} },
+      jeune: { tag:'Spirituel', titre:'Jeûne et Prière — 3 Jours', date:'20 Mai 2025', auteur:"Groupe d'Intercession", cat:'Spirituel', intro:"Notre église organise une période de jeûne et prière collective de 3 jours pour intercéder pour Haïti et nos familles.", contenu:`<p><strong>• Jour 1 :</strong> Intercession pour Haïti — paix, sécurité et restauration.</p><p><strong>• Jour 2 :</strong> Prière pour nos familles — unité, guérison et protection.</p><p><strong>• Jour 3 :</strong> Réveil spirituel — croissance de l'église et âmes pour Christ.</p>`, details:[{icon:'fa-calendar',label:'Dates',valeur:'3 jours consécutifs — annoncés en culte'},{icon:'fa-clock',label:'Réunions',valeur:'Chaque soir à 18h30'},{icon:'fa-map-marker-alt',label:'Lieu',valeur:'Église de Dieu de la Prophétie — Carrefour'},{icon:'fa-hands-praying',label:'Participation',valeur:"Ouvert à tous les membres"}], bouton:{label:'Demande de prière',lien:'priere.html',icon:'fa-hands-praying'} },
+    },
+    footer_priere: "Demande de prière",
+    footer_temo: "Témoignages",
+    footer_galerie: "Galerie",
+    footer_don: "Faire un don",
+  },
+  en: {
+    lang: "en",
+    nav_accueil: "Home",
+    nav_apropos: "About",
+    nav_horaires: "Service Times",
+    nav_galerie: "Gallery & Videos",
+    nav_actualites: "News",
+    nav_temoignages: "Testimonies",
+    nav_contact: "Contact",
+    nav_priere: "Prayer Request",
+    nav_don: "Give",
+    header_subtitle: "Carrefour, waney 93",
+    header_verse: "\"I can do all things through Christ who strengthens me\" — Phil. 4:13",
+    slide1: "Pastor Anouis Jean",
+    slide2: "Pastor Honore Pierre Jolius",
+    slide3: "Sister Woodeline in prayer",
+    slide4: "Evangelist Guerrier Michel",
+    slide5: "Pastor Anouis Jean",
+    slide6: "Pastor Honore Pierre Jolius",
+    slide7: "Evangelist Tidot Ameus",
+    slide8: "Pastor Anouis Jean",
+    welcome_title: "Welcome to our family",
+    welcome_text: "Join us every Sunday to worship God together, grow in faith and serve our community.",
+    welcome_btn: "See our schedule",
+    quick_priere_title: "Prayer Request",
+    quick_priere_text: "Submit your prayer requests",
+    quick_temo_title: "Testimonies",
+    quick_temo_text: "Share what God has done",
+    quick_actu_title: "News",
+    quick_actu_text: "Latest church news",
+    quick_galerie_title: "Gallery",
+    quick_galerie_text: "Photos and videos of our services",
+    annonces_title: "Announcements",
+    annonce1_title: "Night Vigil",
+    annonce1_date: "Friday — 8:00 PM",
+    annonce2_title: "Youth Meeting",
+    annonce2_date: "Sunday afternoon — 4:00 PM",
+    annonce3_title: "Main Service",
+    annonce3_date: "Sunday — 6:00 AM to 10:00 AM",
+    see_all_horaires: "See all schedules",
+    verset_title: "Verse of the Day",
+    versets: [
+      { texte: "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.", ref: "John 3:16" },
+      { texte: "The Lord is my shepherd, I lack nothing.", ref: "Psalm 23:1" },
+      { texte: "Trust in the Lord with all your heart and lean not on your own understanding.", ref: "Proverbs 3:5-6" },
+      { texte: "I can do all this through him who gives me strength.", ref: "Philippians 4:13" },
+      { texte: "Blessed are the peacemakers, for they will be called children of God.", ref: "Matthew 5:9" },
+      { texte: "But seek first his kingdom and his righteousness, and all these things will be given to you as well.", ref: "Matthew 6:33" },
+      { texte: "The Lord is my light and my salvation — whom shall I fear?", ref: "Psalm 27:1" }
+    ],
+    don_title: "Support our ministry",
+    don_text: "Your generosity helps us continue our evangelistic mission.",
+    don_btn: "Give",
+    footer_nav_title: "Navigation",
+    footer_community_title: "Community",
+    footer_find_title: "Find us",
+    footer_rights: "© 2025 Church of God of Prophecy of Carrefour waney 93 — All rights reserved",
+    // Actualites page
+    actu_page_title: "News — Church of God of Prophecy of Carrefour",
+    actu_hero_title: "Church News",
+    actu_hero_text: "Stay connected to the life of our community. Events, announcements and spiritual messages.",
+    actu_filter_label: "Filter:",
+    actu_filter_all: "All",
+    actu_filter_events: "Events",
+    actu_filter_annonces: "Announcements",
+    actu_filter_spiritual: "Spiritual",
+    actu1_title: "Special Pentecost Service",
+    actu1_text: "Join us for a special service celebrating Pentecost with special guests and a particular anointing of the Holy Spirit.",
+    actu2_title: "Leaders Meeting — June 20",
+    actu2_text: "All ministry leaders are invited to an important meeting on June 20 at 6 PM in the annex room. Attendance mandatory.",
+    actu3_title: "New Series: The Power of Prayer",
+    actu3_text: "This Sunday begins a new series of messages on \"The Power of Persevering Prayer\". Don't miss this spiritual appointment!",
+    actu4_title: "Annual Conference — July 2025",
+    actu4_text: "A week of teaching and revival with guest speakers. Full program and registrations available at the church.",
+    actu5_title: "Children's Dedication — July",
+    actu5_text: "Parents wishing to dedicate their children to the Lord can register with the pastors. Limited spots.",
+    actu6_title: "Fasting & Prayer — 3 Days",
+    actu6_text: "Our church is organizing a 3-day fasting and prayer period to intercede for Haiti and our families.",
+    actu_read_more: "Read more",
+    actu_newsletter_title: "Stay informed",
+    actu_newsletter_text: "Receive our news, announcements and encouragement messages directly by email.",
+    actu_email_ph: "Your email address",
+    actu_subscribe: "Subscribe",
+    actu_close: "Close",
+    actu_subscribed: "Thank you! You are subscribed. God bless you!",
+    articles: {
+      pentecote: { tag:'Event', titre:'Special Pentecost Service', date:'June 15, 2025', auteur:'Pastoral Team', cat:'Events', intro:"Join us for an exceptional service celebrating the day of Pentecost with special guests and a particular anointing of the Holy Spirit.", contenu:`<p>Pentecost is one of the most important moments in the Christian calendar. It was on this day that the Holy Spirit descended on the 120 disciples gathered in the upper room, marking the birth of the Church of Christ.</p><p>This year, our church is preparing a <strong>special Pentecost service</strong> that promises to be a moment of revival and spiritual renewal.</p><p>Bring your families, friends and neighbors — no one should miss this appointment with God!</p>`, details:[{icon:'fa-calendar',label:'Date',valeur:'Sunday June 15, 2025'},{icon:'fa-clock',label:'Time',valeur:'6:00 AM – 10:00 AM'},{icon:'fa-map-marker-alt',label:'Location',valeur:'Church of God of Prophecy — Carrefour'},{icon:'fa-user-tie',label:'Guest Speaker',valeur:'To be confirmed'}], bouton:{label:'Prayer Request',lien:'priere.html',icon:'fa-hands-praying'} },
+      leaders: { tag:'Announcement', titre:'Leaders Meeting — June 20', date:'June 10, 2025', auteur:'Pastor Anouis Jean', cat:'Announcements', intro:"All ministry leaders are officially summoned to a strategic meeting on Friday June 20, 2025 at 6:00 PM.", contenu:`<p>Pastor Anouis Jean is calling <strong>all leaders and ministry heads</strong> to an important meeting to discuss the church's vision for the second semester of 2025.</p><p><strong>• First semester review</strong></p><p><strong>• Vision and objectives</strong> for the next 6 months.</p><p><strong>• Annual Conference organization</strong></p><p><strong>Attendance is mandatory</strong> for all leaders.</p>`, details:[{icon:'fa-calendar',label:'Date',valeur:'Friday June 20, 2025'},{icon:'fa-clock',label:'Time',valeur:'6:00 PM – 8:00 PM'},{icon:'fa-map-marker-alt',label:'Location',valeur:"Church annex room"},{icon:'fa-exclamation-circle',label:'Important',valeur:'Mandatory for all leaders'}], bouton:{label:'Contact us',lien:'Contact.html',icon:'fa-envelope'} },
+      priere_serie: { tag:'Spiritual', titre:'New Series: The Power of Prayer', date:'June 5, 2025', auteur:'Pastor Honore Pierre Jolius', cat:'Spiritual', intro:"A new series of biblical messages on a fundamental subject: persevering prayer and its extraordinary power.", contenu:`<p><strong>Week 1:</strong> "Why persevere in prayer?" — Luke 18:1-8</p><p><strong>Week 2:</strong> "Obstacles to effective prayer" — James 4:2-3</p><p><strong>Week 3:</strong> "The prayer that moves mountains" — Mark 11:22-24</p><p><strong>Week 4:</strong> "Praying according to God's will" — 1 John 5:14-15</p>`, details:[{icon:'fa-calendar',label:'Start',valeur:'Sunday June 8, 2025'},{icon:'fa-clock',label:'Time',valeur:'Sunday services — 6:00 AM and 9:30 AM'},{icon:'fa-book-open',label:'Theme',valeur:'The Power of Persevering Prayer'},{icon:'fa-user-tie',label:'Preacher',valeur:'Pastor Honore Pierre Jolius'}], bouton:{label:'Prayer Request',lien:'priere.html',icon:'fa-hands-praying'} },
+      conference: { tag:'Event', titre:'Annual Conference — July 2025', date:'June 1, 2025', auteur:'Pastoral Team', cat:'Events', intro:"The Annual Conference will take place in July 2025. A full week of teaching, revival and encounters with national guest speakers.", contenu:`<p><strong>• Biblical teachings</strong> every evening with renowned guest speakers.</p><p><strong>• Praise sessions</strong> with regional Christian music groups.</p><p><strong>• Intercession prayers</strong> for Haiti and our families.</p><p><strong>• Youth program</strong> every afternoon.</p><p><strong>• Testimony evening</strong></p>`, details:[{icon:'fa-calendar',label:'Dates',valeur:'July 14 – 20, 2025'},{icon:'fa-clock',label:'Time',valeur:'Sessions every evening from 6:00 PM'},{icon:'fa-map-marker-alt',label:'Location',valeur:'Church of God of Prophecy — Carrefour'},{icon:'fa-ticket',label:'Entry',valeur:'Free — open to all'}], bouton:{label:'Contact us',lien:'Contact.html',icon:'fa-envelope'} },
+      bapteme: { tag:'Announcement', titre:"Children's Dedication — July 2025", date:'May 28, 2025', auteur:'Church Secretary', cat:'Announcements', intro:"Parents wishing to dedicate their children to the Lord in an official ceremony are invited to register with the pastors.", contenu:`<p>The dedication of children is a solemn act by which parents consecrate their child to the Lord.</p><p><strong>Who can register?</strong> All church member parents, children 0 to 12 years old.</p><p><strong>How to register?</strong> Speak to a pastor after Sunday service.</p>`, details:[{icon:'fa-calendar',label:'Date',valeur:'Sunday in July 2025'},{icon:'fa-child',label:'Age',valeur:'Children 0 to 12 years'},{icon:'fa-exclamation-circle',label:'Spots',valeur:'Limited — registration required'},{icon:'fa-user-tie',label:'Registration',valeur:'With pastors after service'}], bouton:{label:'Contact us',lien:'Contact.html',icon:'fa-envelope'} },
+      jeune: { tag:'Spiritual', titre:'Fasting & Prayer — 3 Days', date:'May 20, 2025', auteur:'Intercession Group', cat:'Spiritual', intro:"Our church is organizing a 3-day collective fasting and prayer period to intercede for Haiti and our families.", contenu:`<p><strong>• Day 1:</strong> Intercession for Haiti — peace, security and restoration.</p><p><strong>• Day 2:</strong> Prayer for our families — unity, healing and protection.</p><p><strong>• Day 3:</strong> Spiritual revival — church growth and souls for Christ.</p>`, details:[{icon:'fa-calendar',label:'Dates',valeur:'3 consecutive days — announced in service'},{icon:'fa-clock',label:'Meetings',valeur:'Every evening at 6:30 PM'},{icon:'fa-map-marker-alt',label:'Location',valeur:'Church of God of Prophecy — Carrefour'},{icon:'fa-hands-praying',label:'Participation',valeur:"Open to all members"}], bouton:{label:'Prayer Request',lien:'priere.html',icon:'fa-hands-praying'} },
+    },
+    footer_priere: "Prayer Request",
+    footer_temo: "Testimonies",
+    footer_galerie: "Gallery",
+    footer_don: "Give",
+  },
+  es: {
+    lang: "es",
+    nav_accueil: "Inicio",
+    nav_apropos: "Acerca de",
+    nav_horaires: "Horarios de culto",
+    nav_galerie: "Galería & Videos",
+    nav_actualites: "Noticias",
+    nav_temoignages: "Testimonios",
+    nav_contact: "Contacto",
+    nav_priere: "Solicitud de oración",
+    nav_don: "Donar",
+    header_subtitle: "Carrefour, waney 93",
+    header_verse: "\"Todo lo puedo en Cristo que me fortalece\" — Fil. 4:13",
+    slide1: "Pastor Anouis Jean",
+    slide2: "Pastor Honore Pierre Jolius",
+    slide3: "Hermana Woodeline en oración",
+    slide4: "Evangelista Guerrier Michel",
+    slide5: "Pastor Anouis Jean",
+    slide6: "Pastor Honore Pierre Jolius",
+    slide7: "Evangelista Tidot Ameus",
+    slide8: "Pastor Anouis Jean",
+    welcome_title: "Bienvenido a nuestra familia",
+    welcome_text: "Únase a nosotros cada domingo para adorar a Dios juntos, crecer en la fe y servir a nuestra comunidad.",
+    welcome_btn: "Ver nuestros horarios",
+    quick_priere_title: "Solicitud de oración",
+    quick_priere_text: "Envíe sus peticiones de oración",
+    quick_temo_title: "Testimonios",
+    quick_temo_text: "Comparte lo que Dios ha hecho",
+    quick_actu_title: "Noticias",
+    quick_actu_text: "Últimas noticias de la iglesia",
+    quick_galerie_title: "Galería",
+    quick_galerie_text: "Fotos y videos de nuestros cultos",
+    annonces_title: "Anuncios",
+    annonce1_title: "Vigilia nocturna",
+    annonce1_date: "Viernes — 8:00 PM",
+    annonce2_title: "Reunión de jóvenes",
+    annonce2_date: "Domingo tarde — 4:00 PM",
+    annonce3_title: "Culto principal",
+    annonce3_date: "Domingo — 6:00 AM a 10:00 AM",
+    see_all_horaires: "Ver todos los horarios",
+    verset_title: "Versículo del Día",
+    versets: [
+      { texte: "Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito, para que todo aquel que en él cree, no se pierda, mas tenga vida eterna.", ref: "Juan 3:16" },
+      { texte: "El Señor es mi pastor; nada me faltará.", ref: "Salmo 23:1" },
+      { texte: "Confía en el Señor con todo tu corazón, y no te apoyes en tu propio entendimiento.", ref: "Proverbios 3:5-6" },
+      { texte: "Todo lo puedo en Cristo que me fortalece.", ref: "Filipenses 4:13" },
+      { texte: "Bienaventurados los pacificadores, porque ellos serán llamados hijos de Dios.", ref: "Mateo 5:9" },
+      { texte: "Mas buscad primeramente el reino de Dios y su justicia, y todas estas cosas os serán añadidas.", ref: "Mateo 6:33" },
+      { texte: "El Señor es mi luz y mi salvación; ¿a quién temeré?", ref: "Salmo 27:1" }
+    ],
+    don_title: "Apoya nuestro ministerio",
+    don_text: "Su generosidad nos ayuda a continuar nuestra misión evangelística.",
+    don_btn: "Donar",
+    footer_nav_title: "Navegación",
+    footer_community_title: "Comunidad",
+    footer_find_title: "Encuéntranos",
+    footer_rights: "© 2025 Iglesia de Dios de la Profecía de Carrefour waney 93 — Todos los derechos reservados",
+    // Actualites page
+    actu_page_title: "Noticias — Iglesia de Dios de la Profecía de Carrefour",
+    actu_hero_title: "Noticias de la Iglesia",
+    actu_hero_text: "Manténgase conectado a la vida de nuestra comunidad. Eventos, anuncios y mensajes espirituales.",
+    actu_filter_label: "Filtrar:",
+    actu_filter_all: "Todo",
+    actu_filter_events: "Eventos",
+    actu_filter_annonces: "Anuncios",
+    actu_filter_spiritual: "Espiritual",
+    actu1_title: "Culto Especial de Pentecostés",
+    actu1_text: "Únase a nosotros para un culto especial celebrando Pentecostés con invitados especiales y una unción particular del Espíritu Santo.",
+    actu2_title: "Reunión de Líderes — 20 de Junio",
+    actu2_text: "Todos los líderes de ministerios están invitados a una reunión importante el 20 de junio a las 6 PM. Asistencia obligatoria.",
+    actu3_title: "Nueva Serie: El Poder de la Oración",
+    actu3_text: "Este domingo comienza una nueva serie de mensajes sobre \"El Poder de la Oración Perseverante\". ¡No se pierda esta cita espiritual!",
+    actu4_title: "Conferencia Anual — Julio 2025",
+    actu4_text: "Una semana de enseñanza y avivamiento con oradores invitados. Programa completo e inscripciones disponibles en la iglesia.",
+    actu5_title: "Dedicación de Niños — Julio",
+    actu5_text: "Los padres que deseen dedicar a sus hijos al Señor pueden inscribirse con los pastores. Lugares limitados.",
+    actu6_title: "Ayuno y Oración — 3 Días",
+    actu6_text: "Nuestra iglesia organiza un período de ayuno y oración de 3 días para interceder por Haití y nuestras familias.",
+    actu_read_more: "Leer más",
+    actu_newsletter_title: "Manténgase informado",
+    actu_newsletter_text: "Reciba nuestras noticias, anuncios y mensajes de aliento directamente por correo electrónico.",
+    actu_email_ph: "Su dirección de correo electrónico",
+    actu_subscribe: "Suscribirse",
+    actu_close: "Cerrar",
+    actu_subscribed: "¡Gracias! Estás suscrito(a). ¡Que Dios te bendiga!",
+    articles: {
+      pentecote: { tag:'Evento', titre:'Culto Especial de Pentecostés', date:'15 de Junio 2025', auteur:'Equipo pastoral', cat:'Eventos', intro:"Únase a nosotros para un culto excepcional celebrando el día de Pentecostés con invitados especiales.", contenu:`<p>Pentecostés es uno de los momentos más importantes del calendario cristiano.</p><p>Este año, nuestra iglesia prepara un <strong>culto especial de Pentecostés</strong> que promete ser un momento de avivamiento espiritual.</p><p>¡Traigan a sus familias y amigos!</p>`, details:[{icon:'fa-calendar',label:'Fecha',valeur:'Domingo 15 de Junio 2025'},{icon:'fa-clock',label:'Hora',valeur:'6:00 AM – 10:00 AM'},{icon:'fa-map-marker-alt',label:'Lugar',valeur:'Iglesia de Dios de la Profecía — Carrefour'},{icon:'fa-user-tie',label:'Orador invitado',valeur:'Por confirmar'}], bouton:{label:'Solicitud de oración',lien:'priere.html',icon:'fa-hands-praying'} },
+      leaders: { tag:'Anuncio', titre:'Reunión de Líderes — 20 de Junio', date:'10 de Junio 2025', auteur:'Pastor Anouis Jean', cat:'Anuncios', intro:"Todos los líderes de ministerios están oficialmente convocados a una reunión estratégica el viernes 20 de junio.", contenu:`<p>El Pastor Anouis Jean convoca a <strong>todos los líderes</strong> a una reunión importante.</p><p><strong>• Evaluación del primer semestre</strong></p><p><strong>• Visión y objetivos</strong> para los próximos 6 meses.</p><p>La <strong>asistencia es obligatoria</strong>.</p>`, details:[{icon:'fa-calendar',label:'Fecha',valeur:'Viernes 20 de Junio 2025'},{icon:'fa-clock',label:'Hora',valeur:'6:00 PM – 8:00 PM'},{icon:'fa-map-marker-alt',label:'Lugar',valeur:"Sala anexa de la iglesia"},{icon:'fa-exclamation-circle',label:'Importante',valeur:'Obligatorio para todos los líderes'}], bouton:{label:'Contáctenos',lien:'Contact.html',icon:'fa-envelope'} },
+      priere_serie: { tag:'Espiritual', titre:'Nueva Serie: El Poder de la Oración', date:'5 de Junio 2025', auteur:'Pastor Honore Pierre Jolius', cat:'Espiritual', intro:"Una nueva serie de mensajes bíblicos sobre la oración perseverante y su poder extraordinario.", contenu:`<p><strong>Semana 1:</strong> "¿Por qué perseverar en la oración?" — Lucas 18:1-8</p><p><strong>Semana 2:</strong> "Obstáculos a la oración eficaz" — Santiago 4:2-3</p><p><strong>Semana 3:</strong> "La oración que mueve montañas" — Marcos 11:22-24</p><p><strong>Semana 4:</strong> "Orar según la voluntad de Dios" — 1 Juan 5:14-15</p>`, details:[{icon:'fa-calendar',label:'Inicio',valeur:'Domingo 8 de Junio 2025'},{icon:'fa-clock',label:'Hora',valeur:'Cultos del domingo — 6:00 y 9:30 AM'},{icon:'fa-book-open',label:'Tema',valeur:'El Poder de la Oración Perseverante'},{icon:'fa-user-tie',label:'Predicador',valeur:'Pastor Honore Pierre Jolius'}], bouton:{label:'Solicitud de oración',lien:'priere.html',icon:'fa-hands-praying'} },
+      conference: { tag:'Evento', titre:'Conferencia Anual — Julio 2025', date:'1 de Junio 2025', auteur:'Equipo pastoral', cat:'Eventos', intro:"La Conferencia Anual tendrá lugar en julio 2025. Una semana entera de enseñanza y avivamiento.", contenu:`<p><strong>• Enseñanzas bíblicas</strong> cada noche con oradores invitados.</p><p><strong>• Sesiones de alabanza</strong></p><p><strong>• Oraciones de intercesión</strong> por Haití y nuestras familias.</p><p><strong>• Programa para jóvenes</strong></p>`, details:[{icon:'fa-calendar',label:'Fechas',valeur:'14 – 20 de Julio 2025'},{icon:'fa-clock',label:'Hora',valeur:'Sesiones cada noche desde las 6:00 PM'},{icon:'fa-map-marker-alt',label:'Lugar',valeur:'Iglesia de Dios de la Profecía — Carrefour'},{icon:'fa-ticket',label:'Entrada',valeur:'Gratis — abierto a todos'}], bouton:{label:'Contáctenos',lien:'Contact.html',icon:'fa-envelope'} },
+      bapteme: { tag:'Anuncio', titre:'Dedicación de Niños — Julio 2025', date:'28 de Mayo 2025', auteur:'Secretaría de la iglesia', cat:'Anuncios', intro:"Los padres que deseen dedicar a sus hijos al Señor están invitados a inscribirse con los pastores.", contenu:`<p>La dedicación de niños es un acto solemne por el cual los padres consagran a su hijo al Señor.</p><p><strong>¿Cómo inscribirse?</strong> Hablen con un pastor después del culto del domingo.</p>`, details:[{icon:'fa-calendar',label:'Fecha',valeur:'Domingo de Julio 2025'},{icon:'fa-child',label:'Edad',valeur:'Niños de 0 a 12 años'},{icon:'fa-exclamation-circle',label:'Lugares',valeur:'Limitados — inscripción obligatoria'},{icon:'fa-user-tie',label:'Inscripción',valeur:'Con los pastores después del culto'}], bouton:{label:'Contáctenos',lien:'Contact.html',icon:'fa-envelope'} },
+      jeune: { tag:'Espiritual', titre:'Ayuno y Oración — 3 Días', date:'20 de Mayo 2025', auteur:'Grupo de Intercesión', cat:'Espiritual', intro:"Nuestra iglesia organiza un período de ayuno y oración colectiva de 3 días para interceder por Haití y nuestras familias.", contenu:`<p><strong>• Día 1:</strong> Intercesión por Haití — paz y restauración.</p><p><strong>• Día 2:</strong> Oración por nuestras familias — unidad y protección.</p><p><strong>• Día 3:</strong> Avivamiento espiritual.</p>`, details:[{icon:'fa-calendar',label:'Fechas',valeur:'3 días consecutivos — anunciados en culto'},{icon:'fa-clock',label:'Reuniones',valeur:'Cada noche a las 6:30 PM'},{icon:'fa-map-marker-alt',label:'Lugar',valeur:'Iglesia de Dios de la Profecía — Carrefour'},{icon:'fa-hands-praying',label:'Participación',valeur:"Abierto a todos los miembros"}], bouton:{label:'Solicitud de oración',lien:'priere.html',icon:'fa-hands-praying'} },
+    },
+    footer_priere: "Solicitud de oración",
+    footer_temo: "Testimonios",
+    footer_galerie: "Galería",
+    footer_don: "Donar",
+  },
+  ht: {
+    lang: "ht",
+    nav_accueil: "Akèy",
+    nav_apropos: "Konsènan nou",
+    nav_horaires: "Orè kilt yo",
+    nav_galerie: "Galeri & Videyo",
+    nav_actualites: "Aktyalite",
+    nav_temoignages: "Temwayaj",
+    nav_contact: "Kontakte",
+    nav_priere: "Demann priyè",
+    nav_don: "Fè yon don",
+    header_subtitle: "Kafou, waney 93",
+    header_verse: "\"Mwen kapab fè tout bagay nan Kris ki ban mwen fòs\" — Fil. 4:13",
+    slide1: "Pastè Anouis Jean",
+    slide2: "Pastè Honore Pierre Jolius",
+    slide3: "Sè Woodeline nan priyè",
+    slide4: "Evanjelis Guerrier Michel",
+    slide5: "Pastè Anouis Jean",
+    slide6: "Pastè Honore Pierre Jolius",
+    slide7: "Evanjelis Tidot Ameus",
+    slide8: "Pastè Anouis Jean",
+    welcome_title: "Byenveni nan fanmi nou",
+    welcome_text: "Rejwenn nou chak dimanch pou adore Bondye ansanm, grandi nan lafwa epi sèvi kominote nou an.",
+    welcome_btn: "Wè orè nou yo",
+    quick_priere_title: "Demann priyè",
+    quick_priere_text: "Soumèt demann priyè ou yo",
+    quick_temo_title: "Temwayaj",
+    quick_temo_text: "Pataje sa Bondye te fè",
+    quick_actu_title: "Aktyalite",
+    quick_actu_text: "Dènye nouvèl legliz la",
+    quick_galerie_title: "Galeri",
+    quick_galerie_text: "Foto ak videyo kilt nou yo",
+    annonces_title: "Anons",
+    annonce1_title: "Vèy lannwit",
+    annonce1_date: "Vandredi — 8è diswa",
+    annonce2_title: "Reyinyon jèn yo",
+    annonce2_date: "Dimanch apremidi — 4è",
+    annonce3_title: "Kilt prensipal",
+    annonce3_date: "Dimanch — 6è a 10è maten",
+    see_all_horaires: "Wè tout orè yo",
+    verset_title: "Vèsè Jou a",
+    versets: [
+      { texte: "Paske Bondye sitèlman renmen lèzòm li bay sèl pitit li a, pou tout moun ki kwè nan li pa pedi lavi yo, men pou yo genyen lavi ki p ap janm fini an.", ref: "Jan 3:16" },
+      { texte: "Bondye se bèje mwen, mwen p ap manke anyen.", ref: "Sòm 23:1" },
+      { texte: "Fye ou nan Bondye ak tout kè ou, pa konte sou pwòp konprann pa ou.", ref: "Pwovèb 3:5-6" },
+      { texte: "Mwen kapab fè tout bagay nan Kris ki ban mwen fòs.", ref: "Filipyen 4:13" },
+      { texte: "Benediksyon pou moun ki fè lapè, paske y ap rele yo pitit Bondye.", ref: "Matye 5:9" },
+      { texte: "Chèche premye Wayòm Bondye a ak jistis li, epi tout lòt bagay sa yo ap ban nou anplis.", ref: "Matye 6:33" },
+      { texte: "Bondye se limyè mwen ak delivrans mwen, kisa mwen ta pè?", ref: "Sòm 27:1" }
+    ],
+    don_title: "Sipòte ministè nou an",
+    don_text: "Jenerozite ou ede nou kontinye misyon evanjelik nou an.",
+    don_btn: "Fè yon don",
+    footer_nav_title: "Navigasyon",
+    footer_community_title: "Kominote",
+    footer_find_title: "Jwenn nou",
+    footer_rights: "© 2025 Legliz Bondye Pwofesi Kafou waney 93 — Tout dwa rezève",
+    // Actualites page
+    actu_page_title: "Aktyalite — Legliz Bondye Pwofesi Kafou",
+    actu_hero_title: "Aktyalite Legliz la",
+    actu_hero_text: "Rete konekte ak lavi kominote nou an. Evènman, anons ak mesaj espirityèl.",
+    actu_filter_label: "Filtre:",
+    actu_filter_all: "Tout",
+    actu_filter_events: "Evènman",
+    actu_filter_annonces: "Anons",
+    actu_filter_spiritual: "Espirityèl",
+    actu1_title: "Kilt Espesyal Pannkòt",
+    actu1_text: "Rejwenn nou pou yon kilt espesyal ki selebre Pannkòt ak envite espesyal ak yon onksyon espesyal Sentespri a.",
+    actu2_title: "Reyinyon Lidè yo — 20 Jen",
+    actu2_text: "Tout lidè ministè yo envite nan yon reyinyon enpòtan 20 jen a 6è diswa nan sal annèks la. Prezans obligatwa.",
+    actu3_title: "Nouvo Seri: Pouvwa Priyè a",
+    actu3_text: "Dimanch sa a kòmanse yon nouvo seri mesaj sou \"Pouvwa Priyè Pèseveran an\". Pa rate randevou espirityèl sa a!",
+    actu4_title: "Konferans Anyèl — Jiyè 2025",
+    actu4_text: "Yon semèn ansèyman ak revèy ak oratè envite. Pwogram konplè ak enskripsyon disponib nan legliz la.",
+    actu5_title: "Dedikasyon Timoun yo — Jiyè",
+    actu5_text: "Paran ki vle dedye pitit yo bay Bondye ka enskri bò pastè yo. Plas limite.",
+    actu6_title: "Jejin ak Priyè — 3 Jou",
+    actu6_text: "Legliz nou an òganize yon peryòd jejin ak priyè 3 jou pou entèsede pou Ayiti ak fanmi nou yo.",
+    actu_read_more: "Li plis",
+    actu_newsletter_title: "Rete enfòme",
+    actu_newsletter_text: "Resevwa aktyalite nou yo, anons ak mesaj ankourajman dirèkteman pa imèl.",
+    actu_email_ph: "Adrès imèl ou",
+    actu_subscribe: "Abòne",
+    actu_close: "Fèmen",
+    actu_subscribed: "Mèsi! Ou abòne. Ke Bondye beni ou!",
+    articles: {
+      pentecote: { tag:'Evènman', titre:'Kilt Espesyal Pannkòt', date:'15 Jen 2025', auteur:'Ekip pastoral', cat:'Evènman', intro:"Rejwenn nou pou yon kilt eksepsyonèl ki selebre jou Pannkòt la ak envite espesyal ak yon onksyon espesyal Sentespri a.", contenu:`<p>Pannkòt se youn nan moman ki pi enpòtan nan kalandriye kretyen an. Se jou sa a Sentespri a te desann sou 120 disip yo, ki make nesans Legliz Kris la.</p><p>Ane sa a, legliz nou an ap prepare yon <strong>kilt espesyal Pannkòt</strong> ki pwomet dèt yon moman revèy espirityèl.</p><p>Mennen fanmi ou, zanmi ou ak vwazen ou — pèsonn pa dwe rate randevou sa a ak Bondye!</p>`, details:[{icon:'fa-calendar',label:'Dat',valeur:'Dimanch 15 Jen 2025'},{icon:'fa-clock',label:'Lè',valeur:'6è a 10è maten'},{icon:'fa-map-marker-alt',label:'Kote',valeur:'Legliz Bondye Pwofesi — Kafou'},{icon:'fa-user-tie',label:'Oratè envite',valeur:'Pou konfime'}], bouton:{label:'Demann priyè',lien:'priere.html',icon:'fa-hands-praying'} },
+      leaders: { tag:'Anons', titre:'Reyinyon Lidè yo — 20 Jen', date:'10 Jen 2025', auteur:'Pastè Anouis Jean', cat:'Anons', intro:"Tout lidè ministè yo ofisyèlman konvoke nan yon reyinyon estratejik vandredi 20 jen 2025 a 6è diswa.", contenu:`<p>Pastè Anouis Jean konvoke <strong>tout lidè ak responsab ministè yo</strong> nan yon reyinyon enpòtan.</p><p><strong>• Bilan premye semès la</strong></p><p><strong>• Vizyon ak objektif</strong> pou 6 mwa pwochèn yo.</p><p><strong>• Òganizasyon Konferans Anyèl la</strong></p><p><strong>Prezans obligatwa</strong> pou tout lidè yo.</p>`, details:[{icon:'fa-calendar',label:'Dat',valeur:'Vandredi 20 Jen 2025'},{icon:'fa-clock',label:'Lè',valeur:'6è a 8è diswa'},{icon:'fa-map-marker-alt',label:'Kote',valeur:"Sal annèks legliz la"},{icon:'fa-exclamation-circle',label:'Enpòtan',valeur:'Obligatwa pou tout lidè yo'}], bouton:{label:'Kontakte nou',lien:'Contact.html',icon:'fa-envelope'} },
+      priere_serie: { tag:'Espirityèl', titre:'Nouvo Seri: Pouvwa Priyè a', date:'5 Jen 2025', auteur:'Pastè Honore Pierre Jolius', cat:'Espirityèl', intro:"Yon nouvo seri mesaj biblik sou priyè pèseveran ak pouvwa eksepsyonèl li nan lavi kretyen an.", contenu:`<p><strong>Semèn 1:</strong> "Poukisa pèsevere nan priyè?" — Lik 18:1-8</p><p><strong>Semèn 2:</strong> "Obstak pou priyè efikas" — Jak 4:2-3</p><p><strong>Semèn 3:</strong> "Priyè ki deplase mòn" — Mak 11:22-24</p><p><strong>Semèn 4:</strong> "Priye selon volonte Bondye" — 1 Jan 5:14-15</p>`, details:[{icon:'fa-calendar',label:'Kòmanse',valeur:'Dimanch 8 Jen 2025'},{icon:'fa-clock',label:'Lè',valeur:'Kilt dimanch — 6è ak 9h30'},{icon:'fa-book-open',label:'Tèm',valeur:'Pouvwa Priyè Pèseveran an'},{icon:'fa-user-tie',label:'Predikateur',valeur:'Pastè Honore Pierre Jolius'}], bouton:{label:'Demann priyè',lien:'priere.html',icon:'fa-hands-praying'} },
+      conference: { tag:'Evènman', titre:'Konferans Anyèl — Jiyè 2025', date:'1 Jen 2025', auteur:'Ekip pastoral', cat:'Evènman', intro:"Konferans Anyèl la ap fèt nan Jiyè 2025. Yon semèn antye ansèyman, revèy ak rankont ak oratè nasyonal.", contenu:`<p><strong>• Ansèyman biblik</strong> chak swa ak oratè envite.</p><p><strong>• Seyans lwanj</strong> ak gwoup mizik kretyen.</p><p><strong>• Priyè entèsesyon</strong> pou Ayiti ak fanmi nou yo.</p><p><strong>• Pwogram pou jèn yo</strong></p><p><strong>• Sware temwayaj</strong></p>`, details:[{icon:'fa-calendar',label:'Dat yo',valeur:'14 – 20 Jiyè 2025'},{icon:'fa-clock',label:'Lè',valeur:'Seyans chak swa apati 6è diswa'},{icon:'fa-map-marker-alt',label:'Kote',valeur:'Legliz Bondye Pwofesi — Kafou'},{icon:'fa-ticket',label:'Antre',valeur:'Gratis — louvri pou tout moun'}], bouton:{label:'Kontakte nou',lien:'Contact.html',icon:'fa-envelope'} },
+      bapteme: { tag:'Anons', titre:'Dedikasyon Timoun yo — Jiyè 2025', date:'28 Me 2025', auteur:'Sekretarya legliz la', cat:'Anons', intro:"Paran ki vle dedye pitit yo bay Bondye nan yon seremoni ofisyèl envite pou enskri bò pastè yo.", contenu:`<p>Dedikasyon timoun nan se yon zak solanèl kote paran yo konsare pitit yo bay Bondye.</p><p><strong>Kijan pou enskri?</strong> Pale ak yon pastè apre kilt dimanch lan.</p>`, details:[{icon:'fa-calendar',label:'Dat',valeur:'Yon dimanch nan Jiyè 2025'},{icon:'fa-child',label:'Laj',valeur:'Timoun 0 a 12 an'},{icon:'fa-exclamation-circle',label:'Plas',valeur:'Limite — enskripsyon obligatwa'},{icon:'fa-user-tie',label:'Enskripsyon',valeur:'Bò pastè yo apre kilt la'}], bouton:{label:'Kontakte nou',lien:'Contact.html',icon:'fa-envelope'} },
+      jeune: { tag:'Espirityèl', titre:'Jejin ak Priyè — 3 Jou', date:'20 Me 2025', auteur:'Gwoup Entèsesyon', cat:'Espirityèl', intro:"Legliz nou an òganize yon peryòd jejin ak priyè kolektif 3 jou pou entèsede pou Ayiti ak fanmi nou yo.", contenu:`<p><strong>• Jou 1:</strong> Entèsesyon pou Ayiti — lapè ak restowasyon.</p><p><strong>• Jou 2:</strong> Priyè pou fanmi nou yo — inite ak pwoteksyon.</p><p><strong>• Jou 3:</strong> Revèy espirityèl — kwasans legliz la.</p>`, details:[{icon:'fa-calendar',label:'Dat yo',valeur:'3 jou konsekitif — anonse nan kilt la'},{icon:'fa-clock',label:'Reyinyon',valeur:'Chak swa a 6è 30 diswa'},{icon:'fa-map-marker-alt',label:'Kote',valeur:'Legliz Bondye Pwofesi — Kafou'},{icon:'fa-hands-praying',label:'Patisipasyon',valeur:"Louvri pou tout manm yo"}], bouton:{label:'Demann priyè',lien:'priere.html',icon:'fa-hands-praying'} },
+    },
+    footer_priere: "Demann priyè",
+    footer_temo: "Temwayaj",
+    footer_galerie: "Galeri",
+    footer_don: "Fè yon don",
+  }
+};
+
+function applyLang(lang) {
+  const t = TRANSLATIONS[lang];
+  if (!t) return;
+  localStorage.setItem('site_lang', lang);
+  document.documentElement.lang = lang;
+
+  // Tradui tout eleman data-i18n
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+
+  // Tradui placeholder
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if (t[key]) el.placeholder = t[key];
+  });
+
+  // Verset du jour
+  if (t.versets) {
+    const idx = new Date().getDay();
+    const v = t.versets[idx];
+    const el = document.getElementById('verset');
+    const elRef = document.getElementById('verset-ref');
+    if (el) el.textContent = v.texte;
+    if (elRef) elRef.textContent = '— ' + v.ref;
+  }
+
+  // Mete a jour bouton aktif
+  document.querySelectorAll('.lang-option').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+  });
+}
+
+function toggleLangMenu() {
+  var m = document.getElementById('langMenu');
+  if (m) m.classList.toggle('open');
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.lang-switcher')) {
+    var m = document.getElementById('langMenu');
+    if (m) m.classList.remove('open');
+  }
+});
+
+function initLang() {
+  const saved = localStorage.getItem('site_lang') || 'fr';
+  applyLang(saved);
+}
+
+document.addEventListener('DOMContentLoaded', initLang);
+
+// Expose globalement
+window.TRANSLATIONS = TRANSLATIONS;
+window.applyLang = applyLang;
+window.initLang = initLang;
+window.toggleLangMenu = toggleLangMenu;
