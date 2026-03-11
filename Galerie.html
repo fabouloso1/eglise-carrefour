@@ -74,16 +74,17 @@
     .video-body .v-date { display: inline-flex; align-items: center; gap: 5px; color: var(--gold); font-size: 0.78rem; font-weight: 600; margin-top: 10px; }
 
     /* Lightbox */
-    .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 9999; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.97); z-index: 9999; align-items: center; justify-content: center; flex-direction: column; padding: 60px 10px 20px; box-sizing: border-box; }
     .lightbox.open { display: flex; }
-    .lightbox-close { position: absolute; top: 20px; right: 24px; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; transition: var(--transition); background: none; border: none; }
-    .lightbox-close:hover { opacity: 1; color: var(--gold); }
-    .lightbox img { max-width: 90vw; max-height: 80vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 60px rgba(0,0,0,0.8); }
-    .lightbox-caption { color: var(--gold); font-size: 0.92rem; margin-top: 16px; font-weight: 600; }
-    .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 2rem; cursor: pointer; background: rgba(255,255,255,0.1); border: none; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
-    .lightbox-nav:hover { background: rgba(241,196,15,0.3); color: var(--gold); }
-    .lightbox-prev { left: 20px; }
-    .lightbox-next { right: 20px; }
+    .lightbox-close { position: absolute; top: 12px; right: 16px; color: white; font-size: 2.2rem; cursor: pointer; opacity: 0.9; background: rgba(255,255,255,0.15); border: none; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10000; }
+    .lightbox img { max-width: 100%; max-height: 75vh; width: auto; height: auto; object-fit: contain; border-radius: 6px; display: block; touch-action: pinch-zoom; }
+    .lightbox-caption { color: var(--gold); font-size: 0.85rem; margin-top: 12px; font-weight: 600; text-align: center; padding: 0 10px; }
+    .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 1.5rem; cursor: pointer; background: rgba(255,255,255,0.15); border: none; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .lightbox-prev { left: 8px; }
+    .lightbox-next { right: 8px; }
+    /* Badge Nouveau */
+    .badge-new { position: absolute; top: 8px; left: 8px; background: #e74c3c; color: white; font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 20px; z-index: 2; text-transform: uppercase; letter-spacing: 0.5px; animation: pulse-badge 1.5s infinite; }
+    @keyframes pulse-badge { 0%,100% { transform: scale(1); } 50% { transform: scale(1.1); } }
 
     @media (max-width: 768px) {
       .photo-grid { grid-template-columns: repeat(2, 1fr); }
@@ -306,13 +307,32 @@
       return;
     }
 
-    cat.photos.forEach(function(photo, i) {
+    // Triye foto yo — poko wè yo anwo, deja wè yo anba
+    var photosTrie = cat.photos.map(function(photo, i) {
+      return { photo: photo, index: i, vu: !!localStorage.getItem('vu_' + photo.src) };
+    });
+    photosTrie.sort(function(a, b) {
+      if (a.vu === b.vu) return 0;
+      return a.vu ? 1 : -1; // poko wè (false) monte anwo
+    });
+
+    photosTrie.forEach(function(obj) {
+      var photo = obj.photo;
+      var i = obj.index;
       var item = document.createElement('div');
       item.className = 'photo-item';
-      (function(index) {
-        item.onclick = function() { ouvrirLightbox(index); };
-      })(i);
-      item.innerHTML =
+      item.style.position = 'relative';
+      var vuKey = 'vu_' + photo.src;
+      var badgeHtml = !obj.vu ? '<span class="badge-new">Nouvo</span>' : '';
+      (function(index, key) {
+        item.onclick = function() {
+          localStorage.setItem(key, '1');
+          var badge = item.querySelector('.badge-new');
+          if (badge) badge.remove();
+          ouvrirLightbox(index);
+        };
+      })(i, vuKey);
+      item.innerHTML = badgeHtml +
         '<img src="' + photo.src + '" alt="' + photo.caption + '" onerror="this.parentElement.classList.add(\'photo-placeholder-item\')">' +
         '<div class="photo-overlay"><i class="fas fa-search-plus"></i><p>' + photo.caption + '</p></div>';
       grille.appendChild(item);
