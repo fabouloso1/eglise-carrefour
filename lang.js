@@ -1,6 +1,4 @@
-Eskize mwen! Men kòd konplè `lang.js` la:
 
-Men kòd konplè `lang.js` la — kopye tout sa ki anba a:
 
 ```javascript
 // ===== SISTÈM TRADIKSYON KONPLÈ =====
@@ -449,7 +447,3 @@ window.applyLang = applyLang;
 window.initLang = initLang;
 window.toggleLangMenu = toggleLangMenu;
 ```
-
----
-
-**2 fichye pou mete sou GitHub:** `lang.js` + `Contact.html` ✅
