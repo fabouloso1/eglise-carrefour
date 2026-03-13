@@ -146,6 +146,8 @@
       }
     }
 
+    // Ekspoze fonksyon an pou kòd ekstèn ka rele l
+    window.chargerFotosPasteur = chargerFotosPasteur;
     document.addEventListener('DOMContentLoaded', chargerFotosPasteur);
   </script>
   <!-- Google Analytics -->
@@ -414,7 +416,7 @@
       grille.innerHTML = '<p style="text-align:center;padding:40px;color:#aaa;"><i class="fas fa-spinner fa-spin"></i> Chargement...</p>';
       (async function() {
         try {
-          await chargerFotosPasteur();
+          await window.chargerFotosPasteur();
           var fotos = window._fotosFirebase || [];
           grille.innerHTML = '';
           if (fotos.length === 0) {
