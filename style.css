@@ -1327,3 +1327,24 @@ footer {
   color: var(--gold) !important;
 }
 .nav-admin i { color: var(--gold) !important; }
+
+/* ===== BOUTON LIVE ===== */
+.nav-live {
+  background: rgba(231,76,60,0.15) !important;
+  border: 1px solid rgba(231,76,60,0.4) !important;
+  color: #ff6b6b !important;
+  border-radius: 8px;
+  padding: 6px 14px !important;
+  font-weight: 700 !important;
+}
+.nav-live:hover {
+  background: rgba(231,76,60,0.3) !important;
+}
+.nav-live i {
+  color: #ff4444 !important;
+  animation: blink 1.2s ease-in-out infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title data-i18n-title="actu_page_title">Actualités — Église de Dieu de la Prophétie de Carrefour</title>
+  <title>Actualités — Église de Dieu de la Prophétie de Carrefour</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
@@ -101,35 +101,70 @@
       });
     });
   </script>
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy }
+      from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
+      authDomain: "eglise-carrefour.firebaseapp.com",
+      projectId: "eglise-carrefour",
+      storageBucket: "eglise-carrefour.firebasestorage.app",
+      messagingSenderId: "421333694767",
+      appId: "1:421333694767:web:30c18da36ae020821a49da"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function chargerActualitesFirebase() {
+      try {
+        const q = query(collection(db, 'actualites'), orderBy('timestamp', 'desc'));
+        const snap = await getDocs(q);
+        const articles = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        window._articlesFirebase = articles;
+        afficherArticlesFirebase(articles);
+      } catch(e) {
+        console.log('Firebase:', e.message);
+        window._articlesFirebase = [];
+        document.getElementById('firebase-section').style.display = 'none';
+      }
+    }
+
+    window.chargerActualitesFirebase = chargerActualitesFirebase;
+    document.addEventListener('DOMContentLoaded', chargerActualitesFirebase);
+  </script>
 </head>
 <body>
 
 <div id="nav-placeholder"></div>
 
 <div class="page-hero">
-  <div class="page-hero-badge"><i class="fas fa-newspaper"></i> <span data-i18n="nav_actualites">Actualités</span></div>
-  <h1 data-i18n="actu_hero_title">Actualités de l'Église</h1>
-  <p data-i18n="actu_hero_text">Restez connectés à la vie de notre communauté. Événements, annonces et messages spirituels.</p>
+  <div class="page-hero-badge"><i class="fas fa-newspaper"></i> Actualités</div>
+  <h1>Actualités de l'Église</h1>
+  <p>Restez connectés à la vie de notre communauté. Événements, annonces et messages spirituels.</p>
 </div>
 
 <div class="breadcrumb">
   <div class="breadcrumb-inner">
-    <a href="index.html"><i class="fas fa-home"></i> <span data-i18n="nav_accueil">Accueil</span></a>
+    <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
     <i class="fas fa-chevron-right" style="font-size:0.65rem;color:#bbb;"></i>
-    <a href="Apropos.html" data-i18n="nav_apropos">À propos</a>
+    <a href="Apropos.html">À propos</a>
     <i class="fas fa-chevron-right" style="font-size:0.65rem;color:#bbb;"></i>
-    <span data-i18n="nav_actualites">Actualités</span>
+    <span>Actualités</span>
   </div>
 </div>
 
 <div class="actu-main">
 
   <div class="filter-bar">
-    <span class="filter-label"><i class="fas fa-filter"></i> <span data-i18n="actu_filter_label">Filtrer :</span></span>
-    <button class="filter-btn active" data-filter="all" data-i18n="actu_filter_all">Tout</button>
-    <button class="filter-btn" data-filter="events" data-i18n="actu_filter_events">Événements</button>
-    <button class="filter-btn" data-filter="announcements" data-i18n="actu_filter_annonces">Annonces</button>
-    <button class="filter-btn" data-filter="spiritual" data-i18n="actu_filter_spiritual">Spirituel</button>
+    <span class="filter-label"><i class="fas fa-filter"></i> Filtrer :</span>
+    <button class="filter-btn active" data-filter="all">Tout</button>
+    <button class="filter-btn" data-filter="events">Événements</button>
+    <button class="filter-btn" data-filter="announcements">Annonces</button>
+    <button class="filter-btn" data-filter="spiritual">Spirituel</button>
   </div>
 
   <div class="news-grid" id="newsGrid">
@@ -137,11 +172,11 @@
     <article class="news-card" data-category="events">
       <div class="news-img-placeholder"><i class="fas fa-church"></i></div>
       <div class="news-body">
-        <h3 data-i18n="actu1_title">Culte Spécial de Pentecôte</h3>
-        <p data-i18n="actu1_text">Rejoignez-nous pour un culte spécial célébrant la Pentecôte avec des invités spéciaux et une onction particulière du Saint-Esprit.</p>
+        <h3>Culte Spécial de Pentecôte</h3>
+        <p>Rejoignez-nous pour un culte spécial célébrant la Pentecôte avec des invités spéciaux et une onction particulière du Saint-Esprit.</p>
         <div class="news-footer">
           <span class="news-author"><i class="fas fa-calendar"></i> 15 Juin 2025</span>
-          <button class="read-more" onclick="openArticle('pentecote')"><span data-i18n="actu_read_more">Lire plus</span> <i class="fas fa-arrow-right"></i></button>
+          <button class="read-more" onclick="openArticle('pentecote')">Lire plus <i class="fas fa-arrow-right"></i></button>
         </div>
       </div>
     </article>
@@ -149,11 +184,11 @@
     <article class="news-card" data-category="announcements">
       <div class="news-img-placeholder"><i class="fas fa-users"></i></div>
       <div class="news-body">
-        <h3 data-i18n="actu2_title">Réunion des Leaders — 20 Juin</h3>
-        <p data-i18n="actu2_text">Tous les leaders de ministères sont conviés à une réunion importante le 20 juin à 18h dans la salle annexe. Présence obligatoire.</p>
+        <h3>Réunion des Leaders — 20 Juin</h3>
+        <p>Tous les leaders de ministères sont conviés à une réunion importante le 20 juin à 18h dans la salle annexe. Présence obligatoire.</p>
         <div class="news-footer">
           <span class="news-author"><i class="fas fa-calendar"></i> 10 Juin 2025</span>
-          <button class="read-more" onclick="openArticle('leaders')"><span data-i18n="actu_read_more">Lire plus</span> <i class="fas fa-arrow-right"></i></button>
+          <button class="read-more" onclick="openArticle('leaders')">Lire plus <i class="fas fa-arrow-right"></i></button>
         </div>
       </div>
     </article>
@@ -161,11 +196,11 @@
     <article class="news-card" data-category="spiritual">
       <div class="news-img-placeholder"><i class="fas fa-book-open"></i></div>
       <div class="news-body">
-        <h3 data-i18n="actu3_title">Nouvelle Série : La Puissance de la Prière</h3>
-        <p data-i18n="actu3_text">Ce dimanche commence une nouvelle série de messages sur "La Puissance de la Prière Persévérante". Ne manquez pas ce rendez-vous spirituel !</p>
+        <h3>Nouvelle Série : La Puissance de la Prière</h3>
+        <p>Ce dimanche commence une nouvelle série de messages sur "La Puissance de la Prière Persévérante". Ne manquez pas ce rendez-vous spirituel !</p>
         <div class="news-footer">
           <span class="news-author"><i class="fas fa-calendar"></i> 5 Juin 2025</span>
-          <button class="read-more" onclick="openArticle('priere_serie')"><span data-i18n="actu_read_more">Lire plus</span> <i class="fas fa-arrow-right"></i></button>
+          <button class="read-more" onclick="openArticle('priere_serie')">Lire plus <i class="fas fa-arrow-right"></i></button>
         </div>
       </div>
     </article>
@@ -173,11 +208,11 @@
     <article class="news-card" data-category="events">
       <div class="news-img-placeholder"><i class="fas fa-star"></i></div>
       <div class="news-body">
-        <h3 data-i18n="actu4_title">Conférence Annuelle — Juillet 2025</h3>
-        <p data-i18n="actu4_text">Une semaine d'enseignement et de réveil avec des orateurs invités. Programme complet et inscriptions disponibles à l'église.</p>
+        <h3>Conférence Annuelle — Juillet 2025</h3>
+        <p>Une semaine d'enseignement et de réveil avec des orateurs invités. Programme complet et inscriptions disponibles à l'église.</p>
         <div class="news-footer">
           <span class="news-author"><i class="fas fa-calendar"></i> 1 Juin 2025</span>
-          <button class="read-more" onclick="openArticle('conference')"><span data-i18n="actu_read_more">Lire plus</span> <i class="fas fa-arrow-right"></i></button>
+          <button class="read-more" onclick="openArticle('conference')">Lire plus <i class="fas fa-arrow-right"></i></button>
         </div>
       </div>
     </article>
@@ -185,11 +220,11 @@
     <article class="news-card" data-category="announcements">
       <div class="news-img-placeholder"><i class="fas fa-child"></i></div>
       <div class="news-body">
-        <h3 data-i18n="actu5_title">Baptême des Enfants — Juillet</h3>
-        <p data-i18n="actu5_text">Les parents désirant dédier leurs enfants au Seigneur peuvent s'inscrire auprès des pasteurs. Places limitées.</p>
+        <h3>Baptême des Enfants — Juillet</h3>
+        <p>Les parents désirant dédier leurs enfants au Seigneur peuvent s'inscrire auprès des pasteurs. Places limitées.</p>
         <div class="news-footer">
           <span class="news-author"><i class="fas fa-calendar"></i> 28 Mai 2025</span>
-          <button class="read-more" onclick="openArticle('bapteme')"><span data-i18n="actu_read_more">Lire plus</span> <i class="fas fa-arrow-right"></i></button>
+          <button class="read-more" onclick="openArticle('bapteme')">Lire plus <i class="fas fa-arrow-right"></i></button>
         </div>
       </div>
     </article>
@@ -197,24 +232,41 @@
     <article class="news-card" data-category="spiritual">
       <div class="news-img-placeholder"><i class="fas fa-dove"></i></div>
       <div class="news-body">
-        <h3 data-i18n="actu6_title">Jeûne et Prière — 3 Jours</h3>
-        <p data-i18n="actu6_text">Notre église organise une période de jeûne et prière de 3 jours pour intercéder pour Haïti et nos familles.</p>
+        <h3>Jeûne et Prière — 3 Jours</h3>
+        <p>Notre église organise une période de jeûne et prière de 3 jours pour intercéder pour Haïti et nos familles.</p>
         <div class="news-footer">
           <span class="news-author"><i class="fas fa-calendar"></i> 20 Mai 2025</span>
-          <button class="read-more" onclick="openArticle('jeune')"><span data-i18n="actu_read_more">Lire plus</span> <i class="fas fa-arrow-right"></i></button>
+          <button class="read-more" onclick="openArticle('jeune')">Lire plus <i class="fas fa-arrow-right"></i></button>
         </div>
       </div>
     </article>
 
   </div>
 
+  <!-- ===== ACTUALITES FIREBASE (Pasteur) ===== -->
+  <div id="firebase-section" style="margin-bottom: 50px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
+      <h2 style="font-family:'Playfair Display',serif;color:var(--primary);font-size:1.5rem;">
+        <i class="fas fa-user-tie" style="color:var(--gold);margin-right:8px;"></i>
+        Messages du Pasteur
+      </h2>
+      <span id="firebase-count" style="background:var(--gold);color:var(--primary);font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:20px;"></span>
+    </div>
+    <div class="news-grid" id="firebaseGrid">
+      <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">
+        <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--gold);margin-bottom:12px;display:block;"></i>
+        Chargement des actualités...
+      </div>
+    </div>
+  </div>
+
   <div class="newsletter">
     <i class="fas fa-envelope-open-text nl-icon"></i>
-    <h2 data-i18n="actu_newsletter_title">Restez informés</h2>
-    <p data-i18n="actu_newsletter_text">Recevez nos actualités, annonces et messages d'encouragement directement par email.</p>
+    <h2>Restez informés</h2>
+    <p>Recevez nos actualités, annonces et messages d'encouragement directement par email.</p>
     <form class="newsletter-form" id="newsletterForm">
-      <input type="email" placeholder="Votre adresse email" data-i18n-ph="actu_email_ph" required>
-      <button type="submit"><i class="fas fa-paper-plane"></i> <span data-i18n="actu_subscribe">S'abonner</span></button>
+      <input type="email" placeholder="Votre adresse email" required>
+      <button type="submit"><i class="fas fa-paper-plane"></i> S'abonner</button>
     </form>
   </div>
 
@@ -235,19 +287,11 @@
   <div class="art-modal-footer" id="artFooter"></div>
 </div>
 
-<script src="lang.js"></script>
 <script src="nav.js"></script>
 <script>
   NAV.init('Actualites.html');
-  if (window.initLang) initLang();
 
-  function getArticles() {
-    const lang = localStorage.getItem('site_lang') || 'fr';
-    const t = window.TRANSLATIONS && window.TRANSLATIONS[lang];
-    if (t && t.articles) return t.articles;
-    return ARTICLES_FR;
-  }
-  const ARTICLES_FR = {
+  const ARTICLES = {
     pentecote: {
       tag: 'Événement',
       titre: 'Culte Spécial de Pentecôte',
@@ -361,7 +405,7 @@
   };
 
   function openArticle(key) {
-    const a = getArticles()[key];
+    const a = ARTICLES[key];
     if (!a) return;
     document.getElementById('artTag').textContent = a.tag;
     document.getElementById('artTitle').textContent = a.titre;
@@ -380,7 +424,7 @@
       <div class="art-details">${detailsHTML}</div>`;
     document.getElementById('artFooter').innerHTML = `
       <a href="${a.bouton.lien}" class="art-btn art-btn-primary"><i class="fas ${a.bouton.icon}"></i> ${a.bouton.label}</a>
-      <button class="art-btn art-btn-outline" onclick="closeArticle()"><i class="fas fa-times"></i> <span data-i18n="actu_close">Fermer</span></button>`;
+      <button class="art-btn art-btn-outline" onclick="closeArticle()"><i class="fas fa-times"></i> Fermer</button>`;
     document.getElementById('artOverlay').classList.add('show');
     requestAnimationFrame(() => document.getElementById('artModal').classList.add('show'));
     document.body.style.overflow = 'hidden';
@@ -407,10 +451,95 @@
 
   document.getElementById('newsletterForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    const t = window.TRANSLATIONS && window.TRANSLATIONS[localStorage.getItem('site_lang')||'fr'];
-    const msg = t && t.actu_subscribed ? t.actu_subscribed : 'Merci ! Vous êtes abonné(e). Que Dieu vous bénisse !';
-    this.innerHTML = '<p style="color:var(--gold);font-weight:700;font-size:1rem;"><i class="fas fa-check-circle"></i> ' + msg + '</p>';
+    this.innerHTML = '<p style="color:var(--gold);font-weight:700;font-size:1rem;"><i class="fas fa-check-circle"></i> Merci ! Vous êtes abonné(e). Que Dieu vous bénisse !</p>';
   });
+
+  // ===== ARTICLES FIREBASE =====
+  window._articlesFirebase = [];
+
+  const catMap = {
+    'Événements': 'events',
+    'Annonces': 'announcements',
+    'Spirituel': 'spiritual'
+  };
+
+  const iconMap = {
+    'Événements': 'fa-star',
+    'Annonces': 'fa-bullhorn',
+    'Spirituel': 'fa-book-open'
+  };
+
+  function afficherArticlesFirebase(articles) {
+    const grid = document.getElementById('firebaseGrid');
+    const section = document.getElementById('firebase-section');
+    const count = document.getElementById('firebase-count');
+
+    if (!articles || articles.length === 0) {
+      section.style.display = 'none';
+      return;
+    }
+
+    section.style.display = 'block';
+    count.textContent = articles.length + ' article' + (articles.length > 1 ? 's' : '');
+
+    const filterActif = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
+
+    const filtrees = articles.filter(a => {
+      if (filterActif === 'all') return true;
+      return catMap[a.categorie] === filterActif;
+    });
+
+    if (filtrees.length === 0) {
+      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:30px;">Aucun article dans cette catégorie.</p>';
+      return;
+    }
+
+    grid.innerHTML = filtrees.map(a => `
+      <article class="news-card" data-category="${catMap[a.categorie] || 'events'}">
+        <div class="news-img-placeholder"><i class="fas ${iconMap[a.categorie] || 'fa-newspaper'}"></i></div>
+        <div class="news-body">
+          <h3>${a.titre}</h3>
+          <p>${a.intro || a.contenu?.replace(/<[^>]*>/g,'').substring(0,120) + '...' || ''}</p>
+          <div class="news-footer">
+            <span class="news-author"><i class="fas fa-calendar"></i> ${a.date || ''}</span>
+            <button class="read-more" onclick="openFirebaseArticle('${a.id}')">Lire plus <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </article>
+    `).join('');
+  }
+
+  function openFirebaseArticle(id) {
+    const a = (window._articlesFirebase || []).find(x => x.id === id);
+    if (!a) return;
+
+    document.getElementById('artTag').textContent = a.categorie || 'Actualité';
+    document.getElementById('artTitle').textContent = a.titre;
+    document.getElementById('artMeta').innerHTML =
+      `<span><i class="fas fa-calendar"></i> ${a.date || ''}</span>
+       <span><i class="fas fa-user"></i> ${a.auteur || 'Pasteur Anouis Jean'}</span>`;
+
+    document.getElementById('artBody').innerHTML =
+      `<p class="art-intro">${a.intro || ''}</p>
+       <div class="art-content">${a.contenu ? a.contenu.replace(/\n/g,'<br>') : ''}</div>`;
+
+    document.getElementById('artFooter').innerHTML =
+      `<a href="priere.html" class="art-btn art-btn-primary"><i class="fas fa-hands-praying"></i> Demande de prière</a>
+       <button class="art-btn art-btn-outline" onclick="closeArticle()"><i class="fas fa-times"></i> Fermer</button>`;
+
+    document.getElementById('artOverlay').classList.add('show');
+    document.getElementById('artModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+
+  // Mete a jou Firebase section lè filtre chanje
+  const origFilterHandler = document.querySelector('.filter-bar');
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      setTimeout(() => afficherArticlesFirebase(window._articlesFirebase || []), 10);
+    });
+  });
+
 </script>
 </body>
 </html>

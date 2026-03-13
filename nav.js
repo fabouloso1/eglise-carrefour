@@ -11,6 +11,7 @@ const NAV = (() => {
     { href: 'Contact.html',  icon: 'fa-envelope',       label: 'Contact',           i18n: 'nav_contact' },
     { href: 'priere.html',   icon: 'fa-hands-praying',  label: 'Demande de prière', i18n: 'nav_priere' },
     { href: 'don.html',      icon: 'fa-heart',          label: 'Faire un don',      i18n: 'nav_don', cls: 'nav-don' },
+    { href: 'Live.html',     icon: 'fa-circle-dot',     label: 'Live',          i18n: 'nav_live',  cls: 'nav-live' },
     { href: 'admin.html',    icon: 'fa-lock',           label: 'Admin',     i18n: 'nav_admin', cls: 'nav-admin' },
   ];
 

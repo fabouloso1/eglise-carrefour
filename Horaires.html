@@ -80,6 +80,111 @@
       });
     });
   </script>
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy, doc, getDoc }
+      from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
+      authDomain: "eglise-carrefour.firebaseapp.com",
+      projectId: "eglise-carrefour",
+      storageBucket: "eglise-carrefour.firebasestorage.app",
+      messagingSenderId: "421333694767",
+      appId: "1:421333694767:web:30c18da36ae020821a49da"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function chargerAnnoncesFirebase() {
+      try {
+        const q = query(collection(db, 'annonces'), orderBy('timestamp', 'desc'));
+        const snap = await getDocs(q);
+        const annonces = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        if (annonces.length > 0) afficherAnnonces(annonces);
+      } catch(e) {
+        console.log('Firebase annonces:', e.message);
+      }
+    }
+
+    function afficherAnnonces(annonces) {
+      const section = document.getElementById('firebase-annonces');
+      if (!section) return;
+      section.style.display = 'block';
+
+      const importanceColor = { 'Urgent': '#e74c3c', 'Important': '#e67e22', 'Normal': 'var(--primary)' };
+
+      section.querySelector('.timeline').innerHTML = annonces.map(a => `
+        <div class="timeline-item">
+          <div class="timeline-card" style="border-left: 3px solid ${importanceColor[a.importance] || 'var(--gold)'}">
+            <div class="t-date" style="color:${importanceColor[a.importance] || 'var(--gold)'}">
+              <i class="fas fa-calendar-day"></i> ${a.date || ''}
+              ${a.importance !== 'Normal' ? `<span style="margin-left:8px;background:${importanceColor[a.importance]};color:white;font-size:0.7rem;padding:2px 8px;border-radius:10px;">${a.importance}</span>` : ''}
+            </div>
+            <h3>${a.titre}</h3>
+            <p>${a.details || ''}</p>
+            ${a.heure ? `<p><i class="fas fa-clock" style="color:var(--gold)"></i> <strong>${a.heure}</strong></p>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function chargerHorairesFirebase() {
+      try {
+        const docRef = doc(db, 'config', 'horaires');
+        const snap = await getDoc(docRef);
+        if (!snap.exists() || !snap.data().list || snap.data().list.length === 0) return;
+
+        const list = snap.data().list;
+
+        // Gruope pa jou
+        const byDay = {};
+        list.forEach(h => {
+          const jou = h.jou || 'Autre';
+          if (!byDay[jou]) byDay[jou] = [];
+          byDay[jou].push(h);
+        });
+
+        const dayIcons = {
+          'Dimanche': 'fa-church', 'Lundi': 'fa-briefcase', 'Mardi': 'fa-hands-praying',
+          'Mercredi': 'fa-bible', 'Jeudi': 'fa-hands-praying', 'Vendredi': 'fa-moon',
+          'Samedi': 'fa-users'
+        };
+
+        const grid = document.getElementById('schedule-grid-firebase');
+        grid.innerHTML = Object.entries(byDay).map(([jou, items]) => `
+          <div class="schedule-card">
+            <div class="day-header">
+              <h2>${jou}</h2>
+              <div class="day-icon"><i class="fas ${dayIcons[jou] || 'fa-calendar'}"></i></div>
+            </div>
+            <ul class="schedule-list">
+              ${items.map(h => `
+                <li>
+                  <span class="s-time"><i class="fas fa-clock"></i> ${h['lè_kòmanse'] || ''} – ${h['lè_fini'] || ''}</span>
+                  <span class="s-event">${h.aktivite || ''}</span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+        `).join('');
+
+        // Kache statik, montre Firebase
+        document.getElementById('schedule-grid-static').style.display = 'none';
+        grid.style.display = '';
+
+      } catch(e) {
+        console.log('Firebase horaires:', e.message);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      chargerAnnoncesFirebase();
+      chargerHorairesFirebase();
+    });
+  </script>
 </head>
 <body>
 
@@ -107,7 +212,7 @@
   <h2 class="section-title">Programme</h2>
   <p class="section-subtitle">Nos activités régulières tout au long de la semaine</p>
 
-  <div class="schedule-grid">
+  <div class="schedule-grid" id="schedule-grid-static">
     <!-- Dimanche -->
     <div class="schedule-card">
       <div class="day-header">
@@ -211,6 +316,9 @@
     </div>
   </div>
 
+  <!-- Schedule Firebase (chaje si pastè mete ajou) -->
+  <div class="schedule-grid" id="schedule-grid-firebase" style="display:none;"></div>
+
   <!-- Événements spéciaux -->
   <div class="events-section">
     <h2 class="section-title">Événements Spéciaux</h2>
@@ -271,7 +379,14 @@ Que Dieu vous bénisse abondamment !</p>
     </div>
   </div>
 
-  <!-- CTA -->
+  <!-- ===== ANNONCES FIREBASE ===== -->
+  <div id="firebase-annonces" style="display:none; margin-bottom: 50px;">
+    <h2 class="section-title"><i class="fas fa-bullhorn" style="color:var(--gold);margin-right:8px;"></i> Annonces du Pasteur</h2>
+    <p class="section-subtitle">Annonces et informations importantes de notre église</p>
+    <div class="timeline"></div>
+  </div>
+
+    <!-- CTA -->
   <div class="cta-banner">
     <i class="fas fa-church"></i>
     <h2>Venez nous rejoindre !</h2>

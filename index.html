@@ -63,6 +63,7 @@
       <li><a href="Contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
       <li><a href="priere.html"><i class="fas fa-hands-praying"></i> Demande de prière</a></li>
       <li><a href="don.html" class="nav-don"><i class="fas fa-heart"></i> Faire un don</a></li>
+      <li><a href="Live.html" class="nav-live"><i class="fas fa-circle-dot"></i> Live</a></li>
       <li><a href="admin.html" class="nav-admin"><i class="fas fa-lock"></i> Admin</a></li>
     </ul>
   </div>
@@ -191,7 +192,8 @@
   <!-- Annonces -->
   <section class="annonces">
     <h2><i class="fas fa-bullhorn"></i> Annonces</h2>
-    <ul>
+    <ul id="annonces-list">
+      <!-- Annonces statik par defaut -->
       <li>
         <span class="annonce-icon"><i class="fas fa-calendar-day"></i></span>
         <div>
@@ -203,7 +205,7 @@
         <span class="annonce-icon"><i class="fas fa-users"></i></span>
         <div>
           <strong>Réunion de la jeunesse</strong>
-          <span class="annonce-date">Dimanche apres midi — 16h00</span>
+          <span class="annonce-date">Dimanche après midi — 16h00</span>
         </div>
       </li>
       <li>
@@ -216,6 +218,46 @@
     </ul>
     <a href="Horaires.html" class="see-all-link">Voir tous les horaires <i class="fas fa-arrow-right"></i></a>
   </section>
+
+  <!-- Firebase Annonces SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy, limit }
+      from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+    const app = initializeApp({
+      apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
+      authDomain: "eglise-carrefour.firebaseapp.com",
+      projectId: "eglise-carrefour",
+      storageBucket: "eglise-carrefour.firebasestorage.app",
+      messagingSenderId: "421333694767",
+      appId: "1:421333694767:web:30c18da36ae020821a49da"
+    });
+    const db = getFirestore(app);
+
+    const impIcon = { 'Urgent': 'fa-exclamation-circle', 'Important': 'fa-star', 'Normal': 'fa-calendar-day' };
+    const impColor = { 'Urgent': '#e74c3c', 'Important': '#e67e22', 'Normal': 'var(--gold)' };
+
+    try {
+      const q = query(collection(db, 'annonces'), orderBy('timestamp', 'desc'), limit(5));
+      const snap = await getDocs(q);
+      if (!snap.empty) {
+        const list = document.getElementById('annonces-list');
+        list.innerHTML = snap.docs.map(d => {
+          const a = d.data();
+          const color = impColor[a.importance] || 'var(--gold)';
+          const icon = impIcon[a.importance] || 'fa-calendar-day';
+          return `<li>
+            <span class="annonce-icon" style="color:${color}"><i class="fas ${icon}"></i></span>
+            <div>
+              <strong>${a.titre}</strong>
+              <span class="annonce-date">${a.date || ''} ${a.heure ? '— ' + a.heure : ''}</span>
+            </div>
+          </li>`;
+        }).join('');
+      }
+    } catch(e) { console.log('Firebase index:', e.message); }
+  </script>
 
   <!-- Verset du Jour -->
   <section id="versetDuJour">

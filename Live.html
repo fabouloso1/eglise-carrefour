@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live — Église de Dieu de la Prophétie de Carrefour</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ===== ECRAN LOGIN LIVE ===== */
+    #live-login { display: none !important; }
+    #live-login-DISABLED {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--secondary) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #live-login::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(241,196,15,0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.04) 0%, transparent 40%);
+    }
+
+    /* Pulse animation background */
+    .live-pulse {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(241,196,15,0.06);
+      animation: pulse-grow 3s ease-in-out infinite;
+    }
+    .live-pulse:nth-child(1) { width: 300px; height: 300px; top: -80px; right: -80px; animation-delay: 0s; }
+    .live-pulse:nth-child(2) { width: 200px; height: 200px; bottom: -50px; left: -50px; animation-delay: 1s; }
+    .live-pulse:nth-child(3) { width: 150px; height: 150px; top: 40%; left: 10%; animation-delay: 2s; }
+
+    @keyframes pulse-grow {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.2); opacity: 1; }
+    }
+
+    .login-live-box {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 24px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+    }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(231,76,60,0.2);
+      border: 1px solid rgba(231,76,60,0.5);
+      color: #ff6b6b;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .live-badge .live-dot {
+      width: 8px;
+      height: 8px;
+      background: #ff4444;
+      border-radius: 50%;
+      animation: blink 1.2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    .login-live-box .church-icon {
+      font-size: 3.5rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .login-live-box h1 {
+      color: white;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.7rem;
+      margin-bottom: 8px;
+    }
+
+    .login-live-box p {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.9rem;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .login-live-box input[type="password"] {
+      width: 100%;
+      padding: 15px 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 1.05rem;
+      font-family: 'Montserrat', sans-serif;
+      margin-bottom: 14px;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+
+    .login-live-box input[type="password"]::placeholder {
+      color: rgba(255,255,255,0.35);
+    }
+
+    .login-live-box input[type="password"]:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    .login-live-box input.error {
+      border-color: #ff4444 !important;
+      animation: shake 0.3s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      75% { transform: translateX(8px); }
+    }
+
+    .btn-live-enter {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: var(--primary);
+      border: none;
+      border-radius: 12px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .btn-live-enter:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(241,196,15,0.4);
+    }
+
+    .error-msg {
+      color: #ff6b6b;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+      display: none;
+    }
+
+    .back-link {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.85rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: white; }
+
+    /* ===== PAGE LIVE ===== */
+    #live-page { display: block; }
+
+    .live-hero {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      padding: 40px 24px 30px;
+      text-align: center;
+    }
+
+    .live-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      margin-bottom: 8px;
+    }
+
+    .live-hero p {
+      opacity: 0.8;
+      font-size: 0.95rem;
+    }
+
+    .live-main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* Tabs YouTube / Facebook */
+    .stream-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 28px;
+      background: white;
+      padding: 8px;
+      border-radius: 14px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+      width: fit-content;
+    }
+
+    .stream-tab {
+      padding: 10px 24px;
+      border-radius: 10px;
+      border: none;
+      background: transparent;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stream-tab.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .stream-tab .fab { font-size: 1rem; }
+    .stream-tab.yt.active { background: #ff0000; }
+    .stream-tab.fb.active { background: #1877f2; }
+
+    /* Player */
+    .stream-panel { display: none; }
+    .stream-panel.active { display: block; }
+
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+      background: #000;
+      margin-bottom: 24px;
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+
+    /* Message "pas de live" */
+    .no-live {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 24px;
+      text-align: center;
+      background: white;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+
+    .no-live i {
+      font-size: 3.5rem;
+      color: var(--gold);
+      margin-bottom: 20px;
+      opacity: 0.6;
+    }
+
+    .no-live h3 {
+      color: var(--primary);
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    .no-live p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      max-width: 400px;
+      line-height: 1.7;
+    }
+
+    /* URL input pou admin */
+    .stream-url-box {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stream-url-box label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .stream-url-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .stream-url-row input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+
+    .stream-url-row input:focus { outline: none; border-color: var(--gold); }
+
+    .stream-url-row button {
+      padding: 10px 20px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .stream-url-row button:hover { background: var(--secondary); }
+
+    /* Info culte */
+    .live-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .live-info-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .live-info-card i {
+      font-size: 1.4rem;
+      color: var(--gold);
+      width: 32px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .live-info-card div strong {
+      display: block;
+      color: var(--primary);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+
+    .live-info-card div span {
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    /* Deconnexion */
+    .live-logout {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: 'Montserrat', sans-serif;
+      transition: color 0.2s;
+      margin-bottom: 20px;
+    }
+    .live-logout:hover { color: var(--primary); }
+
+    @media (max-width: 600px) {
+      .login-live-box { padding: 36px 24px; }
+      .stream-tabs { width: 100%; }
+      .stream-tab { flex: 1; justify-content: center; }
+    }
+  </style>
+
+  <!-- OneSignal -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({ appId: "357202c0-41e0-42d7-a6bb-03be43ee63ff" });
+    });
+  </script>
+  <!-- Firebase - chaje lyen live -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { getFirestore, doc, getDoc }
+      from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+    const app = initializeApp({
+      apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
+      authDomain: "eglise-carrefour.firebaseapp.com",
+      projectId: "eglise-carrefour",
+      storageBucket: "eglise-carrefour.firebasestorage.app",
+      messagingSenderId: "421333694767",
+      appId: "1:421333694767:web:30c18da36ae020821a49da"
+    });
+    const db = getFirestore(app);
+
+    async function chargerLive() {
+      try {
+        const snap = await getDoc(doc(db, 'config', 'live'));
+        if (!snap.exists()) return;
+        const data = snap.data();
+
+        if (data.youtube) {
+          const id = extractYTId(data.youtube);
+          if (id) {
+            document.getElementById('yt-player-wrap').className = 'video-wrapper';
+            document.getElementById('yt-player-wrap').innerHTML =
+              `<iframe src="https://www.youtube.com/embed/${id}?rel=0" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+          }
+        }
+
+        if (data.facebook) {
+          const encoded = encodeURIComponent(data.facebook);
+          document.getElementById('fb-player-wrap').className = 'video-wrapper';
+          document.getElementById('fb-player-wrap').innerHTML =
+            `<iframe src="https://www.facebook.com/plugins/video.php?href=${encoded}&show_text=false" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"></iframe>`;
+        }
+
+      } catch(e) { console.log('Firebase live:', e.message); }
+    }
+
+    document.addEventListener('DOMContentLoaded', chargerLive);
+  </script>
+</head>
+<body>
+
+<!-- ===== ÉCRAN LOGIN ===== -->
+<div id="live-login">
+  <div class="live-pulse"></div>
+  <div class="live-pulse"></div>
+  <div class="live-pulse"></div>
+
+  <div class="login-live-box">
+    <div class="live-badge">
+      <span class="live-dot"></span>
+      Culte en direct
+    </div>
+    <span class="church-icon">⛪</span>
+    <h1>Accès Live</h1>
+    <p>Cette section est réservée aux membres de l'église.<br>Entrez le mot de passe pour regarder le culte en direct.</p>
+
+    <p class="error-msg" id="loginError"><i class="fas fa-exclamation-circle"></i> Mot de passe incorrect.</p>
+
+    <input type="password" id="livePassword" placeholder="Mot de passe..." onkeydown="if(event.key==='Enter') entrerLive()">
+    <button class="btn-live-enter" onclick="entrerLive()">
+      <i class="fas fa-play"></i> Regarder le culte
+    </button>
+
+    <a href="index.html" class="back-link">
+      <i class="fas fa-arrow-left"></i> Retour au site
+    </a>
+  </div>
+</div>
+
+<!-- ===== PAGE LIVE ===== -->
+<div id="live-page">
+  <div id="nav-placeholder"></div>
+
+  <div class="live-hero">
+    <div class="page-hero-badge" style="margin-bottom:14px;">
+      <span style="width:8px;height:8px;background:#ff4444;border-radius:50%;display:inline-block;animation:blink 1.2s infinite;"></span>
+      &nbsp;En direct
+    </div>
+    <h1>Culte en Direct</h1>
+    <p>Église de Dieu de la Prophétie de Carrefour</p>
+  </div>
+
+  <div class="live-main">
+
+    
+
+    <!-- Infos culte -->
+    <div class="live-info-grid">
+      <div class="live-info-card">
+        <i class="fas fa-calendar-day"></i>
+        <div><strong>Culte principal</strong><span>Dimanche — 6h00 à 10h00</span></div>
+      </div>
+      <div class="live-info-card">
+        <i class="fas fa-hands-praying"></i>
+        <div><strong>Réunion de prière</strong><span>Mardi & Jeudi — 16h00</span></div>
+      </div>
+      <div class="live-info-card">
+        <i class="fas fa-map-marker-alt"></i>
+        <div><strong>Adresse</strong><span>Carrefour, Haïti</span></div>
+      </div>
+    </div>
+
+    <!-- Tabs YouTube / Facebook -->
+    <div class="stream-tabs">
+      <button class="stream-tab yt active" onclick="switchTab('youtube')">
+        <i class="fab fa-youtube"></i> YouTube
+      </button>
+      <button class="stream-tab fb" onclick="switchTab('facebook')">
+        <i class="fab fa-facebook"></i> Facebook
+      </button>
+    </div>
+
+    <!-- YouTube Panel -->
+    <div class="stream-panel active" id="panel-youtube">
+      <div id="yt-player-wrap" class="no-live">
+        <i class="fab fa-youtube"></i>
+        <h3>Pas de live YouTube pour le moment</h3>
+        <p>Le pasteur n'a pas encore démarré de live YouTube. Revenez pendant les heures de culte.</p>
+      </div>
+
+    </div>
+
+    <!-- Facebook Panel -->
+    <div class="stream-panel" id="panel-facebook">
+      <div id="fb-player-wrap" class="no-live">
+        <i class="fab fa-facebook"></i>
+        <h3>Pas de live Facebook pour le moment</h3>
+        <p>Le pasteur n'a pas encore démarré de live Facebook. Revenez pendant les heures de culte.</p>
+      </div>
+
+    </div>
+
+    <!-- Demande de prière pendant le live -->
+    <div style="background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:16px;padding:32px;text-align:center;color:white;margin-top:20px;">
+      <i class="fas fa-hands-praying" style="font-size:2rem;color:var(--gold);margin-bottom:12px;display:block;"></i>
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:8px;">Besoin de prière ?</h3>
+      <p style="opacity:0.85;font-size:0.9rem;margin-bottom:18px;">Envoyez votre demande pendant que nous sommes ensemble en adoration.</p>
+      <a href="priere.html" style="display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--primary);padding:12px 24px;border-radius:25px;font-weight:700;font-size:0.9rem;text-decoration:none;">
+        <i class="fas fa-paper-plane"></i> Faire une demande
+      </a>
+    </div>
+
+  </div>
+
+  <div id="foot-placeholder"></div>
+</div>
+
+<script src="lang.js"></script>
+<script src="nav.js"></script>
+<script>
+
+  const LIVE_PASSWORD = "Live2025";
+
+  // ===== LOGIN =====
+  function entrerLive() {
+    const pwd = document.getElementById('livePassword').value;
+    const input = document.getElementById('livePassword');
+    const errMsg = document.getElementById('loginError');
+
+    if (pwd === LIVE_PASSWORD) {
+      sessionStorage.setItem('live_access', '1');
+      document.getElementById('live-login').style.display = 'none';
+      document.getElementById('live-page').style.display = 'block';
+      NAV.init('Live.html');
+    } else {
+      input.classList.add('error');
+      errMsg.style.display = 'block';
+      setTimeout(() => input.classList.remove('error'), 500);
+      input.value = '';
+      input.focus();
+    }
+  }
+
+  function deconnecterLive() {
+    sessionStorage.removeItem('live_access');
+    document.getElementById('live-page').style.display = 'none';
+    document.getElementById('live-login').style.display = 'flex';
+    document.getElementById('livePassword').value = '';
+    document.getElementById('loginError').style.display = 'none';
+  }
+
+  // Paj lib - NAV dirèkteman
+  document.addEventListener('DOMContentLoaded', () => {
+    NAV.init('Live.html');
+    // Kache bouton Live nan menu a (nou deja sou paj Live)
+    setTimeout(() => {
+      document.querySelectorAll('.nav-live').forEach(el => {
+        el.parentElement.style.display = 'none';
+      });
+    }, 100);
+  });
+
+  // ===== TABS =====
+  function switchTab(tab) {
+    document.querySelectorAll('.stream-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.stream-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + tab).classList.add('active');
+    document.querySelector('.stream-tab.' + (tab === 'youtube' ? 'yt' : 'fb')).classList.add('active');
+  }
+
+  // ===== YOUTUBE =====
+  function extractYTId(url) {
+    const m = url.match(/(?:v=|youtu\.be\/|embed\/)([a-zA-Z0-9_-]{11})/);
+    return m ? m[1] : null;
+  }
+
+  function activerYT() {
+    const url = document.getElementById('yt-url-input').value.trim();
+    const id = extractYTId(url);
+    const wrap = document.getElementById('yt-player-wrap');
+
+    if (!id) {
+      alert('Lien YouTube invalide. Exemple: https://www.youtube.com/watch?v=XXXXXXXXXXX');
+      return;
+    }
+
+    wrap.className = 'video-wrapper';
+    wrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+  }
+
+  function previewYT() {
+    const url = document.getElementById('yt-url-input').value.trim();
+    const id = extractYTId(url);
+    if (id) {
+      const wrap = document.getElementById('yt-player-wrap');
+      wrap.className = 'video-wrapper';
+      wrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?rel=0" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+    }
+  }
+
+  // ===== FACEBOOK =====
+  function activerFB() {
+    const url = document.getElementById('fb-url-input').value.trim();
+    const wrap = document.getElementById('fb-player-wrap');
+
+    if (!url || !url.includes('facebook.com')) {
+      alert('Entrez un lien Facebook valide.');
+      return;
+    }
+
+    const encoded = encodeURIComponent(url);
+    wrap.className = 'video-wrapper';
+    wrap.innerHTML = `<iframe src="https://www.facebook.com/plugins/video.php?href=${encoded}&show_text=false&autoplay=true" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"></iframe>`;
+  }
+
+</script>
+</body>
+</html>
