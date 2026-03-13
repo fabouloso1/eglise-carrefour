@@ -1085,7 +1085,7 @@
             <button class="remove-photo" onclick="removePreview(${i})"><i class="fas fa-times"></i></button>
           </div>`;
       };
-      reader.readAsDateaURL(f);
+      reader.readAsDataURL(f);
     });
 
     document.getElementById('uploadBtn').disabled = files.length === 0;
@@ -1118,7 +1118,7 @@
           description: desc || file.name,
           categorie: cat,
           nom: file.name,
-          date: new Datee().toISOString(),
+          date: new Date().toISOString(),
           timestamp: window._serverTimestamp()
         });
       }
