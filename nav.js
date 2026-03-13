@@ -50,6 +50,13 @@ const NAV = (() => {
             <button class="lang-option" data-lang="ht" onclick="applyLang('ht');toggleLangMenu()">🇭🇹 Kreyòl</button>
           </div>
         </div>
+
+        <!-- Bouton Notifikasyon -->
+        <button class="notif-bell" id="notifBell" onclick="toggleNotifSubscription()" title="Notifications">
+          <i class="fas fa-bell" id="bellIcon"></i>
+          <span class="notif-dot" id="notifDot" style="display:none"></span>
+        </button>
+
       </div>
     </nav>
     <div class="nav-overlay" id="navOverlay"></div>`;
@@ -144,14 +151,88 @@ const NAV = (() => {
     if (m) m.classList.toggle('open');
   };
 
+  // CSS pou klòch notifikasyon
+  const bellCSS = document.createElement('style');
+  bellCSS.textContent = `
+    .notif-bell {
+      position: relative;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: white;
+      font-size: 1.2rem;
+      padding: 6px 8px;
+      margin-left: 4px;
+      transition: transform 0.2s;
+    }
+    .notif-bell:hover { transform: scale(1.2); }
+    .notif-bell.subscribed { color: #f0c040; }
+    .notif-dot {
+      position: absolute;
+      top: 4px; right: 4px;
+      width: 8px; height: 8px;
+      background: #e74c3c;
+      border-radius: 50%;
+      animation: pulse-dot 1.5s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.7; }
+    }
+  `;
+  document.head.appendChild(bellCSS);
+
+  // Fonksyon pou jere abònman notifikasyon
+  window.toggleNotifSubscription = async function() {
+    if (!window.OneSignal) { alert('Notifikasyon pa disponib sou navigatè sa a.'); return; }
+    try {
+      const permission = await OneSignal.Notifications.permission;
+      if (!permission) {
+        await OneSignal.Notifications.requestPermission();
+        updateBellState();
+      } else {
+        const isSubscribed = await OneSignal.User.PushSubscription.optedIn;
+        if (isSubscribed) {
+          await OneSignal.User.PushSubscription.optOut();
+          showBellToast('🔕 Ou dezabòne notifikasyon yo');
+        } else {
+          await OneSignal.User.PushSubscription.optIn();
+          showBellToast('🔔 Ou abòne notifikasyon yo!');
+        }
+        updateBellState();
+      }
+    } catch(e) { console.log('Notif error:', e); }
+  };
+
+  window.updateBellState = async function() {
+    const bell = document.getElementById('notifBell');
+    const dot = document.getElementById('notifDot');
+    if (!bell || !window.OneSignal) return;
+    try {
+      const isSubscribed = await OneSignal.User.PushSubscription.optedIn;
+      bell.classList.toggle('subscribed', !!isSubscribed);
+      if (dot) dot.style.display = isSubscribed ? 'none' : 'block';
+    } catch(e) {}
+  };
+
+  function showBellToast(msg) {
+    const t = document.createElement('div');
+    t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1c1c3c;color:white;padding:10px 20px;border-radius:20px;z-index:9999;font-size:0.9rem;box-shadow:0 4px 15px rgba(0,0,0,0.3);';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 3000);
+  }
+
   return {
     init(activePage) {
       document.getElementById('nav-placeholder').innerHTML  = buildNav(activePage);
       document.getElementById('foot-placeholder').innerHTML = buildFooter();
       initInteractions();
-      // Re-tradui nav si lang pa fr
-      const lang = localStorage.getItem('site_lang');
-      if (lang && lang !== 'fr' && window.applyLang) window.applyLang(lang);
+      // Aplike lang sove a (tout lang)
+      const lang = localStorage.getItem('site_lang') || 'fr';
+      if (window.applyLang) window.applyLang(lang);
+      // Mete a jou eta klòch la
+      setTimeout(updateBellState, 2000);
     }
   };
 })();
