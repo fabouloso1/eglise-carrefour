@@ -412,24 +412,29 @@
     // Kategori Firebase (Photos du Pasteur)
     if (cat.firebase) {
       grille.innerHTML = '<p style="text-align:center;padding:40px;color:#aaa;"><i class="fas fa-spinner fa-spin"></i> Chargement...</p>';
-      chargerFotosPasteur().then(function() {
-        grille.innerHTML = '';
-        var fotos = window._fotosFirebase || [];
-        if (fotos.length === 0) {
-          grille.innerHTML = '<p style="color:var(--text-muted);text-align:center;grid-column:1/-1;padding:40px 0;"><i class="fas fa-camera" style="font-size:2rem;display:block;margin-bottom:12px;color:var(--gold)"></i>Aucune photo pour le moment.<br><small>Le pasteur peut en ajouter depuis le panel admin.</small></p>';
-          photosActuelles = [];
-          return;
+      (async function() {
+        try {
+          await chargerFotosPasteur();
+          var fotos = window._fotosFirebase || [];
+          grille.innerHTML = '';
+          if (fotos.length === 0) {
+            grille.innerHTML = '<p style="color:#888;text-align:center;grid-column:1/-1;padding:40px;"><i class="fas fa-camera" style="font-size:2rem;display:block;margin-bottom:12px;color:#c9a84c"></i>Aucune photo pour le moment.</p>';
+            photosActuelles = [];
+            return;
+          }
+          photosActuelles = fotos.map(function(f) { return { src: f.url, caption: f.description || '' }; });
+          photosActuelles.forEach(function(photo, i) {
+            var item = document.createElement('div');
+            item.className = 'photo-item';
+            item.onclick = function() { ouvrirLightbox(i); };
+            item.innerHTML = '<img src="' + photo.src + '" alt="' + photo.caption + '" loading="lazy">' +
+              '<div class="photo-overlay"><i class="fas fa-search-plus"></i><p>' + photo.caption + '</p></div>';
+            grille.appendChild(item);
+          });
+        } catch(e) {
+          grille.innerHTML = '<p style="color:red;text-align:center;padding:20px;">Erreur chargement photos</p>';
         }
-        photosActuelles = fotos.map(function(f) { return { src: f.url, caption: f.description || '' }; });
-        photosActuelles.forEach(function(photo, i) {
-          var item = document.createElement('div');
-          item.className = 'photo-item';
-          item.onclick = function() { ouvrirLightbox(i); };
-          item.innerHTML = '<img src="' + photo.src + '" alt="' + photo.caption + '">' +
-            '<div class="photo-overlay"><i class="fas fa-search-plus"></i><p>' + photo.caption + '</p></div>';
-          grille.appendChild(item);
-        });
-      });
+      })();
       return;
     }
 
