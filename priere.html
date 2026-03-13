@@ -76,6 +76,39 @@
       });
     });
   </script>
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp }
+      from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+    const app = initializeApp({
+      apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
+      authDomain: "eglise-carrefour.firebaseapp.com",
+      projectId: "eglise-carrefour",
+      storageBucket: "eglise-carrefour.firebasestorage.app",
+      messagingSenderId: "421333694767",
+      appId: "1:421333694767:web:30c18da36ae020821a49da"
+    });
+    const db = getFirestore(app);
+
+    window._savePriere = async function(data) {
+      await addDoc(collection(db, 'prieres'), {
+        ...data,
+        lu: false,
+        timestamp: serverTimestamp(),
+        date: new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
+      });
+    };
+  </script>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G9Y14X29NZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-G9Y14X29NZ');
+  </script>
 </head>
 <body>
 
@@ -233,6 +266,18 @@
 
     var waUrl = 'https://wa.me/50931573591?text=' + encodeURIComponent(msg);
     document.getElementById('whatsappBtn').href = waUrl;
+
+    // Sove nan Firebase
+    if (window._savePriere) {
+      window._savePriere({
+        nom: anonyme === 'Oui' ? 'Anonyme' : nom,
+        telephone: telephone,
+        categorie: categorie,
+        demande: demande,
+        urgent: urgent,
+        anonyme: anonyme
+      }).catch(e => console.log('Firebase priere:', e.message));
+    }
 
     // Montre mesaj siksè
     document.getElementById('priereForm').style.display = 'none';

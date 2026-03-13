@@ -537,6 +537,12 @@
     <button class="tab-btn" onclick="showTab('live')">
       <i class="fas fa-circle-dot"></i> Live
     </button>
+    <button class="tab-btn" onclick="showTab('temoignages')">
+      <i class="fas fa-star"></i> Témoignages
+    </button>
+    <button class="tab-btn" onclick="showTab('prieres')">
+      <i class="fas fa-hands-praying"></i> Prières
+    </button>
   </div>
 
   <!-- Content -->
@@ -759,6 +765,34 @@
       </div>
     </div>
 
+    <!-- ===== TAB TÉMOIGNAGES ===== -->
+    <div class="tab-panel" id="tab-temoignages">
+      <div class="card">
+        <h3><i class="fas fa-star" style="color:var(--gold)"></i> Témoignages à valider</h3>
+        <p style="font-size:1rem;color:#888;margin-bottom:20px;">Les témoignages soumis par les membres. Approuvez ceux que vous voulez afficher sur le site.</p>
+        <div id="temoignages-admin-list">
+          <div style="text-align:center;padding:30px;color:#aaa;">
+            <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--gold);display:block;margin-bottom:12px;"></i>
+            Chargement...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TAB PRIÈRES ===== -->
+    <div class="tab-panel" id="tab-prieres">
+      <div class="card">
+        <h3><i class="fas fa-hands-praying" style="color:var(--gold)"></i> Demandes de prière</h3>
+        <p style="font-size:1rem;color:#888;margin-bottom:20px;">Demandes soumises par les membres. Marquez-les comme lues après avoir prié.</p>
+        <div id="prieres-admin-list">
+          <div style="text-align:center;padding:30px;color:#aaa;">
+            <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--gold);display:block;margin-bottom:12px;"></i>
+            Chargement...
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div><!-- /admin-content -->
 </div><!-- /adminPanel -->
 
@@ -768,7 +802,7 @@
 <!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, getDoc, orderBy, query, serverTimestamp }
+  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, getDoc, orderBy, query, where, serverTimestamp }
     from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
   import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject }
     from "https://www.gstatic.com/firebasejs/11.0.2/firebase-storage.js";
@@ -795,6 +829,11 @@
   window._storage = storage;
   window._collection = collection;
   window._addDoc = addDoc;
+    window._query = query;
+    window._orderBy = orderBy;
+    window._getDocs = getDocs;
+    window._where = where;
+    window._deleteDoc = deleteDoc;
   window._getDocs = getDocs;
   window._deleteDoc = deleteDoc;
   window._doc = doc;
@@ -867,6 +906,115 @@
     setTimeout(() => t.classList.remove('show'), 3000);
   }
 
+  // ===== PRIERES =====
+  async function loadPrieres() {
+    try {
+      const q = window._query(
+        window._collection(window._db, 'prieres'),
+        window._orderBy('timestamp', 'desc')
+      );
+      const snap = await window._getDocs(q);
+      const list = document.getElementById('prieres-admin-list');
+
+      if (snap.empty) {
+        list.innerHTML = '<p style="text-align:center;color:#aaa;padding:30px;">Aucune demande de prière.</p>';
+        return;
+      }
+
+      list.innerHTML = snap.docs.map(d => {
+        const p = d.data();
+        const lu = p.lu === true;
+        const urgent = p.urgent === 'Oui';
+        return `
+          <div class="item-card" style="border-left: 3px solid ${urgent ? '#e74c3c' : lu ? '#27ae60' : 'var(--gold)'};">
+            <div class="item-card-info">
+              <h4>${p.nom || 'Anonyme'}
+                ${urgent ? '<span style="background:#e74c3c;color:white;font-size:0.7rem;padding:2px 8px;border-radius:10px;margin-left:6px;">URGENT</span>' : ''}
+                ${p.anonyme === 'Oui' ? '<span style="background:#888;color:white;font-size:0.7rem;padding:2px 8px;border-radius:10px;margin-left:6px;">Anonyme</span>' : ''}
+              </h4>
+              ${p.telephone ? `<p style="font-size:0.82rem;color:#888;"><i class="fas fa-phone" style="color:var(--gold)"></i> ${p.telephone}</p>` : ''}
+              <p style="color:#555;">${p.categorie || ''} — ${p.date || ''}</p>
+              <p style="font-style:italic;color:#444;margin-top:6px;">${p.demande || ''}</p>
+              <p style="font-size:0.78rem;color:#aaa;margin-top:6px;">${lu ? '<span style="color:#27ae60;font-weight:600;">✓ Lu</span>' : '<span style="color:orange;font-weight:600;">Non lu</span>'}</p>
+            </div>
+            <div class="item-card-actions">
+              ${!lu ? `<button class="btn btn-sm btn-primary" onclick="marquerPriereLue('${d.id}')"><i class="fas fa-check"></i> Lu</button>` : ''}
+              ${p.telephone ? `<a href="https://wa.me/${p.telephone.replace(/[^0-9]/g,'')}" target="_blank" class="btn btn-sm" style="background:#25D366;color:white;"><i class="fab fa-whatsapp"></i></a>` : ''}
+              <button class="btn btn-sm" style="background:#fee;color:#e74c3c;" onclick="effacerPriere('${d.id}')"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>`;
+      }).join('');
+    } catch(e) { console.log('Prieres:', e.message); }
+  }
+
+  async function marquerPriereLue(id) {
+    try {
+      await window._setDoc(window._doc(window._db, 'prieres', id), { lu: true }, { merge: true });
+      showToast('Marquée comme lue !');
+      loadPrieres();
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+
+  async function effacerPriere(id) {
+    if (!confirm('Supprimer cette demande ?')) return;
+    try {
+      await window._deleteDoc(window._doc(window._db, 'prieres', id));
+      showToast('Demande supprimée !');
+      loadPrieres();
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+
+  // ===== TEMOIGNAGES =====
+  async function loadTemoignages() {
+    try {
+      const q = window._query(
+        window._collection(window._db, 'temoignages'),
+        window._orderBy('timestamp', 'desc')
+      );
+      const snap = await window._getDocs(q);
+      const list = document.getElementById('temoignages-admin-list');
+
+      if (snap.empty) {
+        list.innerHTML = '<p style="text-align:center;color:#aaa;padding:30px;">Aucun témoignage pour le moment.</p>';
+        return;
+      }
+
+      list.innerHTML = snap.docs.map(d => {
+        const t = d.data();
+        const approuve = t.approuve === true;
+        return `
+          <div class="item-card" style="border-left: 3px solid ${approuve ? '#27ae60' : 'var(--gold)'};">
+            <div class="item-card-info">
+              <h4>${t.prenom || ''} ${t.nom || ''} <span style="font-size:0.78rem;font-weight:400;color:#888;">— ${t.categorie || ''}</span></h4>
+              <p style="font-style:italic;color:#555;">${(t.temoignage || '').substring(0, 120)}...</p>
+              <p style="font-size:0.78rem;color:#aaa;">${t.date || ''} · ${approuve ? '<span style="color:#27ae60;font-weight:600;">✓ Approuvé</span>' : '<span style="color:orange;font-weight:600;">En attente</span>'}</p>
+            </div>
+            <div class="item-card-actions">
+              ${!approuve ? `<button class="btn btn-sm btn-primary" onclick="approuverTemoignage('${d.id}')"><i class="fas fa-check"></i> Approuver</button>` : ''}
+              <button class="btn btn-sm" style="background:#fee;color:#e74c3c;" onclick="effacerTemoignage('${d.id}')"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>`;
+      }).join('');
+    } catch(e) { console.log('Temoignages:', e.message); }
+  }
+
+  async function approuverTemoignage(id) {
+    try {
+      await window._setDoc(window._doc(window._db, 'temoignages', id), { approuve: true }, { merge: true });
+      showToast('Témoignage approuvé !');
+      loadTemoignages();
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+
+  async function effacerTemoignage(id) {
+    if (!confirm('Supprimer ce témoignage ?')) return;
+    try {
+      await window._deleteDoc(window._doc(window._db, 'temoignages', id));
+      showToast('Témoignage supprimé !');
+      loadTemoignages();
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+
   // ===== LIVE =====
   async function loadLive() {
     try {
@@ -913,6 +1061,8 @@
   function loadAll() {
     loadFotos();
     loadLive();
+    loadTemoignages();
+    loadPrieres();
     loadActualites();
     loadHoraires();
     loadAnnonces();

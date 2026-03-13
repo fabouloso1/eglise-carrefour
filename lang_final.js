@@ -139,6 +139,7 @@ const TRANSLATIONS = {
     footer_temo: "Témoignages",
     footer_galerie: "Galerie",
     footer_don: "Faire un don",
+    nav_live: "Live",
     nav_admin: "Admin",
   },
   en: {
@@ -271,6 +272,7 @@ const TRANSLATIONS = {
     footer_temo: "Testimonies",
     footer_galerie: "Gallery",
     footer_don: "Give",
+    nav_live: "Live",
     nav_admin: "Admin",
   },
   es: {
@@ -403,6 +405,7 @@ const TRANSLATIONS = {
     footer_temo: "Testimonios",
     footer_galerie: "Galería",
     footer_don: "Donar",
+    nav_live: "Live",
     nav_admin: "Admin",
   },
   ht: {
@@ -535,6 +538,7 @@ const TRANSLATIONS = {
     footer_temo: "Temwayaj",
     footer_galerie: "Galeri",
     footer_don: "Fè yon don",
+    nav_live: "Live",
     nav_admin: "Admin",
   }
 };
