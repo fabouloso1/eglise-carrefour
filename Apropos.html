@@ -647,7 +647,30 @@
     window.OneSignalDeferred = window.OneSignalDeferred || [];
     OneSignalDeferred.push(async function(OneSignal) {
       await OneSignal.init({
-        appId: "357202c0-41e0-42d7-a6bb-03be43ee63ff",
+        appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
+        promptOptions: {
+          slidedown: {
+            prompts: [
+              {
+                type: "push",
+                autoPrompt: true,
+                text: {
+                  actionMessage: "Restez connectés à notre église ! Recevez les annonces en temps réel.",
+                  acceptButton: "Oui, m'abonner",
+                  cancelButton: "Plus tard"
+                },
+                delay: { pageViews: 1, timeDelay: 5 }
+              }
+            ]
+          }
+        },
+        welcomeNotification: {
+          disable: false,
+          title: "Église de Dieu de la Prophétie",
+          message: "Bienvenue ! Vous recevrez désormais nos annonces. 🙏"
+        },
+        notifyButton: { enable: false },
+        allowLocalhostAsSecureOrigin: true
       });
     });
   </script>
@@ -659,6 +682,8 @@
     gtag('js', new Date());
     gtag('config', 'G-G9Y14X29NZ');
   </script>
+<script src="lang.js"></script>
+<script>document.addEventListener('DOMContentLoaded', function(){ if(window.initLang) initLang(); });</script>
 </head>
 <body>
 
@@ -696,6 +721,18 @@
       <li><a href="Live.html" class="nav-live"><i class="fas fa-circle-dot"></i> Live</a></li>
       <li><a href="admin.html" class="nav-admin"><i class="fas fa-lock"></i> Admin</a></li>
     </ul>
+    <!-- Bouton langue -->
+    <div class="lang-switcher" id="langSwitcher" style="margin-left:8px;">
+      <button class="lang-btn" id="langBtn" onclick="toggleLangMenu()" title="Changer la langue">
+        🌐 <i class="fas fa-chevron-down" style="font-size:0.65rem;"></i>
+      </button>
+      <div class="lang-menu" id="langMenu">
+        <button class="lang-option" data-lang="fr" onclick="applyLang('fr');toggleLangMenu()">🇫🇷 Français</button>
+        <button class="lang-option" data-lang="en" onclick="applyLang('en');toggleLangMenu()">🇬🇧 English</button>
+        <button class="lang-option" data-lang="es" onclick="applyLang('es');toggleLangMenu()">🇪🇸 Español</button>
+        <button class="lang-option" data-lang="ht" onclick="applyLang('ht');toggleLangMenu()">🇭🇹 Kreyòl</button>
+      </div>
+    </div>
   </div>
 </nav>
 <div class="nav-overlay" id="navOverlay"></div>

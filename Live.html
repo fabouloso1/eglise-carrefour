@@ -430,7 +430,32 @@
   <script>
     window.OneSignalDeferred = window.OneSignalDeferred || [];
     OneSignalDeferred.push(async function(OneSignal) {
-      await OneSignal.init({ appId: "357202c0-41e0-42d7-a6bb-03be43ee63ff" });
+      await OneSignal.init({
+        appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
+        promptOptions: {
+          slidedown: {
+            prompts: [
+              {
+                type: "push",
+                autoPrompt: true,
+                text: {
+                  actionMessage: "Restez connectés à notre église ! Recevez les annonces en temps réel.",
+                  acceptButton: "Oui, m'abonner",
+                  cancelButton: "Plus tard"
+                },
+                delay: { pageViews: 1, timeDelay: 5 }
+              }
+            ]
+          }
+        },
+        welcomeNotification: {
+          disable: false,
+          title: "Église de Dieu de la Prophétie",
+          message: "Bienvenue ! Vous recevrez désormais nos annonces. 🙏"
+        },
+        notifyButton: { enable: false },
+        allowLocalhostAsSecureOrigin: true
+      });
     });
   </script>
   <!-- Firebase - chaje lyen live -->
@@ -594,6 +619,7 @@
 </div>
 
 <script src="lang.js"></script>
+<script>document.addEventListener("DOMContentLoaded", function(){ if(window.initLang) initLang(); });</script>
 <script src="nav.js"></script>
 <script>
 
