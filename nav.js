@@ -162,24 +162,49 @@ const NAV = (() => {
 
   // Fonksyon pou jere abònman notifikasyon
   window.toggleNotifSubscription = async function() {
-    if (!window.OneSignal) { alert('Notifikasyon pa disponib sou navigatè sa a.'); return; }
     try {
-      const permission = await OneSignal.Notifications.permission;
-      if (!permission) {
-        await OneSignal.Notifications.requestPermission();
-        updateBellState();
-      } else {
-        const isSubscribed = await OneSignal.User.PushSubscription.optedIn;
-        if (isSubscribed) {
-          await OneSignal.User.PushSubscription.optOut();
-          showBellToast('🔕 Ou dezabòne notifikasyon yo');
-        } else {
-          await OneSignal.User.PushSubscription.optIn();
-          showBellToast('🔔 Ou abòne notifikasyon yo!');
-        }
-        updateBellState();
+      // Verifye si navigatè a sipòte notifikasyon
+      if (!('Notification' in window)) {
+        showBellToast('❌ Votre navigateur ne supporte pas les notifications');
+        return;
       }
-    } catch(e) { console.log('Notif error:', e); }
+
+      // Si OneSignal pa chaje encore
+      if (!window.OneSignal) {
+        showBellToast('⏳ Chargement, veuillez réessayer...');
+        return;
+      }
+
+      const permission = Notification.permission;
+
+      if (permission === 'denied') {
+        showBellToast('❌ Notifications bloquées — activez-les dans les paramètres de votre navigateur');
+        return;
+      }
+
+      if (permission === 'default') {
+        // Mande pèmisyon
+        showBellToast('🔔 Demande de permission...');
+        await OneSignal.Notifications.requestPermission();
+        setTimeout(updateBellState, 1000);
+        return;
+      }
+
+      // Deja gen pèmisyon - toggle abònman
+      const isSubscribed = await OneSignal.User.PushSubscription.optedIn;
+      if (isSubscribed) {
+        await OneSignal.User.PushSubscription.optOut();
+        showBellToast('🔕 Notifications désactivées');
+      } else {
+        await OneSignal.User.PushSubscription.optIn();
+        showBellToast('🔔 Abonné ! Vous recevrez nos notifications');
+      }
+      setTimeout(updateBellState, 1000);
+
+    } catch(e) {
+      console.log('Notif error:', e);
+      showBellToast('❌ Erreur : ' + e.message);
+    }
   };
 
   window.updateBellState = async function() {
