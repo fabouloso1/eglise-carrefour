@@ -61,7 +61,7 @@ const NAV = (() => {
         <!-- Bouton Notifikasyon -->
         <button class="notif-bell" id="notifBell" onclick="toggleNotifSubscription()" title="Notifications">
           <i class="fas fa-bell" id="bellIcon"></i>
-          <span class="notif-dot" id="notifDot" style="display:none"></span>
+          <span class="notif-dot" id="notifDot"></span>
         </button>
 
       </div>
