@@ -604,14 +604,6 @@
         <label>Description de la photo (optionnel)</label>
         <input type="text" id="fotoDesc" placeholder="Ex : Culte dimanche 15 juin..." />
 
-        <label>Catégorie</label>
-        <select id="fotoCategorie">
-          <option value="culte">Culte</option>
-          <option value="jeunesse">Jeunesse</option>
-          <option value="evenement">Événement</option>
-          <option value="autre">Autre</option>
-        </select>
-
         <div class="upload-zone" id="uploadZone">
           <input type="file" id="fotoInput" accept="image/*" multiple onchange="handleFotoSelect(event)">
           <i class="fas fa-cloud-upload-alt"></i>
@@ -1106,7 +1098,7 @@
     btn.innerHTML = '<span class="spinner"></span> Publication en cours...';
 
     const desc = document.getElementById('fotoDesc').value;
-    const cat = document.getElementById('fotoCategorie').value;
+    const cat = 'pasteur'; // Tout foto pastè ale nan Photos du Pasteur
 
     try {
       for (const file of selectedFiles) {
