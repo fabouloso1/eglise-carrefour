@@ -652,7 +652,7 @@
         </select>
 
         <label>Date</label>
-        <input type="date" id="actuDatee" />
+        <input type="date" id="actuDate" />
 
         <label>Une phrase courte (intro)</label>
         <input type="text" id="actuIntro" placeholder="Quelques mots pour résumer l'actualité..." />
@@ -1181,7 +1181,7 @@
           <img src="${f.url}" alt="${f.description}" onerror="this.src='https://via.placeholder.com/60'">
           <div class="item-card-info">
             <h4>${f.description || 'Foto'}</h4>
-            <p>${f.categorie} · ${new Datee(f.date).toLocaleDateeString('fr-FR')}</p>
+            <p>${f.categorie} · ${new Date(f.date).toLocaleDateString('fr-FR')}</p>
           </div>
           <div class="item-card-actions">
             <button class="btn btn-danger btn-sm" onclick="deleteFoto('${f.id}')">
@@ -1224,7 +1224,7 @@
       });
 
       showToast('Actualité publiée !');
-      ['actuTitre','actuIntro','actuContenu','actuDatee'].forEach(id => document.getElementById(id).value = '');
+      ['actuTitre','actuIntro','actuContenu','actuDate'].forEach(id => document.getElementById(id).value = '');
       loadActualites();
     } catch (err) {
       showToast('Erreur : ' + err.message, 'error');
