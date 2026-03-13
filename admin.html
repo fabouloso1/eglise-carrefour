@@ -1068,7 +1068,7 @@
     preview.innerHTML = '';
 
     files.forEach((f, i) => {
-      if (f.size > 5 * 1024 * 1024) { showToast('Foto ' + f.name + ' twò gwo (maks 5MB)', 'error'); return; }
+      if (f.size > 800 * 1024) { showToast('Foto ' + f.name + ' twò gwo — tanpri chwazi yon foto ki mwens pase 800KB', 'error'); return; }
       const reader = new FileReader();
       reader.onload = function(ev) {
         preview.innerHTML += `
@@ -1139,23 +1139,8 @@
   function fileToBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          // Redui foto a - maks 800px lajè, kalite 70%
-          const canvas = document.createElement('canvas');
-          const maxW = 800;
-          let w = img.width, h = img.height;
-          if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
-          canvas.width = w;
-          canvas.height = h;
-          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-          resolve(canvas.toDataURL('image/jpeg', 0.7));
-        };
-        img.onerror = reject;
-        img.src = e.target.result;
-      };
-      reader.onerror = reject;
+      reader.onload = (e) => resolve(e.target.result);
+      reader.onerror = (e) => reject(new Error('Echec lecture fichier'));
       reader.readAsDataURL(file);
     });
   }
