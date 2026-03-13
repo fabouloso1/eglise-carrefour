@@ -1212,11 +1212,11 @@
     if (!titre) { showToast('Veuillez saisir un titre !', 'error'); return; }
 
     try {
-      const date = document.getElementById('actuDatee').value;
+      const date = document.getElementById('actuDate').value;
       await window._addDoc(window._collection(window._db, 'actualites'), {
         titre,
         categorie: document.getElementById('actuCategorie').value,
-        date: date || new Datee().toLocaleDateeString('fr-FR'),
+        date: date || new Date().toLocaleDateString('fr-FR'),
         intro: document.getElementById('actuIntro').value,
         contenu: document.getElementById('actuContenu').value,
         auteur: document.getElementById('actuAuteur').value || 'Pasteur Anouis Jean',
