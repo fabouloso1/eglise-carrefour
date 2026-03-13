@@ -407,6 +407,7 @@
     document.getElementById('vue-categories').style.display = 'none';
     document.getElementById('vue-photos').style.display = 'block';
     document.getElementById('titre-categorie').textContent = cat.titre;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
     var grille = document.getElementById('grille-photos');
     grille.innerHTML = '';
@@ -428,8 +429,15 @@
           photosActuelles.forEach(function(photo, i) {
             var item = document.createElement('div');
             item.className = 'photo-item';
-            item.onclick = function() { ouvrirLightbox(i); };
-            item.innerHTML = '<img src="' + photo.src + '" alt="' + photo.caption + '" loading="lazy">' +
+            var vu = !!localStorage.getItem('vu_firebase_' + i);
+            var badgeHtml = !vu ? '<span class="badge-new">Nouvo</span>' : '';
+            item.onclick = function() {
+              localStorage.setItem('vu_firebase_' + i, '1');
+              var b = item.querySelector('.badge-new');
+              if (b) b.remove();
+              ouvrirLightbox(i);
+            };
+            item.innerHTML = badgeHtml + '<img src="' + photo.src + '" alt="' + photo.caption + '" loading="lazy">' +
               '<div class="photo-overlay"><i class="fas fa-search-plus"></i><p>' + photo.caption + '</p></div>';
             grille.appendChild(item);
           });
