@@ -1128,6 +1128,7 @@
       document.getElementById('photoPreview').innerHTML = '';
       document.getElementById('fotoInput').value = '';
       selectedFiles = [];
+      btn.disabled = false;
       btn.innerHTML = '<i class="fas fa-upload"></i> Publier les photos sur le site';
       loadFotos();
     } catch (err) {

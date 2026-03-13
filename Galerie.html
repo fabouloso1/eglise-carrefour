@@ -307,7 +307,39 @@
 
 <div id="foot-placeholder"></div>
 
-<script src="nav.js"></script>
+  <!-- OneSignal Push Notifications -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "357202c0-41e0-42d7-a6bb-03be43ee63ff",
+        promptOptions: {
+          slidedown: {
+            prompts: [{
+              type: "push", autoPrompt: true,
+              text: {
+                actionMessage: "Restez connectés à notre église ! Recevez les annonces en temps réel.",
+                acceptButton: "Oui, m'abonner",
+                cancelButton: "Plus tard"
+              },
+              delay: { pageViews: 1, timeDelay: 5 }
+            }]
+          }
+        },
+        welcomeNotification: {
+          disable: false,
+          title: "Église de Dieu de la Prophétie",
+          message: "Bienvenue ! Vous recevrez désormais nos annonces. 🙏"
+        },
+        notifyButton: { enable: false },
+        allowLocalhostAsSecureOrigin: true
+      });
+    });
+  </script>
+  <script src="lang.js"></script>
+<script>document.addEventListener('DOMContentLoaded', function(){ if(window.initLang) initLang(); });</script>
+  <script src="nav.js"></script>
 <script>
   NAV.init('Galerie.html');
 
@@ -379,20 +411,24 @@
 
     // Kategori Firebase (Photos du Pasteur)
     if (cat.firebase) {
-      var fotos = window._fotosFirebase || [];
-      if (fotos.length === 0) {
-        grille.innerHTML = '<p style="color:var(--text-muted);text-align:center;grid-column:1/-1;padding:40px 0;"><i class="fas fa-camera" style="font-size:2rem;display:block;margin-bottom:12px;color:var(--gold)"></i>Aucune photo pour le moment.<br><small>Le pasteur peut en ajouter depuis le panel admin.</small></p>';
-        photosActuelles = [];
-        return;
-      }
-      photosActuelles = fotos.map(function(f) { return { src: f.url, caption: f.description || '' }; });
-      photosActuelles.forEach(function(photo, i) {
-        var item = document.createElement('div');
-        item.className = 'photo-item';
-        item.onclick = function() { ouvrirLightbox(i); };
-        item.innerHTML = '<img src="' + photo.src + '" alt="' + photo.caption + '">' +
-          '<div class="photo-overlay"><i class="fas fa-search-plus"></i><p>' + photo.caption + '</p></div>';
-        grille.appendChild(item);
+      grille.innerHTML = '<p style="text-align:center;padding:40px;color:#aaa;"><i class="fas fa-spinner fa-spin"></i> Chargement...</p>';
+      chargerFotosPasteur().then(function() {
+        grille.innerHTML = '';
+        var fotos = window._fotosFirebase || [];
+        if (fotos.length === 0) {
+          grille.innerHTML = '<p style="color:var(--text-muted);text-align:center;grid-column:1/-1;padding:40px 0;"><i class="fas fa-camera" style="font-size:2rem;display:block;margin-bottom:12px;color:var(--gold)"></i>Aucune photo pour le moment.<br><small>Le pasteur peut en ajouter depuis le panel admin.</small></p>';
+          photosActuelles = [];
+          return;
+        }
+        photosActuelles = fotos.map(function(f) { return { src: f.url, caption: f.description || '' }; });
+        photosActuelles.forEach(function(photo, i) {
+          var item = document.createElement('div');
+          item.className = 'photo-item';
+          item.onclick = function() { ouvrirLightbox(i); };
+          item.innerHTML = '<img src="' + photo.src + '" alt="' + photo.caption + '">' +
+            '<div class="photo-overlay"><i class="fas fa-search-plus"></i><p>' + photo.caption + '</p></div>';
+          grille.appendChild(item);
+        });
       });
       return;
     }
