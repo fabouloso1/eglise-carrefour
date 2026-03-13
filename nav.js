@@ -16,6 +16,13 @@ const NAV = (() => {
   ];
 
   function buildNav(activePage) {
+    // CSS klòch notifikasyon
+    if (!document.getElementById('notif-bell-css')) {
+      const s = document.createElement('style');
+      s.id = 'notif-bell-css';
+      s.textContent = '.notif-bell{position:relative;background:none;border:none;cursor:pointer;color:white;font-size:1.2rem;padding:6px 10px;margin-left:4px;display:flex;align-items:center;transition:transform 0.2s;}.notif-bell:hover{transform:scale(1.2)}.notif-bell.subscribed{color:#f0c040}.notif-dot{position:absolute;top:2px;right:2px;width:9px;height:9px;background:#e74c3c;border-radius:50%;border:2px solid #1c1c3c;animation:pulse-dot 1.5s infinite}@keyframes pulse-dot{0%,100%{transform:scale(1)}50%{transform:scale(1.4)}}';
+      document.head.appendChild(s);
+    }
     const items = LINKS.map(link => {
       const isActive = link.href === activePage || (link.dropdown && link.dropdown.some(d => d.href === activePage));
       if (link.dropdown) {
@@ -151,36 +158,7 @@ const NAV = (() => {
     if (m) m.classList.toggle('open');
   };
 
-  // CSS pou klòch notifikasyon
-  const bellCSS = document.createElement('style');
-  bellCSS.textContent = `
-    .notif-bell {
-      position: relative;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: white;
-      font-size: 1.2rem;
-      padding: 6px 8px;
-      margin-left: 4px;
-      transition: transform 0.2s;
-    }
-    .notif-bell:hover { transform: scale(1.2); }
-    .notif-bell.subscribed { color: #f0c040; }
-    .notif-dot {
-      position: absolute;
-      top: 4px; right: 4px;
-      width: 8px; height: 8px;
-      background: #e74c3c;
-      border-radius: 50%;
-      animation: pulse-dot 1.5s infinite;
-    }
-    @keyframes pulse-dot {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.4); opacity: 0.7; }
-    }
-  `;
-  document.head.appendChild(bellCSS);
+
 
   // Fonksyon pou jere abònman notifikasyon
   window.toggleNotifSubscription = async function() {
