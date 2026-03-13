@@ -239,10 +239,7 @@
 <script src="nav.js"></script>
 <script>
   NAV.init('Actualites.html');
-  // Aplike lang apre nav chaje pou bouton lang parèt
-  document.addEventListener('DOMContentLoaded', function() {
-    initLang();
-  });
+  if (window.initLang) initLang();
 
   function getArticles() {
     const lang = localStorage.getItem('site_lang') || 'fr';

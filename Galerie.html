@@ -97,6 +97,57 @@
       .cat-grid { grid-template-columns: 1fr; }
     }
   </style>
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy, where }
+      from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
+      authDomain: "eglise-carrefour.firebaseapp.com",
+      projectId: "eglise-carrefour",
+      storageBucket: "eglise-carrefour.firebasestorage.app",
+      messagingSenderId: "421333694767",
+      appId: "1:421333694767:web:30c18da36ae020821a49da"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Chaje foto pastè yo nan Firebase
+    async function chargerFotosPasteur() {
+      try {
+        const q = query(collection(db, 'galerie'), orderBy('timestamp', 'desc'));
+        const snap = await getDocs(q);
+        const fotos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        window._fotosFirebase = fotos;
+
+        // Mete a jou badge count
+        const badge = document.getElementById('pasteur-count');
+        if (badge) badge.textContent = fotos.length > 0 ? fotos.length + ' photos' : 'À venir';
+
+        // Mete thumbnail premye foto
+        if (fotos.length > 0) {
+          const thumb = document.getElementById('pasteur-thumb');
+          if (thumb) {
+            thumb.style.backgroundImage = 'url(' + fotos[0].url + ')';
+            thumb.style.backgroundSize = 'cover';
+            thumb.style.backgroundPosition = 'center';
+            const fallback = thumb.querySelector('.cat-icon-fallback');
+            if (fallback) fallback.style.display = 'none';
+            const img = thumb.querySelector('img');
+            if (img) { img.src = fotos[0].url; img.style.display = 'block'; }
+          }
+        }
+      } catch(e) {
+        console.log('Firebase:', e.message);
+        window._fotosFirebase = [];
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', chargerFotosPasteur);
+  </script>
 </head>
 <body>
 
@@ -171,6 +222,17 @@
           <div class="cat-info">
             <h3><i class="fas fa-hands-praying"></i> Veillée de prière</h3>
             <span>À venir <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </div>
+
+        <div class="cat-card" onclick="ouvrirCategorie('pasteur')">
+          <div class="cat-thumb" id="pasteur-thumb" style="background:linear-gradient(135deg,#1c1c3c,#3a1c3c)">
+            <img src="" alt="Photos du Pasteur" style="display:none;width:100%;height:100%;object-fit:cover;">
+            <div class="cat-icon-fallback"><i class="fas fa-user-tie"></i></div>
+          </div>
+          <div class="cat-info">
+            <h3><i class="fas fa-user-tie"></i> Photos du Pasteur</h3>
+            <span id="pasteur-count">Chargement... <i class="fas fa-arrow-right"></i></span>
           </div>
         </div>
 
@@ -253,6 +315,11 @@
 
   // ===== DONE YO POU CHAK KATEGORI =====
   var categories = {
+    'pasteur': {
+      titre: 'Photos du Pasteur',
+      firebase: true,
+      photos: []
+    },
     'dimanche': {
       titre: 'Culte du dimanche matin',
       photos: [
@@ -301,6 +368,27 @@
 
     var grille = document.getElementById('grille-photos');
     grille.innerHTML = '';
+
+    // Kategori Firebase (Photos du Pasteur)
+    if (cat.firebase) {
+      var fotos = window._fotosFirebase || [];
+      if (fotos.length === 0) {
+        grille.innerHTML = '<p style="color:var(--text-muted);text-align:center;grid-column:1/-1;padding:40px 0;"><i class="fas fa-camera" style="font-size:2rem;display:block;margin-bottom:12px;color:var(--gold)"></i>Aucune photo pour le moment.<br><small>Le pasteur peut en ajouter depuis le panel admin.</small></p>';
+        photosActuelles = [];
+        return;
+      }
+      photosActuelles = fotos.map(function(f) { return { src: f.url, caption: f.description || '' }; });
+      photosActuelles.forEach(function(photo, i) {
+        var item = document.createElement('div');
+        item.className = 'photo-item';
+        item.onclick = function() { ouvrirLightbox(i); };
+        item.innerHTML = '<img src="' + photo.src + '" alt="' + photo.caption + '">' +
+          '<div class="photo-overlay"><i class="fas fa-search-plus"></i><p>' + photo.caption + '</p></div>';
+        grille.appendChild(item);
+      });
+      return;
+    }
+
     photosActuelles = cat.photos;
 
     if (cat.photos.length === 0) {

@@ -91,6 +91,7 @@
 <div class="contact-main">
   <div class="contact-grid">
 
+    <!-- GAUCHE : Infos -->
     <div class="contact-info">
       <div class="info-card">
         <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
@@ -138,6 +139,7 @@
       </div>
     </div>
 
+    <!-- DROITE : Formulaire -->
     <div class="contact-form-wrap">
       <h2 class="form-title" data-i18n="contact_form_title">Envoyez-nous un message</h2>
       <p class="form-subtitle" data-i18n="contact_form_subtitle">Nous vous répondrons dans les plus brefs délais. Que Dieu vous bénisse !</p>
@@ -194,6 +196,7 @@
     </div>
   </div>
 
+  <!-- MAP -->
   <div class="map-section">
     <div class="map-section-header">
       <i class="fas fa-map-marker-alt"></i>
@@ -212,9 +215,13 @@
 <script src="nav.js"></script>
 <script>
   NAV.init('Contact.html');
-  document.addEventListener('DOMContentLoaded', function() {
-    if (window.initLang) initLang();
-  });
+  // Aplike tradiksyon - 2 fwa pou asire tout eleman tradui
+  const _lang = localStorage.getItem('site_lang') || 'fr';
+  if (window.applyLang) {
+    window.applyLang(_lang);
+    // 2yèm aplikasyon apre yon ti dèle pou eleman ki ta chaje ta
+    setTimeout(function(){ window.applyLang(_lang); }, 50);
+  }
 
   document.getElementById('contactForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -224,4 +231,3 @@
 </script>
 </body>
 </html>
-```

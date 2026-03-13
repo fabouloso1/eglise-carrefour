@@ -66,6 +66,39 @@ const TRANSLATIONS = {
     footer_community_title: "Communauté",
     footer_find_title: "Nous trouver",
     footer_rights: "© 2025 Église de Dieu de la Prophétie de Carrefour waney 93 — Tous droits réservés",
+    // Contact
+    contact_badge: "Contactez-nous",
+    contact_hero_title: "Nous sommes là pour vous",
+    contact_hero_text: "Une question, un témoignage ou besoin de soutien ? Notre équipe est disponible pour vous.",
+    contact_address_title: "Notre adresse",
+    contact_phone_title: "Téléphone",
+    contact_email_title: "Email",
+    contact_social_title: "Réseaux sociaux",
+    contact_facebook: "Facebook — Église de Carrefour",
+    contact_youtube: "YouTube — Cultes en direct",
+    contact_schedule_title: "Horaires des cultes",
+    contact_sunday: "Dimanche",
+    contact_tuesday: "Mardi",
+    contact_thursday: "Jeudi",
+    contact_form_title: "Envoyez-nous un message",
+    contact_form_subtitle: "Nous vous répondrons dans les plus brefs délais. Que Dieu vous bénisse !",
+    contact_firstname: "Prénom *",
+    contact_lastname: "Nom *",
+    contact_email_label: "Adresse email *",
+    contact_phone_label: "Téléphone (optionnel)",
+    contact_subject_label: "Sujet *",
+    contact_subject_choose: "-- Choisissez un sujet --",
+    contact_subject_info: "Informations générales",
+    contact_subject_prayer: "Demande de prière",
+    contact_subject_visit: "Première visite",
+    contact_subject_don: "Don & offrande",
+    contact_subject_other: "Autre",
+    contact_message_label: "Votre message *",
+    contact_message_ph: "Écrivez votre message ici...",
+    contact_send_btn: "Envoyer le message",
+    contact_success_title: "Message envoyé !",
+    contact_success_text: "Merci de nous avoir contactés. Nous vous répondrons très bientôt. Que Dieu vous bénisse !",
+    contact_map_title: "Nous trouver à Carrefour, Port-au-Prince, Haïti",
     // Actualites page
     actu_page_title: "Actualités — Église de Dieu de la Prophétie de Carrefour",
     actu_hero_title: "Actualités de l'Église",
@@ -106,6 +139,7 @@ const TRANSLATIONS = {
     footer_temo: "Témoignages",
     footer_galerie: "Galerie",
     footer_don: "Faire un don",
+    nav_admin: "Admin",
   },
   en: {
     lang: "en",
@@ -164,6 +198,39 @@ const TRANSLATIONS = {
     footer_community_title: "Community",
     footer_find_title: "Find us",
     footer_rights: "© 2025 Church of God of Prophecy of Carrefour waney 93 — All rights reserved",
+    // Contact
+    contact_badge: "Contact us",
+    contact_hero_title: "We are here for you",
+    contact_hero_text: "A question, a testimony or need support? Our team is available for you.",
+    contact_address_title: "Our address",
+    contact_phone_title: "Phone",
+    contact_email_title: "Email",
+    contact_social_title: "Social media",
+    contact_facebook: "Facebook — Église de Carrefour",
+    contact_youtube: "YouTube — Live services",
+    contact_schedule_title: "Service times",
+    contact_sunday: "Sunday",
+    contact_tuesday: "Tuesday",
+    contact_thursday: "Thursday",
+    contact_form_title: "Send us a message",
+    contact_form_subtitle: "We will reply as soon as possible. God bless you!",
+    contact_firstname: "First name *",
+    contact_lastname: "Last name *",
+    contact_email_label: "Email address *",
+    contact_phone_label: "Phone (optional)",
+    contact_subject_label: "Subject *",
+    contact_subject_choose: "-- Choose a subject --",
+    contact_subject_info: "General information",
+    contact_subject_prayer: "Prayer request",
+    contact_subject_visit: "First visit",
+    contact_subject_don: "Donation & offering",
+    contact_subject_other: "Other",
+    contact_message_label: "Your message *",
+    contact_message_ph: "Write your message here...",
+    contact_send_btn: "Send message",
+    contact_success_title: "Message sent!",
+    contact_success_text: "Thank you for contacting us. We will reply very soon. God bless you!",
+    contact_map_title: "Find us in Carrefour, Port-au-Prince, Haiti",
     // Actualites page
     actu_page_title: "News — Church of God of Prophecy of Carrefour",
     actu_hero_title: "Church News",
@@ -204,6 +271,7 @@ const TRANSLATIONS = {
     footer_temo: "Testimonies",
     footer_galerie: "Gallery",
     footer_don: "Give",
+    nav_admin: "Admin",
   },
   es: {
     lang: "es",
@@ -262,6 +330,39 @@ const TRANSLATIONS = {
     footer_community_title: "Comunidad",
     footer_find_title: "Encuéntranos",
     footer_rights: "© 2025 Iglesia de Dios de la Profecía de Carrefour waney 93 — Todos los derechos reservados",
+    // Contact
+    contact_badge: "Contáctenos",
+    contact_hero_title: "Estamos aquí para usted",
+    contact_hero_text: "¿Una pregunta, un testimonio o necesita apoyo? Nuestro equipo está disponible para usted.",
+    contact_address_title: "Nuestra dirección",
+    contact_phone_title: "Teléfono",
+    contact_email_title: "Correo electrónico",
+    contact_social_title: "Redes sociales",
+    contact_facebook: "Facebook — Iglesia de Carrefour",
+    contact_youtube: "YouTube — Cultos en vivo",
+    contact_schedule_title: "Horarios de culto",
+    contact_sunday: "Domingo",
+    contact_tuesday: "Martes",
+    contact_thursday: "Jueves",
+    contact_form_title: "Envíenos un mensaje",
+    contact_form_subtitle: "Le responderemos lo antes posible. ¡Que Dios le bendiga!",
+    contact_firstname: "Nombre *",
+    contact_lastname: "Apellido *",
+    contact_email_label: "Correo electrónico *",
+    contact_phone_label: "Teléfono (opcional)",
+    contact_subject_label: "Asunto *",
+    contact_subject_choose: "-- Elija un asunto --",
+    contact_subject_info: "Información general",
+    contact_subject_prayer: "Solicitud de oración",
+    contact_subject_visit: "Primera visita",
+    contact_subject_don: "Donación & ofrenda",
+    contact_subject_other: "Otro",
+    contact_message_label: "Su mensaje *",
+    contact_message_ph: "Escriba su mensaje aquí...",
+    contact_send_btn: "Enviar mensaje",
+    contact_success_title: "¡Mensaje enviado!",
+    contact_success_text: "Gracias por contactarnos. Le responderemos muy pronto. ¡Que Dios le bendiga!",
+    contact_map_title: "Encuéntrenos en Carrefour, Port-au-Prince, Haití",
     // Actualites page
     actu_page_title: "Noticias — Iglesia de Dios de la Profecía de Carrefour",
     actu_hero_title: "Noticias de la Iglesia",
@@ -302,6 +403,7 @@ const TRANSLATIONS = {
     footer_temo: "Testimonios",
     footer_galerie: "Galería",
     footer_don: "Donar",
+    nav_admin: "Admin",
   },
   ht: {
     lang: "ht",
@@ -360,6 +462,39 @@ const TRANSLATIONS = {
     footer_community_title: "Kominote",
     footer_find_title: "Jwenn nou",
     footer_rights: "© 2025 Legliz Bondye Pwofesi Kafou waney 93 — Tout dwa rezève",
+    // Contact
+    contact_badge: "Kontakte nou",
+    contact_hero_title: "Nou la pou ou",
+    contact_hero_text: "Yon kesyon, yon temwayaj oswa bezwen sipò? Ekip nou an disponib pou ou.",
+    contact_address_title: "Adrès nou",
+    contact_phone_title: "Telefòn",
+    contact_email_title: "Imèl",
+    contact_social_title: "Rezo sosyal",
+    contact_facebook: "Facebook — Legliz Kafou",
+    contact_youtube: "YouTube — Kilt an dirèk",
+    contact_schedule_title: "Orè kilt yo",
+    contact_sunday: "Dimanch",
+    contact_tuesday: "Madi",
+    contact_thursday: "Jedi",
+    contact_form_title: "Voye nou yon mesaj",
+    contact_form_subtitle: "Nou ap reponn ou pi vit posib. Ke Bondye beni ou!",
+    contact_firstname: "Prenon *",
+    contact_lastname: "Non *",
+    contact_email_label: "Adrès imèl *",
+    contact_phone_label: "Telefòn (opsyonèl)",
+    contact_subject_label: "Sijè *",
+    contact_subject_choose: "-- Chwazi yon sijè --",
+    contact_subject_info: "Enfòmasyon jeneral",
+    contact_subject_prayer: "Demann priyè",
+    contact_subject_visit: "Premye vizit",
+    contact_subject_don: "Don & ofrann",
+    contact_subject_other: "Lòt",
+    contact_message_label: "Mesaj ou *",
+    contact_message_ph: "Ekri mesaj ou isit la...",
+    contact_send_btn: "Voye mesaj la",
+    contact_success_title: "Mesaj voye!",
+    contact_success_text: "Mèsi pou kontakte nou. Nou ap reponn ou trè byento. Ke Bondye beni ou!",
+    contact_map_title: "Jwenn nou Kafou, Pòtoprens, Ayiti",
     // Actualites page
     actu_page_title: "Aktyalite — Legliz Bondye Pwofesi Kafou",
     actu_hero_title: "Aktyalite Legliz la",
@@ -400,6 +535,7 @@ const TRANSLATIONS = {
     footer_temo: "Temwayaj",
     footer_galerie: "Galeri",
     footer_don: "Fè yon don",
+    nav_admin: "Admin",
   }
 };
 
@@ -408,11 +544,20 @@ function applyLang(lang) {
   if (!t) return;
   localStorage.setItem('site_lang', lang);
   document.documentElement.lang = lang;
+  // Update html dir pou lang ki pa LTR (si nesesè)
+  document.documentElement.setAttribute('data-lang', lang);
 
   // Tradui tout eleman data-i18n
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
-    if (t[key] !== undefined) el.innerHTML = t[key];
+    if (t[key] !== undefined) {
+      // Pou option tags, itilize textContent pito
+      if (el.tagName === 'OPTION') {
+        el.textContent = t[key];
+      } else {
+        el.innerHTML = t[key];
+      }
+    }
   });
 
   // Tradui placeholder
