@@ -45,23 +45,17 @@ const NAV = (() => {
         <a href="index.html" class="nav-brand"><img src="logo.png" alt="Logo" class="nav-logo"></a>
         <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
         <ul class="nav-links" id="navLinks">${items}</ul>
-        <!-- Bouton Lang + Klòch nan yon gwoup -->
-        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-          <div class="lang-switcher" id="langSwitcher">
-            <button class="lang-btn" id="langBtn" onclick="toggleLangMenu()" title="Changer la langue">
-              🌐
-            </button>
-            <div class="lang-menu" id="langMenu">
-              <button class="lang-option" data-lang="fr" onclick="applyLang('fr');toggleLangMenu()">🇫🇷 Français</button>
-              <button class="lang-option" data-lang="en" onclick="applyLang('en');toggleLangMenu()">🇬🇧 English</button>
-              <button class="lang-option" data-lang="es" onclick="applyLang('es');toggleLangMenu()">🇪🇸 Español</button>
-              <button class="lang-option" data-lang="ht" onclick="applyLang('ht');toggleLangMenu()">🇭🇹 Kreyòl</button>
-            </div>
-          </div>
-          <button class="notif-bell" id="notifBell" onclick="toggleNotifSubscription()" title="Notifications" style="font-size:1rem;padding:2px 6px;">
-            <i class="fas fa-bell" id="bellIcon"></i>
-            <span class="notif-dot" id="notifDot"></span>
+        <!-- Bouton Lang -->
+        <div class="lang-switcher" id="langSwitcher">
+          <button class="lang-btn" id="langBtn" onclick="toggleLangMenu()" title="Changer la langue">
+            🌐
           </button>
+          <div class="lang-menu" id="langMenu">
+            <button class="lang-option" data-lang="fr" onclick="applyLang('fr');toggleLangMenu()">🇫🇷 Français</button>
+            <button class="lang-option" data-lang="en" onclick="applyLang('en');toggleLangMenu()">🇬🇧 English</button>
+            <button class="lang-option" data-lang="es" onclick="applyLang('es');toggleLangMenu()">🇪🇸 Español</button>
+            <button class="lang-option" data-lang="ht" onclick="applyLang('ht');toggleLangMenu()">🇭🇹 Kreyòl</button>
+          </div>
         </div>
 
       </div>
