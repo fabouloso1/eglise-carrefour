@@ -1091,42 +1091,48 @@
     }
   }
 
+  function resetUploadBtn() {
+    const btn = document.getElementById('uploadBtn');
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-upload"></i> Publier les photos sur le site';
+    }
+  }
+
   async function uploadFotos() {
     if (!selectedFiles.length) return;
     const btn = document.getElementById('uploadBtn');
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span> Publication en cours...';
 
-    const desc = document.getElementById('fotoDesc').value;
-    const cat = 'pasteur'; // Tout foto pastè ale nan Photos du Pasteur
+    const desc = document.getElementById('fotoDesc').value.trim();
+    const filesToUpload = [...selectedFiles];
+    let uploaded = 0;
 
     try {
-      for (const file of selectedFiles) {
-        // Upload photooto nan Firestore sèlman si Storage pa disponib
-        // Konvèti an base64 pou sove nan Firestore
+      for (const file of filesToUpload) {
         const base64 = await fileToBase64(file);
         await window._addDoc(window._collection(window._db, 'galerie'), {
           url: base64,
-          description: desc || file.name,
-          categorie: cat,
+          description: desc || file.name.replace(/\.[^/.]+$/, ''),
+          categorie: 'pasteur',
           nom: file.name,
           date: new Date().toISOString(),
           timestamp: window._serverTimestamp()
         });
+        uploaded++;
       }
 
-      showToast(selectedFiles.length + ' photo(s) publiée(s) avec succès !');
+      showToast(uploaded + ' photo(s) publiée(s) avec succès !');
       document.getElementById('fotoDesc').value = '';
       document.getElementById('photoPreview').innerHTML = '';
       document.getElementById('fotoInput').value = '';
       selectedFiles = [];
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-upload"></i> Publier les photos sur le site';
+      resetUploadBtn();
       loadFotos();
     } catch (err) {
-      showToast('Erreur : ' + err.message, 'error');
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-upload"></i> Publier les photos sur le site';
+      showToast('Erreur publication : ' + err.message, 'error');
+      resetUploadBtn();
     }
   }
 
