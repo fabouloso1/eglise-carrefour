@@ -149,7 +149,7 @@
       <div class="info-icon"><i class="fas fa-envelope"></i></div>
       <div>
         <div class="info-label">Email</div>
-        <div class="info-value"><a href="mailto:anouisjean@yahoo.fr">anouisjean@yahoo.fr</a></div>
+        <div class="info-value"><a href="/cdn-cgi/l/email-protection#ddbcb3b2a8b4aeb7b8bcb39da4bcb5b2b2f3bbaf"><span class="__cf_email__" data-cfemail="e98887869c809a838c8887a99088818686c78f9b">[email&#160;protected]</span></a></div>
       </div>
     </div>
 
@@ -234,7 +234,7 @@
 
 <div id="foot-placeholder"></div>
 
-<script src="lang.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="lang.js"></script>
 <script src="nav.js"></script>
 <script>
   NAV.init('Contact.html');
@@ -262,26 +262,5 @@
       }).catch(function(err) { console.log('Firebase contact:', err.message); });
     }
 
-    // Voye WhatsApp
-    var sujetLabel = {
-      info: 'Informations generales', priere: 'Demande de priere',
-      visite: 'Premiere visite', don: 'Don & offrande', autre: 'Autre'
-    }[sujet] || sujet;
-
-    var msg = 'Nouveau message - Site Eglise\n\n';
-    msg += 'Nom: ' + prenom + ' ' + nom + '\n';
-    msg += 'Email: ' + email + '\n';
-    if (telephone) msg += 'Telephone: ' + telephone + '\n';
-    msg += 'Sujet: ' + sujetLabel + '\n\n';
-    msg += 'Message:\n' + message;
-
-    window.open('https://wa.me/50931573591?text=' + encodeURIComponent(msg), '_blank');
-
     // Afiche siksè
-    document.getElementById('contactForm').style.display = 'none';
-    document.getElementById('successMsg').style.display = 'block';
-    window.scrollTo({ top: document.getElementById('successMsg').offsetTop - 100, behavior: 'smooth' });
-  });
-</script>
-</body>
-</html>
+    document.getElementById(
