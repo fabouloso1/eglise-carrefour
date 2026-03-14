@@ -478,7 +478,15 @@
     appId: "1:421333694767:web:30c18da36ae020821a49da"
   });
 
-  const messaging = getMessaging(app);
+  // Enregistre service worker manuèlman ak bon chemin
+  let messaging;
+  try {
+    const swReg = await navigator.serviceWorker.register('/eglise-carrefour/firebase-messaging-sw.js');
+    messaging = getMessaging(app);
+  } catch(e) {
+    console.error('SW registration failed:', e);
+    messaging = getMessaging(app);
+  }
 
   function showBellToast(msg) {
     const t = document.createElement('div');

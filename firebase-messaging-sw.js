@@ -12,13 +12,14 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// Gere notifikasyon lè app la fèmen
 messaging.onBackgroundMessage(function(payload) {
   console.log('Notifikasyon background:', payload);
-  const { title, body, icon } = payload.notification;
+  const title = payload.notification?.title || 'Église de Dieu de la Prophétie';
+  const body = payload.notification?.body || '';
+  const icon = payload.notification?.icon || '/eglise-carrefour/logo.png';
   self.registration.showNotification(title, {
     body: body,
-    icon: icon || '/logo.png',
-    badge: '/logo.png'
+    icon: icon,
+    badge: '/eglise-carrefour/logo.png'
   });
 });
