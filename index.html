@@ -463,7 +463,7 @@
 <script src="lang.js"></script>
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getMessaging, getToken, deleteToken } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js';
+  import { getMessaging, getToken, deleteToken, onMessage } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js';
   import { getFirestore, doc, setDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
   const VAPID_KEY = 'BJ1bOLbFM6qNV2XgVA4F9pA7cWng1NKPlU24sgSOk8MyqhhqWsBXVlN0V2Sjnt-Z7xFIHK8wiRS12xFGWddAtFI';
@@ -482,6 +482,32 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   const messaging = getMessaging(app);
+
+  // Afiche notifikasyon lè ou sou sit la
+  onMessage(messaging, function(payload) {
+    const title = payload.notification?.title || 'Église de Dieu de la Prophétie';
+    const body  = payload.notification?.body  || '';
+    const link  = payload.fcmOptions?.link || payload.notification?.click_action || '#';
+
+    // Kreye yon bèl banner notifikasyon
+    const banner = document.createElement('div');
+    banner.style.cssText = `
+      position:fixed; top:80px; right:16px; z-index:99999;
+      background:#1c1c3c; color:white; padding:14px 18px;
+      border-radius:12px; max-width:300px; box-shadow:0 6px 25px rgba(0,0,0,0.4);
+      border-left:4px solid #f0c040; cursor:pointer;
+      animation: slideIn 0.3s ease;
+    `;
+    banner.innerHTML = \`
+      <div style="font-weight:700;font-size:0.95rem;margin-bottom:4px;">🔔 \${title}</div>
+      <div style="font-size:0.85rem;opacity:0.85;">\${body}</div>
+    \`;
+    banner.onclick = () => { window.open(link, '_blank'); banner.remove(); };
+    document.body.appendChild(banner);
+
+    // Retire apre 6 segonn
+    setTimeout(() => { if (banner.parentNode) banner.remove(); }, 6000);
+  });
 
   function showBellToast(msg) {
     const t = document.createElement('div');
