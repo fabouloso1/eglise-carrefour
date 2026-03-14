@@ -1029,10 +1029,10 @@
           var newBadge = !lu ? '<span style="background:var(--gold);color:#1c1c3c;font-size:0.7rem;padding:2px 8px;border-radius:10px;margin-left:6px;">Nouveau</span>' : '';
           var emailHtml = c.email ? '<p style="font-size:0.82rem;color:#888;"><i class="fas fa-envelope" style="color:var(--gold)"></i> ' + c.email + '</p>' : '';
           var telHtml = c.telephone ? '<p style="font-size:0.82rem;color:#888;"><i class="fas fa-phone" style="color:var(--gold)"></i> ' + c.telephone + '</p>' : '';
-          var luBtn = !lu ? '<button class="btn btn-sm btn-primary" onclick="marquerContactLu('' + d.id + '')"><i class="fas fa-check"></i> Lu</button>' : '';
+          var luBtn = !lu ? '<button class="btn btn-sm btn-primary" onclick="marquerContactLu(&apos;' + d.id + '&apos;)"><i class="fas fa-check"></i> Lu</button>' : '';
           var waBtn = c.telephone ? '<a href="https://wa.me/' + (c.telephone||'').replace(/[^0-9]/g,'') + '" target="_blank" class="btn btn-sm" style="background:#25D366;color:white;"><i class="fab fa-whatsapp"></i></a>' : '';
           var emailBtn = c.email ? '<a href="mailto:' + c.email + '" class="btn btn-sm" style="background:#1a73e8;color:white;"><i class="fas fa-reply"></i></a>' : '';
-          var delBtn = '<button class="btn btn-sm" style="background:#fee;color:#e74c3c;" onclick="effacerContact('' + d.id + '')"><i class="fas fa-trash"></i></button>';
+          var delBtn = '<button class="btn btn-sm" style="background:#fee;color:#e74c3c;" onclick="effacerContact(&apos;' + d.id + '&apos;)"><i class="fas fa-trash"></i></button>';
           html += '<div class="item-card" style="border-left:3px solid ' + borderColor + ';">' +
             '<div class="item-card-info">' +
             '<h4>' + (c.prenom||'') + ' ' + (c.nom||'') + newBadge + '</h4>' +
@@ -1140,9 +1140,9 @@
             '<p style="font-style:italic;color:#444;margin-top:6px;">' + (p.demande||'') + '</p>' +
             '<p style="font-size:0.78rem;margin-top:6px;">' + (lu ? '<span style="color:#27ae60;font-weight:600;">Lu</span>' : '<span style="color:orange;font-weight:600;">Non lu</span>') + '</p>' +
             '</div><div class="item-card-actions">' +
-            (!lu ? '<button class="btn btn-sm btn-primary" onclick="marquerPriereLue(\'' + d.id + '\')"><i class="fas fa-check"></i> Lu</button>' : '') +
+            (!lu ? '<button class="btn btn-sm btn-primary" onclick="marquerPriereLue(&apos;' + d.id + '&apos;)"><i class="fas fa-check"></i> Lu</button>' : '') +
             (p.telephone ? '<a href="https://wa.me/' + p.telephone.replace(/[^0-9]/g,'') + '" target="_blank" class="btn btn-sm" style="background:#25D366;color:white;"><i class="fab fa-whatsapp"></i></a>' : '') +
-            '<button class="btn btn-sm" style="background:#fee;color:#e74c3c;" onclick="effacerPriere(\'' + d.id + '\')"><i class="fas fa-trash"></i></button>' +
+            '<button class="btn btn-sm" style="background:#fee;color:#e74c3c;" onclick="effacerPriere(&apos;' + d.id + '&apos;)"><i class="fas fa-trash"></i></button>' +
             '</div></div>';
         }).join('');
         checkPriereBadge();
