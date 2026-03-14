@@ -540,8 +540,9 @@
     <button class="tab-btn" onclick="showTab('temoignages')">
       <i class="fas fa-star"></i> Témoignages
     </button>
-    <button class="tab-btn" onclick="showTab('prieres')">
+    <button class="tab-btn" onclick="showTab('prieres');clearPriereBadge()">
       <i class="fas fa-hands-praying"></i> Prières
+      <span id="priereBadge" style="display:none;background:#e74c3c;color:white;font-size:0.7rem;padding:1px 6px;border-radius:10px;margin-left:4px;"></span>
     </button>
     <button class="tab-btn" onclick="showTab('notifs')">
       <i class="fas fa-bell"></i> Notifications
@@ -969,6 +970,35 @@
     t.className = 'toast show ' + type;
     setTimeout(() => t.classList.remove('show'), 3000);
   }
+
+  // ===== BADGE PRIERES =====
+  async function checkPriereBadge() {
+    try {
+      const q = window._query(
+        window._collection(window._db, 'prieres'),
+        window._where('lu', '==', false)
+      );
+      const snap = await window._getDocs(q);
+      const badge = document.getElementById('priereBadge');
+      if (badge) {
+        if (snap.size > 0) {
+          badge.style.display = 'inline';
+          badge.textContent = snap.size;
+        } else {
+          badge.style.display = 'none';
+        }
+      }
+    } catch(e) {}
+  }
+
+  function clearPriereBadge() {
+    var badge = document.getElementById('priereBadge');
+    if (badge) badge.style.display = 'none';
+  }
+
+  // Verifye badge chak 30 segonn
+  checkPriereBadge();
+  setInterval(checkPriereBadge, 30000);
 
   // ===== PRIERES =====
   async function loadPrieres() {

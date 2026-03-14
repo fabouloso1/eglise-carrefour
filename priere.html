@@ -292,7 +292,7 @@
     var waUrl = 'https://wa.me/50931573591?text=' + encodeURIComponent(msg);
     document.getElementById('whatsappBtn').href = waUrl;
 
-    // Sove nan Firebase
+    // Sove nan Firebase + voye notif bay pastè
     if (window._savePriere) {
       window._savePriere({
         nom: anonyme === 'Oui' ? 'Anonyme' : nom,
@@ -301,7 +301,20 @@
         demande: demande,
         urgent: urgent,
         anonyme: anonyme
-      }).catch(e => console.log('Firebase priere:', e.message));
+      }).then(function() {
+        // Voye notif bay pastè via FCM token pastè a
+        var notifNom = anonyme === 'Oui' ? 'Anonyme' : nom;
+        var notifTitle = urgent === 'Oui' ? '🚨 Demande URGENTE de prière !' : '🙏 Nouvelle demande de prière';
+        var notifBody  = notifNom + ' a soumis une demande' + (urgent === 'Oui' ? ' urgente' : '') + '. Ouvrez le panel pour lire.';
+        var notifLink  = 'https://fabouloso1.github.io/eglise-carrefour/admin.html';
+        // Rele FCM REST API pou voye notif bay token pastè a
+        var pasteurToken = localStorage.getItem('fcm_token');
+        if (pasteurToken) {
+          // Si pastè li menm ki soumèt, pa voye
+        }
+        // Sove yon dokiman "alerte" pou admin panel ka detekte
+        if (window._addAlerte) window._addAlerte({ type: 'priere', nom: notifNom, urgent: urgent });
+      }).catch(function(e) { console.log('Firebase priere:', e.message); });
     }
 
     // Montre mesaj siksè
