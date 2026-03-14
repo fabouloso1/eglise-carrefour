@@ -485,28 +485,27 @@
 
   // Afiche notifikasyon lè ou sou sit la
   onMessage(messaging, function(payload) {
-    const title = payload.notification?.title || 'Église de Dieu de la Prophétie';
-    const body  = payload.notification?.body  || '';
-    const link  = payload.fcmOptions?.link || payload.notification?.click_action || '#';
+    const title = payload.notification ? payload.notification.title : 'Eglise de Dieu de la Prophetie';
+    const body  = payload.notification ? payload.notification.body  : '';
+    const link  = (payload.fcmOptions && payload.fcmOptions.link) ? payload.fcmOptions.link : '#';
 
-    // Kreye yon bèl banner notifikasyon
     const banner = document.createElement('div');
-    banner.style.cssText = `
-      position:fixed; top:80px; right:16px; z-index:99999;
-      background:#1c1c3c; color:white; padding:14px 18px;
-      border-radius:12px; max-width:300px; box-shadow:0 6px 25px rgba(0,0,0,0.4);
-      border-left:4px solid #f0c040; cursor:pointer;
-      animation: slideIn 0.3s ease;
-    `;
-    banner.innerHTML = \`
-      <div style="font-weight:700;font-size:0.95rem;margin-bottom:4px;">🔔 \${title}</div>
-      <div style="font-size:0.85rem;opacity:0.85;">\${body}</div>
-    \`;
-    banner.onclick = () => { window.open(link, '_blank'); banner.remove(); };
+    banner.style.position = 'fixed';
+    banner.style.top = '80px';
+    banner.style.right = '16px';
+    banner.style.zIndex = '99999';
+    banner.style.background = '#1c1c3c';
+    banner.style.color = 'white';
+    banner.style.padding = '14px 18px';
+    banner.style.borderRadius = '12px';
+    banner.style.maxWidth = '300px';
+    banner.style.boxShadow = '0 6px 25px rgba(0,0,0,0.4)';
+    banner.style.borderLeft = '4px solid #f0c040';
+    banner.style.cursor = 'pointer';
+    banner.innerHTML = '<div style="font-weight:700;font-size:0.95rem;margin-bottom:4px;">&#128276; ' + title + '</div><div style="font-size:0.85rem;opacity:0.85;">' + body + '</div>';
+    banner.onclick = function() { window.open(link, '_blank'); banner.remove(); };
     document.body.appendChild(banner);
-
-    // Retire apre 6 segonn
-    setTimeout(() => { if (banner.parentNode) banner.remove(); }, 6000);
+    setTimeout(function() { if (banner.parentNode) banner.remove(); }, 6000);
   });
 
   function showBellToast(msg) {
@@ -514,17 +513,17 @@
     t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1c1c3c;color:white;padding:10px 20px;border-radius:20px;z-index:9999;font-size:0.9rem;box-shadow:0 4px 15px rgba(0,0,0,0.3);';
     t.textContent = msg;
     document.body.appendChild(t);
-    setTimeout(() => t.remove(), 3500);
+    setTimeout(function() { t.remove(); }, 3500);
   }
 
   function updateBellUI(subscribed) {
     const bell = document.getElementById('notifBell');
-    const dot = document.getElementById('notifDot');
+    const dot  = document.getElementById('notifDot');
     if (bell) bell.classList.toggle('subscribed', subscribed);
-    if (dot) dot.style.display = subscribed ? 'none' : 'block';
+    if (dot)  dot.style.display = subscribed ? 'none' : 'block';
   }
 
-  window.addEventListener('load', () => {
+  window.addEventListener('load', function() {
     if (localStorage.getItem('fcm_subscribed') === 'true') updateBellUI(true);
   });
 
@@ -535,7 +534,7 @@
         return;
       }
       if (Notification.permission === 'denied') {
-        showBellToast('❌ Notifications bloquées — activez-les dans les paramètres');
+        showBellToast('❌ Notifications bloquees — activez-les dans les parametres');
         return;
       }
 
@@ -550,10 +549,9 @@
         localStorage.removeItem('fcm_subscribed');
         localStorage.removeItem('fcm_token');
         updateBellUI(false);
-        showBellToast('🔕 Notifications désactivées');
+        showBellToast('🔕 Notifications desactivees');
       } else {
         showBellToast('🔔 Demande de permission...');
-        // Enregistre service worker ak bon scope
         const swReg = await navigator.serviceWorker.register(SW_PATH, { scope: SW_SCOPE });
         await navigator.serviceWorker.ready;
         const token = await getToken(messaging, { vapidKey: VAPID_KEY, serviceWorkerRegistration: swReg });
@@ -566,7 +564,7 @@
           localStorage.setItem('fcm_subscribed', 'true');
           localStorage.setItem('fcm_token', token);
           updateBellUI(true);
-          showBellToast('🔔 Abonné ! Vous recevrez nos notifications');
+          showBellToast('🔔 Abonne ! Vous recevrez nos notifications');
         }
       }
     } catch(e) {
