@@ -544,6 +544,10 @@
       <i class="fas fa-hands-praying"></i> Prières
       <span id="priereBadge" style="display:none;background:#e74c3c;color:white;font-size:0.7rem;padding:1px 6px;border-radius:10px;margin-left:4px;"></span>
     </button>
+    <button class="tab-btn" onclick="showTab('contacts')">
+      <i class="fas fa-envelope"></i> Contacts
+      <span id="contactBadge" style="display:none;background:#e74c3c;color:white;font-size:0.7rem;padding:1px 6px;border-radius:10px;margin-left:4px;"></span>
+    </button>
     <button class="tab-btn" onclick="showTab('notifs')">
       <i class="fas fa-bell"></i> Notifications
     </button>
@@ -808,6 +812,20 @@
       </div>
     </div>
 
+    <!-- TAB CONTACTS -->
+    <div class="tab-panel" id="tab-contacts">
+      <div class="card">
+        <h3><i class="fas fa-envelope" style="color:var(--gold)"></i> Messages reçus</h3>
+        <p style="font-size:1rem;color:#888;margin-bottom:20px;">Messages envoyés via le formulaire de contact du site.</p>
+        <div class="item-list" id="contactList">
+          <div style="text-align:center;padding:30px;color:#aaa;">
+            <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--gold);display:block;margin-bottom:12px;"></i>
+            Chargement...
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- TAB NOTIFIKASYON -->
     <div class="tab-panel" id="tab-notifs">
       <div class="card">
@@ -961,6 +979,13 @@
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
     event.currentTarget.classList.add('active');
+    // Chaje done pou chak tab
+    if (name === 'prieres') loadPrieres();
+    if (name === 'galerie') loadFotos();
+    if (name === 'actualites') loadActus();
+    if (name === 'temoignages') loadTemoignages();
+    if (name === 'notifs') loadNotifCount();
+    if (name === 'contacts') loadContacts();
   }
 
   // ===== TOAST =====
@@ -970,6 +995,81 @@
     t.className = 'toast show ' + type;
     setTimeout(() => t.classList.remove('show'), 3000);
   }
+
+  // ===== CONTACTS =====
+  async function loadContacts() {
+    try {
+      const q = window._query(
+        window._collection(window._db, 'contacts'),
+        window._orderBy('timestamp', 'desc')
+      );
+      const snap = await window._getDocs(q);
+      const list = document.getElementById('contactList');
+      if (snap.empty) {
+        list.innerHTML = '<p style="text-align:center;color:#aaa;padding:30px;">Aucun message reçu.</p>';
+        return;
+      }
+      list.innerHTML = snap.docs.map(d => {
+        const c = d.data();
+        const lu = c.lu === true;
+        const sujetLabel = { info: 'Informations générales', priere: 'Demande de prière', visite: 'Première visite', don: 'Don & offrande', autre: 'Autre' }[c.sujet] || c.sujet || '';
+        return `
+          <div class="item-card" style="border-left:3px solid ${lu ? '#27ae60' : 'var(--gold)'};">
+            <div class="item-card-info">
+              <h4>${c.prenom || ''} ${c.nom || ''}
+                ${!lu ? '<span style="background:var(--gold);color:#1c1c3c;font-size:0.7rem;padding:2px 8px;border-radius:10px;margin-left:6px;">Nouveau</span>' : ''}
+              </h4>
+              ${c.email ? `<p style="font-size:0.82rem;color:#888;"><i class="fas fa-envelope" style="color:var(--gold)"></i> ${c.email}</p>` : ''}
+              ${c.telephone ? `<p style="font-size:0.82rem;color:#888;"><i class="fas fa-phone" style="color:var(--gold)"></i> ${c.telephone}</p>` : ''}
+              <p style="color:#555;">${sujetLabel} — ${c.date || ''}</p>
+              <p style="font-style:italic;color:#444;margin-top:6px;">${c.message || ''}</p>
+            </div>
+            <div class="item-card-actions">
+              ${!lu ? `<button class="btn btn-sm btn-primary" onclick="marquerContactLu('${d.id}')"><i class="fas fa-check"></i> Lu</button>` : ''}
+              ${c.telephone ? `<a href="https://wa.me/${(c.telephone||'').replace(/[^0-9]/g,'')}" target="_blank" class="btn btn-sm" style="background:#25D366;color:white;"><i class="fab fa-whatsapp"></i></a>` : ''}
+              ${c.email ? `<a href="mailto:${c.email}" class="btn btn-sm" style="background:#1a73e8;color:white;"><i class="fas fa-reply"></i></a>` : ''}
+              <button class="btn btn-sm" style="background:#fee;color:#e74c3c;" onclick="effacerContact('${d.id}')"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>`;
+      }).join('');
+    } catch(e) { console.log('Contacts:', e.message); }
+  }
+
+  async function marquerContactLu(id) {
+    try {
+      await window._setDoc(window._doc(window._db, 'contacts', id), { lu: true }, { merge: true });
+      showToast('Marqué comme lu !');
+      loadContacts();
+      checkContactBadge();
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+
+  async function effacerContact(id) {
+    if (!confirm('Supprimer ce message ?')) return;
+    try {
+      await window._deleteDoc(window._doc(window._db, 'contacts', id));
+      showToast('Message supprimé !');
+      loadContacts();
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+
+  async function checkContactBadge() {
+    try {
+      const q = window._query(
+        window._collection(window._db, 'contacts'),
+        window._where('lu', '==', false)
+      );
+      const snap = await window._getDocs(q);
+      const badge = document.getElementById('contactBadge');
+      if (badge) {
+        if (snap.size > 0) { badge.style.display = 'inline'; badge.textContent = snap.size; }
+        else { badge.style.display = 'none'; }
+      }
+    } catch(e) {}
+  }
+
+  checkContactBadge();
+  setInterval(checkContactBadge, 30000);
 
   // ===== BADGE PRIERES =====
   async function checkPriereBadge() {
