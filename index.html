@@ -541,6 +541,7 @@
       const isSubscribed = localStorage.getItem('fcm_subscribed') === 'true';
 
       if (isSubscribed) {
+        // Dezabòne
         try { await deleteToken(messaging); } catch(e) {}
         const oldToken = localStorage.getItem('fcm_token');
         if (oldToken) {
@@ -548,24 +549,44 @@
         }
         localStorage.removeItem('fcm_subscribed');
         localStorage.removeItem('fcm_token');
+        localStorage.removeItem('fcm_nom');
         updateBellUI(false);
         showBellToast('🔕 Notifications desactivees');
       } else {
-        showBellToast('🔔 Demande de permission...');
-        const swReg = await navigator.serviceWorker.register(SW_PATH, { scope: SW_SCOPE });
-        await navigator.serviceWorker.ready;
-        const token = await getToken(messaging, { vapidKey: VAPID_KEY, serviceWorkerRegistration: swReg });
-        if (token) {
-          await setDoc(doc(db, 'fcm_tokens', token.substring(0, 40)), {
-            token: token,
-            date: new Date().toISOString(),
-            platform: navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop'
-          });
-          localStorage.setItem('fcm_subscribed', 'true');
-          localStorage.setItem('fcm_token', token);
-          updateBellUI(true);
-          showBellToast('🔔 Abonne ! Vous recevrez nos notifications');
-        }
+        // Ouvri modal pou mande non
+        ouvrirNotifModal();
+      }
+    } catch(e) {
+      console.error('FCM error:', e);
+      showBellToast('❌ Erreur : ' + e.message);
+    }
+  };
+
+  // Fonksyon ki rele lè moun konfime non yo
+  window.confirmerAbonnement = async function() {
+    const nom = document.getElementById('notifNameInput').value.trim();
+    if (!nom) {
+      document.getElementById('notifNameInput').style.border = '2px solid red';
+      return;
+    }
+    fermerNotifModal();
+    showBellToast('🔔 Demande de permission...');
+    try {
+      const swReg = await navigator.serviceWorker.register(SW_PATH, { scope: SW_SCOPE });
+      await navigator.serviceWorker.ready;
+      const token = await getToken(messaging, { vapidKey: VAPID_KEY, serviceWorkerRegistration: swReg });
+      if (token) {
+        await setDoc(doc(db, 'fcm_tokens', token.substring(0, 40)), {
+          token: token,
+          nom: nom,
+          date: new Date().toISOString(),
+          platform: navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop'
+        });
+        localStorage.setItem('fcm_subscribed', 'true');
+        localStorage.setItem('fcm_token', token);
+        localStorage.setItem('fcm_nom', nom);
+        updateBellUI(true);
+        showBellToast('🔔 Bienvenue ' + nom + ' ! Vous recevrez nos notifications');
       }
     } catch(e) {
       console.error('FCM error:', e);
@@ -576,5 +597,41 @@
 <script>
   if(window.initLang) initLang();
 </script>
+<!-- Modal mande non pou abònman -->
+<div id="notifNameModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:99999;align-items:center;justify-content:center;">
+  <div style="background:white;border-radius:16px;padding:28px 24px;max-width:320px;width:90%;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
+    <div style="font-size:2.5rem;margin-bottom:8px;">🔔</div>
+    <h3 style="color:#1c1c3c;margin-bottom:6px;font-size:1.1rem;">Recevoir les notifications</h3>
+    <p style="color:#666;font-size:0.9rem;margin-bottom:18px;">Entrez votre prénom pour vous abonner aux annonces de l'église.</p>
+    <input type="text" id="notifNameInput" placeholder="Votre prénom..." maxlength="40"
+      style="width:100%;padding:10px 14px;border:2px solid #ddd;border-radius:8px;font-size:1rem;box-sizing:border-box;margin-bottom:14px;outline:none;text-align:center;">
+    <button onclick="confirmerAbonnement()"
+      style="width:100%;padding:11px;background:#1c1c3c;color:white;border:none;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:8px;">
+      <i class="fas fa-bell"></i> S'abonner
+    </button>
+    <button onclick="fermerNotifModal()"
+      style="width:100%;padding:8px;background:none;color:#aaa;border:none;font-size:0.9rem;cursor:pointer;">
+      Plus tard
+    </button>
+  </div>
+</div>
+
+<script>
+function ouvrirNotifModal() {
+  var modal = document.getElementById('notifNameModal');
+  modal.style.display = 'flex';
+  setTimeout(function() { document.getElementById('notifNameInput').focus(); }, 200);
+}
+
+function fermerNotifModal() {
+  document.getElementById('notifNameModal').style.display = 'none';
+}
+
+// Enter pou konfime
+document.getElementById('notifNameInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') confirmerAbonnement();
+});
+</script>
+
 </body>
 </html>

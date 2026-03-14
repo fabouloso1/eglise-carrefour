@@ -837,9 +837,15 @@
         </div>
 
         <div style="margin-top:30px;padding-top:20px;border-top:1px solid #eee;">
-          <h4 style="margin-bottom:10px;"><i class="fas fa-users"></i> Abonnés</h4>
-          <div id="notifCount" style="font-size:1.5rem;font-weight:700;color:var(--gold);">
-            <i class="fas fa-spinner fa-spin"></i>
+          <h4 style="margin-bottom:14px;"><i class="fas fa-users"></i> Abonnés 
+            <span id="notifCount" style="font-size:1rem;font-weight:700;color:var(--gold);margin-left:8px;">
+              <i class="fas fa-spinner fa-spin"></i>
+            </span>
+          </h4>
+          <div id="abonneList" style="display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto;">
+            <p style="color:#aaa;font-size:0.9rem;text-align:center;padding:10px;">
+              <i class="fas fa-spinner fa-spin"></i> Chargement...
+            </p>
           </div>
         </div>
       </div>
@@ -1585,12 +1591,60 @@
   var notifApp = firebase.app('notif');
   var db2 = notifApp.firestore();
 
-  // Konbyen abòne
+  // Konbyen abòne + lis abòne yo
   function loadNotifCount() {
-    db2.collection('fcm_tokens').get().then(function(snap) {
+    db2.collection('fcm_tokens').orderBy('date', 'desc').get().then(function(snap) {
+      // Konbyen
       var el = document.getElementById('notifCount');
-      if (el) el.innerHTML = '<i class="fas fa-bell"></i> ' + snap.size + ' abonné(s)';
-    }).catch(function(e) { console.log('Count error:', e); });
+      if (el) el.innerHTML = '(' + snap.size + ' abonné(s))';
+
+      // Lis abòne yo
+      var list = document.getElementById('abonneList');
+      if (!list) return;
+      if (snap.empty) {
+        list.innerHTML = '<p style="color:#aaa;text-align:center;padding:10px;font-size:0.9rem;">Aucun abonné pour le moment.</p>';
+        return;
+      }
+      list.innerHTML = '';
+      var num = 1;
+      snap.forEach(function(d) {
+        var data = d.data();
+        var date = data.date ? new Date(data.date).toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric' }) : 'Date inconnue';
+        var platform = data.platform === 'mobile' ? '<i class="fas fa-mobile-alt" style="color:#4CAF50"></i> Mobile' : '<i class="fas fa-desktop" style="color:#2196F3"></i> PC';
+        var row = document.createElement('div');
+        row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f9f9f9;border-radius:8px;font-size:0.85rem;';
+        var nom = data.nom ? data.nom : 'Anonyme';
+        row.innerHTML = '<span style="font-weight:600;color:#1c1c3c;">' + nom + '</span>' +
+          '<span>' + platform + '</span>' +
+          '<span style="color:#888;">' + date + '</span>';
+        list.appendChild(row);
+        num++;
+      });
+    }).catch(function(e) { 
+      // Si pa gen index orderBy, chaje san triye
+      db2.collection('fcm_tokens').get().then(function(snap) {
+        var el = document.getElementById('notifCount');
+        if (el) el.innerHTML = '(' + snap.size + ' abonné(s))';
+        var list = document.getElementById('abonneList');
+        if (!list) return;
+        if (snap.empty) {
+          list.innerHTML = '<p style="color:#aaa;text-align:center;padding:10px;">Aucun abonné.</p>';
+          return;
+        }
+        list.innerHTML = '';
+        var num = 1;
+        snap.forEach(function(d) {
+          var data = d.data();
+          var platform = data.platform === 'mobile' ? '<i class="fas fa-mobile-alt" style="color:#4CAF50"></i> Mobile' : '<i class="fas fa-desktop" style="color:#2196F3"></i> PC';
+          var row = document.createElement('div');
+          row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f9f9f9;border-radius:8px;font-size:0.85rem;margin-bottom:4px;';
+          var nom = data.nom ? data.nom : 'Anonyme';
+          row.innerHTML = '<span style="font-weight:600;color:#1c1c3c;">' + nom + '</span><span>' + platform + '</span>';
+          list.appendChild(row);
+          num++;
+        });
+      });
+    });
   }
 
   async function getAccessToken() {
