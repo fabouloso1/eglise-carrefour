@@ -947,10 +947,13 @@
   // ===== FICHYE SELEKSYONE POU UPLOAD =====
   let selectedFiles = [];
 
+  // Modpas la — eksplike dirèkteman isit (pa depann sou module)
+  var ADMIN_PW = "Kafou2025";
+
   // ===== LOGIN =====
   function doLogin() {
     const pw = document.getElementById('loginPassword').value;
-    if (pw === window._ADMIN_PASSWORD) {
+    if (pw === ADMIN_PW || pw === window._ADMIN_PASSWORD) {
       sessionStorage.setItem('admin_ok', 'true');
       document.getElementById('loginScreen').style.display = 'none';
       showAdminPanel();
