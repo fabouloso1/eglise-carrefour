@@ -1197,7 +1197,7 @@
         const notifBody  = uploaded > 1
           ? 'Le pasteur a publié ' + uploaded + ' nouvelles photos !'
           : 'Le pasteur a publié une nouvelle photo !';
-        const notifLink  = 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html';
+        const notifLink  = 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html#pasteur';
         await envoyerNotifAuto(notifTitle, notifBody, notifLink);
       } catch(e) { console.log('Notif auto error:', e); }
     } catch (err) {

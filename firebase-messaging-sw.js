@@ -13,13 +13,35 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage(function(payload) {
-  console.log('Notifikasyon background:', payload);
-  const title = payload.notification?.title || 'Église de Dieu de la Prophétie';
-  const body = payload.notification?.body || '';
-  const icon = payload.notification?.icon || '/eglise-carrefour/logo.png';
+  const title = (payload.notification && payload.notification.title) || 'Eglise de Dieu de la Prophetie';
+  const body  = (payload.notification && payload.notification.body)  || '';
+  const link  = (payload.fcmOptions && payload.fcmOptions.link)
+                || (payload.data && payload.data.link)
+                || 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html#pasteur';
+
   self.registration.showNotification(title, {
     body: body,
-    icon: icon,
-    badge: '/eglise-carrefour/logo.png'
+    icon: '/eglise-carrefour/logo.png',
+    badge: '/eglise-carrefour/logo.png',
+    data: { url: link }
   });
+});
+
+// Ouvri lyen lè moun klike sou notifikasyon an
+self.addEventListener('notificationclick', function(event) {
+  event.notification.close();
+  var url = (event.notification.data && event.notification.data.url)
+            || 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html#pasteur';
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
+      for (var i = 0; i < clientList.length; i++) {
+        var client = clientList[i];
+        if (client.url.indexOf('fabouloso1.github.io') >= 0 && 'focus' in client) {
+          client.navigate(url);
+          return client.focus();
+        }
+      }
+      if (clients.openWindow) return clients.openWindow(url);
+    })
+  );
 });
