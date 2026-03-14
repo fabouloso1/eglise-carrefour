@@ -837,11 +837,17 @@
         </div>
 
         <div style="margin-top:30px;padding-top:20px;border-top:1px solid #eee;">
-          <h4 style="margin-bottom:14px;"><i class="fas fa-users"></i> Abonnés 
-            <span id="notifCount" style="font-size:1rem;font-weight:700;color:var(--gold);margin-left:8px;">
-              <i class="fas fa-spinner fa-spin"></i>
-            </span>
-          </h4>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+            <h4 style="margin:0;"><i class="fas fa-users"></i> Abonnés 
+              <span id="notifCount" style="font-size:1rem;font-weight:700;color:var(--gold);margin-left:8px;">
+                <i class="fas fa-spinner fa-spin"></i>
+              </span>
+            </h4>
+            <button onclick="reinitialiserAbonnes()"
+              style="background:#e74c3c;color:white;border:none;padding:7px 14px;border-radius:8px;font-size:0.85rem;cursor:pointer;font-weight:600;">
+              <i class="fas fa-trash"></i> Réinitialiser les abonnés
+            </button>
+          </div>
           <div id="abonneList" style="display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto;">
             <p style="color:#aaa;font-size:0.9rem;text-align:center;padding:10px;">
               <i class="fas fa-spinner fa-spin"></i> Chargement...
@@ -1730,6 +1736,22 @@ Nwv2aSLH9QYdOijCoE5PhUp8
     }
   }
   window.envoyerNotifAuto = envoyerNotifAuto;
+
+  // Reinitialize tout abòne yo
+  window.reinitialiserAbonnes = async function() {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer tous les abonnés ? Ils devront se réabonner.')) return;
+    try {
+      var snap = await db2.collection('fcm_tokens').get();
+      if (snap.empty) { alert('Aucun abonné à supprimer.'); return; }
+      var batch = db2.batch();
+      snap.forEach(function(d) { batch.delete(d.ref); });
+      await batch.commit();
+      alert('✅ ' + snap.size + ' abonné(s) supprimé(s) avec succès.');
+      loadNotifCount();
+    } catch(e) {
+      alert('❌ Erreur : ' + e.message);
+    }
+  };
 
   window.envoyerNotification = async function() {
     const title = document.getElementById('notifTitle').value.trim();
