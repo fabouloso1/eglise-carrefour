@@ -885,7 +885,7 @@
 <!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, getDoc, orderBy, query, where, serverTimestamp }
+  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, getDoc, orderBy, query, where, serverTimestamp, onSnapshot }
     from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
   import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject }
     from "https://www.gstatic.com/firebasejs/11.0.2/firebase-storage.js";
@@ -909,6 +909,7 @@
 
   // ===== EXPOSE GLOBALS =====
   window._db = db;
+  window._onSnapshot = onSnapshot;
   window._storage = storage;
   window._collection = collection;
   window._addDoc = addDoc;
@@ -997,41 +998,39 @@
   }
 
   // ===== CONTACTS =====
-  async function loadContacts() {
+  var _contactsListener = null;
+  function loadContacts() {
+    const list = document.getElementById('contactList');
+    if (!list) return;
+    if (_contactsListener) _contactsListener(); // dezabòne ansyen listener
+    list.innerHTML = '<p style="text-align:center;color:#aaa;padding:20px;"><i class="fas fa-spinner fa-spin"></i></p>';
     try {
-      const q = window._query(
-        window._collection(window._db, 'contacts'),
-        window._orderBy('timestamp', 'desc')
-      );
-      const snap = await window._getDocs(q);
-      const list = document.getElementById('contactList');
-      if (snap.empty) {
-        list.innerHTML = '<p style="text-align:center;color:#aaa;padding:30px;">Aucun message reçu.</p>';
-        return;
-      }
-      list.innerHTML = snap.docs.map(d => {
-        const c = d.data();
-        const lu = c.lu === true;
-        const sujetLabel = { info: 'Informations générales', priere: 'Demande de prière', visite: 'Première visite', don: 'Don & offrande', autre: 'Autre' }[c.sujet] || c.sujet || '';
-        return `
-          <div class="item-card" style="border-left:3px solid ${lu ? '#27ae60' : 'var(--gold)'};">
-            <div class="item-card-info">
-              <h4>${c.prenom || ''} ${c.nom || ''}
-                ${!lu ? '<span style="background:var(--gold);color:#1c1c3c;font-size:0.7rem;padding:2px 8px;border-radius:10px;margin-left:6px;">Nouveau</span>' : ''}
-              </h4>
-              ${c.email ? `<p style="font-size:0.82rem;color:#888;"><i class="fas fa-envelope" style="color:var(--gold)"></i> ${c.email}</p>` : ''}
-              ${c.telephone ? `<p style="font-size:0.82rem;color:#888;"><i class="fas fa-phone" style="color:var(--gold)"></i> ${c.telephone}</p>` : ''}
-              <p style="color:#555;">${sujetLabel} — ${c.date || ''}</p>
-              <p style="font-style:italic;color:#444;margin-top:6px;">${c.message || ''}</p>
-            </div>
-            <div class="item-card-actions">
-              ${!lu ? `<button class="btn btn-sm btn-primary" onclick="marquerContactLu('${d.id}')"><i class="fas fa-check"></i> Lu</button>` : ''}
-              ${c.telephone ? `<a href="https://wa.me/${(c.telephone||'').replace(/[^0-9]/g,'')}" target="_blank" class="btn btn-sm" style="background:#25D366;color:white;"><i class="fab fa-whatsapp"></i></a>` : ''}
-              ${c.email ? `<a href="mailto:${c.email}" class="btn btn-sm" style="background:#1a73e8;color:white;"><i class="fas fa-reply"></i></a>` : ''}
-              <button class="btn btn-sm" style="background:#fee;color:#e74c3c;" onclick="effacerContact('${d.id}')"><i class="fas fa-trash"></i></button>
-            </div>
-          </div>`;
-      }).join('');
+      const q = window._query(window._collection(window._db, 'contacts'), window._orderBy('timestamp', 'desc'));
+      _contactsListener = window._onSnapshot(q, function(snap) {
+        if (snap.empty) {
+          list.innerHTML = '<p style="text-align:center;color:#aaa;padding:30px;">Aucun message reçu.</p>';
+          checkContactBadge(); return;
+        }
+        list.innerHTML = snap.docs.map(function(d) {
+          const c = d.data();
+          const lu = c.lu === true;
+          const sujetLabel = { info: 'Informations générales', priere: 'Demande de prière', visite: 'Première visite', don: 'Don & offrande', autre: 'Autre' }[c.sujet] || c.sujet || '';
+          return '<div class="item-card" style="border-left:3px solid ' + (lu ? '#27ae60' : 'var(--gold)') + ';">' +
+            '<div class="item-card-info">' +
+            '<h4>' + (c.prenom||'') + ' ' + (c.nom||'') + (!lu ? ' <span style="background:var(--gold);color:#1c1c3c;font-size:0.7rem;padding:2px 8px;border-radius:10px;margin-left:6px;">Nouveau</span>' : '') + '</h4>' +
+            (c.email ? '<p style="font-size:0.82rem;color:#888;"><i class="fas fa-envelope" style="color:var(--gold)"></i> ' + c.email + '</p>' : '') +
+            (c.telephone ? '<p style="font-size:0.82rem;color:#888;"><i class="fas fa-phone" style="color:var(--gold)"></i> ' + c.telephone + '</p>' : '') +
+            '<p style="color:#555;">' + sujetLabel + ' — ' + (c.date||'') + '</p>' +
+            '<p style="font-style:italic;color:#444;margin-top:6px;">' + (c.message||'') + '</p>' +
+            '</div><div class="item-card-actions">' +
+            (!lu ? '<button class="btn btn-sm btn-primary" onclick="marquerContactLu('' + d.id + '')"><i class="fas fa-check"></i> Lu</button>' : '') +
+            (c.telephone ? '<a href="https://wa.me/' + (c.telephone||'').replace(/[^0-9]/g,'') + '" target="_blank" class="btn btn-sm" style="background:#25D366;color:white;"><i class="fab fa-whatsapp"></i></a>' : '') +
+            (c.email ? '<a href="mailto:' + c.email + '" class="btn btn-sm" style="background:#1a73e8;color:white;"><i class="fas fa-reply"></i></a>' : '') +
+            '<button class="btn btn-sm" style="background:#fee;color:#e74c3c;" onclick="effacerContact('' + d.id + '')"><i class="fas fa-trash"></i></button>' +
+            '</div></div>';
+        }).join('');
+        checkContactBadge();
+      });
     } catch(e) { console.log('Contacts:', e.message); }
   }
 
@@ -1101,43 +1100,41 @@
   setInterval(checkPriereBadge, 30000);
 
   // ===== PRIERES =====
-  async function loadPrieres() {
+  var _prieresListener = null;
+  function loadPrieres() {
+    const list = document.getElementById('prieres-admin-list');
+    if (!list) return;
+    if (_prieresListener) _prieresListener();
+    list.innerHTML = '<p style="text-align:center;color:#aaa;padding:20px;"><i class="fas fa-spinner fa-spin"></i></p>';
     try {
-      const q = window._query(
-        window._collection(window._db, 'prieres'),
-        window._orderBy('timestamp', 'desc')
-      );
-      const snap = await window._getDocs(q);
-      const list = document.getElementById('prieres-admin-list');
-
-      if (snap.empty) {
-        list.innerHTML = '<p style="text-align:center;color:#aaa;padding:30px;">Aucune demande de prière.</p>';
-        return;
-      }
-
-      list.innerHTML = snap.docs.map(d => {
-        const p = d.data();
-        const lu = p.lu === true;
-        const urgent = p.urgent === 'Oui';
-        return `
-          <div class="item-card" style="border-left: 3px solid ${urgent ? '#e74c3c' : lu ? '#27ae60' : 'var(--gold)'};">
-            <div class="item-card-info">
-              <h4>${p.nom || 'Anonyme'}
-                ${urgent ? '<span style="background:#e74c3c;color:white;font-size:0.7rem;padding:2px 8px;border-radius:10px;margin-left:6px;">URGENT</span>' : ''}
-                ${p.anonyme === 'Oui' ? '<span style="background:#888;color:white;font-size:0.7rem;padding:2px 8px;border-radius:10px;margin-left:6px;">Anonyme</span>' : ''}
-              </h4>
-              ${p.telephone ? `<p style="font-size:0.82rem;color:#888;"><i class="fas fa-phone" style="color:var(--gold)"></i> ${p.telephone}</p>` : ''}
-              <p style="color:#555;">${p.categorie || ''} — ${p.date || ''}</p>
-              <p style="font-style:italic;color:#444;margin-top:6px;">${p.demande || ''}</p>
-              <p style="font-size:0.78rem;color:#aaa;margin-top:6px;">${lu ? '<span style="color:#27ae60;font-weight:600;">✓ Lu</span>' : '<span style="color:orange;font-weight:600;">Non lu</span>'}</p>
-            </div>
-            <div class="item-card-actions">
-              ${!lu ? `<button class="btn btn-sm btn-primary" onclick="marquerPriereLue('${d.id}')"><i class="fas fa-check"></i> Lu</button>` : ''}
-              ${p.telephone ? `<a href="https://wa.me/${p.telephone.replace(/[^0-9]/g,'')}" target="_blank" class="btn btn-sm" style="background:#25D366;color:white;"><i class="fab fa-whatsapp"></i></a>` : ''}
-              <button class="btn btn-sm" style="background:#fee;color:#e74c3c;" onclick="effacerPriere('${d.id}')"><i class="fas fa-trash"></i></button>
-            </div>
-          </div>`;
-      }).join('');
+      const q = window._query(window._collection(window._db, 'prieres'), window._orderBy('timestamp', 'desc'));
+      _prieresListener = window._onSnapshot(q, function(snap) {
+        if (snap.empty) {
+          list.innerHTML = '<p style="text-align:center;color:#aaa;padding:30px;">Aucune demande de prière.</p>';
+          checkPriereBadge(); return;
+        }
+        list.innerHTML = snap.docs.map(function(d) {
+          const p = d.data();
+          const lu = p.lu === true;
+          const urgent = p.urgent === 'Oui';
+          return '<div class="item-card" style="border-left:3px solid ' + (urgent ? '#e74c3c' : lu ? '#27ae60' : 'var(--gold)') + ';">' +
+            '<div class="item-card-info">' +
+            '<h4>' + (p.nom||'Anonyme') +
+            (urgent ? ' <span style="background:#e74c3c;color:white;font-size:0.7rem;padding:2px 8px;border-radius:10px;margin-left:6px;">URGENT</span>' : '') +
+            (p.anonyme === 'Oui' ? ' <span style="background:#888;color:white;font-size:0.7rem;padding:2px 8px;border-radius:10px;margin-left:6px;">Anonyme</span>' : '') +
+            '</h4>' +
+            (p.telephone ? '<p style="font-size:0.82rem;color:#888;"><i class="fas fa-phone" style="color:var(--gold)"></i> ' + p.telephone + '</p>' : '') +
+            '<p style="color:#555;">' + (p.categorie||'') + ' — ' + (p.date||'') + '</p>' +
+            '<p style="font-style:italic;color:#444;margin-top:6px;">' + (p.demande||'') + '</p>' +
+            '<p style="font-size:0.78rem;margin-top:6px;">' + (lu ? '<span style="color:#27ae60;font-weight:600;">Lu</span>' : '<span style="color:orange;font-weight:600;">Non lu</span>') + '</p>' +
+            '</div><div class="item-card-actions">' +
+            (!lu ? '<button class="btn btn-sm btn-primary" onclick="marquerPriereLue('' + d.id + '')"><i class="fas fa-check"></i> Lu</button>' : '') +
+            (p.telephone ? '<a href="https://wa.me/' + p.telephone.replace(/[^0-9]/g,'') + '" target="_blank" class="btn btn-sm" style="background:#25D366;color:white;"><i class="fab fa-whatsapp"></i></a>' : '') +
+            '<button class="btn btn-sm" style="background:#fee;color:#e74c3c;" onclick="effacerPriere('' + d.id + '')"><i class="fas fa-trash"></i></button>' +
+            '</div></div>';
+        }).join('');
+        checkPriereBadge();
+      });
     } catch(e) { console.log('Prieres:', e.message); }
   }
 
@@ -1145,7 +1142,6 @@
     try {
       await window._setDoc(window._doc(window._db, 'prieres', id), { lu: true }, { merge: true });
       showToast('Marquée comme lue !');
-      loadPrieres();
     } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
   }
 
@@ -1154,11 +1150,10 @@
     try {
       await window._deleteDoc(window._doc(window._db, 'prieres', id));
       showToast('Demande supprimée !');
-      loadPrieres();
     } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
   }
 
-  // ===== TEMOIGNAGES =====
+    // ===== TEMOIGNAGES =====
   async function loadTemoignages() {
     try {
       const q = window._query(
