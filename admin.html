@@ -882,6 +882,10 @@
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
+<!-- Firebase Compat pou FCM Notifications -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
 <!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
@@ -1706,8 +1710,6 @@
 </script>
 
 <!-- Script FCM Notifications -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
 (function() {
   // Evite double init
@@ -1785,35 +1787,7 @@
 
   async function getAccessToken() {
     const SA_EMAIL = "firebase-adminsdk-fbsvc@eglise-carrefour.iam.gserviceaccount.com";
-    const PRIVATE_KEY = `-----BEGIN PRIVATE KEY-----
-MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDOrbPvT8HU0I2S
-5ZU44zXx1Rj9NeRovLTCBG9gU8MV4XzavR3LGjvdVPr2ub5VuaAg4jO8FAf+5uAF
-f0M5UZ92t0HKagQQbEqiDfRyab524kq+OF5rhGI5Qd6QBolbkZ3XEiWRGTuGxDjt
-z7Noo/gPknoCV90dQXuhZ6B3R5QedJV662SZmf7uoIbZCpsRO+Qz/zsHA3qQ4uyv
-1p8DBD6cpjsqJNYNq8W+4cbKyGvJKpQ2CdMj6WdH1aw944JQmOxZWiKIlrfZyTJW
-E7Ily0GKaZVjW4z8hhPC5b8/Zen0HS3GlNP5R7umc3SteEyvgRAqzpVwpD8cdfEn
-NUwmpHS9AgMBAAECggEATE4NVJlZsrycyFNC2JHqZLKMW0/+WDzzb347sJC8QePS
-OOABk+7Hk1vAnD7Pas7xs7JP72xl11Jd+ymVJCBig239OEIT5gxVMad9TJCF5VZ+
-yeP92Cw0J3eOOBZxuAD3CWSFwiBSvdrMOeCpGEURXI5zxVGzLQ30Gw8rS1597Q/r
-246FSoM8xa8PObBFU4DU9a1lgYt39zYmIT+iI9U+MEiF2bsA7pXa85kSMCFYH29Z
-mVBxRq8JJFP7Wbcm7HzrFNyestb9r03IzA/JthOPmX+3moXkJNahkAQeVunbptwX
-z9f9eU67aZlzwAiFEl+lLUHNY22q2DsffMpYavPtcQKBgQDyYSr/RQzoaeI3S/8K
-QNtndXBFxC/AfeaIn7A1C9ueCSvodtD1eNVPToIZLMWe+Ej+Rgd6/VjaVtkuUs5o
-DlviDciXZ0MS2LebLStFrsdwK2b08hlJ8/i0h0FbhM+FG8bABI0johpbfFzmHeg0
-RfFMfFUemD9Mrc3ea1wDww0ntwKBgQDaSvIdNEwBeag1pH8R+u3VrTlkvvHCQY8a
-jsxceH+TWxPXWmbvlqueFBJBDRD5lVdP2MuuMtWezryXKn7FflYDoceXlAqM8Qjf
-CzE9TK4vRTOfcgE6f3zBunXlaSjh2pVU9V4YLsIrN58nqaE5Q+NlQPVaLlDntHcn
-LP7vix1/KwKBgQCiaO2wwwoVKe4E841fx3m853plpUICD9rLrYUa5mkwiiC70fHO
-qjr0uzx9tfxtuxzeFPqqNNy24P8CBUZ9fzGeVXIV0YGmPUU6W5flR2ooBU0l0JuV
-bD84aHEo6+NJ5ATXYbVZLSPQLZLqNxwC+uLnR2CZ8ZZowQVzhijP9ID6HQKBgE9f
-rQW9fF2U9Pr8Y1AQY+asZBAj9hhiajyH6/s7vXfBSEeoEYHQ0XpbZf/NVnzKNsNL
-21PuHArwtVZqF0qMk44ih0awh92Tz1v6396gQT3i9dBmTdgNfzmaKUBPqpPlPSN1
-TM+SQPwh73cmkP8Xllm88vnlmXmG/0R5cgF8Hi+dAoGBAJW7JAwmcQDuGWdVCyzj
-ALScX8FxyGHD0Q4kaSKB7NQhtDyhZcK9ykCmhfiUFnpePDmMb0ykHzyQlYAAOBef
-5QWKh7QASkFVpQQdXjQ0LT2kyQqn1zi2cVIXn+Z9mdb+CKV2SIOMCVQDAZ9vuIXI
-Nwv2aSLH9QYdOijCoE5PhUp8
------END PRIVATE KEY-----
-`;
+    const PRIVATE_KEY = "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDOrbPvT8HU0I2S\n5ZU44zXx1Rj9NeRovLTCBG9gU8MV4XzavR3LGjvdVPr2ub5VuaAg4jO8FAf+5uAF\nf0M5UZ92t0HKagQQbEqiDfRyab524kq+OF5rhGI5Qd6QBolbkZ3XEiWRGTuGxDjt\nz7Noo/gPknoCV90dQXuhZ6B3R5QedJV662SZmf7uoIbZCpsRO+Qz/zsHA3qQ4uyv\n1p8DBD6cpjsqJNYNq8W+4cbKyGvJKpQ2CdMj6WdH1aw944JQmOxZWiKIlrfZyTJW\nE7Ily0GKaZVjW4z8hhPC5b8/Zen0HS3GlNP5R7umc3SteEyvgRAqzpVwpD8cdfEn\nNUwmpHS9AgMBAAECggEATE4NVJlZsrycyFNC2JHqZLKMW0/+WDzzb347sJC8QePS\nOOABk+7Hk1vAnD7Pas7xs7JP72xl11Jd+ymVJCBig239OEIT5gxVMad9TJCF5VZ+\nyeP92Cw0J3eOOBZxuAD3CWSFwiBSvdrMOeCpGEURXI5zxVGzLQ30Gw8rS1597Q/r\n246FSoM8xa8PObBFU4DU9a1lgYt39zYmIT+iI9U+MEiF2bsA7pXa85kSMCFYH29Z\nmVBxRq8JJFP7Wbcm7HzrFNyestb9r03IzA/JthOPmX+3moXkJNahkAQeVunbptwX\nz9f9eU67aZlzwAiFEl+lLUHNY22q2DsffMpYavPtcQKBgQDyYSr/RQzoaeI3S/8K\nQNtndXBFxC/AfeaIn7A1C9ueCSvodtD1eNVPToIZLMWe+Ej+Rgd6/VjaVtkuUs5o\nDlviDciXZ0MS2LebLStFrsdwK2b08hlJ8/i0h0FbhM+FG8bABI0johpbfFzmHeg0\nRfFMfFUemD9Mrc3ea1wDww0ntwKBgQDaSvIdNEwBeag1pH8R+u3VrTlkvvHCQY8a\njsxceH+TWxPXWmbvlqueFBJBDRD5lVdP2MuuMtWezryXKn7FflYDoceXlAqM8Qjf\nCzE9TK4vRTOfcgE6f3zBunXlaSjh2pVU9V4YLsIrN58nqaE5Q+NlQPVaLlDntHcn\nLP7vix1/KwKBgQCiaO2wwwoVKe4E841fx3m853plpUICD9rLrYUa5mkwiiC70fHO\nqjr0uzx9tfxtuxzeFPqqNNy24P8CBUZ9fzGeVXIV0YGmPUU6W5flR2ooBU0l0JuV\nbD84aHEo6+NJ5ATXYbVZLSPQLZLqNxwC+uLnR2CZ8ZZowQVzhijP9ID6HQKBgE9f\nrQW9fF2U9Pr8Y1AQY+asZBAj9hhiajyH6/s7vXfBSEeoEYHQ0XpbZf/NVnzKNsNL\n21PuHArwtVZqF0qMk44ih0awh92Tz1v6396gQT3i9dBmTdgNfzmaKUBPqpPlPSN1\nTM+SQPwh73cmkP8Xllm88vnlmXmG/0R5cgF8Hi+dAoGBAJW7JAwmcQDuGWdVCyzj\nALScX8FxyGHD0Q4kaSKB7NQhtDyhZcK9ykCmhfiUFnpePDmMb0ykHzyQlYAAOBef\n5QWKh7QASkFVpQQdXjQ0LT2kyQqn1zi2cVIXn+Z9mdb+CKV2SIOMCVQDAZ9vuIXI\nNwv2aSLH9QYdOijCoE5PhUp8\n-----END PRIVATE KEY-----\n";
 
     const now = Math.floor(Date.now() / 1000);
     const b64u = s => btoa(s).split('=').join('').split('+').join('-').split('/').join('_');
