@@ -937,7 +937,8 @@
 
   // Verifye si deja login
   if (sessionStorage.getItem('admin_ok') === 'true') {
-    showAdminPanel();
+    document.getElementById('adminPanel').style.display = 'block';
+    loadAll();
   } else {
     document.getElementById('loginScreen').style.display = 'flex';
   }
@@ -952,11 +953,12 @@
 
   // ===== LOGIN =====
   function doLogin() {
-    const pw = document.getElementById('loginPassword').value;
-    if (pw === ADMIN_PW || pw === window._ADMIN_PASSWORD) {
+    var pw = document.getElementById('loginPassword').value.trim();
+    if (pw === 'Kafou2025') {
       sessionStorage.setItem('admin_ok', 'true');
       document.getElementById('loginScreen').style.display = 'none';
-      showAdminPanel();
+      document.getElementById('adminPanel').style.display = 'block';
+      loadAll();
     } else {
       document.getElementById('loginError').style.display = 'block';
       document.getElementById('loginPassword').value = '';
