@@ -1474,34 +1474,36 @@
 </script>
 
 <!-- Script FCM Notifications -->
-<script type="module">
-  import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
-    authDomain: "eglise-carrefour.firebaseapp.com",
-    projectId: "eglise-carrefour",
-    storageBucket: "eglise-carrefour.firebasestorage.app",
-    messagingSenderId: "421333694767",
-    appId: "1:421333694767:web:30c18da36ae020821a49da"
-  };
-
-  const app2 = getApps().length ? getApps()[0] : initializeApp(firebaseConfig, 'notif-app');
-  const db2 = getFirestore(app2);
-
-  // Konbyen abòne
-  async function loadNotifCount() {
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+(function() {
+  // Evite double init
+  if (!firebase.apps.length || !firebase.apps.find(a => a.name === 'notif')) {
     try {
-      const snap = await getDocs(collection(db2, 'fcm_tokens'));
-      const el = document.getElementById('notifCount');
-      if (el) el.innerHTML = '<i class="fas fa-bell"></i> ' + snap.size + ' abonné(s)';
-    } catch(e) { console.log('Count error:', e); }
+      firebase.initializeApp({
+        apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
+        authDomain: "eglise-carrefour.firebaseapp.com",
+        projectId: "eglise-carrefour",
+        storageBucket: "eglise-carrefour.firebasestorage.app",
+        messagingSenderId: "421333694767",
+        appId: "1:421333694767:web:30c18da36ae020821a49da"
+      }, 'notif');
+    } catch(e) {}
   }
 
-  // Jenere OAuth2 token via Google Identity (pou FCM v1 API)
+  var notifApp = firebase.app('notif');
+  var db2 = notifApp.firestore();
+
+  // Konbyen abòne
+  function loadNotifCount() {
+    db2.collection('fcm_tokens').get().then(function(snap) {
+      var el = document.getElementById('notifCount');
+      if (el) el.innerHTML = '<i class="fas fa-bell"></i> ' + snap.size + ' abonné(s)';
+    }).catch(function(e) { console.log('Count error:', e); });
+  }
+
   async function getAccessToken() {
-    // Kle privé service account
     const SA_EMAIL = "firebase-adminsdk-fbsvc@eglise-carrefour.iam.gserviceaccount.com";
     const PRIVATE_KEY = `-----BEGIN PRIVATE KEY-----
 MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDOrbPvT8HU0I2S
@@ -1530,122 +1532,98 @@ TM+SQPwh73cmkP8Xllm88vnlmXmG/0R5cgF8Hi+dAoGBAJW7JAwmcQDuGWdVCyzj
 ALScX8FxyGHD0Q4kaSKB7NQhtDyhZcK9ykCmhfiUFnpePDmMb0ykHzyQlYAAOBef
 5QWKh7QASkFVpQQdXjQ0LT2kyQqn1zi2cVIXn+Z9mdb+CKV2SIOMCVQDAZ9vuIXI
 Nwv2aSLH9QYdOijCoE5PhUp8
------END PRIVATE KEY-----`;
+-----END PRIVATE KEY-----
+`;
 
     const now = Math.floor(Date.now() / 1000);
-    const header = btoa(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
-    const claim = btoa(JSON.stringify({
+    const b64u = s => btoa(s).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
+    const header = b64u(JSON.stringify({ alg: 'RS256', typ: 'JWT' }));
+    const claim  = b64u(JSON.stringify({
       iss: SA_EMAIL,
       scope: 'https://www.googleapis.com/auth/firebase.messaging',
       aud: 'https://oauth2.googleapis.com/token',
-      exp: now + 3600,
-      iat: now
-    })).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
-
+      exp: now + 3600, iat: now
+    }));
     const toSign = header + '.' + claim;
-
-    // Importe kle privé pou signe JWT
     const keyData = PRIVATE_KEY.replace(/-----BEGIN PRIVATE KEY-----|-----END PRIVATE KEY-----|
 /g, '');
     const binaryKey = Uint8Array.from(atob(keyData), c => c.charCodeAt(0));
     const cryptoKey = await crypto.subtle.importKey(
       'pkcs8', binaryKey.buffer,
-      { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
-      false, ['sign']
+      { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign']
     );
-
-    const signature = await crypto.subtle.sign(
-      'RSASSA-PKCS1-v1_5', cryptoKey,
-      new TextEncoder().encode(toSign)
-    );
-
-    const sigB64 = btoa(String.fromCharCode(...new Uint8Array(signature))).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
-    const jwt = toSign + '.' + sigB64;
-
-    // Echanje JWT pou Access Token
+    const sig = await crypto.subtle.sign('RSASSA-PKCS1-v1_5', cryptoKey, new TextEncoder().encode(toSign));
+    const jwt = toSign + '.' + btoa(String.fromCharCode(...new Uint8Array(sig))).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
     const res = await fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: 'grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=' + jwt
     });
     const data = await res.json();
+    if (!data.access_token) throw new Error('Token failed: ' + JSON.stringify(data));
     return data.access_token;
   }
 
   window.envoyerNotification = async function() {
     const title = document.getElementById('notifTitle').value.trim();
-    const body = document.getElementById('notifBody').value.trim();
-    const link = document.getElementById('notifLink').value.trim() || 'https://fabouloso1.github.io/eglise-carrefour/index.html';
+    const body  = document.getElementById('notifBody').value.trim();
+    const link  = document.getElementById('notifLink').value.trim() || 'https://fabouloso1.github.io/eglise-carrefour/';
     const status = document.getElementById('notifStatus');
 
     if (!title || !body) {
       status.style.display = 'block';
-      status.style.background = '#fee';
-      status.style.color = '#c00';
+      status.style.background = '#fee'; status.style.color = '#c00';
       status.textContent = '❌ Titre ak mesaj obligatwa';
       return;
     }
-
     status.style.display = 'block';
-    status.style.background = '#fff8e1';
-    status.style.color = '#555';
+    status.style.background = '#fff8e1'; status.style.color = '#555';
     status.textContent = '⏳ Envoi en cours...';
 
     try {
-      // Jwenn tout tokens
-      const snap = await getDocs(collection(db2, 'fcm_tokens'));
+      const snap = await db2.collection('fcm_tokens').get();
       if (snap.empty) {
-        status.style.background = '#fee';
-        status.style.color = '#c00';
+        status.style.background = '#fee'; status.style.color = '#c00';
         status.textContent = '❌ Aucun abonné trouvé';
         return;
       }
-
       const accessToken = await getAccessToken();
       let success = 0, failed = 0;
-
       for (const d of snap.docs) {
         const token = d.data().token;
         try {
           const res = await fetch('https://fcm.googleapis.com/v1/projects/eglise-carrefour/messages:send', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + accessToken
-            },
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + accessToken },
             body: JSON.stringify({
               message: {
                 token: token,
                 notification: { title, body },
-                webpush: {
-                  fcm_options: { link }
-                }
+                webpush: { fcm_options: { link } }
               }
             })
           });
-          if (res.ok) success++;
-          else failed++;
+          if (res.ok) success++; else { failed++; const err = await res.json(); console.log('FCM err:', err); }
         } catch(e) { failed++; }
       }
-
-      status.style.background = '#e8f5e9';
-      status.style.color = '#2e7d32';
-      status.textContent = `✅ Envoyé à ${success} abonné(s)${failed > 0 ? ' | ❌ ' + failed + ' échec(s)' : ''}`;
-
+      status.style.background = success > 0 ? '#e8f5e9' : '#fee';
+      status.style.color = success > 0 ? '#2e7d32' : '#c00';
+      status.textContent = success > 0
+        ? '✅ Envoyé à ' + success + ' abonné(s)' + (failed > 0 ? ' | ❌ ' + failed + ' échec(s)' : '')
+        : '❌ Tous les envois ont échoué';
     } catch(e) {
-      console.error('Notif send error:', e);
-      status.style.background = '#fee';
-      status.style.color = '#c00';
+      console.error('Notif error:', e);
+      status.style.background = '#fee'; status.style.color = '#c00';
       status.textContent = '❌ Erreur : ' + e.message;
     }
   };
 
-  // Chaje konbyen abòne lè tab Notifs ouvri
-  document.addEventListener('click', e => {
+  document.addEventListener('click', function(e) {
     if (e.target.closest('[onclick*="notifs"]')) setTimeout(loadNotifCount, 300);
   });
 
   loadNotifCount();
+})();
 </script>
 
 </body>
