@@ -164,58 +164,99 @@
 
   <!-- DROITE : Formulaire -->
   <div class="contact-form-wrap">
-    <h2 class="form-title" data-i18n="contact_form_title">Envoyez-nous un message</h2>
-    <p class="form-subtitle" data-i18n="contact_form_subtitle">Nous vous répondrons dans les plus brefs délais. Que Dieu vous bénisse !</p>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
+      <div style="width:44px;height:44px;background:linear-gradient(135deg,#1c1c3c,#2d2d6b);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <i class="fas fa-paper-plane" style="color:#f0c040;font-size:1.1rem;"></i>
+      </div>
+      <div>
+        <h2 style="color:#1c1c3c;font-size:1.3rem;margin:0;">Envoyez-nous un message</h2>
+        <p style="color:#aaa;font-size:0.85rem;margin:0;">Nous vous répondrons rapidement 🙏</p>
+      </div>
+    </div>
+
+    <div style="height:1px;background:#f0f0f0;margin:18px 0;"></div>
 
     <form id="contactForm">
-      <div class="form-row">
-        <div class="form-group">
-          <label for="prenom">Prénom *</label>
-          <input type="text" id="prenom" placeholder="Jean" required>
+
+      <!-- Nom konplè -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+        <div>
+          <label style="font-size:0.82rem;font-weight:700;color:#555;display:block;margin-bottom:5px;">Prénom *</label>
+          <div style="position:relative;">
+            <i class="fas fa-user" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#aaa;font-size:0.85rem;"></i>
+            <input type="text" id="prenom" placeholder="Jean" required
+              style="width:100%;padding:10px 10px 10px 34px;border:1.5px solid #e8e8e8;border-radius:10px;font-size:0.9rem;box-sizing:border-box;background:#fafafa;font-family:inherit;">
+          </div>
         </div>
-        <div class="form-group">
-          <label for="nom">Nom *</label>
-          <input type="text" id="nom" placeholder="Dupont" required>
+        <div>
+          <label style="font-size:0.82rem;font-weight:700;color:#555;display:block;margin-bottom:5px;">Nom *</label>
+          <div style="position:relative;">
+            <i class="fas fa-user" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#aaa;font-size:0.85rem;"></i>
+            <input type="text" id="nom" placeholder="Dupont" required
+              style="width:100%;padding:10px 10px 10px 34px;border:1.5px solid #e8e8e8;border-radius:10px;font-size:0.9rem;box-sizing:border-box;background:#fafafa;font-family:inherit;">
+          </div>
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="email">Adresse email *</label>
-        <input type="email" id="email" placeholder="votre@email.com" required>
+      <!-- Email -->
+      <div style="margin-bottom:14px;">
+        <label style="font-size:0.82rem;font-weight:700;color:#555;display:block;margin-bottom:5px;">Adresse email *</label>
+        <div style="position:relative;">
+          <i class="fas fa-envelope" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#aaa;font-size:0.85rem;"></i>
+          <input type="email" id="email" placeholder="votre@email.com" required
+            style="width:100%;padding:10px 10px 10px 34px;border:1.5px solid #e8e8e8;border-radius:10px;font-size:0.9rem;box-sizing:border-box;background:#fafafa;font-family:inherit;">
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="telephone">Téléphone (optionnel)</label>
-        <input type="tel" id="telephone" placeholder="+509 ...">
+      <!-- Téléphone -->
+      <div style="margin-bottom:14px;">
+        <label style="font-size:0.82rem;font-weight:700;color:#555;display:block;margin-bottom:5px;">Téléphone <span style="color:#aaa;font-weight:400;">(optionnel)</span></label>
+        <div style="position:relative;">
+          <i class="fas fa-phone" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#aaa;font-size:0.85rem;"></i>
+          <input type="tel" id="telephone" placeholder="+509 ..."
+            style="width:100%;padding:10px 10px 10px 34px;border:1.5px solid #e8e8e8;border-radius:10px;font-size:0.9rem;box-sizing:border-box;background:#fafafa;font-family:inherit;">
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="sujet">Sujet *</label>
-        <select id="sujet" required>
-          <option value="">-- Choisissez un sujet --</option>
-          <option value="info">Informations générales</option>
-          <option value="priere">Demande de prière</option>
-          <option value="visite">Première visite</option>
-          <option value="don">Don & offrande</option>
-          <option value="autre">Autre</option>
-        </select>
+      <!-- Sujet -->
+      <div style="margin-bottom:14px;">
+        <label style="font-size:0.82rem;font-weight:700;color:#555;display:block;margin-bottom:5px;">Sujet *</label>
+        <div style="position:relative;">
+          <i class="fas fa-tag" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#aaa;font-size:0.85rem;pointer-events:none;"></i>
+          <select id="sujet" required
+            style="width:100%;padding:10px 10px 10px 34px;border:1.5px solid #e8e8e8;border-radius:10px;font-size:0.9rem;box-sizing:border-box;background:#fafafa;appearance:none;font-family:inherit;">
+            <option value="">-- Choisissez un sujet --</option>
+            <option value="info">Informations générales</option>
+            <option value="priere">Demande de prière</option>
+            <option value="visite">Première visite</option>
+            <option value="don">Don & offrande</option>
+            <option value="autre">Autre</option>
+          </select>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="message">Votre message *</label>
-        <textarea id="message" placeholder="Écrivez votre message ici..." required></textarea>
+      <!-- Message -->
+      <div style="margin-bottom:18px;">
+        <label style="font-size:0.82rem;font-weight:700;color:#555;display:block;margin-bottom:5px;">Votre message *</label>
+        <textarea id="message" placeholder="Écrivez votre message ici..." required
+          style="width:100%;padding:12px;border:1.5px solid #e8e8e8;border-radius:10px;font-size:0.9rem;box-sizing:border-box;background:#fafafa;font-family:inherit;height:130px;resize:vertical;line-height:1.5;"></textarea>
       </div>
 
-      <button type="submit" class="submit-btn">
-        <i class="fas fa-paper-plane"></i>
-        <span>Envoyer le message</span>
+      <button type="submit"
+        style="width:100%;padding:14px;background:linear-gradient(135deg,#1c1c3c,#2d2d6b);color:white;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px;transition:0.2s;"
+        onmouseover="this.style.background='linear-gradient(135deg,#f0c040,#c9a84c)';this.style.color='#1c1c3c';"
+        onmouseout="this.style.background='linear-gradient(135deg,#1c1c3c,#2d2d6b)';this.style.color='white';">
+        <i class="fas fa-paper-plane"></i> Envoyer le message
       </button>
     </form>
 
-    <div class="success-msg" id="successMsg">
-      <i class="fas fa-check-circle"></i>
-      <h3>Message envoyé !</h3>
-      <p>Merci de nous avoir contactés. Nous vous répondrons très bientôt. Que Dieu vous bénisse !</p>
+    <!-- Siksè -->
+    <div id="successMsg" style="display:none;text-align:center;padding:30px 20px;background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border-radius:12px;border:1px solid #c8e6c9;">
+      <div style="width:60px;height:60px;background:#27ae60;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+        <i class="fas fa-check" style="color:white;font-size:1.5rem;"></i>
+      </div>
+      <h3 style="color:#2e7d32;font-size:1.2rem;margin-bottom:8px;">Message envoyé !</h3>
+      <p style="color:#555;font-size:0.9rem;">Merci de nous avoir contactés.<br>Nous vous répondrons très bientôt. Que Dieu vous bénisse ! 🙏</p>
     </div>
   </div>
 </div>
