@@ -15,8 +15,6 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Église Carrefour">
   <link rel="apple-touch-icon" href="logo.png">
-  <!-- OneSignal Push Notifications -->
-  
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-G9Y14X29NZ"></script>
   <script>
@@ -466,27 +464,24 @@
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
   import { getMessaging, getToken, deleteToken } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js';
+  import { getFirestore, doc, setDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
   const VAPID_KEY = 'BJ1bOLbFM6qNV2XgVA4F9pA7cWng1NKPlU24sgSOk8MyqhhqWsBXVlN0V2Sjnt-Z7xFIHK8wiRS12xFGWddAtFI';
+  const SW_PATH = '/eglise-carrefour/firebase-messaging-sw.js';
+  const SW_SCOPE = '/eglise-carrefour/';
 
-  const app = initializeApp({
+  const firebaseConfig = {
     apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
     authDomain: "eglise-carrefour.firebaseapp.com",
     projectId: "eglise-carrefour",
     storageBucket: "eglise-carrefour.firebasestorage.app",
     messagingSenderId: "421333694767",
     appId: "1:421333694767:web:30c18da36ae020821a49da"
-  });
+  };
 
-  // Enregistre service worker manuèlman ak bon chemin
-  let messaging;
-  try {
-    const swReg = await navigator.serviceWorker.register('/eglise-carrefour/firebase-messaging-sw.js');
-    messaging = getMessaging(app);
-  } catch(e) {
-    console.error('SW registration failed:', e);
-    messaging = getMessaging(app);
-  }
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const messaging = getMessaging(app);
 
   function showBellToast(msg) {
     const t = document.createElement('div');
@@ -503,10 +498,8 @@
     if (dot) dot.style.display = subscribed ? 'none' : 'block';
   }
 
-  // Verifye eta abònman lè paj la chaje
-  window.addEventListener('load', async () => {
-    const saved = localStorage.getItem('fcm_subscribed');
-    if (saved === 'true') updateBellUI(true);
+  window.addEventListener('load', () => {
+    if (localStorage.getItem('fcm_subscribed') === 'true') updateBellUI(true);
   });
 
   window.toggleNotifSubscription = async function() {
@@ -523,20 +516,22 @@
       const isSubscribed = localStorage.getItem('fcm_subscribed') === 'true';
 
       if (isSubscribed) {
-        // Dezabòne
-        await deleteToken(messaging);
+        try { await deleteToken(messaging); } catch(e) {}
+        const oldToken = localStorage.getItem('fcm_token');
+        if (oldToken) {
+          try { await deleteDoc(doc(db, 'fcm_tokens', oldToken.substring(0, 40))); } catch(e) {}
+        }
         localStorage.removeItem('fcm_subscribed');
         localStorage.removeItem('fcm_token');
         updateBellUI(false);
         showBellToast('🔕 Notifications désactivées');
       } else {
-        // Abòne
         showBellToast('🔔 Demande de permission...');
-        const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+        // Enregistre service worker ak bon scope
+        const swReg = await navigator.serviceWorker.register(SW_PATH, { scope: SW_SCOPE });
+        await navigator.serviceWorker.ready;
+        const token = await getToken(messaging, { vapidKey: VAPID_KEY, serviceWorkerRegistration: swReg });
         if (token) {
-          // Sove token nan Firestore
-          const { initializeFirestore, doc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
-          const db = initializeFirestore(app, {});
           await setDoc(doc(db, 'fcm_tokens', token.substring(0, 40)), {
             token: token,
             date: new Date().toISOString(),
