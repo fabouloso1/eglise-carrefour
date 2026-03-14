@@ -543,6 +543,9 @@
     <button class="tab-btn" onclick="showTab('prieres')">
       <i class="fas fa-hands-praying"></i> Prières
     </button>
+    <button class="tab-btn" onclick="showTab('notifs')">
+      <i class="fas fa-bell"></i> Notifications
+    </button>
   </div>
 
   <!-- Content -->
@@ -780,6 +783,44 @@
           <div style="text-align:center;padding:30px;color:#aaa;">
             <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--gold);display:block;margin-bottom:12px;"></i>
             Chargement...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB NOTIFIKASYON -->
+    <div class="tab-panel" id="tab-notifs">
+      <div class="card">
+        <h3><i class="fas fa-bell" style="color:var(--gold)"></i> Envoyer une notification</h3>
+        <p style="font-size:1rem;color:#888;margin-bottom:20px;">Envoyez une notification push à tous les abonnés du site.</p>
+
+        <div style="display:flex;flex-direction:column;gap:14px;max-width:500px;">
+          <div>
+            <label style="font-weight:600;display:block;margin-bottom:6px;">Titre <span style="color:red">*</span></label>
+            <input type="text" id="notifTitle" placeholder="Ex: Nouveau message du pasteur" 
+              style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:1rem;">
+          </div>
+          <div>
+            <label style="font-weight:600;display:block;margin-bottom:6px;">Message <span style="color:red">*</span></label>
+            <textarea id="notifBody" rows="3" placeholder="Ex: Un nouveau message a été publié sur le site..."
+              style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:1rem;resize:vertical;"></textarea>
+          </div>
+          <div>
+            <label style="font-weight:600;display:block;margin-bottom:6px;">Lien (optionnel)</label>
+            <input type="text" id="notifLink" placeholder="https://fabouloso1.github.io/eglise-carrefour/index.html"
+              style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:1rem;">
+          </div>
+          <button onclick="envoyerNotification()" 
+            style="background:var(--gold);color:#1c1c3c;font-weight:700;padding:12px;border:none;border-radius:8px;font-size:1rem;cursor:pointer;">
+            <i class="fas fa-paper-plane"></i> Envoyer à tous les abonnés
+          </button>
+          <div id="notifStatus" style="display:none;padding:12px;border-radius:8px;text-align:center;font-weight:600;"></div>
+        </div>
+
+        <div style="margin-top:30px;padding-top:20px;border-top:1px solid #eee;">
+          <h4 style="margin-bottom:10px;"><i class="fas fa-users"></i> Abonnés</h4>
+          <div id="notifCount" style="font-size:1.5rem;font-weight:700;color:var(--gold);">
+            <i class="fas fa-spinner fa-spin"></i>
           </div>
         </div>
       </div>
@@ -1430,6 +1471,181 @@
       }
     });
   }
+</script>
+
+<!-- Script FCM Notifications -->
+<script type="module">
+  import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
+    authDomain: "eglise-carrefour.firebaseapp.com",
+    projectId: "eglise-carrefour",
+    storageBucket: "eglise-carrefour.firebasestorage.app",
+    messagingSenderId: "421333694767",
+    appId: "1:421333694767:web:30c18da36ae020821a49da"
+  };
+
+  const app2 = getApps().length ? getApps()[0] : initializeApp(firebaseConfig, 'notif-app');
+  const db2 = getFirestore(app2);
+
+  // Konbyen abòne
+  async function loadNotifCount() {
+    try {
+      const snap = await getDocs(collection(db2, 'fcm_tokens'));
+      const el = document.getElementById('notifCount');
+      if (el) el.innerHTML = '<i class="fas fa-bell"></i> ' + snap.size + ' abonné(s)';
+    } catch(e) { console.log('Count error:', e); }
+  }
+
+  // Jenere OAuth2 token via Google Identity (pou FCM v1 API)
+  async function getAccessToken() {
+    // Kle privé service account
+    const SA_EMAIL = "firebase-adminsdk-fbsvc@eglise-carrefour.iam.gserviceaccount.com";
+    const PRIVATE_KEY = `-----BEGIN PRIVATE KEY-----
+MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDOrbPvT8HU0I2S
+5ZU44zXx1Rj9NeRovLTCBG9gU8MV4XzavR3LGjvdVPr2ub5VuaAg4jO8FAf+5uAF
+f0M5UZ92t0HKagQQbEqiDfRyab524kq+OF5rhGI5Qd6QBolbkZ3XEiWRGTuGxDjt
+z7Noo/gPknoCV90dQXuhZ6B3R5QedJV662SZmf7uoIbZCpsRO+Qz/zsHA3qQ4uyv
+1p8DBD6cpjsqJNYNq8W+4cbKyGvJKpQ2CdMj6WdH1aw944JQmOxZWiKIlrfZyTJW
+E7Ily0GKaZVjW4z8hhPC5b8/Zen0HS3GlNP5R7umc3SteEyvgRAqzpVwpD8cdfEn
+NUwmpHS9AgMBAAECggEATE4NVJlZsrycyFNC2JHqZLKMW0/+WDzzb347sJC8QePS
+OOABk+7Hk1vAnD7Pas7xs7JP72xl11Jd+ymVJCBig239OEIT5gxVMad9TJCF5VZ+
+yeP92Cw0J3eOOBZxuAD3CWSFwiBSvdrMOeCpGEURXI5zxVGzLQ30Gw8rS1597Q/r
+246FSoM8xa8PObBFU4DU9a1lgYt39zYmIT+iI9U+MEiF2bsA7pXa85kSMCFYH29Z
+mVBxRq8JJFP7Wbcm7HzrFNyestb9r03IzA/JthOPmX+3moXkJNahkAQeVunbptwX
+z9f9eU67aZlzwAiFEl+lLUHNY22q2DsffMpYavPtcQKBgQDyYSr/RQzoaeI3S/8K
+QNtndXBFxC/AfeaIn7A1C9ueCSvodtD1eNVPToIZLMWe+Ej+Rgd6/VjaVtkuUs5o
+DlviDciXZ0MS2LebLStFrsdwK2b08hlJ8/i0h0FbhM+FG8bABI0johpbfFzmHeg0
+RfFMfFUemD9Mrc3ea1wDww0ntwKBgQDaSvIdNEwBeag1pH8R+u3VrTlkvvHCQY8a
+jsxceH+TWxPXWmbvlqueFBJBDRD5lVdP2MuuMtWezryXKn7FflYDoceXlAqM8Qjf
+CzE9TK4vRTOfcgE6f3zBunXlaSjh2pVU9V4YLsIrN58nqaE5Q+NlQPVaLlDntHcn
+LP7vix1/KwKBgQCiaO2wwwoVKe4E841fx3m853plpUICD9rLrYUa5mkwiiC70fHO
+qjr0uzx9tfxtuxzeFPqqNNy24P8CBUZ9fzGeVXIV0YGmPUU6W5flR2ooBU0l0JuV
+bD84aHEo6+NJ5ATXYbVZLSPQLZLqNxwC+uLnR2CZ8ZZowQVzhijP9ID6HQKBgE9f
+rQW9fF2U9Pr8Y1AQY+asZBAj9hhiajyH6/s7vXfBSEeoEYHQ0XpbZf/NVnzKNsNL
+21PuHArwtVZqF0qMk44ih0awh92Tz1v6396gQT3i9dBmTdgNfzmaKUBPqpPlPSN1
+TM+SQPwh73cmkP8Xllm88vnlmXmG/0R5cgF8Hi+dAoGBAJW7JAwmcQDuGWdVCyzj
+ALScX8FxyGHD0Q4kaSKB7NQhtDyhZcK9ykCmhfiUFnpePDmMb0ykHzyQlYAAOBef
+5QWKh7QASkFVpQQdXjQ0LT2kyQqn1zi2cVIXn+Z9mdb+CKV2SIOMCVQDAZ9vuIXI
+Nwv2aSLH9QYdOijCoE5PhUp8
+-----END PRIVATE KEY-----`;
+
+    const now = Math.floor(Date.now() / 1000);
+    const header = btoa(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
+    const claim = btoa(JSON.stringify({
+      iss: SA_EMAIL,
+      scope: 'https://www.googleapis.com/auth/firebase.messaging',
+      aud: 'https://oauth2.googleapis.com/token',
+      exp: now + 3600,
+      iat: now
+    })).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
+
+    const toSign = header + '.' + claim;
+
+    // Importe kle privé pou signe JWT
+    const keyData = PRIVATE_KEY.replace(/-----BEGIN PRIVATE KEY-----|-----END PRIVATE KEY-----|
+/g, '');
+    const binaryKey = Uint8Array.from(atob(keyData), c => c.charCodeAt(0));
+    const cryptoKey = await crypto.subtle.importKey(
+      'pkcs8', binaryKey.buffer,
+      { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+      false, ['sign']
+    );
+
+    const signature = await crypto.subtle.sign(
+      'RSASSA-PKCS1-v1_5', cryptoKey,
+      new TextEncoder().encode(toSign)
+    );
+
+    const sigB64 = btoa(String.fromCharCode(...new Uint8Array(signature))).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
+    const jwt = toSign + '.' + sigB64;
+
+    // Echanje JWT pou Access Token
+    const res = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=' + jwt
+    });
+    const data = await res.json();
+    return data.access_token;
+  }
+
+  window.envoyerNotification = async function() {
+    const title = document.getElementById('notifTitle').value.trim();
+    const body = document.getElementById('notifBody').value.trim();
+    const link = document.getElementById('notifLink').value.trim() || 'https://fabouloso1.github.io/eglise-carrefour/index.html';
+    const status = document.getElementById('notifStatus');
+
+    if (!title || !body) {
+      status.style.display = 'block';
+      status.style.background = '#fee';
+      status.style.color = '#c00';
+      status.textContent = '❌ Titre ak mesaj obligatwa';
+      return;
+    }
+
+    status.style.display = 'block';
+    status.style.background = '#fff8e1';
+    status.style.color = '#555';
+    status.textContent = '⏳ Envoi en cours...';
+
+    try {
+      // Jwenn tout tokens
+      const snap = await getDocs(collection(db2, 'fcm_tokens'));
+      if (snap.empty) {
+        status.style.background = '#fee';
+        status.style.color = '#c00';
+        status.textContent = '❌ Aucun abonné trouvé';
+        return;
+      }
+
+      const accessToken = await getAccessToken();
+      let success = 0, failed = 0;
+
+      for (const d of snap.docs) {
+        const token = d.data().token;
+        try {
+          const res = await fetch('https://fcm.googleapis.com/v1/projects/eglise-carrefour/messages:send', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + accessToken
+            },
+            body: JSON.stringify({
+              message: {
+                token: token,
+                notification: { title, body },
+                webpush: {
+                  fcm_options: { link }
+                }
+              }
+            })
+          });
+          if (res.ok) success++;
+          else failed++;
+        } catch(e) { failed++; }
+      }
+
+      status.style.background = '#e8f5e9';
+      status.style.color = '#2e7d32';
+      status.textContent = `✅ Envoyé à ${success} abonné(s)${failed > 0 ? ' | ❌ ' + failed + ' échec(s)' : ''}`;
+
+    } catch(e) {
+      console.error('Notif send error:', e);
+      status.style.background = '#fee';
+      status.style.color = '#c00';
+      status.textContent = '❌ Erreur : ' + e.message;
+    }
+  };
+
+  // Chaje konbyen abòne lè tab Notifs ouvri
+  document.addEventListener('click', e => {
+    if (e.target.closest('[onclick*="notifs"]')) setTimeout(loadNotifCount, 300);
+  });
+
+  loadNotifCount();
 </script>
 
 </body>
