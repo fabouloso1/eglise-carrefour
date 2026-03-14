@@ -1,4 +1,247 @@
-  // Formulaire de contact
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Contact — Église de Dieu de la Prophétie de Carrefour</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="logo.png">
+
+  <style>
+    .contact-hero {
+      background: linear-gradient(135deg, #1c1c3c 0%, #2d2d6b 100%);
+      color: white; text-align: center; padding: 80px 20px 50px;
+    }
+    .contact-hero h1 { font-size: 2.2rem; margin-bottom: 10px; }
+    .contact-hero p { opacity: 0.8; font-size: 1rem; }
+    .contact-container {
+      max-width: 1100px; margin: 0 auto; padding: 50px 20px;
+      display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px;
+    }
+    @media (max-width: 768px) { .contact-container { grid-template-columns: 1fr; } }
+    .contact-info-card, .contact-form-wrap {
+      background: white; border-radius: 16px; padding: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    .contact-info-card h2 { color: #1c1c3c; margin-bottom: 20px; font-size: 1.3rem; }
+    .info-item { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 20px; }
+    .info-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: linear-gradient(135deg, #1c1c3c, #2d2d6b);
+      display: flex; align-items: center; justify-content: center;
+      color: #f0c040; font-size: 1rem; flex-shrink: 0;
+    }
+    .info-label { font-weight: 700; color: #1c1c3c; font-size: 0.9rem; }
+    .info-value { color: #555; font-size: 0.9rem; margin-top: 2px; }
+    .info-value a { color: #2d2d6b; text-decoration: none; }
+    .form-title { color: #1c1c3c; font-size: 1.4rem; margin-bottom: 6px; }
+    .form-subtitle { color: #888; font-size: 0.9rem; margin-bottom: 24px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-weight: 600; color: #1c1c3c; font-size: 0.88rem; margin-bottom: 6px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 11px 14px; border: 1.5px solid #e0e0e0; border-radius: 8px;
+      font-size: 0.95rem; font-family: inherit; transition: border 0.2s;
+      box-sizing: border-box; background: #fafafa;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none; border-color: #2d2d6b; background: white;
+    }
+    .form-group textarea { height: 120px; resize: vertical; }
+    .submit-btn {
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg, #1c1c3c, #2d2d6b);
+      color: white; border: none; border-radius: 30px;
+      font-family: inherit; font-size: 1rem; font-weight: 700; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s;
+    }
+    .submit-btn:hover { background: linear-gradient(135deg, #f0c040, #c9a84c); color: #1c1c3c; }
+    .success-msg {
+      display: none; text-align: center; padding: 30px;
+      background: #e8f5e9; border-radius: 12px; color: #2e7d32;
+    }
+    .success-msg i { font-size: 3rem; margin-bottom: 12px; display: block; }
+    .success-msg h3 { font-size: 1.3rem; margin-bottom: 8px; }
+    .map-section { padding: 40px 20px; background: #f5f5f5; }
+    .map-section-header { text-align: center; margin-bottom: 20px; color: #1c1c3c; }
+    .map-placeholder {
+      max-width: 800px; margin: 0 auto; background: #ddd; border-radius: 12px;
+      height: 250px; display: flex; align-items: center;
+      justify-content: center; flex-direction: column; color: #888;
+    }
+    .map-placeholder i { font-size: 2.5rem; margin-bottom: 10px; }
+  </style>
+
+  <!-- Firebase Contact -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
+    import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
+    const app = initializeApp({
+      apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
+      authDomain: "eglise-carrefour.firebaseapp.com",
+      projectId: "eglise-carrefour",
+      storageBucket: "eglise-carrefour.firebasestorage.app",
+      messagingSenderId: "421333694767",
+      appId: "1:421333694767:web:30c18da36ae020821a49da"
+    });
+    const db = getFirestore(app);
+    window._saveContact = async function(data) {
+      await addDoc(collection(db, 'contacts'), {
+        ...data, lu: false, timestamp: serverTimestamp(),
+        date: new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
+      });
+    };
+  </script>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G9Y14X29NZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date()); gtag('config', 'G-G9Y14X29NZ');
+  </script>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<!-- HERO -->
+<div class="contact-hero">
+  <h1 data-i18n="contact_title"><i class="fas fa-envelope" style="color:#f0c040;margin-right:10px;"></i>Contactez-nous</h1>
+  <p data-i18n="contact_subtitle">Nous sommes là pour vous. N'hésitez pas à nous écrire ou nous appeler.</p>
+</div>
+
+<!-- CONTENU -->
+<div class="contact-container">
+
+  <!-- GAUCHE : Infos -->
+  <div class="contact-info-card">
+    <h2 data-i18n="contact_info_title"><i class="fas fa-info-circle" style="color:#f0c040;margin-right:8px;"></i>Nos coordonnées</h2>
+
+    <div class="info-item">
+      <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+      <div>
+        <div class="info-label">Adresse</div>
+        <div class="info-value">Carrefour, Waney 93<br>Port-au-Prince, Haïti</div>
+      </div>
+    </div>
+
+    <div class="info-item">
+      <div class="info-icon"><i class="fas fa-phone"></i></div>
+      <div>
+        <div class="info-label">Téléphone</div>
+        <div class="info-value"><a href="tel:+50931573591">+509 3157-3591</a></div>
+      </div>
+    </div>
+
+    <div class="info-item">
+      <div class="info-icon"><i class="fab fa-whatsapp"></i></div>
+      <div>
+        <div class="info-label">WhatsApp</div>
+        <div class="info-value"><a href="https://wa.me/50931573591" target="_blank">+509 3157-3591</a></div>
+      </div>
+    </div>
+
+    <div class="info-item">
+      <div class="info-icon"><i class="fas fa-envelope"></i></div>
+      <div>
+        <div class="info-label">Email</div>
+        <div class="info-value"><a href="mailto:anouisjean@yahoo.fr">anouisjean@yahoo.fr</a></div>
+      </div>
+    </div>
+
+    <div class="info-item">
+      <div class="info-icon"><i class="fas fa-clock"></i></div>
+      <div>
+        <div class="info-label">Heures de culte</div>
+        <div class="info-value">Dimanche : 9h00 – 12h00<br>Mercredi : 18h00 – 20h00</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DROITE : Formulaire -->
+  <div class="contact-form-wrap">
+    <h2 class="form-title" data-i18n="contact_form_title">Envoyez-nous un message</h2>
+    <p class="form-subtitle" data-i18n="contact_form_subtitle">Nous vous répondrons dans les plus brefs délais. Que Dieu vous bénisse !</p>
+
+    <form id="contactForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="prenom">Prénom *</label>
+          <input type="text" id="prenom" placeholder="Jean" required>
+        </div>
+        <div class="form-group">
+          <label for="nom">Nom *</label>
+          <input type="text" id="nom" placeholder="Dupont" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Adresse email *</label>
+        <input type="email" id="email" placeholder="votre@email.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="telephone">Téléphone (optionnel)</label>
+        <input type="tel" id="telephone" placeholder="+509 ...">
+      </div>
+
+      <div class="form-group">
+        <label for="sujet">Sujet *</label>
+        <select id="sujet" required>
+          <option value="">-- Choisissez un sujet --</option>
+          <option value="info">Informations générales</option>
+          <option value="priere">Demande de prière</option>
+          <option value="visite">Première visite</option>
+          <option value="don">Don & offrande</option>
+          <option value="autre">Autre</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="message">Votre message *</label>
+        <textarea id="message" placeholder="Écrivez votre message ici..." required></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        <i class="fas fa-paper-plane"></i>
+        <span>Envoyer le message</span>
+      </button>
+    </form>
+
+    <div class="success-msg" id="successMsg">
+      <i class="fas fa-check-circle"></i>
+      <h3>Message envoyé !</h3>
+      <p>Merci de nous avoir contactés. Nous vous répondrons très bientôt. Que Dieu vous bénisse !</p>
+    </div>
+  </div>
+</div>
+
+<!-- MAP -->
+<div class="map-section">
+  <div class="map-section-header">
+    <i class="fas fa-map-marker-alt" style="color:#f0c040;font-size:1.5rem;margin-right:8px;"></i>
+    <h2 style="display:inline;">Nous trouver à Carrefour, Port-au-Prince, Haïti</h2>
+  </div>
+  <div class="map-placeholder">
+    <i class="fas fa-map-marked-alt"></i>
+    <p>Carrefour, Waney 93 — Port-au-Prince, Haïti</p>
+  </div>
+</div>
+
+<div id="foot-placeholder"></div>
+
+<script src="lang.js"></script>
+<script src="nav.js"></script>
+<script>
+  NAV.init('Contact.html');
+  document.addEventListener('DOMContentLoaded', function() {
+    if (window.initLang) initLang();
+  });
+
   document.getElementById('contactForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -16,32 +259,25 @@
       window._saveContact({
         prenom: prenom, nom: nom, email: email,
         telephone: telephone, sujet: sujet, message: message
-      }).catch(function(e) { console.log('Firebase contact:', e.message); });
+      }).catch(function(err) { console.log('Firebase contact:', err.message); });
     }
 
-    // WhatsApp
+    // Voye WhatsApp
     var sujetLabel = {
       info: 'Informations generales', priere: 'Demande de priere',
       visite: 'Premiere visite', don: 'Don & offrande', autre: 'Autre'
     }[sujet] || sujet;
 
-    var msg = 'Nouveau message - Site Eglise
-
-';
-    msg += 'Nom: ' + prenom + ' ' + nom + '
-';
-    msg += 'Email: ' + email + '
-';
-    if (telephone) msg += 'Telephone: ' + telephone + '
-';
-    msg += 'Sujet: ' + sujetLabel + '
-
-';
-    msg += 'Message:
-' + message;
+    var msg = 'Nouveau message - Site Eglise\n\n';
+    msg += 'Nom: ' + prenom + ' ' + nom + '\n';
+    msg += 'Email: ' + email + '\n';
+    if (telephone) msg += 'Telephone: ' + telephone + '\n';
+    msg += 'Sujet: ' + sujetLabel + '\n\n';
+    msg += 'Message:\n' + message;
 
     window.open('https://wa.me/50931573591?text=' + encodeURIComponent(msg), '_blank');
 
+    // Afiche siksè
     document.getElementById('contactForm').style.display = 'none';
     document.getElementById('successMsg').style.display = 'block';
     window.scrollTo({ top: document.getElementById('successMsg').offsetTop - 100, behavior: 'smooth' });
