@@ -1545,8 +1545,7 @@ Nwv2aSLH9QYdOijCoE5PhUp8
       exp: now + 3600, iat: now
     }));
     const toSign = header + '.' + claim;
-    const keyData = PRIVATE_KEY.replace(/-----BEGIN PRIVATE KEY-----|-----END PRIVATE KEY-----|
-/g, '');
+    const keyData = PRIVATE_KEY.replace(/-----BEGIN PRIVATE KEY-----/g,'').replace(/-----END PRIVATE KEY-----/g,'').replace(/\s/g,'');
     const binaryKey = Uint8Array.from(atob(keyData), c => c.charCodeAt(0));
     const cryptoKey = await crypto.subtle.importKey(
       'pkcs8', binaryKey.buffer,
