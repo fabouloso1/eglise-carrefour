@@ -1032,10 +1032,10 @@
             '<p style="color:#555;">' + sujetLabel + ' — ' + (c.date||'') + '</p>' +
             '<p style="font-style:italic;color:#444;margin-top:6px;">' + (c.message||'') + '</p>' +
             '</div><div class="item-card-actions">' +
-            (!lu ? '<button class="btn btn-sm btn-primary" onclick="marquerContactLu('' + d.id + '')"><i class="fas fa-check"></i> Lu</button>' : '') +
+            (!lu ? '<button class="btn btn-sm btn-primary" onclick="marquerContactLu(\'' + d.id + '\')"><i class="fas fa-check"></i> Lu</button>' : '') +
             (c.telephone ? '<a href="https://wa.me/' + (c.telephone||'').replace(/[^0-9]/g,'') + '" target="_blank" class="btn btn-sm" style="background:#25D366;color:white;"><i class="fab fa-whatsapp"></i></a>' : '') +
             (c.email ? '<a href="mailto:' + c.email + '" class="btn btn-sm" style="background:#1a73e8;color:white;"><i class="fas fa-reply"></i></a>' : '') +
-            '<button class="btn btn-sm" style="background:#fee;color:#e74c3c;" onclick="effacerContact('' + d.id + '')"><i class="fas fa-trash"></i></button>' +
+            '<button class="btn btn-sm" style="background:#fee;color:#e74c3c;" onclick="effacerContact(\'' + d.id + '\')"><i class="fas fa-trash"></i></button>' +
             '</div></div>';
         }).join('');
         checkContactBadge();
