@@ -16,38 +16,7 @@
   <meta name="apple-mobile-web-app-title" content="Église Carrefour">
   <link rel="apple-touch-icon" href="logo.png">
   <!-- OneSignal Push Notifications -->
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-  <script>
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function(OneSignal) {
-      await OneSignal.init({
-        appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
-        promptOptions: {
-          slidedown: {
-            prompts: [
-              {
-                type: "push",
-                autoPrompt: true,
-                text: {
-                  actionMessage: "Restez connectés à notre église ! Recevez les annonces en temps réel.",
-                  acceptButton: "Oui, m'abonner",
-                  cancelButton: "Plus tard"
-                },
-                delay: { pageViews: 1, timeDelay: 5 }
-              }
-            ]
-          }
-        },
-        welcomeNotification: {
-          disable: false,
-          title: "Église de Dieu de la Prophétie",
-          message: "Bienvenue ! Vous recevrez désormais nos annonces. 🙏"
-        },
-        notifyButton: { enable: false },
-        allowLocalhostAsSecureOrigin: true
-      });
-    });
-  </script>
+  
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-G9Y14X29NZ"></script>
   <script>
@@ -494,6 +463,89 @@
 
 </script>
 <script src="lang.js"></script>
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getMessaging, getToken, deleteToken } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js';
+
+  const VAPID_KEY = 'BJ1bOLbFM6qNV2XgVA4F9pA7cWng1NKPlU24sgSOk8MyqhhqWsBXVlN0V2Sjnt-Z7xFIHK8wiRS12xFGWddAtFI';
+
+  const app = initializeApp({
+    apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
+    authDomain: "eglise-carrefour.firebaseapp.com",
+    projectId: "eglise-carrefour",
+    storageBucket: "eglise-carrefour.firebasestorage.app",
+    messagingSenderId: "421333694767",
+    appId: "1:421333694767:web:30c18da36ae020821a49da"
+  });
+
+  const messaging = getMessaging(app);
+
+  function showBellToast(msg) {
+    const t = document.createElement('div');
+    t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1c1c3c;color:white;padding:10px 20px;border-radius:20px;z-index:9999;font-size:0.9rem;box-shadow:0 4px 15px rgba(0,0,0,0.3);';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 3500);
+  }
+
+  function updateBellUI(subscribed) {
+    const bell = document.getElementById('notifBell');
+    const dot = document.getElementById('notifDot');
+    if (bell) bell.classList.toggle('subscribed', subscribed);
+    if (dot) dot.style.display = subscribed ? 'none' : 'block';
+  }
+
+  // Verifye eta abònman lè paj la chaje
+  window.addEventListener('load', async () => {
+    const saved = localStorage.getItem('fcm_subscribed');
+    if (saved === 'true') updateBellUI(true);
+  });
+
+  window.toggleNotifSubscription = async function() {
+    try {
+      if (!('Notification' in window)) {
+        showBellToast('❌ Votre navigateur ne supporte pas les notifications');
+        return;
+      }
+      if (Notification.permission === 'denied') {
+        showBellToast('❌ Notifications bloquées — activez-les dans les paramètres');
+        return;
+      }
+
+      const isSubscribed = localStorage.getItem('fcm_subscribed') === 'true';
+
+      if (isSubscribed) {
+        // Dezabòne
+        await deleteToken(messaging);
+        localStorage.removeItem('fcm_subscribed');
+        localStorage.removeItem('fcm_token');
+        updateBellUI(false);
+        showBellToast('🔕 Notifications désactivées');
+      } else {
+        // Abòne
+        showBellToast('🔔 Demande de permission...');
+        const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+        if (token) {
+          // Sove token nan Firestore
+          const { initializeFirestore, doc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+          const db = initializeFirestore(app, {});
+          await setDoc(doc(db, 'fcm_tokens', token.substring(0, 40)), {
+            token: token,
+            date: new Date().toISOString(),
+            platform: navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop'
+          });
+          localStorage.setItem('fcm_subscribed', 'true');
+          localStorage.setItem('fcm_token', token);
+          updateBellUI(true);
+          showBellToast('🔔 Abonné ! Vous recevrez nos notifications');
+        }
+      }
+    } catch(e) {
+      console.error('FCM error:', e);
+      showBellToast('❌ Erreur : ' + e.message);
+    }
+  };
+</script>
 <script>
   if(window.initLang) initLang();
 </script>
