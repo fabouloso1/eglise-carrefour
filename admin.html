@@ -358,29 +358,44 @@
     .item-list { margin-top: 8px; }
 
     .item-card {
-      background: #f9f9f9;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px;
-      margin-bottom: 10px;
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
       display: flex;
-      align-items: flex-start;
+      flex-direction: column;
       gap: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
     .item-card img {
-      width: 60px;
-      height: 60px;
-      object-fit: cover;
-      border-radius: 8px;
-      flex-shrink: 0;
+      width: 60px; height: 60px;
+      object-fit: cover; border-radius: 8px; flex-shrink: 0;
     }
 
     .item-card-info { flex: 1; min-width: 0; }
-    .item-card-info h4 { font-size: 1rem; color: var(--primary); margin-bottom: 3px; }
-    .item-card-info p { font-size: 0.9rem; color: #888; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .item-card-info h4 {
+      font-size: 1rem; color: var(--primary);
+      margin-bottom: 6px; font-weight: 700;
+    }
+    .item-card-info p {
+      font-size: 0.88rem; color: #555;
+      margin-bottom: 4px;
+      white-space: normal; overflow: visible;
+      line-height: 1.5;
+    }
 
-    .item-card-actions { display: flex; gap: 6px; flex-shrink: 0; }
+    .item-card-actions {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      border-top: 1px solid #f0f0f0; padding-top: 10px;
+    }
+
+    .btn-sm {
+      padding: 7px 14px !important;
+      font-size: 0.82rem !important;
+      border-radius: 8px !important;
+    }
 
     /* Horaires kilt */
     .horaire-row {
@@ -1025,21 +1040,44 @@
           var c = d.data();
           var lu = c.lu === true;
           var sujetLabel = ({info:'Informations générales',priere:'Demande de prière',visite:'Première visite',don:'Don & offrande',autre:'Autre'})[c.sujet] || c.sujet || '';
-          var borderColor = lu ? '#27ae60' : 'var(--gold)';
-          var newBadge = !lu ? '<span style="background:var(--gold);color:#1c1c3c;font-size:0.7rem;padding:2px 8px;border-radius:10px;margin-left:6px;">Nouveau</span>' : '';
-          var emailHtml = c.email ? '<p style="font-size:0.82rem;color:#888;"><i class="fas fa-envelope" style="color:var(--gold)"></i> ' + c.email + '</p>' : '';
-          var telHtml = c.telephone ? '<p style="font-size:0.82rem;color:#888;"><i class="fas fa-phone" style="color:var(--gold)"></i> ' + c.telephone + '</p>' : '';
-          var luBtn = !lu ? '<button class="btn btn-sm btn-primary" onclick="marquerContactLu(&apos;' + d.id + '&apos;)"><i class="fas fa-check"></i> Lu</button>' : '';
-          var waBtn = c.telephone ? '<a href="https://wa.me/' + (c.telephone||'').replace(/[^0-9]/g,'') + '" target="_blank" class="btn btn-sm" style="background:#25D366;color:white;"><i class="fab fa-whatsapp"></i></a>' : '';
-          var emailBtn = c.email ? '<a href="mailto:' + c.email + '" class="btn btn-sm" style="background:#1a73e8;color:white;"><i class="fas fa-reply"></i></a>' : '';
-          var delBtn = '<button class="btn btn-sm" style="background:#fee;color:#e74c3c;" onclick="effacerContact(&apos;' + d.id + '&apos;)"><i class="fas fa-trash"></i></button>';
-          html += '<div class="item-card" style="border-left:3px solid ' + borderColor + ';">' +
-            '<div class="item-card-info">' +
-            '<h4>' + (c.prenom||'') + ' ' + (c.nom||'') + newBadge + '</h4>' +
-            emailHtml + telHtml +
-            '<p style="color:#555;">' + sujetLabel + ' — ' + (c.date||'') + '</p>' +
-            '<p style="font-style:italic;color:#444;margin-top:6px;">' + (c.message||'') + '</p>' +
-            '</div><div class="item-card-actions">' + luBtn + waBtn + emailBtn + delBtn + '</div></div>';
+          var borderColor = lu ? '#27ae60' : '#f0c040';
+          var luBtn = !lu ? '<button class="btn btn-sm btn-primary" onclick="marquerContactLu(&apos;' + d.id + '&apos;)" style="background:#1c1c3c;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:0.82rem;"><i class="fas fa-check"></i> Marquer lu</button>' : '<span style="color:#27ae60;font-weight:600;font-size:0.82rem;"><i class="fas fa-check-circle"></i> Lu</span>';
+          var waBtn = c.telephone ? '<a href="https://wa.me/' + (c.telephone||'').replace(/[^0-9]/g,'') + '" target="_blank" style="background:#25D366;color:white;border:none;padding:7px 14px;border-radius:8px;font-size:0.82rem;text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><i class="fab fa-whatsapp"></i> WhatsApp</a>' : '';
+          var emailBtn = c.email ? '<a href="mailto:' + c.email + '" style="background:#1a73e8;color:white;border:none;padding:7px 14px;border-radius:8px;font-size:0.82rem;text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><i class="fas fa-reply"></i> Répondre</a>' : '';
+          var delBtn = '<button onclick="effacerContact(&apos;' + d.id + '&apos;)" style="background:#fee;color:#e74c3c;border:none;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:0.82rem;"><i class="fas fa-trash"></i></button>';
+
+          html += '<div style="background:white;border-radius:14px;margin-bottom:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.07);border:1px solid #f0f0f0;">' +
+
+            // Header
+            '<div style="background:' + (lu ? '#f9f9f9' : '#fffbf0') + ';padding:14px 16px;border-bottom:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">' +
+            '<div style="display:flex;align-items:center;gap:10px;">' +
+            '<div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#1c1c3c,#2d2d6b);display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
+            '<i class="fas fa-user" style="color:#f0c040;font-size:0.9rem;"></i></div>' +
+            '<div><div style="font-weight:700;color:#1c1c3c;font-size:0.95rem;">' + (c.prenom||'') + ' ' + (c.nom||'') + '</div>' +
+            '<div style="font-size:0.78rem;color:#888;">' + (c.date||'') + '</div></div></div>' +
+            (!lu ? '<span style="background:#f0c040;color:#1c1c3c;font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:20px;">NOUVEAU</span>' : '') +
+            '</div>' +
+
+            // Infos contact
+            '<div style="padding:14px 16px;border-bottom:1px solid #f5f5f5;">' +
+            '<div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:10px;">' +
+            (c.email ? '<span style="font-size:0.85rem;color:#555;"><i class="fas fa-envelope" style="color:#f0c040;margin-right:5px;"></i>' + c.email + '</span>' : '') +
+            (c.telephone ? '<span style="font-size:0.85rem;color:#555;"><i class="fas fa-phone" style="color:#f0c040;margin-right:5px;"></i>' + c.telephone + '</span>' : '') +
+            '</div>' +
+            '<span style="background:#f0f4ff;color:#2d2d6b;font-size:0.78rem;font-weight:600;padding:3px 10px;border-radius:20px;"><i class="fas fa-tag" style="margin-right:4px;"></i>' + sujetLabel + '</span>' +
+            '</div>' +
+
+            // Mesaj la
+            '<div style="padding:14px 16px;border-bottom:1px solid #f5f5f5;">' +
+            '<p style="font-size:0.88rem;color:#333;line-height:1.7;margin:0;white-space:pre-wrap;">' + (c.message||'') + '</p>' +
+            '</div>' +
+
+            // Aksyon yo
+            '<div style="padding:12px 16px;background:#fafafa;display:flex;gap:8px;flex-wrap:wrap;align-items:center;">' +
+            luBtn + waBtn + emailBtn + delBtn +
+            '</div>' +
+
+            '</div>';
         });
         list.innerHTML = html;
         checkContactBadge();
