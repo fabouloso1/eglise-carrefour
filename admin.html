@@ -1190,6 +1190,16 @@
       selectedFiles = [];
       resetUploadBtn();
       loadFotos();
+
+      // Voye notifikasyon otomatik bay tout abòne
+      try {
+        const notifTitle = 'Église de Dieu de la Prophétie';
+        const notifBody  = uploaded > 1
+          ? 'Le pasteur a publié ' + uploaded + ' nouvelles photos !'
+          : 'Le pasteur a publié une nouvelle photo !';
+        const notifLink  = 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html';
+        await envoyerNotifAuto(notifTitle, notifBody, notifLink);
+      } catch(e) { console.log('Notif auto error:', e); }
     } catch (err) {
       showToast('Erreur publication : ' + err.message, 'error');
       resetUploadBtn();
@@ -1642,6 +1652,30 @@ Nwv2aSLH9QYdOijCoE5PhUp8
     if (!data.access_token) throw new Error('Token failed: ' + JSON.stringify(data));
     return data.access_token;
   }
+
+  // Fonksyon pou voye notif otomatikman (rele pa lòt fonksyon)
+  async function envoyerNotifAuto(title, body, link) {
+    const snap = await db2.collection('fcm_tokens').get();
+    if (snap.empty) return;
+    const accessToken = await getAccessToken();
+    for (const d of snap.docs) {
+      const token = d.data().token;
+      try {
+        await fetch('https://fcm.googleapis.com/v1/projects/eglise-carrefour/messages:send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + accessToken },
+          body: JSON.stringify({
+            message: {
+              token: token,
+              notification: { title: title, body: body },
+              webpush: { fcm_options: { link: link } }
+            }
+          })
+        });
+      } catch(e) { console.log('notif token error:', e); }
+    }
+  }
+  window.envoyerNotifAuto = envoyerNotifAuto;
 
   window.envoyerNotification = async function() {
     const title = document.getElementById('notifTitle').value.trim();
