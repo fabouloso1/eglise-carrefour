@@ -620,6 +620,25 @@
         </button>
       </div>
 
+      <!-- Ajoute video -->
+      <div class="card">
+        <h3><i class="fas fa-video" style="color:var(--gold)"></i> Ajouter une vidéo à la galerie</h3>
+
+        <label>Lien YouTube ou Facebook (URL complète) *</label>
+        <input type="text" id="videoUrl" placeholder="Ex : https://www.youtube.com/watch?v=XXXXXXXXX" />
+
+        <label>Titre de la vidéo *</label>
+        <input type="text" id="videoTitre" placeholder="Ex : Culte du dimanche 15 juin..." />
+
+        <label>Description (optionnel)</label>
+        <input type="text" id="videoDesc" placeholder="Ex : Message du Pasteur Anouis Jean..." />
+
+        <button class="btn btn-gold" onclick="publishVideo()" style="width:100%">
+          <i class="fas fa-upload"></i> Publier la vidéo sur le site
+        </button>
+        <div id="videoStatus" style="display:none;margin-top:10px;padding:10px;border-radius:8px;text-align:center;font-weight:600;"></div>
+      </div>
+
       <!-- Foto existant yo -->
       <div class="card">
         <h3><i class="fas fa-th"></i> Photos en galerie (<span id="fotoCount">0</span>)</h3>
@@ -1252,6 +1271,67 @@
       loadFotos();
     } catch (err) {
       showToast('Erreur : ' + err.message, 'error');
+    }
+  }
+
+  // ===== VIDEO =====
+  function getVideoEmbed(url) {
+    // YouTube
+    let match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    if (match) return { type: 'youtube', id: match[1], thumb: 'https://img.youtube.com/vi/' + match[1] + '/hqdefault.jpg' };
+    // Facebook
+    if (url.includes('facebook.com')) return { type: 'facebook', id: url, thumb: '' };
+    return null;
+  }
+
+  async function publishVideo() {
+    const url   = document.getElementById('videoUrl').value.trim();
+    const titre = document.getElementById('videoTitre').value.trim();
+    const desc  = document.getElementById('videoDesc').value.trim();
+    const status = document.getElementById('videoStatus');
+
+    if (!url || !titre) {
+      status.style.display = 'block';
+      status.style.background = '#fee'; status.style.color = '#c00';
+      status.textContent = '❌ URL ak titre obligatwa';
+      return;
+    }
+
+    const embed = getVideoEmbed(url);
+    if (!embed) {
+      status.style.display = 'block';
+      status.style.background = '#fee'; status.style.color = '#c00';
+      status.textContent = '❌ URL pa valid — YouTube oswa Facebook sèlman';
+      return;
+    }
+
+    status.style.display = 'block';
+    status.style.background = '#fff8e1'; status.style.color = '#555';
+    status.textContent = '⏳ Publication en cours...';
+
+    try {
+      await addDoc(collection(db, 'galerie'), {
+        type: 'video',
+        videoUrl: url,
+        videoType: embed.type,
+        videoId: embed.id,
+        thumb: embed.thumb,
+        titre: titre,
+        description: desc,
+        categorie: 'pasteur',
+        nom: 'Pasteur Anouis Jean',
+        date: new Date().toLocaleDateString('fr-FR'),
+        timestamp: serverTimestamp()
+      });
+      status.style.background = '#e8f5e9'; status.style.color = '#2e7d32';
+      status.textContent = '✅ Vidéo publiée avec succès !';
+      document.getElementById('videoUrl').value = '';
+      document.getElementById('videoTitre').value = '';
+      document.getElementById('videoDesc').value = '';
+      setTimeout(() => { status.style.display = 'none'; }, 3000);
+    } catch(e) {
+      status.style.background = '#fee'; status.style.color = '#c00';
+      status.textContent = '❌ Erreur : ' + e.message;
     }
   }
 
