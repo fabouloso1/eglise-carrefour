@@ -497,6 +497,7 @@
   </style>
 </head>
 <body>
+<div id="nav-placeholder"></div>
 
 <!-- ===== LOADING ===== -->
 <div class="loading-overlay" id="loadingOverlay">
@@ -1042,7 +1043,7 @@
           var sujetLabel = ({info:'Informations générales',priere:'Demande de prière',visite:'Première visite',don:'Don & offrande',autre:'Autre'})[c.sujet] || c.sujet || '';
           var borderColor = lu ? '#27ae60' : '#f0c040';
           var luBtn = !lu ? '<button class="btn btn-sm btn-primary" onclick="marquerContactLu(&apos;' + d.id + '&apos;)" style="background:#1c1c3c;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:0.82rem;"><i class="fas fa-check"></i> Marquer lu</button>' : '<span style="color:#27ae60;font-weight:600;font-size:0.82rem;"><i class="fas fa-check-circle"></i> Lu</span>';
-          var waBtn = c.telephone ? '<a href="https://wa.me/' + (c.telephone||'').replace(/[^0-9]/g,'') + '" target="_blank" style="background:#25D366;color:white;border:none;padding:7px 14px;border-radius:8px;font-size:0.82rem;text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><i class="fab fa-whatsapp"></i> WhatsApp</a>' : '';
+          var waBtn = c.telephone ? '<a href="https://wa.me/' + (c.telephone||'').replace(/[^0-9]/g,'') + '" target="_blank" title="WhatsApp" style="background:#25D366;color:white;border:none;padding:8px 12px;border-radius:8px;font-size:1rem;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;"><i class="fab fa-whatsapp"></i></a>' : '';
           var emailBtn = c.email ? '<a href="mailto:' + c.email + '" style="background:#1a73e8;color:white;border:none;padding:7px 14px;border-radius:8px;font-size:0.82rem;text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><i class="fas fa-reply"></i> Répondre</a>' : '';
           var delBtn = '<button onclick="effacerContact(&apos;' + d.id + '&apos;)" style="background:#fee;color:#e74c3c;border:none;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:0.82rem;"><i class="fas fa-trash"></i></button>';
 
@@ -1053,7 +1054,7 @@
             '<div style="display:flex;align-items:center;gap:10px;">' +
             '<div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#1c1c3c,#2d2d6b);display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
             '<i class="fas fa-user" style="color:#f0c040;font-size:0.9rem;"></i></div>' +
-            '<div><div style="font-weight:700;color:#1c1c3c;font-size:0.95rem;">' + (c.prenom||'') + ' ' + (c.nom||'') + '</div>' +
+            '<div><div style="font-weight:800;color:#1c1c3c;font-size:1.15rem;">' + (c.prenom||'') + ' ' + (c.nom||'') + '</div>' +
             '<div style="font-size:0.78rem;color:#888;">' + (c.date||'') + '</div></div></div>' +
             (!lu ? '<span style="background:#f0c040;color:#1c1c3c;font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:20px;">NOUVEAU</span>' : '') +
             '</div>' +
@@ -1061,15 +1062,15 @@
             // Infos contact
             '<div style="padding:14px 16px;border-bottom:1px solid #f5f5f5;">' +
             '<div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:10px;">' +
-            (c.email ? '<span style="font-size:0.85rem;color:#555;"><i class="fas fa-envelope" style="color:#f0c040;margin-right:5px;"></i>' + c.email + '</span>' : '') +
-            (c.telephone ? '<span style="font-size:0.85rem;color:#555;"><i class="fas fa-phone" style="color:#f0c040;margin-right:5px;"></i>' + c.telephone + '</span>' : '') +
+            (c.email ? '<span style="font-size:0.95rem;color:#444;"><i class="fas fa-envelope" style="color:#f0c040;margin-right:6px;"></i>' + c.email + '</span>' : '') +
+            (c.telephone ? '<span style="font-size:0.95rem;color:#444;"><i class="fas fa-phone" style="color:#f0c040;margin-right:6px;"></i>' + c.telephone + '</span>' : '') +
             '</div>' +
-            '<span style="background:#f0f4ff;color:#2d2d6b;font-size:0.78rem;font-weight:600;padding:3px 10px;border-radius:20px;"><i class="fas fa-tag" style="margin-right:4px;"></i>' + sujetLabel + '</span>' +
+            '<span style="background:#f0f4ff;color:#2d2d6b;font-size:0.88rem;font-weight:600;padding:4px 12px;border-radius:20px;"><i class="fas fa-tag" style="margin-right:5px;"></i>' + sujetLabel + '</span>' +
             '</div>' +
 
             // Mesaj la
             '<div style="padding:14px 16px;border-bottom:1px solid #f5f5f5;">' +
-            '<p style="font-size:0.88rem;color:#333;line-height:1.7;margin:0;white-space:pre-wrap;">' + (c.message||'') + '</p>' +
+            '<p style="font-size:1rem;color:#222;line-height:1.8;margin:0;white-space:pre-wrap;">' + (c.message||'') + '</p>' +
             '</div>' +
 
             // Aksyon yo
@@ -1960,5 +1961,15 @@
 })();
 </script>
 
+<div id="foot-placeholder"></div>
+<script src="lang.js"></script>
+<script src="nav.js"></script>
+<script>
+  // Chaje nav apre login verifye
+  document.addEventListener('DOMContentLoaded', function() {
+    NAV.init('admin.html');
+    if (window.initLang) initLang();
+  });
+</script>
 </body>
 </html>
