@@ -1,0 +1,2018 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Admin — Église de Carrefour</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1c1c3c;
+      --primary-dark: #12122a;
+      --secondary: #3a1c3c;
+      --gold: #f1c40f;
+      --gold-dark: #d4a900;
+      --danger: #e74c3c;
+      --success: #2ecc71;
+      --text: #333;
+      --bg: #f4f6fb;
+      --card: #fff;
+      --border: #e0e0e0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 17px;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ===== ECRAN LOGIN ===== */
+    #loginScreen {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-box {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 40px 32px;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .login-logo {
+      width: 72px;
+      height: 72px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 2rem;
+    }
+
+    .login-box h1 {
+      color: white;
+      font-size: 1.5rem;
+      margin-bottom: 4px;
+    }
+
+    .login-box p {
+      color: rgba(255,255,255,0.6);
+      font-size: 1rem;
+      margin-bottom: 28px;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 1.1rem;
+      margin-bottom: 14px;
+      outline: none;
+    }
+
+    .login-box input::placeholder { color: rgba(255,255,255,0.4); }
+    .login-box input:focus { border-color: var(--gold); }
+
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--gold);
+      color: var(--primary);
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .login-btn:hover { background: var(--gold-dark); }
+
+    .login-error {
+      color: #ff6b6b;
+      font-size: 0.85rem;
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* ===== PANEL ADMIN ===== */
+    #adminPanel { display: none; }
+
+    /* Header */
+    .admin-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    }
+
+    .admin-header h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .admin-header h1 span { color: var(--gold); }
+
+    .logout-btn {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+      padding: 9px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Tabs nav */
+    .admin-tabs {
+      background: white;
+      display: flex;
+      overflow-x: auto;
+      border-bottom: 2px solid var(--border);
+      position: sticky;
+      top: 57px;
+      z-index: 99;
+    }
+
+    .admin-tabs::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      padding: 16px 20px;
+      border: none;
+      background: none;
+      color: #888;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--gold);
+    }
+
+    .tab-btn i { font-size: 1rem; }
+
+    /* Content */
+    .admin-content {
+      padding: 20px 16px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Cards */
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .card h3 {
+      font-size: 1.15rem;
+      color: var(--primary);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card h3 i { color: var(--gold); }
+
+    /* Form elements */
+    label {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="time"],
+    input[type="date"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      font-size: 1rem;
+      color: var(--text);
+      background: #fafafa;
+      margin-bottom: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      font-family: inherit;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--primary);
+      background: white;
+    }
+
+    textarea { resize: vertical; min-height: 90px; }
+
+    /* Buttons */
+    .btn {
+      padding: 13px 22px;
+      border: none;
+      border-radius: 9px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover { background: var(--primary-dark); }
+
+    .btn-gold {
+      background: var(--gold);
+      color: var(--primary);
+    }
+
+    .btn-gold:hover { background: var(--gold-dark); }
+
+    .btn-danger {
+      background: #fff0f0;
+      color: var(--danger);
+      border: 1px solid #fcc;
+    }
+
+    .btn-danger:hover { background: #ffe0e0; }
+
+    .btn-sm {
+      padding: 9px 15px;
+      font-size: 0.9rem;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Upload zone foto */
+    .upload-zone {
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 30px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 14px;
+      position: relative;
+    }
+
+    .upload-zone:hover, .upload-zone.drag { border-color: var(--gold); background: #fffdf0; }
+    .upload-zone i { font-size: 2rem; color: var(--gold); margin-bottom: 10px; }
+    .upload-zone p { color: #888; font-size: 1rem; }
+    .upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+
+    /* Preview foto */
+    .photo-preview {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .photo-preview-item {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .photo-preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-preview-item .remove-photo {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      font-size: 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Liste aktyalite/foto existant */
+    .item-list { margin-top: 8px; }
+
+    .item-card {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .item-card img {
+      width: 60px; height: 60px;
+      object-fit: cover; border-radius: 8px; flex-shrink: 0;
+    }
+
+    .item-card-info { flex: 1; min-width: 0; }
+    .item-card-info h4 {
+      font-size: 1rem; color: var(--primary);
+      margin-bottom: 6px; font-weight: 700;
+    }
+    .item-card-info p {
+      font-size: 0.88rem; color: #555;
+      margin-bottom: 4px;
+      white-space: normal; overflow: visible;
+      line-height: 1.5;
+    }
+
+    .item-card-actions {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      border-top: 1px solid #f0f0f0; padding-top: 10px;
+    }
+
+    .btn-sm {
+      padding: 7px 14px !important;
+      font-size: 0.82rem !important;
+      border-radius: 8px !important;
+    }
+
+    /* Horaires kilt */
+    .horaire-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .horaire-row label { font-size: 0.78rem; }
+
+    /* Toast notifikasyon */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--primary);
+      color: white;
+      padding: 14px 28px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 600;
+      z-index: 9999;
+      transition: transform 0.3s;
+      white-space: nowrap;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.success { background: var(--success); }
+    .toast.error { background: var(--danger); }
+
+    /* Loading spinner */
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Stats dashboard */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      border-radius: 14px;
+      padding: 18px;
+      color: white;
+      text-align: center;
+    }
+
+    .stat-card i { font-size: 1.8rem; color: var(--gold); margin-bottom: 8px; }
+    .stat-card .stat-num { font-size: 2rem; font-weight: 800; }
+    .stat-card .stat-label { font-size: 0.9rem; opacity: 0.7; }
+
+    /* Loading overlay */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(28,28,60,0.85);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9998;
+      color: white;
+      gap: 16px;
+      font-size: 1rem;
+    }
+
+    .loading-overlay .big-spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid rgba(255,255,255,0.2);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    /* Responsive */
+    @media (max-width: 400px) {
+      .horaire-row { grid-template-columns: 1fr; }
+      .photo-preview { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== LOADING ===== -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="big-spinner"></div>
+  <p>Connexion à Firebase...</p>
+</div>
+
+<!-- ===== LOGIN ===== -->
+<div id="loginScreen" style="display:none;">
+  <div class="login-box">
+    <div class="login-logo">⛪</div>
+    <h1>Panel <span style="color:var(--gold)">Pasteur</span></h1>
+    <p>Église de Dieu de la Prophétie — Carrefour</p>
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,0.6);font-size:0.9rem;text-decoration:none;margin-bottom:16px;transition:color 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">
+      <i class="fas fa-arrow-left"></i> Retour au site
+    </a>
+    <input type="password" id="loginPassword" placeholder="Mot de passe admin..." />
+    <button class="login-btn" onclick="doLogin()">
+      <i class="fas fa-sign-in-alt"></i> Antre
+    </button>
+    <p class="login-error" id="loginError">❌ Mot de passe incorrect. Réessayez.</p>
+  </div>
+</div>
+
+<!-- ===== PANEL ADMIN ===== -->
+<div id="adminPanel">
+
+  <!-- Header -->
+  <div class="admin-header">
+    <h1><i class="fas fa-church"></i> Panel <span>Pasteur</span></h1>
+    <button class="logout-btn" onclick="doLogout()">
+      <i class="fas fa-sign-out-alt"></i> Déconnexion
+    </button>
+  </div>
+
+  <!-- Tabs -->
+  <div class="admin-tabs">
+    <button class="tab-btn active" onclick="showTab('dashboard')">
+      <i class="fas fa-chart-pie"></i> Tableau de bord
+    </button>
+    <button class="tab-btn" onclick="showTab('galerie')">
+      <i class="fas fa-images"></i> Galerie
+    </button>
+    <button class="tab-btn" onclick="showTab('actualites')">
+      <i class="fas fa-newspaper"></i> Actualités
+    </button>
+    <button class="tab-btn" onclick="showTab('horaires')">
+      <i class="fas fa-clock"></i> Horaires
+    </button>
+    <button class="tab-btn" onclick="showTab('annonces')">
+      <i class="fas fa-bullhorn"></i> Annonces
+    </button>
+    <button class="tab-btn" onclick="showTab('live')">
+      <i class="fas fa-circle-dot"></i> Live
+    </button>
+    <button class="tab-btn" onclick="showTab('temoignages')">
+      <i class="fas fa-star"></i> Témoignages
+    </button>
+    <button class="tab-btn" onclick="showTab('prieres');clearPriereBadge()">
+      <i class="fas fa-hands-praying"></i> Prières
+      <span id="priereBadge" style="display:none;background:#e74c3c;color:white;font-size:0.7rem;padding:1px 6px;border-radius:10px;margin-left:4px;"></span>
+    </button>
+    <button class="tab-btn" onclick="showTab('contacts')">
+      <i class="fas fa-envelope"></i> Contacts
+      <span id="contactBadge" style="display:none;background:#e74c3c;color:white;font-size:0.7rem;padding:1px 6px;border-radius:10px;margin-left:4px;"></span>
+    </button>
+    <button class="tab-btn" onclick="showTab('notifs')">
+      <i class="fas fa-bell"></i> Notifications
+    </button>
+  </div>
+
+  <!-- Content -->
+  <div class="admin-content">
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="tab-panel active" id="tab-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <i class="fas fa-images"></i>
+          <div class="stat-num" id="statFoto">—</div>
+          <div class="stat-label">Photos en galerie</div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-newspaper"></i>
+          <div class="stat-num" id="statActu">—</div>
+          <div class="stat-label">Actualités</div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-bullhorn"></i>
+          <div class="stat-num" id="statAnnonces">—</div>
+          <div class="stat-label">Annonces aktif</div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-clock"></i>
+          <div class="stat-num">3</div>
+          <div class="stat-label">Cultes par semaine</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><i class="fas fa-bolt"></i> Actions rapides</h3>
+        <button class="btn btn-gold" style="width:100%;margin-bottom:10px" onclick="showTab('galerie')">
+          <i class="fas fa-camera"></i> Ajouter des photos à la galerie
+        </button>
+        <button class="btn btn-primary" style="width:100%;margin-bottom:10px" onclick="showTab('actualites')">
+          <i class="fas fa-pen"></i> Écrire une actualité
+        </button>
+        <button class="btn btn-primary" style="width:100%;" onclick="showTab('annonces')">
+          <i class="fas fa-bullhorn"></i> Ajouter une annonce
+        </button>
+      </div>
+
+      <div class="card">
+        <h3><i class="fas fa-info-circle"></i> Informations</h3>
+        <p style="font-size:1rem;color:#666;line-height:1.7;">
+          Toutes les modifications faites ici apparaîtront <strong>immédiatement</strong> sur le site de l'église.<br><br>Pour de l'aide : contactez <strong>Fabrice Thony</strong>.
+        </p>
+      </div>
+    </div>
+
+    <!-- ===== GALERIE ===== -->
+    <div class="tab-panel" id="tab-galerie">
+
+      <!-- Enstriksyon Cloudinary (kache apre konfigirasyon) -->
+      <div class="card" id="cloudinary-setup" style="border-left:4px solid var(--gold); display:block;">
+        <h3><i class="fas fa-cloud"></i> Konfigirasyon Cloudinary <span style="font-size:0.75rem;background:#27ae60;color:white;padding:2px 8px;border-radius:10px;margin-left:6px;">100% GRATIS</span></h3>
+        <p style="font-size:0.92rem;color:#555;line-height:1.7;margin-bottom:14px;">
+          Pou upload foto gratis, ou bezwen kreye yon <strong>Cloudinary preset</strong> yon sèl fwa :<br>
+        </p>
+        <ol style="font-size:0.9rem;color:#444;line-height:2;padding-left:20px;margin-bottom:16px;">
+          <li>Ale sou <strong><a href="https://cloudinary.com/users/register_free" target="_blank" style="color:var(--primary);">cloudinary.com</a></strong> → Kreye yon kont gratis</li>
+          <li>Ale nan <strong>Settings → Upload → Upload presets</strong></li>
+          <li>Klike <strong>"Add upload preset"</strong></li>
+          <li>Mete non an: <code style="background:#f0f0f0;padding:2px 8px;border-radius:4px;font-weight:700;">eglise_upload</code></li>
+          <li>Chanje <strong>Signing Mode</strong> → <strong>"Unsigned"</strong></li>
+          <li>Klike <strong>Save</strong></li>
+          <li>Retounen ici, chanje <code style="background:#f0f0f0;padding:2px 8px;border-radius:4px;">eglise-carrefour</code> nan kòd la pa <strong>Cloud Name</strong> ou a (jwenn li nan Dashboard Cloudinary)</li>
+        </ol>
+        <p style="font-size:0.85rem;color:#27ae60;font-weight:600;"><i class="fas fa-check-circle"></i> Apre sa, upload foto ap mache pafè — 25GB gratis, san kat kredi !</p>
+        <button onclick="document.getElementById('cloudinary-setup').style.display='none'" style="background:#eee;color:#555;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:0.85rem;margin-top:8px;">
+          <i class="fas fa-times"></i> Kache enstriksyon yo
+        </button>
+      </div>
+
+      <!-- Ajoute foto -->
+      <div class="card">
+        <h3><i class="fas fa-camera"></i> Ajouter des photos à la galerie</h3>
+
+        <label>Description de la photo (optionnel)</label>
+        <input type="text" id="fotoDesc" placeholder="Ex : Culte dimanche 15 juin..." />
+
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" id="fotoInput" accept="image/*" multiple onchange="handleFotoSelect(event)">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p><strong>Cliquer pour choisir des photos</strong><br>ou glisser-déposer ici<br><small style="color:#aaa">JPG, PNG — max 5MB chacune</small></p>
+        </div>
+
+        <div class="photo-preview" id="photoPreview"></div>
+
+        <button class="btn btn-gold" id="uploadBtn" onclick="uploadFotos()" style="width:100%" disabled>
+          <i class="fas fa-upload"></i> Publier les photos sur le site
+        </button>
+      </div>
+
+      <!-- Ajoute video -->
+      <div class="card">
+        <h3><i class="fas fa-video" style="color:var(--gold)"></i> Ajouter une vidéo à la galerie</h3>
+
+        <label>Lien YouTube ou Facebook (URL complète) *</label>
+        <input type="text" id="videoUrl" placeholder="Ex : https://www.youtube.com/watch?v=XXXXXXXXX" />
+
+        <label>Titre de la vidéo *</label>
+        <input type="text" id="videoTitre" placeholder="Ex : Culte du dimanche 15 juin..." />
+
+        <label>Description (optionnel)</label>
+        <input type="text" id="videoDesc" placeholder="Ex : Message du Pasteur Anouis Jean..." />
+
+        <button class="btn btn-gold" onclick="publishVideo()" style="width:100%">
+          <i class="fas fa-upload"></i> Publier la vidéo sur le site
+        </button>
+        <div id="videoStatus" style="display:none;margin-top:10px;padding:10px;border-radius:8px;text-align:center;font-weight:600;"></div>
+      </div>
+
+      <!-- Foto existant yo -->
+      <div class="card">
+        <h3><i class="fas fa-th"></i> Photos en galerie (<span id="fotoCount">0</span>)</h3>
+        <div class="item-list" id="fotoList">
+          <p style="color:#aaa;text-align:center;padding:20px;font-size:0.85rem;">Chargement des photos...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ACTUALITES ===== -->
+    <div class="tab-panel" id="tab-actualites">
+
+      <!-- Nouvo aktyalite -->
+      <div class="card">
+        <h3><i class="fas fa-pen"></i> Écrire une nouvelle actualité</h3>
+
+        <label>Titre *</label>
+        <input type="text" id="actuTitre" placeholder="Ex : Conférence Annuelle 2025..." />
+
+        <label>Catégorie</label>
+        <select id="actuCategorie">
+          <option value="Événements">Événement</option>
+          <option value="Annonces">Annonces</option>
+          <option value="Spirituel">Espirityèl</option>
+        </select>
+
+        <label>Date</label>
+        <input type="date" id="actuDate" />
+
+        <label>Une phrase courte (intro)</label>
+        <input type="text" id="actuIntro" placeholder="Quelques mots pour résumer l'actualité..." />
+
+        <label>Contenu complet</label>
+        <textarea id="actuContenu" placeholder="Écrivez tous les détails de l'actualité ici..."></textarea>
+
+        <label>Nom de l'auteur</label>
+        <input type="text" id="actuAuteur" placeholder="Ex : Pasteur Anouis Jean" value="Pasteur Anouis Jean" />
+
+        <button class="btn btn-gold" onclick="publishActu()" style="width:100%">
+          <i class="fas fa-paper-plane"></i> Publier l'actualité
+        </button>
+      </div>
+
+      <!-- Actualités existant -->
+      <div class="card">
+        <h3><i class="fas fa-list"></i> Actualités publiées (<span id="actuCount">0</span>)</h3>
+        <div class="item-list" id="actuList">
+          <p style="color:#aaa;text-align:center;padding:20px;font-size:0.85rem;">Chargement des actualités...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== HORAIRES ===== -->
+    <div class="tab-panel" id="tab-horaires">
+      <div class="card">
+        <h3><i class="fas fa-clock"></i> Horaires des cultes</h3>
+        <p style="font-size:1rem;color:#888;margin-bottom:16px;">Modifiez les horaires — ils seront mis à jour immédiatement sur le site.</p>
+
+        <div id="horairesList"></div>
+
+        <button class="btn btn-primary" onclick="addHoraire()" style="margin-bottom:14px">
+          <i class="fas fa-plus"></i> Ajouter un culte
+        </button>
+
+        <button class="btn btn-gold" onclick="saveHoraires()" style="width:100%">
+          <i class="fas fa-save"></i> Enregistrer les modifications
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== ANNONCES ===== -->
+    <div class="tab-panel" id="tab-annonces">
+
+      <!-- Nouvo anons -->
+      <div class="card">
+        <h3><i class="fas fa-bullhorn"></i> Ajouter une annonce</h3>
+
+        <label>Titre de l'annonce *</label>
+        <input type="text" id="anonsTitre" placeholder="Ex : Réunion des Leaders — 20 Juin..." />
+
+        <label>Date</label>
+        <input type="date" id="anonsDate" />
+
+        <label>Heure</label>
+        <input type="time" id="anonsLe" />
+
+        <label>Détails</label>
+        <textarea id="anonsDetails" placeholder="Informations sur l'annonce..." style="min-height:70px;"></textarea>
+
+        <label>Importance</label>
+        <select id="anonsImportance">
+          <option value="normal">Normal</option>
+          <option value="important">Important</option>
+          <option value="urgent">Urgent</option>
+        </select>
+
+        <button class="btn btn-gold" onclick="publishAnnonces()" style="width:100%">
+          <i class="fas fa-paper-plane"></i> Publier l'annonce
+        </button>
+      </div>
+
+      <!-- Annonces existant -->
+      <div class="card">
+        <h3><i class="fas fa-list"></i> Annonces aktif yo (<span id="anonsCount">0</span>)</h3>
+        <div class="item-list" id="anonsList">
+          <p style="color:#aaa;text-align:center;padding:20px;font-size:0.85rem;">Chargement des annonces...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TAB LIVE ===== -->
+    <div class="tab-panel" id="tab-live">
+      <div class="card">
+        <h3><i class="fas fa-circle-dot" style="color:#ff4444"></i> Gérer le Live</h3>
+        <p style="font-size:1rem;color:#888;margin-bottom:20px;">Collez les liens live ici — ils apparaîtront automatiquement sur la page Live du site.</p>
+
+        <label>Lien YouTube Live</label>
+        <input type="text" id="liveYT" placeholder="https://www.youtube.com/watch?v=...">
+
+        <label style="margin-top:14px;">Lien Facebook Live</label>
+        <input type="text" id="liveFB" placeholder="https://www.facebook.com/...">
+
+        <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="saveLive()">
+            <i class="fas fa-save"></i> Publier les liens
+          </button>
+          <button class="btn" style="background:#eee;color:#555;" onclick="clearLive()">
+            <i class="fas fa-times"></i> Effacer les liens (fin du live)
+          </button>
+        </div>
+
+        <div id="live-preview" style="margin-top:24px;display:none;">
+          <p style="font-size:0.9rem;font-weight:600;color:var(--primary);margin-bottom:10px;"><i class="fas fa-eye"></i> Aperçu YouTube :</p>
+          <div style="position:relative;padding-bottom:56.25%;height:0;border-radius:12px;overflow:hidden;">
+            <iframe id="live-preview-frame" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TAB TÉMOIGNAGES ===== -->
+    <div class="tab-panel" id="tab-temoignages">
+      <div class="card">
+        <h3><i class="fas fa-star" style="color:var(--gold)"></i> Témoignages à valider</h3>
+        <p style="font-size:1rem;color:#888;margin-bottom:20px;">Les témoignages soumis par les membres. Approuvez ceux que vous voulez afficher sur le site.</p>
+        <div id="temoignages-admin-list">
+          <div style="text-align:center;padding:30px;color:#aaa;">
+            <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--gold);display:block;margin-bottom:12px;"></i>
+            Chargement...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TAB PRIÈRES ===== -->
+    <div class="tab-panel" id="tab-prieres">
+      <div class="card">
+        <h3><i class="fas fa-hands-praying" style="color:var(--gold)"></i> Demandes de prière</h3>
+        <p style="font-size:1rem;color:#888;margin-bottom:20px;">Demandes soumises par les membres. Marquez-les comme lues après avoir prié.</p>
+        <div id="prieres-admin-list">
+          <div style="text-align:center;padding:30px;color:#aaa;">
+            <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--gold);display:block;margin-bottom:12px;"></i>
+            Chargement...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB CONTACTS -->
+    <div class="tab-panel" id="tab-contacts">
+      <div class="card">
+        <h3><i class="fas fa-envelope" style="color:var(--gold)"></i> Messages reçus</h3>
+        <p style="font-size:1rem;color:#888;margin-bottom:20px;">Messages envoyés via le formulaire de contact du site.</p>
+        <div class="item-list" id="contactList">
+          <div style="text-align:center;padding:30px;color:#aaa;">
+            <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--gold);display:block;margin-bottom:12px;"></i>
+            Chargement...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB NOTIFIKASYON -->
+    <div class="tab-panel" id="tab-notifs">
+      <div class="card">
+        <h3><i class="fas fa-bell" style="color:var(--gold)"></i> Envoyer une notification</h3>
+        <p style="font-size:1rem;color:#888;margin-bottom:20px;">Envoyez une notification push à tous les abonnés du site.</p>
+
+        <div style="display:flex;flex-direction:column;gap:14px;max-width:500px;">
+          <div>
+            <label style="font-weight:600;display:block;margin-bottom:6px;">Titre <span style="color:red">*</span></label>
+            <input type="text" id="notifTitle" placeholder="Ex: Nouveau message du pasteur" 
+              style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:1rem;">
+          </div>
+          <div>
+            <label style="font-weight:600;display:block;margin-bottom:6px;">Message <span style="color:red">*</span></label>
+            <textarea id="notifBody" rows="3" placeholder="Ex: Un nouveau message a été publié sur le site..."
+              style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:1rem;resize:vertical;"></textarea>
+          </div>
+          <div>
+            <label style="font-weight:600;display:block;margin-bottom:6px;">Lien (optionnel)</label>
+            <input type="text" id="notifLink" placeholder="https://fabouloso1.github.io/eglise-carrefour/index.html"
+              style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:1rem;">
+          </div>
+          <button onclick="envoyerNotification()"
+            style="background:var(--gold);color:#1c1c3c;font-weight:700;padding:12px;border:none;border-radius:8px;font-size:1rem;cursor:pointer;">
+            <i class="fas fa-paper-plane"></i> Envoyer à tous les abonnés
+          </button>
+          <div id="notifStatus" style="display:none;padding:12px;border-radius:8px;text-align:center;font-weight:600;"></div>
+        </div>
+
+        <div style="margin-top:30px;padding-top:20px;border-top:1px solid #eee;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+            <h4 style="margin:0;"><i class="fas fa-users"></i> Abonnés 
+              <span id="notifCount" style="font-size:1rem;font-weight:700;color:var(--gold);margin-left:8px;">
+                <i class="fas fa-spinner fa-spin"></i>
+              </span>
+            </h4>
+            <button onclick="reinitialiserAbonnes()"
+              style="background:#e74c3c;color:white;border:none;padding:7px 14px;border-radius:8px;font-size:0.85rem;cursor:pointer;font-weight:600;">
+              <i class="fas fa-trash"></i> Réinitialiser les abonnés
+            </button>
+          </div>
+          <div id="abonneList" style="display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto;">
+            <p style="color:#aaa;font-size:0.9rem;text-align:center;padding:10px;">
+              <i class="fas fa-spinner fa-spin"></i> Chargement...
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /admin-content -->
+</div><!-- /adminPanel -->
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Firebase Compat pou FCM Notifications -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, getDoc, orderBy, query, where, serverTimestamp, onSnapshot }
+    from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+  // ===== CONFIG FIREBASE =====
+  const firebaseConfig = {
+    apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
+    authDomain: "eglise-carrefour.firebaseapp.com",
+    projectId: "eglise-carrefour",
+    storageBucket: "eglise-carrefour.firebasestorage.app",
+    messagingSenderId: "421333694767",
+    appId: "1:421333694767:web:30c18da36ae020821a49da"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // ===== MODPAS ADMIN =====
+  const ADMIN_PASSWORD = "Kafou2025";
+
+  // ===== EXPOSE GLOBALS =====
+  window._db = db;
+  window._onSnapshot = onSnapshot;
+  window._collection = collection;
+  window._addDoc = addDoc;
+    window._query = query;
+    window._orderBy = orderBy;
+    window._getDocs = getDocs;
+    window._where = where;
+    window._deleteDoc = deleteDoc;
+  window._getDocs = getDocs;
+  window._deleteDoc = deleteDoc;
+  window._doc = doc;
+  window._setDoc = setDoc;
+  window._getDoc = getDoc;
+  window._query = query;
+  window._orderBy = orderBy;
+  window._serverTimestamp = serverTimestamp;
+  window._ADMIN_PASSWORD = ADMIN_PASSWORD;
+
+  // Init
+  document.getElementById('loadingOverlay').style.display = 'none';
+
+  // Verifye si deja login
+  if (sessionStorage.getItem('admin_ok') === 'true') {
+    document.getElementById('adminPanel').style.display = 'block';
+    loadAll();
+  } else {
+    document.getElementById('loginScreen').style.display = 'flex';
+  }
+</script>
+
+<script>
+  // ===== FICHYE SELEKSYONE POU UPLOAD =====
+  let selectedFiles = [];
+
+  // Modpas la — eksplike dirèkteman isit (pa depann sou module)
+  var ADMIN_PW = "Kafou2025";
+
+  // ===== LOGIN =====
+  function doLogin() {
+    var pw = document.getElementById('loginPassword').value.trim();
+    if (pw === 'Kafou2025') {
+      sessionStorage.setItem('admin_ok', 'true');
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminPanel').style.display = 'block';
+      loadAll();
+    } else {
+      document.getElementById('loginError').style.display = 'block';
+      document.getElementById('loginPassword').value = '';
+    }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && document.getElementById('loginScreen').style.display !== 'none') doLogin();
+  });
+
+  function doLogout() {
+    sessionStorage.removeItem('admin_ok');
+    location.reload();
+  }
+
+  function showAdminPanel() {
+    document.getElementById('adminPanel').style.display = 'block';
+    loadAll();
+  }
+
+  // ===== TABS =====
+  function showTab(name) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.currentTarget.classList.add('active');
+    // Chaje done pou chak tab
+    if (name === 'prieres') loadPrieres();
+    if (name === 'galerie') loadFotos();
+    if (name === 'actualites') loadActus();
+    if (name === 'temoignages') loadTemoignages();
+    if (name === 'notifs') loadNotifCount();
+    if (name === 'contacts') loadContacts();
+  }
+
+  // ===== TOAST =====
+  function showToast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    t.innerHTML = (type === 'success' ? '✅ ' : '❌ ') + msg;
+    t.className = 'toast show ' + type;
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // ===== CONTACTS =====
+  var _contactsListener = null;
+  function loadContacts() {
+    var list = document.getElementById('contactList');
+    if (!list) return;
+    if (_contactsListener) { _contactsListener(); _contactsListener = null; }
+    list.innerHTML = '<p style="text-align:center;padding:20px;color:#aaa;"><i class="fas fa-spinner fa-spin"></i></p>';
+    try {
+      var q = window._query(window._collection(window._db, 'contacts'), window._orderBy('timestamp', 'desc'));
+      _contactsListener = window._onSnapshot(q, function(snap) {
+        if (snap.empty) {
+          list.innerHTML = '<p style="text-align:center;color:#aaa;padding:30px;">Aucun message reçu.</p>';
+          checkContactBadge(); return;
+        }
+        var html = '';
+        snap.forEach(function(d) {
+          var c = d.data();
+          var lu = c.lu === true;
+          var sujetLabel = ({info:'Informations générales',priere:'Demande de prière',visite:'Première visite',don:'Don & offrande',autre:'Autre'})[c.sujet] || c.sujet || '';
+          var borderColor = lu ? '#27ae60' : '#f0c040';
+          var luBtn = !lu ? '<button class="btn btn-sm btn-primary" onclick="marquerContactLu(&apos;' + d.id + '&apos;)" style="background:#1c1c3c;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:0.82rem;"><i class="fas fa-check"></i> Marquer lu</button>' : '<span style="color:#27ae60;font-weight:600;font-size:0.82rem;"><i class="fas fa-check-circle"></i> Lu</span>';
+          var waBtn = c.telephone ? '<a href="https://wa.me/' + (c.telephone||'').replace(/[^0-9]/g,'') + '" target="_blank" style="background:#25D366;color:white;border:none;padding:7px 14px;border-radius:8px;font-size:0.82rem;text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><i class="fab fa-whatsapp"></i> WhatsApp</a>' : '';
+          var emailBtn = c.email ? '<a href="mailto:' + c.email + '" style="background:#1a73e8;color:white;border:none;padding:7px 14px;border-radius:8px;font-size:0.82rem;text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><i class="fas fa-reply"></i> Répondre</a>' : '';
+          var delBtn = '<button onclick="effacerContact(&apos;' + d.id + '&apos;)" style="background:#fee;color:#e74c3c;border:none;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:0.82rem;"><i class="fas fa-trash"></i></button>';
+
+          html += '<div style="background:white;border-radius:14px;margin-bottom:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.07);border:1px solid #f0f0f0;">' +
+
+            // Header
+            '<div style="background:' + (lu ? '#f9f9f9' : '#fffbf0') + ';padding:14px 16px;border-bottom:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">' +
+            '<div style="display:flex;align-items:center;gap:10px;">' +
+            '<div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#1c1c3c,#2d2d6b);display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
+            '<i class="fas fa-user" style="color:#f0c040;font-size:0.9rem;"></i></div>' +
+            '<div><div style="font-weight:700;color:#1c1c3c;font-size:0.95rem;">' + (c.prenom||'') + ' ' + (c.nom||'') + '</div>' +
+            '<div style="font-size:0.78rem;color:#888;">' + (c.date||'') + '</div></div></div>' +
+            (!lu ? '<span style="background:#f0c040;color:#1c1c3c;font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:20px;">NOUVEAU</span>' : '') +
+            '</div>' +
+
+            // Infos contact
+            '<div style="padding:14px 16px;border-bottom:1px solid #f5f5f5;">' +
+            '<div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:10px;">' +
+            (c.email ? '<span style="font-size:0.85rem;color:#555;"><i class="fas fa-envelope" style="color:#f0c040;margin-right:5px;"></i>' + c.email + '</span>' : '') +
+            (c.telephone ? '<span style="font-size:0.85rem;color:#555;"><i class="fas fa-phone" style="color:#f0c040;margin-right:5px;"></i>' + c.telephone + '</span>' : '') +
+            '</div>' +
+            '<span style="background:#f0f4ff;color:#2d2d6b;font-size:0.78rem;font-weight:600;padding:3px 10px;border-radius:20px;"><i class="fas fa-tag" style="margin-right:4px;"></i>' + sujetLabel + '</span>' +
+            '</div>' +
+
+            // Mesaj la
+            '<div style="padding:14px 16px;border-bottom:1px solid #f5f5f5;">' +
+            '<p style="font-size:0.88rem;color:#333;line-height:1.7;margin:0;white-space:pre-wrap;">' + (c.message||'') + '</p>' +
+            '</div>' +
+
+            // Aksyon yo
+            '<div style="padding:12px 16px;background:#fafafa;display:flex;gap:8px;flex-wrap:wrap;align-items:center;">' +
+            luBtn + waBtn + emailBtn + delBtn +
+            '</div>' +
+
+            '</div>';
+        });
+        list.innerHTML = html;
+        checkContactBadge();
+      });
+    } catch(e) { console.log('Contacts error:', e.message); }
+  }
+  async function marquerContactLu(id) {
+    try {
+      await window._setDoc(window._doc(window._db, 'contacts', id), { lu: true }, { merge: true });
+      showToast('Marqué comme lu !');
+      loadContacts();
+      checkContactBadge();
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+
+  async function effacerContact(id) {
+    if (!confirm('Supprimer ce message ?')) return;
+    try {
+      await window._deleteDoc(window._doc(window._db, 'contacts', id));
+      showToast('Message supprimé !');
+      loadContacts();
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+
+  async function checkContactBadge() {
+    try {
+      const q = window._query(
+        window._collection(window._db, 'contacts'),
+        window._where('lu', '==', false)
+      );
+      const snap = await window._getDocs(q);
+      const badge = document.getElementById('contactBadge');
+      if (badge) {
+        if (snap.size > 0) { badge.style.display = 'inline'; badge.textContent = snap.size; }
+        else { badge.style.display = 'none'; }
+      }
+    } catch(e) {}
+  }
+
+  checkContactBadge();
+  setInterval(checkContactBadge, 30000);
+
+  // ===== BADGE PRIERES =====
+  async function checkPriereBadge() {
+    try {
+      const q = window._query(
+        window._collection(window._db, 'prieres'),
+        window._where('lu', '==', false)
+      );
+      const snap = await window._getDocs(q);
+      const badge = document.getElementById('priereBadge');
+      if (badge) {
+        if (snap.size > 0) {
+          badge.style.display = 'inline';
+          badge.textContent = snap.size;
+        } else {
+          badge.style.display = 'none';
+        }
+      }
+    } catch(e) {}
+  }
+
+  function clearPriereBadge() {
+    var badge = document.getElementById('priereBadge');
+    if (badge) badge.style.display = 'none';
+  }
+
+  // Verifye badge chak 30 segonn
+  checkPriereBadge();
+  setInterval(checkPriereBadge, 30000);
+
+  // ===== PRIERES =====
+  var _prieresListener = null;
+  function loadPrieres() {
+    const list = document.getElementById('prieres-admin-list');
+    if (!list) return;
+    if (_prieresListener) _prieresListener();
+    list.innerHTML = '<p style="text-align:center;color:#aaa;padding:20px;"><i class="fas fa-spinner fa-spin"></i></p>';
+    try {
+      const q = window._query(window._collection(window._db, 'prieres'), window._orderBy('timestamp', 'desc'));
+      _prieresListener = window._onSnapshot(q, function(snap) {
+        if (snap.empty) {
+          list.innerHTML = '<p style="text-align:center;color:#aaa;padding:30px;">Aucune demande de prière.</p>';
+          checkPriereBadge(); return;
+        }
+        list.innerHTML = snap.docs.map(function(d) {
+          const p = d.data();
+          const lu = p.lu === true;
+          const urgent = p.urgent === 'Oui';
+          return '<div class="item-card" style="border-left:3px solid ' + (urgent ? '#e74c3c' : lu ? '#27ae60' : 'var(--gold)') + ';">' +
+            '<div class="item-card-info">' +
+            '<h4>' + (p.nom||'Anonyme') +
+            (urgent ? ' <span style="background:#e74c3c;color:white;font-size:0.7rem;padding:2px 8px;border-radius:10px;margin-left:6px;">URGENT</span>' : '') +
+            (p.anonyme === 'Oui' ? ' <span style="background:#888;color:white;font-size:0.7rem;padding:2px 8px;border-radius:10px;margin-left:6px;">Anonyme</span>' : '') +
+            '</h4>' +
+            (p.telephone ? '<p style="font-size:0.82rem;color:#888;"><i class="fas fa-phone" style="color:var(--gold)"></i> ' + p.telephone + '</p>' : '') +
+            '<p style="color:#555;">' + (p.categorie||'') + ' — ' + (p.date||'') + '</p>' +
+            '<p style="font-style:italic;color:#444;margin-top:6px;">' + (p.demande||'') + '</p>' +
+            '<p style="font-size:0.78rem;margin-top:6px;">' + (lu ? '<span style="color:#27ae60;font-weight:600;">Lu</span>' : '<span style="color:orange;font-weight:600;">Non lu</span>') + '</p>' +
+            '</div><div class="item-card-actions">' +
+            (!lu ? '<button class="btn btn-sm btn-primary" onclick="marquerPriereLue(&apos;' + d.id + '&apos;)"><i class="fas fa-check"></i> Lu</button>' : '') +
+            (p.telephone ? '<a href="https://wa.me/' + p.telephone.replace(/[^0-9]/g,'') + '" target="_blank" class="btn btn-sm" style="background:#25D366;color:white;"><i class="fab fa-whatsapp"></i></a>' : '') +
+            '<button class="btn btn-sm" style="background:#fee;color:#e74c3c;" onclick="effacerPriere(&apos;' + d.id + '&apos;)"><i class="fas fa-trash"></i></button>' +
+            '</div></div>';
+        }).join('');
+        checkPriereBadge();
+      });
+    } catch(e) { console.log('Prieres:', e.message); }
+  }
+
+  async function marquerPriereLue(id) {
+    try {
+      await window._setDoc(window._doc(window._db, 'prieres', id), { lu: true }, { merge: true });
+      showToast('Marquée comme lue !');
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+
+  async function effacerPriere(id) {
+    if (!confirm('Supprimer cette demande ?')) return;
+    try {
+      await window._deleteDoc(window._doc(window._db, 'prieres', id));
+      showToast('Demande supprimée !');
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+
+    // ===== TEMOIGNAGES =====
+  async function loadTemoignages() {
+    try {
+      const q = window._query(
+        window._collection(window._db, 'temoignages'),
+        window._orderBy('timestamp', 'desc')
+      );
+      const snap = await window._getDocs(q);
+      const list = document.getElementById('temoignages-admin-list');
+
+      if (snap.empty) {
+        list.innerHTML = '<p style="text-align:center;color:#aaa;padding:30px;">Aucun témoignage pour le moment.</p>';
+        return;
+      }
+
+      list.innerHTML = snap.docs.map(d => {
+        const t = d.data();
+        const approuve = t.approuve === true;
+        return `
+          <div class="item-card" style="border-left: 3px solid ${approuve ? '#27ae60' : 'var(--gold)'};">
+            <div class="item-card-info">
+              <h4>${t.prenom || ''} ${t.nom || ''} <span style="font-size:0.78rem;font-weight:400;color:#888;">— ${t.categorie || ''}</span></h4>
+              <p style="font-style:italic;color:#555;">${(t.temoignage || '').substring(0, 120)}...</p>
+              <p style="font-size:0.78rem;color:#aaa;">${t.date || ''} · ${approuve ? '<span style="color:#27ae60;font-weight:600;">✓ Approuvé</span>' : '<span style="color:orange;font-weight:600;">En attente</span>'}</p>
+            </div>
+            <div class="item-card-actions">
+              ${!approuve ? `<button class="btn btn-sm btn-primary" onclick="approuverTemoignage('${d.id}')"><i class="fas fa-check"></i> Approuver</button>` : ''}
+              <button class="btn btn-sm" style="background:#fee;color:#e74c3c;" onclick="effacerTemoignage('${d.id}')"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>`;
+      }).join('');
+    } catch(e) { console.log('Temoignages:', e.message); }
+  }
+
+  async function approuverTemoignage(id) {
+    try {
+      await window._setDoc(window._doc(window._db, 'temoignages', id), { approuve: true }, { merge: true });
+      showToast('Témoignage approuvé !');
+      loadTemoignages();
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+
+  async function effacerTemoignage(id) {
+    if (!confirm('Supprimer ce témoignage ?')) return;
+    try {
+      await window._deleteDoc(window._doc(window._db, 'temoignages', id));
+      showToast('Témoignage supprimé !');
+      loadTemoignages();
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+
+  // ===== LIVE =====
+  async function loadLive() {
+    try {
+      const snap = await window._getDoc(window._doc(window._db, 'config', 'live'));
+      if (snap.exists()) {
+        document.getElementById('liveYT').value = snap.data().youtube || '';
+        document.getElementById('liveFB').value = snap.data().facebook || '';
+        previewLive();
+      }
+    } catch(e) {}
+  }
+
+  function previewLive() {
+    const yt = document.getElementById('liveYT').value.trim();
+    const m = yt.match(/(?:v=|youtu\.be\/|embed\/)([a-zA-Z0-9_-]{11})/);
+    if (m) {
+      document.getElementById('live-preview').style.display = 'block';
+      document.getElementById('live-preview-frame').src = `https://www.youtube.com/embed/${m[1]}?rel=0`;
+    }
+  }
+
+  async function saveLive() {
+    const youtube = document.getElementById('liveYT').value.trim();
+    const facebook = document.getElementById('liveFB').value.trim();
+    try {
+      await window._setDoc(window._doc(window._db, 'config', 'live'), { youtube, facebook });
+      showToast('Liens live publiés !');
+      previewLive();
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+
+  async function clearLive() {
+    if (!confirm('Effacer les liens live ? Le live ne sera plus visible sur le site.')) return;
+    try {
+      await window._setDoc(window._doc(window._db, 'config', 'live'), { youtube: '', facebook: '' });
+      document.getElementById('liveYT').value = '';
+      document.getElementById('liveFB').value = '';
+      document.getElementById('live-preview').style.display = 'none';
+      showToast('Liens effacés !');
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+
+  // ===== LOAD ALL =====
+  function loadAll() {
+    loadFotos();
+    loadLive();
+    loadTemoignages();
+    loadPrieres();
+    loadActualites();
+    loadHoraires();
+    loadAnnonces();
+  }
+
+  // ===== GALERIE =====
+  function handleFotoSelect(e) {
+    const files = Array.from(e.target.files);
+    selectedFiles = files;
+    const preview = document.getElementById('photoPreview');
+    preview.innerHTML = '';
+
+    files.forEach((f, i) => {
+      if (f.size > 10 * 1024 * 1024) { showToast('Foto ' + f.name + ' twò gwo (maks 10MB)', 'error'); return; }
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        preview.innerHTML += `
+          <div class="photo-preview-item">
+            <img src="${ev.target.result}">
+            <button class="remove-photo" onclick="removePreview(${i})"><i class="fas fa-times"></i></button>
+          </div>`;
+      };
+      reader.readAsDataURL(f);
+    });
+
+    document.getElementById('uploadBtn').disabled = files.length === 0;
+  }
+
+  function removePreview(i) {
+    selectedFiles.splice(i, 1);
+    if (selectedFiles.length === 0) {
+      document.getElementById('photoPreview').innerHTML = '';
+      document.getElementById('uploadBtn').disabled = true;
+    }
+  }
+
+  function resetUploadBtn() {
+    const btn = document.getElementById('uploadBtn');
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-upload"></i> Publier les photos sur le site';
+    }
+  }
+
+  // ===== CLOUDINARY CONFIG (gratis — 25GB, san kat kredi) =====
+  const CLOUDINARY_CLOUD = 'dvcxhpibq';
+  const CLOUDINARY_PRESET = 'eglise_upload'; // unsigned preset — kreye l nan Cloudinary Dashboard
+
+  async function uploadVersCloudinary(file) {
+    // Konprese imaj la anvan upload
+    const blob = await compresserImaj(file);
+    const formData = new FormData();
+    formData.append('file', blob);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
+    formData.append('folder', 'galerie');
+
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,
+      { method: 'POST', body: formData }
+    );
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error?.message || 'Erreur Cloudinary');
+    }
+    const data = await res.json();
+    return data.secure_url; // URL HTTPS definitif
+  }
+
+  function compresserImaj(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error('Echec lecture fichier'));
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onerror = () => reject(new Error('Imaj pa valid'));
+        img.onload = () => {
+          try {
+            const canvas = document.createElement('canvas');
+            const maxW = 1200;
+            let w = img.width, h = img.height;
+            if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            canvas.toBlob(blob => resolve(blob), 'image/jpeg', 0.82);
+          } catch(e) { reject(e); }
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function uploadFotos() {
+    if (!selectedFiles.length) return;
+    const btn = document.getElementById('uploadBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Upload en cours...';
+
+    const desc = document.getElementById('fotoDesc').value.trim();
+    const filesToUpload = [...selectedFiles];
+    let uploaded = 0;
+    const total = filesToUpload.length;
+
+    try {
+      for (let i = 0; i < filesToUpload.length; i++) {
+        const file = filesToUpload[i];
+        btn.innerHTML = `<span class="spinner"></span> Photo ${i+1}/${total} en cours...`;
+
+        // 1. Upload foto nan Cloudinary (gratis)
+        const url = await uploadVersCloudinary(file);
+
+        // 2. Anrejistre URL la nan Firestore
+        await window._addDoc(window._collection(window._db, 'galerie'), {
+          url: url,
+          description: desc || file.name.replace(/\.[^/.]+$/, ''),
+          categorie: 'pasteur',
+          nom: file.name,
+          date: new Date().toISOString(),
+          timestamp: window._serverTimestamp()
+        });
+        uploaded++;
+      }
+
+      showToast(uploaded + ' photo(s) publiée(s) avec succès !');
+      document.getElementById('fotoDesc').value = '';
+      document.getElementById('photoPreview').innerHTML = '';
+      document.getElementById('fotoInput').value = '';
+      selectedFiles = [];
+      resetUploadBtn();
+      loadFotos();
+
+      // Voye notifikasyon otomatik bay tout abòne
+      try {
+        const notifTitle = 'Église de Dieu de la Prophétie';
+        const notifBody  = uploaded > 1
+          ? 'Le pasteur a publié ' + uploaded + ' nouvelles photos !'
+          : 'Le pasteur a publié une nouvelle photo !';
+        const notifLink  = 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html#pasteur';
+        await envoyerNotifAuto(notifTitle, notifBody, notifLink);
+      } catch(e) { console.log('Notif auto error:', e); }
+
+    } catch (err) {
+      // Si erè Cloudinary preset — montre mesaj klè
+      if (err.message.includes('preset') || err.message.includes('upload_preset')) {
+        showToast('⚙️ Konfigire Cloudinary — wè enstriksyon anba a', 'error');
+        document.getElementById('cloudinary-setup').style.display = 'block';
+      } else {
+        showToast('Erreur : ' + err.message, 'error');
+      }
+      resetUploadBtn();
+    }
+  }
+
+  async function loadFotos() {
+    try {
+      const q = window._query(window._collection(window._db, 'galerie'), window._orderBy('timestamp', 'desc'));
+      const snap = await window._getDocs(q);
+      const fotos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      document.getElementById('fotoCount').textContent = fotos.length;
+      document.getElementById('statFoto').textContent = fotos.length;
+
+      const list = document.getElementById('fotoList');
+      if (fotos.length === 0) {
+        list.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px;font-size:0.85rem;">Aucune photo pour le moment</p>';
+        return;
+      }
+
+      list.innerHTML = fotos.map(f => `
+        <div class="item-card">
+          <img src="${f.url}" alt="${f.description}" onerror="this.src='https://via.placeholder.com/60'">
+          <div class="item-card-info">
+            <h4>${f.description || 'Foto'}</h4>
+            <p>${f.categorie} · ${new Date(f.date).toLocaleDateString('fr-FR')}</p>
+          </div>
+          <div class="item-card-actions">
+            <button class="btn btn-danger btn-sm" onclick="deleteFoto('${f.id}')">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    } catch (err) {
+      document.getElementById('fotoList').innerHTML = '<p style="color:#e74c3c;padding:10px;">Erreur de chargement : ' + err.message + '</p>';
+    }
+  }
+
+  async function deleteFoto(id) {
+    if (!confirm('Supprimer cette photo ?')) return;
+    try {
+      await window._deleteDoc(window._doc(window._db, 'galerie', id));
+      showToast('Photo supprimée !');
+      loadFotos();
+    } catch (err) {
+      showToast('Erreur : ' + err.message, 'error');
+    }
+  }
+
+  // ===== VIDEO =====
+  function getVideoEmbed(url) {
+    // YouTube
+    let match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    if (match) return { type: 'youtube', id: match[1], thumb: 'https://img.youtube.com/vi/' + match[1] + '/hqdefault.jpg' };
+    // Facebook
+    if (url.includes('facebook.com')) return { type: 'facebook', id: url, thumb: '' };
+    return null;
+  }
+
+  async function publishVideo() {
+    const url   = document.getElementById('videoUrl').value.trim();
+    const titre = document.getElementById('videoTitre').value.trim();
+    const desc  = document.getElementById('videoDesc').value.trim();
+    const status = document.getElementById('videoStatus');
+
+    if (!url || !titre) {
+      status.style.display = 'block';
+      status.style.background = '#fee'; status.style.color = '#c00';
+      status.textContent = '❌ URL ak titre obligatwa';
+      return;
+    }
+
+    const embed = getVideoEmbed(url);
+    if (!embed) {
+      status.style.display = 'block';
+      status.style.background = '#fee'; status.style.color = '#c00';
+      status.textContent = '❌ URL pa valid — YouTube oswa Facebook sèlman';
+      return;
+    }
+
+    status.style.display = 'block';
+    status.style.background = '#fff8e1'; status.style.color = '#555';
+    status.textContent = '⏳ Publication en cours...';
+
+    try {
+      await window._addDoc(window._collection(window._db, 'galerie'), {
+        type: 'video',
+        videoUrl: url,
+        videoType: embed.type,
+        videoId: embed.id,
+        thumb: embed.thumb,
+        titre: titre,
+        description: desc,
+        categorie: 'pasteur',
+        nom: 'Pasteur Anouis Jean',
+        date: new Date().toLocaleDateString('fr-FR'),
+        timestamp: window._serverTimestamp()
+      });
+      status.style.background = '#e8f5e9'; status.style.color = '#2e7d32';
+      status.textContent = '✅ Vidéo publiée avec succès !';
+      document.getElementById('videoUrl').value = '';
+      document.getElementById('videoTitre').value = '';
+      document.getElementById('videoDesc').value = '';
+      loadFotos();
+      setTimeout(() => { status.style.display = 'none'; }, 3000);
+
+      // Notifikasyon otomatik
+      try {
+        await envoyerNotifAuto(
+          'Église de Dieu de la Prophétie',
+          'Le pasteur a publié une nouvelle vidéo : ' + titre,
+          'https://fabouloso1.github.io/eglise-carrefour/Galerie.html'
+        );
+      } catch(e) { console.log('Notif video error:', e); }
+
+    } catch(e) {
+      status.style.background = '#fee'; status.style.color = '#c00';
+      status.textContent = '❌ Erreur : ' + e.message;
+    }
+  }
+
+  // ===== ACTUALITES =====
+  async function publishActu() {
+    const titre = document.getElementById('actuTitre').value.trim();
+    if (!titre) { showToast('Veuillez saisir un titre !', 'error'); return; }
+
+    try {
+      const date = document.getElementById('actuDate').value;
+      await window._addDoc(window._collection(window._db, 'actualites'), {
+        titre,
+        categorie: document.getElementById('actuCategorie').value,
+        date: date || new Date().toLocaleDateString('fr-FR'),
+        intro: document.getElementById('actuIntro').value,
+        contenu: document.getElementById('actuContenu').value,
+        auteur: document.getElementById('actuAuteur').value || 'Pasteur Anouis Jean',
+        timestamp: window._serverTimestamp()
+      });
+
+      showToast('Actualité publiée !');
+      ['actuTitre','actuIntro','actuContenu','actuDate'].forEach(id => document.getElementById(id).value = '');
+      loadActualites();
+    } catch (err) {
+      showToast('Erreur : ' + err.message, 'error');
+    }
+  }
+
+  async function loadActualites() {
+    try {
+      const q = window._query(window._collection(window._db, 'actualites'), window._orderBy('timestamp', 'desc'));
+      const snap = await window._getDocs(q);
+      const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      document.getElementById('actuCount').textContent = items.length;
+      document.getElementById('statActu').textContent = items.length;
+
+      const list = document.getElementById('actuList');
+      if (items.length === 0) {
+        list.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px;font-size:0.85rem;">Aucune actualité pour le moment</p>';
+        return;
+      }
+
+      list.innerHTML = items.map(a => `
+        <div class="item-card">
+          <div class="item-card-info">
+            <h4>${a.titre}</h4>
+            <p>${a.categorie} · ${a.date} · ${a.auteur}</p>
+          </div>
+          <div class="item-card-actions">
+            <button class="btn btn-danger btn-sm" onclick="deleteActu('${a.id}')">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    } catch (err) {
+      document.getElementById('actuList').innerHTML = '<p style="color:#e74c3c;padding:10px;">Erreur : ' + err.message + '</p>';
+    }
+  }
+
+  async function deleteActu(id) {
+    if (!confirm('Supprimer cette actualité ?')) return;
+    try {
+      await window._deleteDoc(window._doc(window._db, 'actualites', id));
+      showToast('Actualités efase!');
+      loadActualites();
+    } catch (err) {
+      showToast('Erreur : ' + err.message, 'error');
+    }
+  }
+
+  // ===== HORAIRES =====
+  let horaires = [
+    { jou: 'Dimanche', aktivite: 'Culte prensipal', lè_kòmanse: '06:00', lè_fini: '10:00' },
+    { jou: 'Mardi', aktivite: 'Réunion de prière', lè_kòmanse: '16:00', lè_fini: '18:00' },
+    { jou: 'Jeudi', aktivite: 'Étude biblique', lè_kòmanse: '14:00', lè_fini: '18:00' },
+  ];
+
+  function renderHoraires() {
+    const list = document.getElementById('horairesList');
+    list.innerHTML = horaires.map((h, i) => `
+      <div class="card" style="margin-bottom:10px;padding:14px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <strong style="color:var(--primary)">Culte ${i+1}</strong>
+          <button class="btn btn-danger btn-sm" onclick="removeHoraire(${i})"><i class="fas fa-trash"></i></button>
+        </div>
+        <div class="horaire-row">
+          <div>
+            <label>Jour</label>
+            <input type="text" value="${h.jou}" oninput="horaires[${i}].jou=this.value">
+          </div>
+          <div>
+            <label>Début</label>
+            <input type="time" value="${h.lè_kòmanse}" oninput="horaires[${i}]['lè_kòmanse']=this.value">
+          </div>
+          <div>
+            <label>Fin</label>
+            <input type="time" value="${h.lè_fini}" oninput="horaires[${i}]['lè_fini']=this.value">
+          </div>
+        </div>
+        <label>Activité</label>
+        <input type="text" value="${h.aktivite}" oninput="horaires[${i}].aktivite=this.value" style="margin-bottom:0">
+      </div>
+    `).join('');
+  }
+
+  async function loadHoraires() {
+    try {
+      const snap = await window._getDoc(window._doc(window._db, 'config', 'horaires'));
+      if (snap.exists() && snap.data().list) {
+        horaires = snap.data().list;
+      }
+    } catch (e) {}
+    renderHoraires();
+  }
+
+  function addHoraire() {
+    horaires.push({ jou: 'Dimanche', aktivite: 'Nouveau culte', lè_kòmanse: '06:00', lè_fini: '08:00' });
+    renderHoraires();
+  }
+
+  function removeHoraire(i) {
+    horaires.splice(i, 1);
+    renderHoraires();
+  }
+
+  async function saveHoraires() {
+    try {
+      await window._setDoc(window._doc(window._db, 'config', 'horaires'), { list: horaires });
+      showToast('Horaires enregistrés avec succès !');
+    } catch (err) {
+      showToast('Erreur : ' + err.message, 'error');
+    }
+  }
+
+  // ===== ANNONCES =====
+  async function publishAnnonces() {
+    const titre = document.getElementById('anonsTitre').value.trim();
+    if (!titre) { showToast('Veuillez saisir un titre !', 'error'); return; }
+
+    try {
+      await window._addDoc(window._collection(window._db, 'annonces'), {
+        titre,
+        date: document.getElementById('anonsDate').value,
+        lè: document.getElementById('anonsLe').value,
+        detay: document.getElementById('anonsDetails').value,
+        importance: document.getElementById('anonsImportance').value,
+        timestamp: window._serverTimestamp()
+      });
+
+      showToast('Annonce publiée !');
+      ['anonsTitre','anonsDate','anonsLe','anonsDetails'].forEach(id => document.getElementById(id).value = '');
+      loadAnnonces();
+    } catch (err) {
+      showToast('Erreur : ' + err.message, 'error');
+    }
+  }
+
+  async function loadAnnonces() {
+    try {
+      const q = window._query(window._collection(window._db, 'annonces'), window._orderBy('timestamp', 'desc'));
+      const snap = await window._getDocs(q);
+      const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      document.getElementById('anonsCount').textContent = items.length;
+      document.getElementById('statAnnonces').textContent = items.length;
+
+      const list = document.getElementById('anonsList');
+      if (items.length === 0) {
+        list.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px;font-size:0.85rem;">Aucune annonce pour le moment</p>';
+        return;
+      }
+
+      const impColor = { normal: '#3498db', important: '#f39c12', urgent: '#e74c3c' };
+      list.innerHTML = items.map(a => `
+        <div class="item-card">
+          <div class="item-card-info">
+            <h4>${a.titre} <span style="font-size:0.75rem;background:${impColor[a.importance]||'#3498db'};color:white;padding:2px 7px;border-radius:10px;">${a.importance}</span></h4>
+            <p>${a.date || ''} ${a.lè ? '· ' + a.lè : ''}</p>
+          </div>
+          <div class="item-card-actions">
+            <button class="btn btn-danger btn-sm" onclick="deleteAnnonces('${a.id}')">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    } catch (err) {
+      document.getElementById('anonsList').innerHTML = '<p style="color:#e74c3c;padding:10px;">Erreur : ' + err.message + '</p>';
+    }
+  }
+
+  async function deleteAnnonces(id) {
+    if (!confirm('Supprimer cette annonce ?')) return;
+    try {
+      await window._deleteDoc(window._doc(window._db, 'annonces', id));
+      showToast('Annonces efase!');
+      loadAnnonces();
+    } catch (err) {
+      showToast('Erreur : ' + err.message, 'error');
+    }
+  }
+
+  // Upload zone drag & drop
+  const zone = document.getElementById('uploadZone');
+  if (zone) {
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('drag');
+      const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+      if (files.length) {
+        selectedFiles = files;
+        handleFotoSelect({ target: { files } });
+      }
+    });
+  }
+</script>
+
+<!-- Script FCM Notifications -->
+<script>
+(function() {
+  // Evite double init
+  if (!firebase.apps.length || !firebase.apps.find(a => a.name === 'notif')) {
+    try {
+      firebase.initializeApp({
+        apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
+        authDomain: "eglise-carrefour.firebaseapp.com",
+        projectId: "eglise-carrefour",
+        storageBucket: "eglise-carrefour.firebasestorage.app",
+        messagingSenderId: "421333694767",
+        appId: "1:421333694767:web:30c18da36ae020821a49da"
+      }, 'notif');
+    } catch(e) {}
+  }
+
+  var notifApp = firebase.app('notif');
+  var db2 = notifApp.firestore();
+
+  // Konbyen abòne + lis abòne yo
+  function loadNotifCount() {
+    db2.collection('fcm_tokens').orderBy('date', 'desc').get().then(function(snap) {
+      // Konbyen
+      var el = document.getElementById('notifCount');
+      if (el) el.innerHTML = '(' + snap.size + ' abonné(s))';
+
+      // Lis abòne yo
+      var list = document.getElementById('abonneList');
+      if (!list) return;
+      if (snap.empty) {
+        list.innerHTML = '<p style="color:#aaa;text-align:center;padding:10px;font-size:0.9rem;">Aucun abonné pour le moment.</p>';
+        return;
+      }
+      list.innerHTML = '';
+      var num = 1;
+      snap.forEach(function(d) {
+        var data = d.data();
+        var date = data.date ? new Date(data.date).toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric' }) : 'Date inconnue';
+        var platform = data.platform === 'mobile' ? '<i class="fas fa-mobile-alt" style="color:#4CAF50"></i> Mobile' : '<i class="fas fa-desktop" style="color:#2196F3"></i> PC';
+        var row = document.createElement('div');
+        row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f9f9f9;border-radius:8px;font-size:0.85rem;';
+        var nom = data.nom ? data.nom : 'Anonyme';
+        row.innerHTML = '<span style="font-weight:600;color:#1c1c3c;">' + nom + '</span>' +
+          '<span>' + platform + '</span>' +
+          '<span style="color:#888;">' + date + '</span>';
+        list.appendChild(row);
+        num++;
+      });
+    }).catch(function(e) { 
+      // Si pa gen index orderBy, chaje san triye
+      db2.collection('fcm_tokens').get().then(function(snap) {
+        var el = document.getElementById('notifCount');
+        if (el) el.innerHTML = '(' + snap.size + ' abonné(s))';
+        var list = document.getElementById('abonneList');
+        if (!list) return;
+        if (snap.empty) {
+          list.innerHTML = '<p style="color:#aaa;text-align:center;padding:10px;">Aucun abonné.</p>';
+          return;
+        }
+        list.innerHTML = '';
+        var num = 1;
+        snap.forEach(function(d) {
+          var data = d.data();
+          var platform = data.platform === 'mobile' ? '<i class="fas fa-mobile-alt" style="color:#4CAF50"></i> Mobile' : '<i class="fas fa-desktop" style="color:#2196F3"></i> PC';
+          var row = document.createElement('div');
+          row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f9f9f9;border-radius:8px;font-size:0.85rem;margin-bottom:4px;';
+          var nom = data.nom ? data.nom : 'Anonyme';
+          row.innerHTML = '<span style="font-weight:600;color:#1c1c3c;">' + nom + '</span><span>' + platform + '</span>';
+          list.appendChild(row);
+          num++;
+        });
+      });
+    });
+  }
+
+  async function getAccessToken() {
+    const SA_EMAIL = "firebase-adminsdk-fbsvc@eglise-carrefour.iam.gserviceaccount.com";
+    const PRIVATE_KEY = "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDOrbPvT8HU0I2S\n5ZU44zXx1Rj9NeRovLTCBG9gU8MV4XzavR3LGjvdVPr2ub5VuaAg4jO8FAf+5uAF\nf0M5UZ92t0HKagQQbEqiDfRyab524kq+OF5rhGI5Qd6QBolbkZ3XEiWRGTuGxDjt\nz7Noo/gPknoCV90dQXuhZ6B3R5QedJV662SZmf7uoIbZCpsRO+Qz/zsHA3qQ4uyv\n1p8DBD6cpjsqJNYNq8W+4cbKyGvJKpQ2CdMj6WdH1aw944JQmOxZWiKIlrfZyTJW\nE7Ily0GKaZVjW4z8hhPC5b8/Zen0HS3GlNP5R7umc3SteEyvgRAqzpVwpD8cdfEn\nNUwmpHS9AgMBAAECggEATE4NVJlZsrycyFNC2JHqZLKMW0/+WDzzb347sJC8QePS\nOOABk+7Hk1vAnD7Pas7xs7JP72xl11Jd+ymVJCBig239OEIT5gxVMad9TJCF5VZ+\nyeP92Cw0J3eOOBZxuAD3CWSFwiBSvdrMOeCpGEURXI5zxVGzLQ30Gw8rS1597Q/r\n246FSoM8xa8PObBFU4DU9a1lgYt39zYmIT+iI9U+MEiF2bsA7pXa85kSMCFYH29Z\nmVBxRq8JJFP7Wbcm7HzrFNyestb9r03IzA/JthOPmX+3moXkJNahkAQeVunbptwX\nz9f9eU67aZlzwAiFEl+lLUHNY22q2DsffMpYavPtcQKBgQDyYSr/RQzoaeI3S/8K\nQNtndXBFxC/AfeaIn7A1C9ueCSvodtD1eNVPToIZLMWe+Ej+Rgd6/VjaVtkuUs5o\nDlviDciXZ0MS2LebLStFrsdwK2b08hlJ8/i0h0FbhM+FG8bABI0johpbfFzmHeg0\nRfFMfFUemD9Mrc3ea1wDww0ntwKBgQDaSvIdNEwBeag1pH8R+u3VrTlkvvHCQY8a\njsxceH+TWxPXWmbvlqueFBJBDRD5lVdP2MuuMtWezryXKn7FflYDoceXlAqM8Qjf\nCzE9TK4vRTOfcgE6f3zBunXlaSjh2pVU9V4YLsIrN58nqaE5Q+NlQPVaLlDntHcn\nLP7vix1/KwKBgQCiaO2wwwoVKe4E841fx3m853plpUICD9rLrYUa5mkwiiC70fHO\nqjr0uzx9tfxtuxzeFPqqNNy24P8CBUZ9fzGeVXIV0YGmPUU6W5flR2ooBU0l0JuV\nbD84aHEo6+NJ5ATXYbVZLSPQLZLqNxwC+uLnR2CZ8ZZowQVzhijP9ID6HQKBgE9f\nrQW9fF2U9Pr8Y1AQY+asZBAj9hhiajyH6/s7vXfBSEeoEYHQ0XpbZf/NVnzKNsNL\n21PuHArwtVZqF0qMk44ih0awh92Tz1v6396gQT3i9dBmTdgNfzmaKUBPqpPlPSN1\nTM+SQPwh73cmkP8Xllm88vnlmXmG/0R5cgF8Hi+dAoGBAJW7JAwmcQDuGWdVCyzj\nALScX8FxyGHD0Q4kaSKB7NQhtDyhZcK9ykCmhfiUFnpePDmMb0ykHzyQlYAAOBef\n5QWKh7QASkFVpQQdXjQ0LT2kyQqn1zi2cVIXn+Z9mdb+CKV2SIOMCVQDAZ9vuIXI\nNwv2aSLH9QYdOijCoE5PhUp8\n-----END PRIVATE KEY-----\n";
+
+    const now = Math.floor(Date.now() / 1000);
+    const b64u = s => btoa(s).split('=').join('').split('+').join('-').split('/').join('_');
+    const header = b64u(JSON.stringify({ alg: 'RS256', typ: 'JWT' }));
+    const claim  = b64u(JSON.stringify({
+      iss: SA_EMAIL,
+      scope: 'https://www.googleapis.com/auth/firebase.messaging',
+      aud: 'https://oauth2.googleapis.com/token',
+      exp: now + 3600, iat: now
+    }));
+    const toSign = header + '.' + claim;
+    const keyData = PRIVATE_KEY.replace(/-----BEGIN PRIVATE KEY-----/g,'').replace(/-----END PRIVATE KEY-----/g,'').replace(/\s/g,'');
+    const binaryKey = Uint8Array.from(atob(keyData), c => c.charCodeAt(0));
+    const cryptoKey = await crypto.subtle.importKey(
+      'pkcs8', binaryKey.buffer,
+      { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign']
+    );
+    const sig = await crypto.subtle.sign('RSASSA-PKCS1-v1_5', cryptoKey, new TextEncoder().encode(toSign));
+    const jwt = toSign + '.' + btoa(String.fromCharCode(...new Uint8Array(sig))).split('=').join('').split('+').join('-').split('/').join('_');
+    const res = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=' + jwt
+    });
+    const data = await res.json();
+    if (!data.access_token) throw new Error('Token failed: ' + JSON.stringify(data));
+    return data.access_token;
+  }
+
+  // Fonksyon pou voye notif otomatikman (rele pa lòt fonksyon)
+  async function envoyerNotifAuto(title, body, link) {
+    const snap = await db2.collection('fcm_tokens').get();
+    if (snap.empty) return;
+    const accessToken = await getAccessToken();
+    for (const d of snap.docs) {
+      const token = d.data().token;
+      try {
+        await fetch('https://fcm.googleapis.com/v1/projects/eglise-carrefour/messages:send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + accessToken },
+          body: JSON.stringify({
+            message: {
+              token: token,
+              notification: { title: title, body: body },
+              webpush: { fcm_options: { link: link } }
+            }
+          })
+        });
+      } catch(e) { console.log('notif token error:', e); }
+    }
+  }
+  window.envoyerNotifAuto = envoyerNotifAuto;
+
+  // Reinitialize tout abòne yo
+  window.reinitialiserAbonnes = async function() {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer tous les abonnés ? Ils devront se réabonner.')) return;
+    try {
+      var snap = await db2.collection('fcm_tokens').get();
+      if (snap.empty) { alert('Aucun abonné à supprimer.'); return; }
+      var batch = db2.batch();
+      snap.forEach(function(d) { batch.delete(d.ref); });
+      await batch.commit();
+      alert('✅ ' + snap.size + ' abonné(s) supprimé(s) avec succès.');
+      loadNotifCount();
+    } catch(e) {
+      alert('❌ Erreur : ' + e.message);
+    }
+  };
+
+  window.envoyerNotification = async function() {
+    const title = document.getElementById('notifTitle').value.trim();
+    const body  = document.getElementById('notifBody').value.trim();
+    const link  = document.getElementById('notifLink').value.trim() || 'https://fabouloso1.github.io/eglise-carrefour/';
+    const status = document.getElementById('notifStatus');
+
+    if (!title || !body) {
+      status.style.display = 'block';
+      status.style.background = '#fee'; status.style.color = '#c00';
+      status.textContent = '❌ Titre ak mesaj obligatwa';
+      return;
+    }
+    status.style.display = 'block';
+    status.style.background = '#fff8e1'; status.style.color = '#555';
+    status.textContent = '⏳ Envoi en cours...';
+
+    try {
+      const snap = await db2.collection('fcm_tokens').get();
+      if (snap.empty) {
+        status.style.background = '#fee'; status.style.color = '#c00';
+        status.textContent = '❌ Aucun abonné trouvé';
+        return;
+      }
+      const accessToken = await getAccessToken();
+      let success = 0, failed = 0;
+      for (const d of snap.docs) {
+        const token = d.data().token;
+        try {
+          const res = await fetch('https://fcm.googleapis.com/v1/projects/eglise-carrefour/messages:send', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + accessToken },
+            body: JSON.stringify({
+              message: {
+                token: token,
+                notification: { title, body },
+                webpush: { fcm_options: { link } }
+              }
+            })
+          });
+          if (res.ok) success++; else { failed++; const err = await res.json(); console.log('FCM err:', err); }
+        } catch(e) { failed++; }
+      }
+      status.style.background = success > 0 ? '#e8f5e9' : '#fee';
+      status.style.color = success > 0 ? '#2e7d32' : '#c00';
+      status.textContent = success > 0
+        ? '✅ Envoyé à ' + success + ' abonné(s)' + (failed > 0 ? ' | ❌ ' + failed + ' échec(s)' : '')
+        : '❌ Tous les envois ont échoué';
+    } catch(e) {
+      console.error('Notif error:', e);
+      status.style.background = '#fee'; status.style.color = '#c00';
+      status.textContent = '❌ Erreur : ' + e.message;
+    }
+  };
+
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('[onclick*="notifs"]')) setTimeout(loadNotifCount, 300);
+  });
+
+  loadNotifCount();
+})();
+</script>
+
+</body>
+</html>

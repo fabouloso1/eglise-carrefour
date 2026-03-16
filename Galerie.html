@@ -2,8 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <style>html, body { overflow-x: hidden; max-width: 100%; }</style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Galerie — Église de Dieu de la Prophétie de Carrefour</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,37 +29,24 @@
     .gallery-tabs { display: flex; gap: 8px; margin-bottom: 36px; background: white; padding: 10px; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid var(--border); width: fit-content; }
     .gallery-tab { padding: 10px 22px; border-radius: 10px; border: none; background: transparent; font-family: 'Montserrat', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 7px; }
     .gallery-tab.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
+    .gallery-tab i { font-size: 0.85rem; }
 
+    /* Section photos */
     .gallery-section { display: none; }
     .gallery-section.active { display: block; }
 
-    /* Grille catégories */
-    .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; margin-bottom: 40px; }
-    .cat-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--border); cursor: pointer; transition: var(--transition); }
-    .cat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
-    .cat-thumb { height: 180px; background: linear-gradient(135deg, var(--primary), var(--secondary)); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-    .cat-thumb img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
-    .cat-icon-fallback { color: rgba(241,196,15,0.5); font-size: 3.5rem; z-index: 1; }
-    .cat-info { padding: 18px 20px; display: flex; align-items: center; justify-content: space-between; }
-    .cat-info h3 { color: var(--primary); font-size: 0.95rem; display: flex; align-items: center; gap: 8px; }
-    .cat-info h3 i { color: var(--gold); }
-    .cat-info span { color: var(--text-muted); font-size: 0.82rem; font-weight: 600; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
-    .cat-info span i { color: var(--gold); font-size: 0.75rem; }
-
-    /* Bouton retour */
-    .btn-retour { display: inline-flex; align-items: center; gap: 8px; background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 25px; font-family: 'Montserrat', sans-serif; font-size: 0.88rem; font-weight: 600; cursor: pointer; margin-bottom: 24px; transition: var(--transition); }
-    .btn-retour:hover { background: var(--secondary); }
-
-    /* Grille photos */
-    .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 40px; }
-    .photo-item { border-radius: var(--radius-sm); overflow: hidden; position: relative; cursor: pointer; aspect-ratio: 1; background: linear-gradient(135deg, var(--primary), var(--secondary)); }
-    .photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .photo-item:hover img { transform: none; }
-    .photo-overlay { position: absolute; inset: 0; background: rgba(18,18,42,0.65); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; opacity: 0; transition: var(--transition); color: white; text-align: center; padding: 16px; }
-    .photo-overlay i { font-size: 2rem; color: var(--gold); }
-    .photo-overlay p { font-size: 0.82rem; font-weight: 600; }
+    /* Grille masonry-style */
+    .photo-grid { columns: 3; column-gap: 16px; margin-bottom: 50px; }
+    .photo-item { break-inside: avoid; margin-bottom: 16px; border-radius: var(--radius-sm); overflow: hidden; position: relative; cursor: pointer; }
+    .photo-placeholder { background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: rgba(241,196,15,0.4); }
+    .photo-placeholder.h1 { height: 200px; }
+    .photo-placeholder.h2 { height: 280px; }
+    .photo-placeholder.h3 { height: 160px; }
+    .photo-overlay { position: absolute; inset: 0; background: rgba(18,18,42,0.7); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; opacity: 0; transition: var(--transition); color: white; text-align: center; padding: 16px; }
+    .photo-overlay i { font-size: 1.8rem; color: var(--gold); }
+    .photo-overlay h4 { font-size: 0.9rem; }
     .photo-item:hover .photo-overlay { opacity: 1; }
-    .photo-placeholder-item { display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: rgba(241,196,15,0.35); }
+    .photo-item img { width: 100%; display: block; }
 
     /* Grille vidéos */
     .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
@@ -74,91 +60,21 @@
     .video-body p { color: var(--text-muted); font-size: 0.82rem; line-height: 1.5; }
     .video-body .v-date { display: inline-flex; align-items: center; gap: 5px; color: var(--gold); font-size: 0.78rem; font-weight: 600; margin-top: 10px; }
 
-    /* Lightbox */
-    .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.97); z-index: 9999; align-items: center; justify-content: center; flex-direction: column; padding: 0; box-sizing: border-box; }
+    /* Lightbox simple */
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.93); z-index: 9999; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
     .lightbox.open { display: flex; }
-    .lightbox-close { position: absolute; top: 12px; right: 12px; color: white; font-size: 1.8rem; cursor: pointer; background: rgba(0,0,0,0.5); border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10000; }
-    .lightbox-img-wrap { display: flex; align-items: center; justify-content: center; width: 100vw; height: 100vh; }
-    .lightbox img { max-width: 100vw; max-height: 100vh; width: auto; height: auto; object-fit: contain; display: block; }
-    .lightbox-caption { position: absolute; bottom: 0; left: 0; right: 0; color: white; font-size: 0.85rem; font-weight: 600; text-align: center; padding: 12px; background: linear-gradient(transparent, rgba(0,0,0,0.7)); }
-    .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 1.5rem; cursor: pointer; background: rgba(0,0,0,0.4); border: none; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-    .lightbox-prev { left: 8px; }
-    .lightbox-next { right: 8px; }
-    /* Badge Nouvo */
-    .badge-new { position: absolute; top: 8px; left: 8px; background: #e74c3c; color: white; font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 20px; z-index: 2; text-transform: uppercase; letter-spacing: 0.5px; animation: pulse-badge 1.5s infinite; }
-    @keyframes pulse-badge { 0%,100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+    .lightbox-close { position: absolute; top: 20px; right: 24px; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; transition: var(--transition); background: none; border: none; }
+    .lightbox-close:hover { opacity: 1; color: var(--gold); }
+    .lightbox-caption { color: var(--gold); font-size: 0.92rem; margin-top: 16px; font-weight: 600; }
 
     @media (max-width: 768px) {
-      .photo-grid { grid-template-columns: repeat(2, 1fr); }
-      .cat-grid { grid-template-columns: 1fr 1fr; }
+      .photo-grid { columns: 2; }
       .gallery-tabs { width: 100%; justify-content: center; }
     }
     @media (max-width: 480px) {
-      .photo-grid { grid-template-columns: repeat(2, 1fr); }
-      .cat-grid { grid-template-columns: 1fr; }
+      .photo-grid { columns: 1; }
     }
   </style>
-  <!-- Firebase -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-    import { getFirestore, collection, getDocs, query, orderBy, where }
-      from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
-      authDomain: "eglise-carrefour.firebaseapp.com",
-      projectId: "eglise-carrefour",
-      storageBucket: "eglise-carrefour.firebasestorage.app",
-      messagingSenderId: "421333694767",
-      appId: "1:421333694767:web:30c18da36ae020821a49da"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    // Chaje foto pastè yo nan Firebase
-    async function chargerFotosPasteur() {
-      try {
-        const q = query(collection(db, 'galerie'), orderBy('timestamp', 'desc'));
-        const snap = await getDocs(q);
-        const fotos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        window._fotosFirebase = fotos;
-
-        // Mete a jou badge count
-        const badge = document.getElementById('pasteur-count');
-        if (badge) badge.textContent = fotos.length > 0 ? fotos.length + ' photos' : 'À venir';
-
-        // Mete thumbnail premye foto
-        if (fotos.length > 0) {
-          const thumb = document.getElementById('pasteur-thumb');
-          if (thumb) {
-            thumb.style.backgroundImage = 'url(' + fotos[0].url + ')';
-            thumb.style.backgroundSize = 'cover';
-            thumb.style.backgroundPosition = 'center';
-            const fallback = thumb.querySelector('.cat-icon-fallback');
-            if (fallback) fallback.style.display = 'none';
-            const img = thumb.querySelector('img');
-            if (img) { img.src = fotos[0].url; img.style.display = 'block'; }
-          }
-        }
-      } catch(e) {
-        console.log('Firebase:', e.message);
-        window._fotosFirebase = [];
-      }
-    }
-
-    // Ekspoze fonksyon an pou kòd ekstèn ka rele l
-    window.chargerFotosPasteur = chargerFotosPasteur;
-    document.addEventListener('DOMContentLoaded', chargerFotosPasteur);
-  </script>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G9Y14X29NZ"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-G9Y14X29NZ');
-  </script>
 </head>
 <body>
 
@@ -166,7 +82,7 @@
 
 <div class="page-hero">
   <div class="page-hero-badge"><i class="fas fa-images"></i> Galerie</div>
-  <h1>Galerie &amp; Vidéos</h1>
+  <h1>Galerie & Vidéos</h1>
   <p>Revivez les moments de grâce et de louange de notre communauté en photos et vidéos.</p>
 </div>
 
@@ -188,111 +104,22 @@
     <button class="gallery-tab" data-tab="videos"><i class="fas fa-video"></i> Vidéos</button>
   </div>
 
-  <!-- ===== SECTION PHOTOS ===== -->
+  <!-- Section Photos -->
   <div class="gallery-section active" id="tab-photos">
-
-    <!-- Vue: liste katégori yo -->
-    <div id="vue-categories">
-      <div class="cat-grid">
-
-        <div class="cat-card" onclick="ouvrirCategorie('dimanche')">
-          <div class="cat-thumb">
-            <img src="images/image11.jpg" alt="Culte du dimanche matin" onerror="this.style.display='none'">
-            <div class="cat-icon-fallback"><i class="fas fa-church"></i></div>
-          </div>
-          <div class="cat-info">
-            <h3><i class="fas fa-church"></i> Culte du dimanche matin</h3>
-            <span>8 photos <i class="fas fa-arrow-right"></i></span>
-          </div>
-        </div>
-
-        <div class="cat-card" onclick="ouvrirCategorie('bapteme')">
-          <div class="cat-thumb" style="background:linear-gradient(135deg,#1a6b8a,#0d4d6b)">
-            <div class="cat-icon-fallback"><i class="fas fa-water"></i></div>
-          </div>
-          <div class="cat-info">
-            <h3><i class="fas fa-water"></i> Baptêmes 2025</h3>
-            <span>À venir <i class="fas fa-arrow-right"></i></span>
-          </div>
-        </div>
-
-        <div class="cat-card" onclick="ouvrirCategorie('jeunes')">
-          <div class="cat-thumb" style="background:linear-gradient(135deg,#2d6a4f,#1b4332)">
-            <div class="cat-icon-fallback"><i class="fas fa-users"></i></div>
-          </div>
-          <div class="cat-info">
-            <h3><i class="fas fa-users"></i> Réunion des jeunes</h3>
-            <span>À venir <i class="fas fa-arrow-right"></i></span>
-          </div>
-        </div>
-
-        <div class="cat-card" onclick="ouvrirCategorie('priere')">
-          <div class="cat-thumb" style="background:linear-gradient(135deg,#6b2d8a,#4a1d6b)">
-            <div class="cat-icon-fallback"><i class="fas fa-hands-praying"></i></div>
-          </div>
-          <div class="cat-info">
-            <h3><i class="fas fa-hands-praying"></i> Veillée de prière</h3>
-            <span>À venir <i class="fas fa-arrow-right"></i></span>
-          </div>
-        </div>
-
-        <div class="cat-card" onclick="ouvrirCategorie('pasteur')">
-          <div class="cat-thumb" id="pasteur-thumb" style="background:linear-gradient(135deg,#1c1c3c,#3a1c3c)">
-            <img src="" alt="Photos du Pasteur" style="display:none;width:100%;height:100%;object-fit:cover;">
-            <div class="cat-icon-fallback"><i class="fas fa-user-tie"></i></div>
-          </div>
-          <div class="cat-info">
-            <h3><i class="fas fa-user-tie"></i> Photos du Pasteur</h3>
-            <span id="pasteur-count">Chargement... <i class="fas fa-arrow-right"></i></span>
-          </div>
-        </div>
-
+    <div class="photo-grid" id="photoGrid">
+      <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">
+        <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--gold);display:block;margin-bottom:12px;"></i>
+        Chargement des photos...
       </div>
     </div>
-
-    <!-- Vue: foto yon kategori -->
-    <div id="vue-photos" style="display:none;">
-      <button class="btn-retour" onclick="retourCategories()">
-        <i class="fas fa-arrow-left"></i> Retour aux catégories
-      </button>
-      <h2 id="titre-categorie" style="color:var(--primary);font-family:'Playfair Display',serif;margin-bottom:24px;"></h2>
-      <div class="photo-grid" id="grille-photos"></div>
-    </div>
-
   </div>
 
-  <!-- ===== SECTION VIDÉOS ===== -->
+  <!-- Section Vidéos -->
   <div class="gallery-section" id="tab-videos">
-    <div class="video-grid">
-      <div class="video-card">
-        <div class="video-thumb">
-          <div class="play-btn"><i class="fas fa-play"></i></div>
-        </div>
-        <div class="video-body">
-          <h3>Message du dimanche — La Foi qui Déplace les Montagnes</h3>
-          <p>Prédication du Pasteur Anouis Jean. Un message puissant sur la foi et la persévérance.</p>
-          <span class="v-date"><i class="fas fa-calendar"></i> 6 Juin 2025</span>
-        </div>
-      </div>
-      <div class="video-card">
-        <div class="video-thumb">
-          <div class="play-btn"><i class="fas fa-play"></i></div>
-        </div>
-        <div class="video-body">
-          <h3>Témoignage de conversion — Marc partage sa transformation</h3>
-          <p>Marc témoigne de comment sa vie a été radicalement transformée par la grâce de Dieu.</p>
-          <span class="v-date"><i class="fas fa-calendar"></i> 30 Mai 2025</span>
-        </div>
-      </div>
-      <div class="video-card">
-        <div class="video-thumb">
-          <div class="play-btn"><i class="fas fa-play"></i></div>
-        </div>
-        <div class="video-body">
-          <h3>Culte de Louange — Service spécial de Pentecôte</h3>
-          <p>Revivez ce moment de grâce et d'onction lors de notre culte spécial de Pentecôte 2025.</p>
-          <span class="v-date"><i class="fas fa-calendar"></i> 19 Mai 2025</span>
-        </div>
+    <div class="video-grid" id="videoGrid">
+      <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">
+        <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--gold);display:block;margin-bottom:12px;"></i>
+        Chargement des vidéos...
       </div>
     </div>
   </div>
@@ -301,311 +128,156 @@
 
 <!-- Lightbox -->
 <div class="lightbox" id="lightbox">
-  <button class="lightbox-close" onclick="fermerLightbox()">✕</button>
-  <button class="lightbox-nav lightbox-prev" onclick="navLightbox(-1)"><i class="fas fa-chevron-left"></i></button>
-  <div class="lightbox-img-wrap"><img id="lightbox-img" src="" alt=""></div>
-  <p class="lightbox-caption" id="lightbox-caption"></p>
-  <button class="lightbox-nav lightbox-next" onclick="navLightbox(1)"><i class="fas fa-chevron-right"></i></button>
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightboxImg" src="" alt="" style="max-width:92vw;max-height:80vh;border-radius:10px;object-fit:contain;">
+  <p class="lightbox-caption" id="lightboxCaption"></p>
+</div>
+
+<!-- Modal vidéo -->
+<div class="lightbox" id="videoModal">
+  <button class="lightbox-close" onclick="closeVideo()">✕</button>
+  <div style="width:min(720px,92vw);">
+    <div style="position:relative;padding-bottom:56.25%;height:0;border-radius:12px;overflow:hidden;">
+      <iframe id="videoFrame" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" allowfullscreen></iframe>
+    </div>
+    <p id="videoCaption" style="color:var(--gold);font-size:0.95rem;margin-top:14px;font-weight:600;text-align:center;"></p>
+  </div>
 </div>
 
 <div id="foot-placeholder"></div>
 
-  <!-- OneSignal Push Notifications -->
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-  <script>
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function(OneSignal) {
-      await OneSignal.init({
-        appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
-        promptOptions: {
-          slidedown: {
-            prompts: [{
-              type: "push", autoPrompt: true,
-              text: {
-                actionMessage: "Restez connectés à notre église ! Recevez les annonces en temps réel.",
-                acceptButton: "Oui, m'abonner",
-                cancelButton: "Plus tard"
-              },
-              delay: { pageViews: 1, timeDelay: 5 }
-            }]
-          }
-        },
-        welcomeNotification: {
-          disable: false,
-          title: "Église de Dieu de la Prophétie",
-          message: "Bienvenue ! Vous recevrez désormais nos annonces. 🙏"
-        },
-        notifyButton: { enable: false },
-        allowLocalhostAsSecureOrigin: true
-      });
-    });
-  </script>
-  <script src="lang.js"></script>
-<script>document.addEventListener('DOMContentLoaded', function(){ if(window.initLang) initLang(); });</script>
-  <script src="nav.js"></script>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script src="nav.js"></script>
 <script>
   NAV.init('Galerie.html');
 
+  // ===== FIREBASE =====
+  firebase.initializeApp({
+    apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
+    authDomain: "eglise-carrefour.firebaseapp.com",
+    projectId: "eglise-carrefour",
+    storageBucket: "eglise-carrefour.firebasestorage.app",
+    messagingSenderId: "421333694767",
+    appId: "1:421333694767:web:30c18da36ae020821a49da"
+  });
+  const db = firebase.firestore();
+
+  // ===== CHAJE GALERIE =====
+  async function chargerGalerie() {
+    try {
+      const snap = await db.collection('galerie').orderBy('timestamp', 'desc').get();
+      const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      const photos = items.filter(i => i.type !== 'video');
+      const videos = items.filter(i => i.type === 'video');
+
+      afficherPhotos(photos);
+      afficherVideos(videos);
+    } catch(e) {
+      console.log('Erreur galerie:', e.message);
+      document.getElementById('photoGrid').innerHTML =
+        '<p style="grid-column:1/-1;text-align:center;color:#aaa;padding:30px;">Aucune photo pour le moment.</p>';
+      document.getElementById('videoGrid').innerHTML =
+        '<p style="grid-column:1/-1;text-align:center;color:#aaa;padding:30px;">Aucune vidéo pour le moment.</p>';
+    }
+  }
+
+  function afficherPhotos(photos) {
+    const grid = document.getElementById('photoGrid');
+    if (!photos.length) {
+      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#aaa;padding:40px;font-size:0.95rem;"><i class="fas fa-images" style="display:block;font-size:2rem;margin-bottom:10px;color:var(--gold);opacity:0.4;"></i>Aucune photo publiée pour le moment.</p>';
+      return;
+    }
+    grid.innerHTML = photos.map(p => `
+      <div class="photo-item" onclick="openLightbox('${escHtml(p.url)}', '${escHtml(p.description)}')">
+        <img src="${escHtml(p.url)}" alt="${escHtml(p.description)}" loading="lazy"
+          onerror="this.parentElement.innerHTML='<div class=\\'photo-placeholder h2\\'><i class=\\'fas fa-image\\'></i></div>'">
+        <div class="photo-overlay">
+          <i class="fas fa-search-plus"></i>
+          <h4>${escHtml(p.description)}</h4>
+        </div>
+      </div>`).join('');
+  }
+
+  function afficherVideos(videos) {
+    const grid = document.getElementById('videoGrid');
+    if (!videos.length) {
+      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#aaa;padding:40px;font-size:0.95rem;"><i class="fas fa-video" style="display:block;font-size:2rem;margin-bottom:10px;color:var(--gold);opacity:0.4;"></i>Aucune vidéo publiée pour le moment.</p>';
+      return;
+    }
+    grid.innerHTML = videos.map(v => {
+      const thumb = v.thumb || (v.videoId ? `https://img.youtube.com/vi/${v.videoId}/hqdefault.jpg` : '');
+      const embedUrl = v.videoId ? `https://www.youtube.com/embed/${v.videoId}?autoplay=1` : '';
+      return `
+        <div class="video-card">
+          <div class="video-thumb" onclick="openVideo('${escHtml(embedUrl)}', '${escHtml(v.titre)}')"
+            style="${thumb ? `background-image:url('${thumb}');background-size:cover;background-position:center;` : ''}">
+            <div class="play-btn"><i class="fas fa-play"></i></div>
+          </div>
+          <div class="video-body">
+            <h3>${escHtml(v.titre)}</h3>
+            <p>${escHtml(v.description || '')}</p>
+            <span class="v-date"><i class="fas fa-calendar"></i> ${escHtml(v.date || '')}</span>
+          </div>
+        </div>`; }).join('');
+  }
+
+  function escHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // ===== LIGHTBOX FOTO =====
+  function openLightbox(url, caption) {
+    document.getElementById('lightboxImg').src = url;
+    document.getElementById('lightboxCaption').textContent = caption || '';
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ===== MODAL VIDEO =====
+  function openVideo(embedUrl, titre) {
+    if (!embedUrl) return;
+    document.getElementById('videoFrame').src = embedUrl;
+    document.getElementById('videoCaption').textContent = titre || '';
+    document.getElementById('videoModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeVideo() {
+    document.getElementById('videoFrame').src = '';
+    document.getElementById('videoModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
   // ===== TABS =====
-  document.querySelectorAll('.gallery-tab').forEach(function(tab) {
+  document.querySelectorAll('.gallery-tab').forEach(tab => {
     tab.addEventListener('click', function() {
-      document.querySelectorAll('.gallery-tab').forEach(function(t) { t.classList.remove('active'); });
-      document.querySelectorAll('.gallery-section').forEach(function(s) { s.classList.remove('active'); });
+      document.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.gallery-section').forEach(s => s.classList.remove('active'));
       this.classList.add('active');
       document.getElementById('tab-' + this.dataset.tab).classList.add('active');
     });
   });
 
-  // ===== DONE YO POU CHAK KATEGORI =====
-  var categories = {
-    'pasteur': {
-      titre: 'Photos du Pasteur',
-      firebase: true,
-      photos: []
-    },
-    'dimanche': {
-      titre: 'Culte du dimanche matin',
-      photos: [
-        { src: 'images/image11.jpg', caption: '' },
-        { src: 'images/image12.jpg', caption: '' },
-        { src: 'images/image13.jpg', caption: '' },
-        { src: 'images/image14.jpg', caption: '' },
-        { src: 'images/image15.jpg', caption: '' },
-        { src: 'images/image16.jpg', caption: '' },
-           { src: 'images/image17.jpg', caption: '' },
-		         { src: 'images/image18.jpg', caption: '' },
-				       { src: 'images/image19.jpg', caption: '' },
-					         { src: 'images/image20.jpg', caption: '' },
-							       { src: 'images/image21.jpg', caption: '' },
-								         { src: 'images/image22.jpg', caption: '' },
-										       { src: 'images/image23.jpg', caption: '' },
-											       
-													       { src: 'images/image25.jpg', caption: '' },
-														         { src: 'images/image26.jpg', caption: '' },
-																       { src: 'images/image27.jpg', caption: '' },
-								   
-      ]
-    },
-    'bapteme': {
-      titre: 'Baptêmes 2025',
-      photos: []
-    },
-    'jeunes': {
-      titre: 'Réunion des jeunes',
-      photos: []
-    },
-    'priere': {
-      titre: 'Veillée de prière',
-      photos: []
-    }
-  };
-
-  var photosActuelles = [];
-  var indexLightbox = 0;
-
-  function ouvrirCategorie(id) {
-    var cat = categories[id];
-    document.getElementById('vue-categories').style.display = 'none';
-    document.getElementById('vue-photos').style.display = 'block';
-    document.getElementById('titre-categorie').textContent = cat.titre;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    var grille = document.getElementById('grille-photos');
-    grille.innerHTML = '';
-
-    // Kategori Firebase (Photos du Pasteur)
-    if (cat.firebase) {
-      grille.innerHTML = '<p style="text-align:center;padding:40px;color:#aaa;"><i class="fas fa-spinner fa-spin"></i> Chargement...</p>';
-      (async function() {
-        try {
-          await window.chargerFotosPasteur();
-          var fotos = window._fotosFirebase || [];
-          grille.innerHTML = '';
-          if (fotos.length === 0) {
-            grille.innerHTML = '<p style="color:#888;text-align:center;grid-column:1/-1;padding:40px;"><i class="fas fa-camera" style="font-size:2rem;display:block;margin-bottom:12px;color:#c9a84c"></i>Aucune photo pour le moment.</p>';
-            photosActuelles = [];
-            return;
-          }
-
-          // Separe foto ak video
-          var photoItems = fotos.filter(function(f) { return f.type !== 'video'; });
-          var videoItems = fotos.filter(function(f) { return f.type === 'video'; });
-
-          // photosActuelles pou lightbox — foto sèlman
-          photosActuelles = photoItems.map(function(f) { return { src: f.url, caption: f.description || f.titre || '' }; });
-
-          // Afiche foto yo
-          photoItems.forEach(function(f, i) {
-            var item = document.createElement('div');
-            item.className = 'photo-item';
-            var vu = !!localStorage.getItem('vu_firebase_' + f.id);
-            var badgeHtml = !vu ? '<span class="badge-new">Nouvo</span>' : '';
-            item.onclick = function() {
-              localStorage.setItem('vu_firebase_' + f.id, '1');
-              var b = item.querySelector('.badge-new');
-              if (b) b.remove();
-              ouvrirLightbox(i);
-            };
-            item.innerHTML = badgeHtml + '<img src="' + f.url + '" alt="' + (f.description || '') + '" loading="lazy">' +
-              '<div class="photo-overlay"><i class="fas fa-search-plus"></i><p>' + (f.description || '') + '</p></div>';
-            grille.appendChild(item);
-          });
-
-          // Afiche video yo
-          videoItems.forEach(function(f) {
-            var item = document.createElement('div');
-            item.className = 'photo-item video-item';
-            item.style.position = 'relative';
-            var vu = !!localStorage.getItem('vu_video_' + f.id);
-            var badgeHtml = !vu ? '<span class="badge-new">Nouvo</span>' : '';
-
-            // Thumbnail
-            var thumbSrc = f.thumb || 'logo.png';
-            item.innerHTML = badgeHtml +
-              '<img src="' + thumbSrc + '" alt="' + (f.titre || 'Vidéo') + '" loading="lazy" style="object-fit:cover;">' +
-              '<div class="photo-overlay video-overlay"><i class="fas fa-play-circle" style="font-size:2.5rem;"></i><p>' + (f.titre || 'Vidéo') + '</p></div>';
-
-            item.onclick = function() {
-              localStorage.setItem('vu_video_' + f.id, '1');
-              var b = item.querySelector('.badge-new');
-              if (b) b.remove();
-              ouvrirVideoModal(f);
-            };
-            grille.appendChild(item);
-          });
-        } catch(e) {
-          grille.innerHTML = '<p style="color:red;text-align:center;padding:20px;">Erreur chargement photos</p>';
-        }
-      })();
-      return;
-    }
-
-    photosActuelles = cat.photos;
-
-    if (cat.photos.length === 0) {
-      grille.innerHTML = '<p style="color:var(--text-muted);text-align:center;grid-column:1/-1;padding:40px 0;"><i class="fas fa-clock" style="font-size:2rem;display:block;margin-bottom:12px;color:var(--gold)"></i>Photos à venir bientôt...</p>';
-      return;
-    }
-
-    // Triye foto yo — poko wè yo anwo, deja wè yo anba
-    var photosTrie = cat.photos.map(function(photo, i) {
-      return { photo: photo, index: i, vu: !!localStorage.getItem('vu_' + photo.src) };
-    });
-    photosTrie.sort(function(a, b) {
-      if (a.vu === b.vu) return 0;
-      return a.vu ? 1 : -1; // poko wè (false) monte anwo
-    });
-
-    photosTrie.forEach(function(obj) {
-      var photo = obj.photo;
-      var i = obj.index;
-      var item = document.createElement('div');
-      item.className = 'photo-item';
-      item.style.position = 'relative';
-      var vuKey = 'vu_' + photo.src;
-      var badgeHtml = !obj.vu ? '<span class="badge-new">Nouvo</span>' : '';
-      (function(index, key) {
-        item.onclick = function() {
-          localStorage.setItem(key, '1');
-          var badge = item.querySelector('.badge-new');
-          if (badge) badge.remove();
-          ouvrirLightbox(index);
-        };
-      })(i, vuKey);
-      item.innerHTML = badgeHtml +
-        '<img src="' + photo.src + '" alt="' + photo.caption + '" onerror="this.parentElement.classList.add(\'photo-placeholder-item\')">' +
-        '<div class="photo-overlay"><i class="fas fa-search-plus"></i><p>' + photo.caption + '</p></div>';
-      grille.appendChild(item);
-    });
-  }
-
-  function retourCategories() {
-    document.getElementById('vue-photos').style.display = 'none';
-    document.getElementById('vue-categories').style.display = 'block';
-  }
-
-  // ===== LIGHTBOX =====
-  function ouvrirLightbox(index) {
-    indexLightbox = index;
-    afficherLightbox();
-    document.getElementById('lightbox').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function afficherLightbox() {
-    var photo = photosActuelles[indexLightbox];
-    document.getElementById('lightbox-img').src = photo.src;
-    document.getElementById('lightbox-caption').textContent = photo.caption;
-  }
-
-  function navLightbox(dir) {
-    indexLightbox += dir;
-    if (indexLightbox < 0) indexLightbox = photosActuelles.length - 1;
-    if (indexLightbox >= photosActuelles.length) indexLightbox = 0;
-    afficherLightbox();
-  }
-
-  function fermerLightbox() {
-    document.getElementById('lightbox').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeLightbox(); closeVideo(); }
+  });
   document.getElementById('lightbox').addEventListener('click', function(e) {
-    if (e.target === this) fermerLightbox();
+    if (e.target === this) closeLightbox();
+  });
+  document.getElementById('videoModal').addEventListener('click', function(e) {
+    if (e.target === this) closeVideo();
   });
 
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') fermerLightbox();
-    if (e.key === 'ArrowRight') navLightbox(1);
-    if (e.key === 'ArrowLeft') navLightbox(-1);
-  });
+  // Chaje galerie a
+  chargerGalerie();
 </script>
-<!-- Modal Video -->
-<div id="videoModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:99999;align-items:center;justify-content:center;">
-  <div style="position:relative;width:90%;max-width:800px;">
-    <button onclick="fermerVideoModal()" style="position:absolute;top:-40px;right:0;background:none;border:none;color:white;font-size:2rem;cursor:pointer;">&times;</button>
-    <div id="videoContainer" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;">
-    </div>
-    <p id="videoTitreModal" style="color:white;text-align:center;margin-top:12px;font-size:1rem;"></p>
-  </div>
-</div>
-
-<style>
-.video-overlay { background: rgba(0,0,0,0.5) !important; }
-.video-overlay i { color: white; }
-</style>
-
-<script>
-function ouvrirVideoModal(f) {
-  var modal = document.getElementById('videoModal');
-  var container = document.getElementById('videoContainer');
-  var titreEl = document.getElementById('videoTitreModal');
-  
-  var iframeSrc = '';
-  if (f.videoType === 'youtube') {
-    iframeSrc = 'https://www.youtube.com/embed/' + f.videoId + '?autoplay=1';
-  } else if (f.videoType === 'facebook') {
-    iframeSrc = 'https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(f.videoUrl) + '&autoplay=true';
-  }
-  
-  container.innerHTML = '<iframe src="' + iframeSrc + '" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:12px;" allowfullscreen allow="autoplay"></iframe>';
-  titreEl.textContent = f.titre || '';
-  modal.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-}
-
-function fermerVideoModal() {
-  var modal = document.getElementById('videoModal');
-  document.getElementById('videoContainer').innerHTML = '';
-  modal.style.display = 'none';
-  document.body.style.overflow = '';
-}
-
-// Fèmen si klike deyò
-document.getElementById('videoModal').addEventListener('click', function(e) {
-  if (e.target === this) fermerVideoModal();
-});
-</script>
-
 </body>
 </html>
