@@ -101,15 +101,26 @@
   <!-- Tabs -->
   <div class="gallery-tabs">
     <button class="gallery-tab active" data-tab="photos"><i class="fas fa-camera"></i> Photos</button>
+    <button class="gallery-tab" data-tab="pasteur"><i class="fas fa-user-tie"></i> Photos Pasteur</button>
     <button class="gallery-tab" data-tab="videos"><i class="fas fa-video"></i> Vidéos</button>
   </div>
 
-  <!-- Section Photos -->
+  <!-- Section Photos Legliz -->
   <div class="gallery-section active" id="tab-photos">
     <div class="photo-grid" id="photoGrid">
       <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">
         <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--gold);display:block;margin-bottom:12px;"></i>
         Chargement des photos...
+      </div>
+    </div>
+  </div>
+
+  <!-- Section Photos Pastè -->
+  <div class="gallery-section" id="tab-pasteur">
+    <div class="photo-grid" id="photoGridPasteur">
+      <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">
+        <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--gold);display:block;margin-bottom:12px;"></i>
+        Chargement...
       </div>
     </div>
   </div>
@@ -171,22 +182,22 @@
       const snap = await db.collection('galerie').orderBy('timestamp', 'desc').get();
       const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-      const photos = items.filter(i => i.type !== 'video');
-      const videos = items.filter(i => i.type === 'video');
+      const photosEglise  = items.filter(i => i.type !== 'video' && i.categorie !== 'pasteur');
+      const photosPasteur = items.filter(i => i.type !== 'video' && i.categorie === 'pasteur');
+      const videos        = items.filter(i => i.type === 'video');
 
-      afficherPhotos(photos);
+      afficherPhotos(photosEglise,  'photoGrid');
+      afficherPhotos(photosPasteur, 'photoGridPasteur');
       afficherVideos(videos);
     } catch(e) {
       console.log('Erreur galerie:', e.message);
       document.getElementById('photoGrid').innerHTML =
         '<p style="grid-column:1/-1;text-align:center;color:#aaa;padding:30px;">Aucune photo pour le moment.</p>';
-      document.getElementById('videoGrid').innerHTML =
-        '<p style="grid-column:1/-1;text-align:center;color:#aaa;padding:30px;">Aucune vidéo pour le moment.</p>';
     }
   }
 
-  function afficherPhotos(photos) {
-    const grid = document.getElementById('photoGrid');
+  function afficherPhotos(photos, gridId) {
+    const grid = document.getElementById(gridId);
     if (!photos.length) {
       grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#aaa;padding:40px;font-size:0.95rem;"><i class="fas fa-images" style="display:block;font-size:2rem;margin-bottom:10px;color:var(--gold);opacity:0.4;"></i>Aucune photo publiée pour le moment.</p>';
       return;

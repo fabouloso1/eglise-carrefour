@@ -641,23 +641,45 @@
         </button>
       </div>
 
-      <!-- Ajoute foto -->
+      <!-- Ajoute foto LEGLIZ -->
       <div class="card">
-        <h3><i class="fas fa-camera"></i> Ajouter des photos à la galerie</h3>
+        <h3><i class="fas fa-church"></i> Ajouter des photos — <span style="color:var(--gold)">Église</span></h3>
+        <p style="font-size:0.88rem;color:#888;margin-bottom:14px;">Ces photos iront dans la section <strong>Galerie générale</strong> du site.</p>
 
-        <label>Description de la photo (optionnel)</label>
-        <input type="text" id="fotoDesc" placeholder="Ex : Culte dimanche 15 juin..." />
+        <label>Description (optionnel)</label>
+        <input type="text" id="fotoDescEglise" placeholder="Ex : Culte dimanche 15 juin..." />
 
-        <div class="upload-zone" id="uploadZone">
-          <input type="file" id="fotoInput" accept="image/*" multiple onchange="handleFotoSelect(event)">
-          <i class="fas fa-cloud-upload-alt"></i>
-          <p><strong>Cliquer pour choisir des photos</strong><br>ou glisser-déposer ici<br><small style="color:#aaa">JPG, PNG — max 5MB chacune</small></p>
+        <div class="upload-zone" id="uploadZoneEglise">
+          <input type="file" id="fotoInputEglise" accept="image/*" multiple onchange="handleFotoSelect(event, 'eglise')">
+          <i class="fas fa-church" style="font-size:2rem;color:var(--gold);margin-bottom:10px;display:block;"></i>
+          <p><strong>Photos Église</strong><br>Cliquer ou glisser-déposer<br><small style="color:#aaa">JPG, PNG</small></p>
         </div>
 
-        <div class="photo-preview" id="photoPreview"></div>
+        <div class="photo-preview" id="photoPreviewEglise"></div>
 
-        <button class="btn btn-gold" id="uploadBtn" onclick="uploadFotos()" style="width:100%" disabled>
-          <i class="fas fa-upload"></i> Publier les photos sur le site
+        <button class="btn btn-primary" id="uploadBtnEglise" onclick="uploadFotos('eglise')" style="width:100%" disabled>
+          <i class="fas fa-upload"></i> Publier dans Galerie Église
+        </button>
+      </div>
+
+      <!-- Ajoute foto PASTÈ -->
+      <div class="card" style="border-left:4px solid var(--gold);">
+        <h3><i class="fas fa-user-tie"></i> Ajouter des photos — <span style="color:var(--gold)">Pasteur</span></h3>
+        <p style="font-size:0.88rem;color:#888;margin-bottom:14px;">Ces photos iront dans la section <strong>Photos du Pasteur</strong> du site.</p>
+
+        <label>Description (optionnel)</label>
+        <input type="text" id="fotoDescPasteur" placeholder="Ex : Message du Pasteur Anouis Jean..." />
+
+        <div class="upload-zone" id="uploadZonePasteur">
+          <input type="file" id="fotoInputPasteur" accept="image/*" multiple onchange="handleFotoSelect(event, 'pasteur')">
+          <i class="fas fa-user-tie" style="font-size:2rem;color:var(--gold);margin-bottom:10px;display:block;"></i>
+          <p><strong>Photos Pasteur</strong><br>Cliquer ou glisser-déposer<br><small style="color:#aaa">JPG, PNG</small></p>
+        </div>
+
+        <div class="photo-preview" id="photoPreviewPasteur"></div>
+
+        <button class="btn btn-gold" id="uploadBtnPasteur" onclick="uploadFotos('pasteur')" style="width:100%" disabled>
+          <i class="fas fa-upload"></i> Publier dans Photos Pasteur
         </button>
       </div>
 
@@ -978,7 +1000,7 @@
 
 <script>
   // ===== FICHYE SELEKSYONE POU UPLOAD =====
-  let selectedFiles = [];
+  // (jere nan selectedFilesEglise ak selectedFilesPasteur pi ba)
 
   // Modpas la — eksplike dirèkteman isit (pa depann sou module)
   var ADMIN_PW = "Kafou2025";
@@ -1320,68 +1342,78 @@
     loadAnnonces();
   }
 
-  // ===== GALERIE =====
-  function handleFotoSelect(e) {
+  // ===== GALERIE — 2 kategori: eglise ak pasteur =====
+
+  // Stòk fichier separe pou chak kategori
+  let selectedFilesEglise  = [];
+  let selectedFilesPasteur = [];
+
+  function handleFotoSelect(e, categorie) {
     const files = Array.from(e.target.files);
-    selectedFiles = files;
-    const preview = document.getElementById('photoPreview');
+    const previewId = categorie === 'pasteur' ? 'photoPreviewPasteur' : 'photoPreviewEglise';
+    const btnId     = categorie === 'pasteur' ? 'uploadBtnPasteur'    : 'uploadBtnEglise';
+    const preview   = document.getElementById(previewId);
     preview.innerHTML = '';
 
+    if (categorie === 'pasteur') selectedFilesPasteur = files;
+    else selectedFilesEglise = files;
+
     files.forEach((f, i) => {
-      if (f.size > 10 * 1024 * 1024) { showToast('Foto ' + f.name + ' twò gwo (maks 10MB)', 'error'); return; }
       const reader = new FileReader();
       reader.onload = function(ev) {
         preview.innerHTML += `
           <div class="photo-preview-item">
             <img src="${ev.target.result}">
-            <button class="remove-photo" onclick="removePreview(${i})"><i class="fas fa-times"></i></button>
+            <button class="remove-photo" onclick="removePreview(${i}, '${categorie}')">
+              <i class="fas fa-times"></i>
+            </button>
           </div>`;
       };
       reader.readAsDataURL(f);
     });
 
-    document.getElementById('uploadBtn').disabled = files.length === 0;
+    document.getElementById(btnId).disabled = files.length === 0;
   }
 
-  function removePreview(i) {
-    selectedFiles.splice(i, 1);
-    if (selectedFiles.length === 0) {
-      document.getElementById('photoPreview').innerHTML = '';
-      document.getElementById('uploadBtn').disabled = true;
+  function removePreview(i, categorie) {
+    const previewId = categorie === 'pasteur' ? 'photoPreviewPasteur' : 'photoPreviewEglise';
+    const btnId     = categorie === 'pasteur' ? 'uploadBtnPasteur'    : 'uploadBtnEglise';
+    if (categorie === 'pasteur') selectedFilesPasteur.splice(i, 1);
+    else selectedFilesEglise.splice(i, 1);
+    const arr = categorie === 'pasteur' ? selectedFilesPasteur : selectedFilesEglise;
+    if (arr.length === 0) {
+      document.getElementById(previewId).innerHTML = '';
+      document.getElementById(btnId).disabled = true;
     }
   }
 
-  function resetUploadBtn() {
-    const btn = document.getElementById('uploadBtn');
-    if (btn) {
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-upload"></i> Publier les photos sur le site';
+  function resetUploadBtn(categorie) {
+    if (categorie === 'pasteur') {
+      const btn = document.getElementById('uploadBtnPasteur');
+      if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-upload"></i> Publier dans Photos Pasteur'; }
+    } else {
+      const btn = document.getElementById('uploadBtnEglise');
+      if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-upload"></i> Publier dans Galerie Église'; }
     }
   }
 
-  // ===== CLOUDINARY CONFIG (gratis — 25GB, san kat kredi) =====
-  const CLOUDINARY_CLOUD = 'dvcxhpibq';
-  const CLOUDINARY_PRESET = 'eglise_upload'; // unsigned preset — kreye l nan Cloudinary Dashboard
+  // ===== CLOUDINARY CONFIG =====
+  const CLOUDINARY_CLOUD  = 'dvcxhpibq';
+  const CLOUDINARY_PRESET = 'eglise_upload';
 
-  async function uploadVersCloudinary(file) {
-    // Konprese imaj la anvan upload
+  async function uploadVersCloudinary(file, categorie) {
     const blob = await compresserImaj(file);
     const formData = new FormData();
     formData.append('file', blob);
     formData.append('upload_preset', CLOUDINARY_PRESET);
-    formData.append('folder', 'galerie');
-
+    formData.append('folder', categorie === 'pasteur' ? 'pasteur' : 'galerie');
     const res = await fetch(
       `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,
       { method: 'POST', body: formData }
     );
-
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error?.message || 'Erreur Cloudinary');
-    }
+    if (!res.ok) { const err = await res.json(); throw new Error(err.error?.message || 'Erreur Cloudinary'); }
     const data = await res.json();
-    return data.secure_url; // URL HTTPS definitif
+    return data.secure_url;
   }
 
   function compresserImaj(file) {
@@ -1408,30 +1440,34 @@
     });
   }
 
-  async function uploadFotos() {
-    if (!selectedFiles.length) return;
-    const btn = document.getElementById('uploadBtn');
+  async function uploadFotos(categorie) {
+    const files   = categorie === 'pasteur' ? selectedFilesPasteur : selectedFilesEglise;
+    const descId  = categorie === 'pasteur' ? 'fotoDescPasteur'    : 'fotoDescEglise';
+    const inputId = categorie === 'pasteur' ? 'fotoInputPasteur'   : 'fotoInputEglise';
+    const prevId  = categorie === 'pasteur' ? 'photoPreviewPasteur': 'photoPreviewEglise';
+    const btnId   = categorie === 'pasteur' ? 'uploadBtnPasteur'   : 'uploadBtnEglise';
+
+    if (!files.length) return;
+    const btn = document.getElementById(btnId);
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span> Upload en cours...';
 
-    const desc = document.getElementById('fotoDesc').value.trim();
-    const filesToUpload = [...selectedFiles];
+    const desc = document.getElementById(descId).value.trim();
+    const filesToUpload = [...files];
     let uploaded = 0;
     const total = filesToUpload.length;
 
     try {
       for (let i = 0; i < filesToUpload.length; i++) {
         const file = filesToUpload[i];
-        btn.innerHTML = `<span class="spinner"></span> Photo ${i+1}/${total} en cours...`;
+        btn.innerHTML = `<span class="spinner"></span> Photo ${i+1}/${total}...`;
 
-        // 1. Upload foto nan Cloudinary (gratis)
-        const url = await uploadVersCloudinary(file);
+        const url = await uploadVersCloudinary(file, categorie);
 
-        // 2. Anrejistre URL la nan Firestore
         await window._addDoc(window._collection(window._db, 'galerie'), {
           url: url,
           description: desc || file.name.replace(/\.[^/.]+$/, ''),
-          categorie: 'pasteur',
+          categorie: categorie,   // 'eglise' oswa 'pasteur'
           nom: file.name,
           date: new Date().toISOString(),
           timestamp: window._serverTimestamp()
@@ -1439,33 +1475,33 @@
         uploaded++;
       }
 
-      showToast(uploaded + ' photo(s) publiée(s) avec succès !');
-      document.getElementById('fotoDesc').value = '';
-      document.getElementById('photoPreview').innerHTML = '';
-      document.getElementById('fotoInput').value = '';
-      selectedFiles = [];
-      resetUploadBtn();
+      const label = categorie === 'pasteur' ? 'Photos Pasteur' : 'Galerie Église';
+      showToast(uploaded + ' photo(s) publiée(s) dans ' + label + ' !');
+      document.getElementById(descId).value  = '';
+      document.getElementById(prevId).innerHTML = '';
+      document.getElementById(inputId).value = '';
+      if (categorie === 'pasteur') selectedFilesPasteur = [];
+      else selectedFilesEglise = [];
+      resetUploadBtn(categorie);
       loadFotos();
 
-      // Voye notifikasyon otomatik bay tout abòne
+      // Notifikasyon otomatik
       try {
-        const notifTitle = 'Église de Dieu de la Prophétie';
-        const notifBody  = uploaded > 1
+        const notifBody = uploaded > 1
           ? 'Le pasteur a publié ' + uploaded + ' nouvelles photos !'
           : 'Le pasteur a publié une nouvelle photo !';
-        const notifLink  = 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html#pasteur';
-        await envoyerNotifAuto(notifTitle, notifBody, notifLink);
+        await envoyerNotifAuto('Église de Dieu de la Prophétie', notifBody,
+          'https://fabouloso1.github.io/eglise-carrefour/Galerie.html');
       } catch(e) { console.log('Notif auto error:', e); }
 
     } catch (err) {
-      // Si erè Cloudinary preset — montre mesaj klè
       if (err.message.includes('preset') || err.message.includes('upload_preset')) {
-        showToast('⚙️ Konfigire Cloudinary — wè enstriksyon anba a', 'error');
-        document.getElementById('cloudinary-setup').style.display = 'block';
+        showToast('⚙️ Konfigire Cloudinary preset la — wè enstriksyon yo', 'error');
+      document.getElementById('cloudinary-setup').style.display = 'block';
       } else {
         showToast('Erreur : ' + err.message, 'error');
       }
-      resetUploadBtn();
+      resetUploadBtn(categorie);
     }
   }
 
@@ -1550,7 +1586,7 @@
     status.textContent = '⏳ Publication en cours...';
 
     try {
-      await addDoc(collection(db, 'galerie'), {
+      await window._addDoc(window._collection(window._db, 'galerie'), {
         type: 'video',
         videoUrl: url,
         videoType: embed.type,
@@ -1561,14 +1597,25 @@
         categorie: 'pasteur',
         nom: 'Pasteur Anouis Jean',
         date: new Date().toLocaleDateString('fr-FR'),
-        timestamp: serverTimestamp()
+        timestamp: window._serverTimestamp()
       });
       status.style.background = '#e8f5e9'; status.style.color = '#2e7d32';
       status.textContent = '✅ Vidéo publiée avec succès !';
       document.getElementById('videoUrl').value = '';
       document.getElementById('videoTitre').value = '';
       document.getElementById('videoDesc').value = '';
+      loadFotos();
       setTimeout(() => { status.style.display = 'none'; }, 3000);
+
+      // Notifikasyon otomatik
+      try {
+        await envoyerNotifAuto(
+          'Église de Dieu de la Prophétie',
+          'Le pasteur a publié une nouvelle vidéo : ' + titre,
+          'https://fabouloso1.github.io/eglise-carrefour/Galerie.html'
+        );
+      } catch(e) { console.log('Notif video error:', e); }
+
     } catch(e) {
       status.style.background = '#fee'; status.style.color = '#c00';
       status.textContent = '❌ Erreur : ' + e.message;
@@ -1776,19 +1823,27 @@
     }
   }
 
-  // Upload zone drag & drop
-  const zone = document.getElementById('uploadZone');
-  if (zone) {
-    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag'); });
-    zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
-    zone.addEventListener('drop', e => {
-      e.preventDefault();
-      zone.classList.remove('drag');
+  // Upload zone drag & drop — Legliz
+  const zoneEglise = document.getElementById('uploadZoneEglise');
+  if (zoneEglise) {
+    zoneEglise.addEventListener('dragover', e => { e.preventDefault(); zoneEglise.classList.add('drag'); });
+    zoneEglise.addEventListener('dragleave', () => zoneEglise.classList.remove('drag'));
+    zoneEglise.addEventListener('drop', e => {
+      e.preventDefault(); zoneEglise.classList.remove('drag');
       const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
-      if (files.length) {
-        selectedFiles = files;
-        handleFotoSelect({ target: { files } });
-      }
+      if (files.length) handleFotoSelect({ target: { files } }, 'eglise');
+    });
+  }
+
+  // Upload zone drag & drop — Pastè
+  const zonePasteur = document.getElementById('uploadZonePasteur');
+  if (zonePasteur) {
+    zonePasteur.addEventListener('dragover', e => { e.preventDefault(); zonePasteur.classList.add('drag'); });
+    zonePasteur.addEventListener('dragleave', () => zonePasteur.classList.remove('drag'));
+    zonePasteur.addEventListener('drop', e => {
+      e.preventDefault(); zonePasteur.classList.remove('drag');
+      const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+      if (files.length) handleFotoSelect({ target: { files } }, 'pasteur');
     });
   }
 </script>
