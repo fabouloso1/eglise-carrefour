@@ -10,69 +10,106 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
   <style>
+    /* ===== HERO ===== */
     .page-hero { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 70px 24px 60px; text-align: center; position: relative; overflow: hidden; }
     .page-hero::before { content: '\f03e'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: -30px; top: -30px; font-size: 220px; opacity: 0.04; color: white; }
     .page-hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(241,196,15,0.15); border: 1px solid rgba(241,196,15,0.35); color: var(--gold); padding: 6px 18px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
     .page-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 14px; }
     .page-hero p { font-size: 1.05rem; opacity: 0.82; max-width: 500px; margin: 0 auto; }
 
+    /* ===== BREADCRUMB ===== */
     .breadcrumb { background: white; border-bottom: 1px solid var(--border); padding: 12px 24px; }
     .breadcrumb-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--text-muted); }
     .breadcrumb a { color: var(--text-muted); transition: var(--transition); }
     .breadcrumb a:hover { color: var(--primary); }
-    .breadcrumb i { font-size: 0.65rem; color: #bbb; }
     .breadcrumb span { color: var(--primary); font-weight: 600; }
 
-    .galerie-main { max-width: 1200px; margin: 0 auto; padding: 50px 24px 80px; }
+    /* ===== MAIN ===== */
+    .galerie-main { max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px; }
 
-    /* Tabs */
-    .gallery-tabs { display: flex; gap: 8px; margin-bottom: 36px; background: white; padding: 10px; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid var(--border); width: fit-content; }
-    .gallery-tab { padding: 10px 22px; border-radius: 10px; border: none; background: transparent; font-family: 'Montserrat', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 7px; }
-    .gallery-tab.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
-    .gallery-tab i { font-size: 0.85rem; }
+    /* ===== TABS ===== */
+    .gallery-tabs-wrap { display: flex; align-items: center; gap: 8px; margin-bottom: 36px; overflow-x: auto; padding-bottom: 4px; }
+    .gallery-tabs-wrap::-webkit-scrollbar { display: none; }
+    .gallery-tab { display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; border-radius: 25px; border: 1.5px solid var(--border); background: white; font-family: 'Montserrat', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
+    .gallery-tab:hover { border-color: var(--primary); color: var(--primary); }
+    .gallery-tab.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border-color: transparent; box-shadow: 0 4px 14px rgba(28,28,60,0.25); }
+    .gallery-tab .tab-count { background: rgba(255,255,255,0.2); padding: 1px 7px; border-radius: 10px; font-size: 0.75rem; }
+    .gallery-tab:not(.active) .tab-count { background: rgba(28,28,60,0.08); color: var(--text-muted); }
 
-    /* Section photos */
+    /* ===== SECTIONS ===== */
     .gallery-section { display: none; }
     .gallery-section.active { display: block; }
 
-    /* Grille masonry-style */
-    .photo-grid { columns: 3; column-gap: 16px; margin-bottom: 50px; }
-    .photo-item { break-inside: avoid; margin-bottom: 16px; border-radius: var(--radius-sm); overflow: hidden; position: relative; cursor: pointer; }
-    .photo-placeholder { background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: rgba(241,196,15,0.4); }
-    .photo-placeholder.h1 { height: 200px; }
-    .photo-placeholder.h2 { height: 280px; }
-    .photo-placeholder.h3 { height: 160px; }
-    .photo-overlay { position: absolute; inset: 0; background: rgba(18,18,42,0.7); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; opacity: 0; transition: var(--transition); color: white; text-align: center; padding: 16px; }
-    .photo-overlay i { font-size: 1.8rem; color: var(--gold); }
-    .photo-overlay h4 { font-size: 0.9rem; }
-    .photo-item:hover .photo-overlay { opacity: 1; }
-    .photo-item img { width: 100%; display: block; }
+    /* ===== LOADING ===== */
+    .gallery-loading { text-align: center; padding: 60px 20px; }
+    .gallery-loading i { font-size: 2.5rem; color: var(--gold); display: block; margin-bottom: 14px; opacity: 0.6; }
+    .gallery-loading p { color: var(--text-muted); font-size: 0.95rem; }
 
-    /* Grille vidéos */
-    .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+    /* ===== CATEGORIES ===== */
+    .kat-section { margin-bottom: 48px; }
+    .kat-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 2px solid var(--border); }
+    .kat-icon { width: 42px; height: 42px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1rem; flex-shrink: 0; }
+    .kat-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--primary); }
+    .kat-count { background: var(--gold); color: var(--primary); font-size: 0.75rem; font-weight: 700; padding: 3px 10px; border-radius: 12px; }
+
+    /* ===== GRILLE PHOTOS ===== */
+    .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+    .photo-card { position: relative; border-radius: 12px; overflow: hidden; background: var(--light-bg); aspect-ratio: 1; box-shadow: var(--shadow-sm); transition: var(--transition); cursor: pointer; }
+    .photo-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .photo-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: var(--transition); }
+    .photo-card:hover img { transform: scale(1.04); }
+    .photo-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(18,18,42,0.7) 0%, transparent 55%); opacity: 0; transition: var(--transition); display: flex; align-items: flex-end; padding: 14px; }
+    .photo-card:hover .photo-card-overlay { opacity: 1; }
+    .photo-card-overlay p { color: white; font-size: 0.8rem; font-weight: 600; line-height: 1.3; }
+
+    /* ===== GRILLE VIDEOS ===== */
+    .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
     .video-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--border); transition: var(--transition); }
-    .video-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
-    .video-thumb { height: 180px; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
-    .play-btn { width: 56px; height: 56px; background: rgba(241,196,15,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1.2rem; padding-left: 4px; transition: var(--transition); }
-    .video-thumb:hover .play-btn { transform: scale(1.1); background: var(--gold); }
-    .video-body { padding: 20px; }
+    .video-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .video-thumb { position: relative; padding-bottom: 56.25%; background: linear-gradient(135deg, var(--primary), var(--secondary)); cursor: pointer; }
+    .video-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .video-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); transition: var(--transition); }
+    .video-play-btn { width: 54px; height: 54px; background: rgba(241,196,15,0.92); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1.1rem; padding-left: 3px; transition: var(--transition); }
+    .video-card:hover .video-play-btn { transform: scale(1.1); background: var(--gold); }
+    .video-body { padding: 18px; }
     .video-body h3 { color: var(--primary); font-size: 0.95rem; margin-bottom: 6px; line-height: 1.4; }
     .video-body p { color: var(--text-muted); font-size: 0.82rem; line-height: 1.5; }
-    .video-body .v-date { display: inline-flex; align-items: center; gap: 5px; color: var(--gold); font-size: 0.78rem; font-weight: 600; margin-top: 10px; }
+    .video-meta { display: flex; align-items: center; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+    .video-meta span { display: inline-flex; align-items: center; gap: 5px; color: var(--text-muted); font-size: 0.78rem; }
+    .video-meta i { color: var(--gold); }
 
-    /* Lightbox simple */
-    .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.93); z-index: 9999; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
-    .lightbox.open { display: flex; }
-    .lightbox-close { position: absolute; top: 20px; right: 24px; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; transition: var(--transition); background: none; border: none; }
-    .lightbox-close:hover { opacity: 1; color: var(--gold); }
-    .lightbox-caption { color: var(--gold); font-size: 0.92rem; margin-top: 16px; font-weight: 600; }
+    /* ===== ÉTAT VIDE ===== */
+    .empty-state { text-align: center; padding: 60px 20px; }
+    .empty-state i { font-size: 3rem; color: var(--gold); opacity: 0.3; display: block; margin-bottom: 16px; }
+    .empty-state p { color: var(--text-muted); font-size: 0.95rem; }
+
+    /* ===== LIGHTBOX ===== */
+    .lb-overlay { display: none; position: fixed; inset: 0; background: rgba(5,5,15,0.95); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+    .lb-overlay.open { display: flex; }
+    .lb-close { position: absolute; top: 18px; right: 22px; background: rgba(255,255,255,0.1); border: none; width: 40px; height: 40px; border-radius: 50%; color: white; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); z-index: 10; }
+    .lb-close:hover { background: rgba(255,255,255,0.2); color: var(--gold); }
+    .lb-img-wrap { max-width: min(900px, 94vw); }
+    .lb-img-wrap img { width: 100%; max-height: 82vh; object-fit: contain; border-radius: 10px; display: block; }
+    .lb-caption { color: var(--gold); font-size: 0.9rem; font-weight: 600; text-align: center; margin-top: 14px; }
+    .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: none; width: 44px; height: 44px; border-radius: 50%; color: white; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+    .lb-nav:hover { background: rgba(241,196,15,0.3); color: var(--gold); }
+    .lb-prev { left: 16px; }
+    .lb-next { right: 16px; }
+
+    /* ===== VIDEO MODAL ===== */
+    .vid-overlay { display: none; position: fixed; inset: 0; background: rgba(5,5,15,0.96); z-index: 9999; align-items: center; justify-content: center; padding: 20px; flex-direction: column; }
+    .vid-overlay.open { display: flex; }
+    .vid-wrap { width: min(820px, 94vw); }
+    .vid-frame { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 14px; overflow: hidden; }
+    .vid-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+    .vid-caption { color: var(--gold); font-size: 0.95rem; font-weight: 600; text-align: center; margin-top: 16px; }
 
     @media (max-width: 768px) {
-      .photo-grid { columns: 2; }
-      .gallery-tabs { width: 100%; justify-content: center; }
+      .photo-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+      .lb-nav { display: none; }
     }
     @media (max-width: 480px) {
-      .photo-grid { columns: 1; }
+      .photo-grid { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
@@ -89,9 +126,7 @@
 <div class="breadcrumb">
   <div class="breadcrumb-inner">
     <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
-    <i class="fas fa-chevron-right"></i>
-    <a href="Apropos.html">À propos</a>
-    <i class="fas fa-chevron-right"></i>
+    <i class="fas fa-chevron-right" style="font-size:0.65rem;color:#bbb;"></i>
     <span>Galerie</span>
   </div>
 </div>
@@ -99,59 +134,56 @@
 <div class="galerie-main">
 
   <!-- Tabs -->
-  <div class="gallery-tabs">
-    <button class="gallery-tab active" data-tab="photos"><i class="fas fa-camera"></i> Photos</button>
-    <button class="gallery-tab" data-tab="pasteur"><i class="fas fa-user-tie"></i> Photos Pasteur</button>
-    <button class="gallery-tab" data-tab="videos"><i class="fas fa-video"></i> Vidéos</button>
+  <div class="gallery-tabs-wrap" id="galleryTabsWrap">
+    <button class="gallery-tab active" data-tab="photos" onclick="switchTab('photos', this)">
+      <i class="fas fa-camera"></i> Photos <span class="tab-count" id="countPhotos">0</span>
+    </button>
+    <button class="gallery-tab" data-tab="videos" onclick="switchTab('videos', this)">
+      <i class="fas fa-video"></i> Vidéos <span class="tab-count" id="countVideos">0</span>
+    </button>
   </div>
 
-  <!-- Section Photos Legliz -->
+  <!-- Section Photos -->
   <div class="gallery-section active" id="tab-photos">
-    <div class="photo-grid" id="photoGrid">
-      <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">
-        <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--gold);display:block;margin-bottom:12px;"></i>
-        Chargement des photos...
+    <div id="photosContainer">
+      <div class="gallery-loading">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Chargement des photos...</p>
       </div>
     </div>
   </div>
 
-  <!-- Section Photos Pastè -->
-  <div class="gallery-section" id="tab-pasteur">
-    <div class="photo-grid" id="photoGridPasteur">
-      <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">
-        <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--gold);display:block;margin-bottom:12px;"></i>
-        Chargement...
-      </div>
-    </div>
-  </div>
-
-  <!-- Section Vidéos -->
+  <!-- Section Videos -->
   <div class="gallery-section" id="tab-videos">
-    <div class="video-grid" id="videoGrid">
-      <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">
-        <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--gold);display:block;margin-bottom:12px;"></i>
-        Chargement des vidéos...
+    <div id="videosContainer">
+      <div class="gallery-loading">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Chargement des vidéos...</p>
       </div>
     </div>
   </div>
 
 </div>
 
-<!-- Lightbox -->
-<div class="lightbox" id="lightbox">
-  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-  <img id="lightboxImg" src="" alt="" style="max-width:92vw;max-height:80vh;border-radius:10px;object-fit:contain;">
-  <p class="lightbox-caption" id="lightboxCaption"></p>
+<!-- Lightbox Photo -->
+<div class="lb-overlay" id="lbOverlay" onclick="lbClickOutside(event)">
+  <button class="lb-close" onclick="closeLb()"><i class="fas fa-times"></i></button>
+  <button class="lb-nav lb-prev" onclick="lbNav(-1)"><i class="fas fa-chevron-left"></i></button>
+  <div class="lb-img-wrap">
+    <img id="lbImg" src="" alt="">
+    <p class="lb-caption" id="lbCaption"></p>
+  </div>
+  <button class="lb-nav lb-next" onclick="lbNav(1)"><i class="fas fa-chevron-right"></i></button>
 </div>
 
-<!-- Modal vidéo -->
-<div class="lightbox" id="videoModal">
-  <button class="lightbox-close" onclick="closeVideo()">✕</button>
-  <div style="width:min(720px,92vw);">
-    <div style="position:relative;padding-bottom:56.25%;height:0;border-radius:12px;overflow:hidden;">
-      <iframe id="videoFrame" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" allowfullscreen></iframe>
+<!-- Video Modal -->
+<div class="vid-overlay" id="vidOverlay" onclick="vidClickOutside(event)">
+  <button class="lb-close" onclick="closeVid()"><i class="fas fa-times"></i></button>
+  <div class="vid-wrap">
+    <div class="vid-frame">
+      <iframe id="vidFrame" allowfullscreen></iframe>
     </div>
-    <p id="videoCaption" style="color:var(--gold);font-size:0.95rem;margin-top:14px;font-weight:600;text-align:center;"></p>
+    <p class="vid-caption" id="vidCaption"></p>
   </div>
 </div>
 
@@ -160,134 +192,238 @@
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-
 <script src="nav.js"></script>
 <script>
   NAV.init('Galerie.html');
 
-  // ===== FIREBASE =====
-  firebase.initializeApp({
-    apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
-    authDomain: "eglise-carrefour.firebaseapp.com",
-    projectId: "eglise-carrefour",
-    storageBucket: "eglise-carrefour.firebasestorage.app",
-    messagingSenderId: "421333694767",
-    appId: "1:421333694767:web:30c18da36ae020821a49da"
-  });
+  // Firebase init
+  if (!firebase.apps.length) {
+    firebase.initializeApp({
+      apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
+      authDomain: "eglise-carrefour.firebaseapp.com",
+      projectId: "eglise-carrefour",
+      storageBucket: "eglise-carrefour.firebasestorage.app",
+      messagingSenderId: "421333694767",
+      appId: "1:421333694767:web:30c18da36ae020821a49da"
+    });
+  }
   const db = firebase.firestore();
 
-  // ===== CHAJE GALERIE =====
+  // State pou lightbox
+  let lbPhotos = [];
+  let lbIndex  = 0;
+
+  // ===== SWITCH TAB =====
+  function switchTab(name, btn) {
+    document.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.gallery-section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + name).classList.add('active');
+  }
+
+  // ===== CHAJE TOUT =====
   async function chargerGalerie() {
     try {
       const snap = await db.collection('galerie').orderBy('timestamp', 'desc').get();
       const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-      const photosEglise  = items.filter(i => i.type !== 'video' && i.categorie !== 'pasteur');
-      const photosPasteur = items.filter(i => i.type !== 'video' && i.categorie === 'pasteur');
-      const videos        = items.filter(i => i.type === 'video');
+      const photos = items.filter(i => i.type !== 'video');
+      const videos = items.filter(i => i.type === 'video');
 
-      afficherPhotos(photosEglise,  'photoGrid');
-      afficherPhotos(photosPasteur, 'photoGridPasteur');
+      document.getElementById('countPhotos').textContent = photos.length;
+      document.getElementById('countVideos').textContent = videos.length;
+
+      afficherPhotos(photos);
       afficherVideos(videos);
     } catch(e) {
-      console.log('Erreur galerie:', e.message);
-      document.getElementById('photoGrid').innerHTML =
-        '<p style="grid-column:1/-1;text-align:center;color:#aaa;padding:30px;">Aucune photo pour le moment.</p>';
+      console.log('Galerie err:', e.message);
+      document.getElementById('photosContainer').innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-exclamation-circle"></i>
+          <p>Erreur de chargement. Vérifiez votre connexion.</p>
+        </div>`;
     }
   }
 
-  function afficherPhotos(photos, gridId) {
-    const grid = document.getElementById(gridId);
+  // ===== AFFICHER PHOTOS PAR CATEGORIE =====
+  function afficherPhotos(photos) {
+    const container = document.getElementById('photosContainer');
+
     if (!photos.length) {
-      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#aaa;padding:40px;font-size:0.95rem;"><i class="fas fa-images" style="display:block;font-size:2rem;margin-bottom:10px;color:var(--gold);opacity:0.4;"></i>Aucune photo publiée pour le moment.</p>';
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-images"></i>
+          <p>Aucune photo publiée pour le moment.</p>
+        </div>`;
       return;
     }
-    grid.innerHTML = photos.map(p => `
-      <div class="photo-item" onclick="openLightbox('${escHtml(p.url)}', '${escHtml(p.description)}')">
-        <img src="${escHtml(p.url)}" alt="${escHtml(p.description)}" loading="lazy"
-          onerror="this.parentElement.innerHTML='<div class=\\'photo-placeholder h2\\'><i class=\\'fas fa-image\\'></i></div>'">
-        <div class="photo-overlay">
-          <i class="fas fa-search-plus"></i>
-          <h4>${escHtml(p.description)}</h4>
-        </div>
-      </div>`).join('');
-  }
 
-  function afficherVideos(videos) {
-    const grid = document.getElementById('videoGrid');
-    if (!videos.length) {
-      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#aaa;padding:40px;font-size:0.95rem;"><i class="fas fa-video" style="display:block;font-size:2rem;margin-bottom:10px;color:var(--gold);opacity:0.4;"></i>Aucune vidéo publiée pour le moment.</p>';
-      return;
-    }
-    grid.innerHTML = videos.map(v => {
-      const thumb = v.thumb || (v.videoId ? `https://img.youtube.com/vi/${v.videoId}/hqdefault.jpg` : '');
-      const embedUrl = v.videoId ? `https://www.youtube.com/embed/${v.videoId}?autoplay=1` : '';
-      return `
-        <div class="video-card">
-          <div class="video-thumb" onclick="openVideo('${escHtml(embedUrl)}', '${escHtml(v.titre)}')"
-            style="${thumb ? `background-image:url('${thumb}');background-size:cover;background-position:center;` : ''}">
-            <div class="play-btn"><i class="fas fa-play"></i></div>
-          </div>
-          <div class="video-body">
-            <h3>${escHtml(v.titre)}</h3>
-            <p>${escHtml(v.description || '')}</p>
-            <span class="v-date"><i class="fas fa-calendar"></i> ${escHtml(v.date || '')}</span>
-          </div>
-        </div>`; }).join('');
-  }
-
-  function escHtml(str) {
-    if (!str) return '';
-    return String(str).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
-
-  // ===== LIGHTBOX FOTO =====
-  function openLightbox(url, caption) {
-    document.getElementById('lightboxImg').src = url;
-    document.getElementById('lightboxCaption').textContent = caption || '';
-    document.getElementById('lightbox').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeLightbox() {
-    document.getElementById('lightbox').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  // ===== MODAL VIDEO =====
-  function openVideo(embedUrl, titre) {
-    if (!embedUrl) return;
-    document.getElementById('videoFrame').src = embedUrl;
-    document.getElementById('videoCaption').textContent = titre || '';
-    document.getElementById('videoModal').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeVideo() {
-    document.getElementById('videoFrame').src = '';
-    document.getElementById('videoModal').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  // ===== TABS =====
-  document.querySelectorAll('.gallery-tab').forEach(tab => {
-    tab.addEventListener('click', function() {
-      document.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.gallery-section').forEach(s => s.classList.remove('active'));
-      this.classList.add('active');
-      document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+    // Regwoupe pa kategori
+    const groupes = {};
+    photos.forEach(p => {
+      const kat = p.kategoriNom || p.categorie || 'Galerie';
+      if (!groupes[kat]) groupes[kat] = [];
+      groupes[kat].push(p);
     });
-  });
 
+    // Enrejistre tout foto pou lightbox navigation
+    lbPhotos = photos;
+
+    const icons = { pasteur: 'fa-user-tie', eglise: 'fa-church' };
+
+    container.innerHTML = Object.entries(groupes).map(([kat, imgs]) => `
+      <div class="kat-section">
+        <div class="kat-header">
+          <div class="kat-icon">
+            <i class="fas ${icons[imgs[0]?.categorie] || 'fa-folder-open'}"></i>
+          </div>
+          <div>
+            <h2 class="kat-title">${esc(kat)}</h2>
+          </div>
+          <span class="kat-count">${imgs.length} foto${imgs.length > 1 ? 's' : ''}</span>
+        </div>
+        <div class="photo-grid">
+          ${imgs.map(p => {
+            const idx = lbPhotos.findIndex(x => x.id === p.id);
+            return `
+            <div class="photo-card" onclick="openLb(${idx})">
+              <img src="${esc(p.url)}" alt="${esc(p.description || '')}" loading="lazy"
+                onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\'/%3E'">
+              <div class="photo-card-overlay">
+                <p>${esc(p.description || '')}</p>
+              </div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ===== AFFICHER VIDEOS PAR CATEGORIE =====
+  function afficherVideos(videos) {
+    const container = document.getElementById('videosContainer');
+
+    if (!videos.length) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-video"></i>
+          <p>Aucune vidéo publiée pour le moment.</p>
+        </div>`;
+      return;
+    }
+
+    // Regwoupe pa kategori
+    const groupes = {};
+    videos.forEach(v => {
+      const kat = v.kategoriNom || v.categorie || 'Vidéos';
+      if (!groupes[kat]) groupes[kat] = [];
+      groupes[kat].push(v);
+    });
+
+    container.innerHTML = Object.entries(groupes).map(([kat, vids]) => `
+      <div class="kat-section">
+        <div class="kat-header">
+          <div class="kat-icon"><i class="fas fa-play-circle"></i></div>
+          <div><h2 class="kat-title">${esc(kat)}</h2></div>
+          <span class="kat-count">${vids.length} vidéo${vids.length > 1 ? 's' : ''}</span>
+        </div>
+        <div class="video-grid">
+          ${vids.map(v => {
+            const thumb   = v.thumb || (v.videoId ? `https://img.youtube.com/vi/${v.videoId}/hqdefault.jpg` : '');
+            const embedUrl = v.videoId ? `https://www.youtube.com/embed/${v.videoId}?autoplay=1` : '';
+            return `
+            <div class="video-card">
+              <div class="video-thumb" onclick="openVid('${esc(embedUrl)}', '${esc(v.titre || '')}')">
+                ${thumb ? `<img src="${esc(thumb)}" alt="${esc(v.titre || '')}">` : ''}
+                <div class="video-play">
+                  <div class="video-play-btn"><i class="fas fa-play"></i></div>
+                </div>
+              </div>
+              <div class="video-body">
+                <h3>${esc(v.titre || 'Vidéo')}</h3>
+                ${v.description ? `<p>${esc(v.description)}</p>` : ''}
+                <div class="video-meta">
+                  ${v.date ? `<span><i class="fas fa-calendar"></i> ${esc(v.date)}</span>` : ''}
+                  ${v.kategoriNom ? `<span><i class="fas fa-folder"></i> ${esc(v.kategoriNom)}</span>` : ''}
+                </div>
+              </div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ===== LIGHTBOX =====
+  function openLb(idx) {
+    lbIndex = idx;
+    updateLb();
+    document.getElementById('lbOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function updateLb() {
+    const p = lbPhotos[lbIndex];
+    if (!p) return;
+    document.getElementById('lbImg').src = p.url;
+    document.getElementById('lbCaption').textContent = p.description || '';
+  }
+
+  function lbNav(dir) {
+    lbIndex = (lbIndex + dir + lbPhotos.length) % lbPhotos.length;
+    updateLb();
+  }
+
+  function closeLb() {
+    document.getElementById('lbOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function lbClickOutside(e) {
+    if (e.target === document.getElementById('lbOverlay')) closeLb();
+  }
+
+  // ===== VIDEO =====
+  function openVid(embedUrl, titre) {
+    if (!embedUrl) return;
+    document.getElementById('vidFrame').src = embedUrl;
+    document.getElementById('vidCaption').textContent = titre || '';
+    document.getElementById('vidOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeVid() {
+    document.getElementById('vidFrame').src = '';
+    document.getElementById('vidOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function vidClickOutside(e) {
+    if (e.target === document.getElementById('vidOverlay')) closeVid();
+  }
+
+  // ===== UTILS =====
+  function esc(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  // Keyboard navigation
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeLightbox(); closeVideo(); }
-  });
-  document.getElementById('lightbox').addEventListener('click', function(e) {
-    if (e.target === this) closeLightbox();
-  });
-  document.getElementById('videoModal').addEventListener('click', function(e) {
-    if (e.target === this) closeVideo();
+    if (document.getElementById('lbOverlay').classList.contains('open')) {
+      if (e.key === 'Escape') closeLb();
+      if (e.key === 'ArrowRight') lbNav(1);
+      if (e.key === 'ArrowLeft') lbNav(-1);
+    }
+    if (document.getElementById('vidOverlay').classList.contains('open') && e.key === 'Escape') closeVid();
   });
 
-  // Chaje galerie a
+  // Chaje galerie
   chargerGalerie();
 </script>
 </body>
