@@ -1,33 +1,46 @@
 const NAV = (() => {
   const LINKS = [
-    { href: 'index.html',    icon: 'fa-home',          label: 'Accueil' },
-    { href: 'Apropos.html',  icon: 'fa-church',         label: 'À propos', dropdown: [
-        { href: 'Horaires.html',    icon: 'fa-clock',     label: 'Horaires des cultes' },
-        { href: 'Galerie.html',     icon: 'fa-images',    label: 'Galerie & Vidéos' },
-        { href: 'Actualites.html',  icon: 'fa-newspaper', label: 'Actualités' },
-        { href: 'Temoigner.html',   icon: 'fa-star',      label: 'Témoignages' },
+    { href: 'index.html',    icon: 'fa-home',          label: 'Accueil',           i18n: 'nav_accueil' },
+    { href: 'Apropos.html',  icon: 'fa-church',         label: 'À propos',          i18n: 'nav_apropos', dropdown: [
+        { href: 'Horaires.html',   icon: 'fa-clock',     label: 'Horaires des cultes', i18n: 'nav_horaires' },
+        { href: 'Galerie.html',    icon: 'fa-images',    label: 'Galerie & Vidéos',    i18n: 'nav_galerie' },
+        { href: 'Actualites.html', icon: 'fa-newspaper', label: 'Actualités',          i18n: 'nav_actualites' },
+        { href: 'Temoigner.html',  icon: 'fa-star',      label: 'Témoignages',         i18n: 'nav_temoignages' },
       ]
     },
-    { href: 'Contact.html',  icon: 'fa-envelope',       label: 'Contact' },
-    { href: 'priere.html',   icon: 'fa-hands-praying',  label: 'Demande de prière' },
-    { href: 'don.html',      icon: 'fa-heart',          label: 'Faire un don', cls: 'nav-don' },
+    { href: 'Contact.html',  icon: 'fa-envelope',       label: 'Contact',           i18n: 'nav_contact' },
+    { href: 'priere.html',   icon: 'fa-hands-praying',  label: 'Demande de prière', i18n: 'nav_priere' },
+    { href: 'don.html',      icon: 'fa-heart',          label: 'Faire un don',      i18n: 'nav_don',   cls: 'nav-don' },
+    { href: 'Live.html',     icon: 'fa-circle-dot',     label: 'Live',              i18n: 'nav_live',  cls: 'nav-live' },
+    { href: 'admin.html',    icon: 'fa-lock',           label: 'Admin',             i18n: 'nav_admin', cls: 'nav-admin' },
   ];
+
+  function getLabel(link) {
+    const lang = localStorage.getItem('site_lang') || 'fr';
+    if (window.TRANSLATIONS && window.TRANSLATIONS[lang] && link.i18n && window.TRANSLATIONS[lang][link.i18n]) {
+      return window.TRANSLATIONS[lang][link.i18n];
+    }
+    return link.label;
+  }
 
   function buildNav(activePage) {
     const items = LINKS.map(link => {
       const isActive = link.href === activePage || (link.dropdown && link.dropdown.some(d => d.href === activePage));
+      const label    = link.label;
+      const cls      = link.cls || '';
+
       if (link.dropdown) {
         const sub = link.dropdown.map(d =>
-          `<li><a href="${d.href}"${d.href===activePage?' class="active"':''}><i class="fas ${d.icon}"></i> ${d.label}</a></li>`
+          `<li><a href="${d.href}"${d.href===activePage?' class="active"':''}><i class="fas ${d.icon}"></i> <span data-i18n="${d.i18n}">${d.label}</span></a></li>`
         ).join('');
         return `<li class="dropdown">
           <a href="${link.href}" class="dropdown-toggle${isActive?' active':''}">
-            <i class="fas ${link.icon}"></i> ${link.label} <i class="fas fa-chevron-down dropdown-arrow"></i>
+            <i class="fas ${link.icon}"></i> <span data-i18n="${link.i18n}">${label}</span> <i class="fas fa-chevron-down dropdown-arrow"></i>
           </a>
           <ul class="submenu">${sub}</ul>
         </li>`;
       }
-      return `<li><a href="${link.href}" class="${(link.cls||'')}${isActive?' active':''}"><i class="fas ${link.icon}"></i> ${link.label}</a></li>`;
+      return `<li><a href="${link.href}" class="${cls}${isActive?' active':''}"><i class="fas ${link.icon}"></i> <span data-i18n="${link.i18n}">${label}</span></a></li>`;
     }).join('');
 
     return `

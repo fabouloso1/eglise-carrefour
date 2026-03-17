@@ -1322,3 +1322,19 @@ footer {
 
 .lang-option:hover { background: var(--light-bg); }
 .lang-option.active { color: var(--primary); background: rgba(28,28,60,0.06); }
+
+/* ===== NAV LIVE & ADMIN ===== */
+.nav-live {
+  color: #ff4444 !important;
+  font-weight: 700 !important;
+}
+.nav-live i { animation: pulse-red 1.5s infinite; }
+@keyframes pulse-red {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.nav-admin {
+  color: rgba(255,255,255,0.5) !important;
+  font-size: 0.82rem !important;
+}
+.nav-admin:hover { color: var(--gold) !important; }
