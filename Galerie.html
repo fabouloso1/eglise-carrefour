@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
   <style>
+
     /* ===== HERO ===== */
     .page-hero { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 70px 24px 60px; text-align: center; position: relative; overflow: hidden; }
     .page-hero::before { content: '\f03e'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: -30px; top: -30px; font-size: 220px; opacity: 0.04; color: white; }
@@ -20,7 +21,7 @@
     /* ===== BREADCRUMB ===== */
     .breadcrumb { background: white; border-bottom: 1px solid var(--border); padding: 12px 24px; }
     .breadcrumb-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--text-muted); }
-    .breadcrumb a { color: var(--text-muted); transition: var(--transition); }
+    .breadcrumb a { color: var(--text-muted); text-decoration: none; }
     .breadcrumb a:hover { color: var(--primary); }
     .breadcrumb span { color: var(--primary); font-weight: 600; }
 
@@ -28,12 +29,12 @@
     .galerie-main { max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px; }
 
     /* ===== TABS ===== */
-    .gallery-tabs-wrap { display: flex; align-items: center; gap: 8px; margin-bottom: 36px; overflow-x: auto; padding-bottom: 4px; }
+    .gallery-tabs-wrap { display: flex; gap: 8px; margin-bottom: 36px; overflow-x: auto; padding-bottom: 4px; }
     .gallery-tabs-wrap::-webkit-scrollbar { display: none; }
-    .gallery-tab { display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; border-radius: 25px; border: 1.5px solid var(--border); background: white; font-family: 'Montserrat', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: var(--transition); white-space: nowrap; flex-shrink: 0; }
+    .gallery-tab { display: inline-flex; align-items: center; gap: 7px; padding: 10px 22px; border-radius: 25px; border: 1.5px solid var(--border); background: white; font-family: 'Montserrat', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--text-muted); cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all 0.2s; }
     .gallery-tab:hover { border-color: var(--primary); color: var(--primary); }
     .gallery-tab.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border-color: transparent; box-shadow: 0 4px 14px rgba(28,28,60,0.25); }
-    .gallery-tab .tab-count { background: rgba(255,255,255,0.2); padding: 1px 7px; border-radius: 10px; font-size: 0.75rem; }
+    .tab-count { background: rgba(255,255,255,0.2); padding: 1px 7px; border-radius: 10px; font-size: 0.75rem; }
     .gallery-tab:not(.active) .tab-count { background: rgba(28,28,60,0.08); color: var(--text-muted); }
 
     /* ===== SECTIONS ===== */
@@ -41,128 +42,92 @@
     .gallery-section.active { display: block; }
 
     /* ===== LOADING ===== */
-    .gallery-loading { text-align: center; padding: 60px 20px; }
-    .gallery-loading i { font-size: 2.5rem; color: var(--gold); display: block; margin-bottom: 14px; opacity: 0.6; }
-    .gallery-loading p { color: var(--text-muted); font-size: 0.95rem; }
+    .g-loading { text-align: center; padding: 60px 20px; }
+    .g-loading i { font-size: 2.5rem; color: var(--gold); display: block; margin-bottom: 14px; opacity: 0.5; }
+    .g-loading p { color: var(--text-muted); font-size: 0.95rem; }
 
-    /* ===== CATEGORIES ===== */
-    .kat-section { margin-bottom: 48px; }
-    .kat-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 2px solid var(--border); }
-    .kat-icon { width: 42px; height: 42px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1rem; flex-shrink: 0; }
-    .kat-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--primary); }
-    .kat-count { background: var(--gold); color: var(--primary); font-size: 0.75rem; font-weight: 700; padding: 3px 10px; border-radius: 12px; }
-
-    /* ===== GRILLE PHOTOS ===== */
-    .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
-    .photo-card { position: relative; border-radius: 12px; overflow: hidden; background: var(--light-bg); aspect-ratio: 1; box-shadow: var(--shadow-sm); transition: var(--transition); cursor: pointer; }
-    .photo-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
-    .photo-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .photo-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(18,18,42,0.7) 0%, transparent 55%); opacity: 0; transition: var(--transition); display: flex; align-items: flex-end; padding: 14px; }
-    .photo-card:hover .photo-card-overlay { opacity: 1; }
-    .photo-card-overlay p { color: white; font-size: 0.8rem; font-weight: 600; line-height: 1.3; }
-
-    /* ===== GRILLE VIDEOS ===== */
-    .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-    .video-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--border); transition: var(--transition); }
-    .video-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-    .video-thumb { position: relative; padding-bottom: 56.25%; background: linear-gradient(135deg, var(--primary), var(--secondary)); cursor: pointer; }
-    .video-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .video-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); transition: var(--transition); }
-    .video-play-btn { width: 54px; height: 54px; background: rgba(241,196,15,0.92); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1.1rem; padding-left: 3px; transition: var(--transition); }
-    .video-card:hover .video-play-btn { background: var(--gold); }
-    .video-body { padding: 18px; }
-    .video-body h3 { color: var(--primary); font-size: 0.95rem; margin-bottom: 6px; line-height: 1.4; }
-    .video-body p { color: var(--text-muted); font-size: 0.82rem; line-height: 1.5; }
-    .video-meta { display: flex; align-items: center; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
-    .video-meta span { display: inline-flex; align-items: center; gap: 5px; color: var(--text-muted); font-size: 0.78rem; }
-    .video-meta i { color: var(--gold); }
-
-    /* ===== ÉTAT VIDE ===== */
+    /* ===== ETAT VIDE ===== */
     .empty-state { text-align: center; padding: 60px 20px; }
-    .empty-state i { font-size: 3rem; color: var(--gold); opacity: 0.3; display: block; margin-bottom: 16px; }
+    .empty-state i { font-size: 3rem; color: var(--gold); opacity: 0.25; display: block; margin-bottom: 16px; }
     .empty-state p { color: var(--text-muted); font-size: 0.95rem; }
 
-    /* ===== LIGHTBOX ===== */
-    .lb-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(5,5,15,0.96);
-      z-index: 9999;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
+    /* ===== GRILLE CATEGORIES (vue principale) ===== */
+    .categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; }
+
+    /* ===== CARTE CATEGORIE ===== */
+    .kat-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); border: 1px solid var(--border); cursor: pointer; transition: box-shadow 0.2s, transform 0.2s; }
+    .kat-card:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.14); transform: translateY(-3px); }
+    .kat-thumb { position: relative; aspect-ratio: 4/3; background: linear-gradient(135deg, var(--primary), var(--secondary)); overflow: hidden; }
+    .kat-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .kat-thumb-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: rgba(241,196,15,0.4); }
+    .kat-thumb-count { position: absolute; bottom: 10px; right: 10px; background: rgba(18,18,42,0.8); color: white; font-size: 0.78rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; backdrop-filter: blur(4px); }
+    .kat-thumb-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+    .kat-play-btn { width: 52px; height: 52px; background: rgba(241,196,15,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1.1rem; padding-left: 4px; }
+    .kat-info { padding: 16px 18px; }
+    .kat-info h3 { color: var(--primary); font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .kat-info p { color: var(--text-muted); font-size: 0.82rem; }
+
+    /* ===== MODAL CONTENU CATEGORIE ===== */
+    .kat-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(5,5,15,0.92); z-index: 8000; }
+    .kat-modal-overlay.open { display: block; }
+    .kat-modal { position: fixed; inset: 0; z-index: 8001; overflow-y: auto; padding: 20px 16px 40px; }
+    .kat-modal-box { max-width: 1100px; margin: 0 auto; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.4); }
+    .kat-modal-header { background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 22px 28px; display: flex; align-items: center; justify-content: space-between; }
+    .kat-modal-header h2 { color: white; font-family: 'Playfair Display', serif; font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+    .kat-modal-header h2 i { color: var(--gold); }
+    .kat-modal-close { background: rgba(255,255,255,0.15); border: none; width: 38px; height: 38px; border-radius: 50%; color: white; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .kat-modal-close:hover { background: rgba(255,255,255,0.28); }
+    .kat-modal-body { padding: 24px; }
+
+    /* Grille photos dans modal */
+    .modal-photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+    .modal-photo-item { position: relative; aspect-ratio: 1; border-radius: 10px; overflow: hidden; cursor: pointer; background: var(--light-bg); }
+    .modal-photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .modal-photo-item:hover { opacity: 0.88; }
+
+    /* Grille vidéos dans modal */
+    .modal-video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+    .modal-video-card { background: var(--light-bg); border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid var(--border); }
+    .modal-video-card:hover { opacity: 0.88; }
+    .modal-video-thumb { position: relative; aspect-ratio: 16/9; background: linear-gradient(135deg, var(--primary), var(--secondary)); }
+    .modal-video-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .modal-video-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.18); }
+    .modal-video-play-btn { width: 46px; height: 46px; background: rgba(241,196,15,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1rem; padding-left: 3px; }
+    .modal-video-info { padding: 12px 14px; }
+    .modal-video-info h4 { color: var(--primary); font-size: 0.88rem; font-weight: 700; margin-bottom: 3px; }
+    .modal-video-info p { color: var(--text-muted); font-size: 0.78rem; }
+
+    /* ===== LIGHTBOX PHOTO ===== */
+    .lb-overlay { display: none; position: fixed; inset: 0; background: rgba(5,5,15,0.97); z-index: 9999; align-items: center; justify-content: center; padding: 16px; }
     .lb-overlay.open { display: flex; }
-    .lb-close {
-      position: fixed;
-      top: 16px; right: 16px;
-      background: rgba(255,255,255,0.15);
-      border: none;
-      width: 42px; height: 42px;
-      border-radius: 50%;
-      color: white;
-      font-size: 1.1rem;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: var(--transition);
-      z-index: 10000;
-    }
-    .lb-close:hover { background: rgba(255,255,255,0.25); color: var(--gold); }
-    .lb-img-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      max-width: min(880px, 96vw);
-      width: 100%;
-    }
-    .lb-img-wrap img {
-      width: 100%;
-      max-height: 80vh;
-      object-fit: contain;
-      border-radius: 12px;
-      display: block;
-    }
-    .lb-caption {
-      color: var(--gold);
-      font-size: 0.88rem;
-      font-weight: 600;
-      text-align: center;
-      margin-top: 12px;
-      opacity: 0.9;
-    }
-    .lb-nav {
-      position: fixed;
-      top: 50%; transform: translateY(-50%);
-      background: rgba(255,255,255,0.1);
-      border: none;
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      color: white;
-      font-size: 1.1rem;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: var(--transition);
-      z-index: 10000;
-    }
+    .lb-close { position: fixed; top: 14px; right: 14px; background: rgba(255,255,255,0.12); border: none; width: 42px; height: 42px; border-radius: 50%; color: white; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10000; }
+    .lb-close:hover { background: rgba(255,255,255,0.24); color: var(--gold); }
+    .lb-inner { display: flex; flex-direction: column; align-items: center; max-width: min(900px, 96vw); width: 100%; }
+    .lb-inner img { width: 100%; max-height: 80vh; object-fit: contain; border-radius: 10px; display: block; }
+    .lb-caption { color: var(--gold); font-size: 0.88rem; font-weight: 600; text-align: center; margin-top: 12px; }
+    .lb-counter { color: rgba(255,255,255,0.5); font-size: 0.78rem; text-align: center; margin-top: 6px; }
+    .lb-nav { position: fixed; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: none; width: 44px; height: 44px; border-radius: 50%; color: white; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10000; }
     .lb-nav:hover { background: rgba(241,196,15,0.3); color: var(--gold); }
-    .lb-prev { left: 12px; }
-    .lb-next { right: 12px; }
+    .lb-prev { left: 10px; }
+    .lb-next { right: 10px; }
 
     /* ===== VIDEO MODAL ===== */
-    .vid-overlay { display: none; position: fixed; inset: 0; background: rgba(5,5,15,0.96); z-index: 9999; align-items: center; justify-content: center; padding: 20px; flex-direction: column; }
+    .vid-overlay { display: none; position: fixed; inset: 0; background: rgba(5,5,15,0.97); z-index: 9999; align-items: center; justify-content: center; padding: 16px; flex-direction: column; }
     .vid-overlay.open { display: flex; }
-    .vid-wrap { width: min(820px, 94vw); }
-    .vid-frame { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 14px; overflow: hidden; }
-    .vid-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
-    .vid-caption { color: var(--gold); font-size: 0.95rem; font-weight: 600; text-align: center; margin-top: 16px; }
+    .vid-wrap { width: min(820px, 96vw); }
+    .vid-frame-wrap { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 14px; overflow: hidden; background: #000; }
+    .vid-frame-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+    .vid-frame-wrap video { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 14px; }
+    .vid-caption { color: var(--gold); font-size: 0.92rem; font-weight: 600; text-align: center; margin-top: 16px; }
 
     @media (max-width: 768px) {
-      .photo-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+      .categories-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .modal-photo-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
       .lb-nav { display: none; }
+      .kat-modal { padding: 10px 8px 40px; }
     }
-    @media (max-width: 480px) {
-      .photo-grid { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 400px) {
+      .categories-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -187,29 +152,29 @@
 <div class="galerie-main">
 
   <!-- Tabs -->
-  <div class="gallery-tabs-wrap" id="galleryTabsWrap">
-    <button class="gallery-tab active" data-tab="photos" onclick="switchTab('photos', this)">
+  <div class="gallery-tabs-wrap">
+    <button class="gallery-tab active" onclick="switchTab('photos', this)">
       <i class="fas fa-camera"></i> Photos <span class="tab-count" id="countPhotos">0</span>
     </button>
-    <button class="gallery-tab" data-tab="videos" onclick="switchTab('videos', this)">
+    <button class="gallery-tab" onclick="switchTab('videos', this)">
       <i class="fas fa-video"></i> Vidéos <span class="tab-count" id="countVideos">0</span>
     </button>
   </div>
 
-  <!-- Section Photos -->
+  <!-- Section Photos : liste de catégories -->
   <div class="gallery-section active" id="tab-photos">
     <div id="photosContainer">
-      <div class="gallery-loading">
+      <div class="g-loading">
         <i class="fas fa-spinner fa-spin"></i>
         <p>Chargement des photos...</p>
       </div>
     </div>
   </div>
 
-  <!-- Section Videos -->
+  <!-- Section Vidéos : liste de catégories -->
   <div class="gallery-section" id="tab-videos">
     <div id="videosContainer">
-      <div class="gallery-loading">
+      <div class="g-loading">
         <i class="fas fa-spinner fa-spin"></i>
         <p>Chargement des vidéos...</p>
       </div>
@@ -218,24 +183,37 @@
 
 </div>
 
-<!-- Lightbox Photo -->
-<div class="lb-overlay" id="lbOverlay" onclick="lbClickOutside(event)">
+<!-- ===== MODAL CONTENU D'UNE CATEGORIE ===== -->
+<div class="kat-modal-overlay" id="katModalOverlay" onclick="closeKatModal(event)"></div>
+<div class="kat-modal" id="katModal" style="display:none;">
+  <div class="kat-modal-box">
+    <div class="kat-modal-header">
+      <h2><i class="fas fa-folder-open" id="katModalIcon"></i> <span id="katModalTitle"></span></h2>
+      <button class="kat-modal-close" onclick="fermerKatModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="kat-modal-body" id="katModalBody"></div>
+  </div>
+</div>
+
+<!-- ===== LIGHTBOX PHOTO ===== -->
+<div class="lb-overlay" id="lbOverlay">
   <button class="lb-close" onclick="closeLb()"><i class="fas fa-times"></i></button>
   <button class="lb-nav lb-prev" onclick="lbNav(-1)"><i class="fas fa-chevron-left"></i></button>
-  <div class="lb-img-wrap">
+  <div class="lb-inner">
     <img id="lbImg" src="" alt="">
     <p class="lb-caption" id="lbCaption"></p>
+    <p class="lb-counter" id="lbCounter"></p>
   </div>
   <button class="lb-nav lb-next" onclick="lbNav(1)"><i class="fas fa-chevron-right"></i></button>
 </div>
 
-<!-- Video Modal -->
-<div class="vid-overlay" id="vidOverlay" onclick="vidClickOutside(event)">
+<!-- ===== VIDEO MODAL ===== -->
+<div class="vid-overlay" id="vidOverlay">
   <button class="lb-close" onclick="closeVid()"><i class="fas fa-times"></i></button>
   <div class="vid-wrap">
-    <div class="vid-frame">
+    <div class="vid-frame-wrap" id="vidFrameWrap">
       <iframe id="vidFrame" allowfullscreen style="display:none;"></iframe>
-      <video id="vidDirect" controls style="display:none;position:absolute;inset:0;width:100%;height:100%;border-radius:14px;"></video>
+      <video id="vidDirect" controls style="display:none;"></video>
     </div>
     <p class="vid-caption" id="vidCaption"></p>
   </div>
@@ -243,14 +221,12 @@
 
 <div id="foot-placeholder"></div>
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script src="nav.js"></script>
 <script>
   NAV.init('Galerie.html');
 
-  // Firebase init
   if (!firebase.apps.length) {
     firebase.initializeApp({
       apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
@@ -263,11 +239,11 @@
   }
   const db = firebase.firestore();
 
-  // State pou lightbox
+  // État lightbox
   let lbPhotos = [];
-  let lbIndex  = 0;
+  let lbIdx    = 0;
 
-  // ===== SWITCH TAB =====
+  // ===== TABS =====
   function switchTab(name, btn) {
     document.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.gallery-section').forEach(s => s.classList.remove('active'));
@@ -275,160 +251,152 @@
     document.getElementById('tab-' + name).classList.add('active');
   }
 
-  // ===== CHAJE TOUT =====
+  // ===== CHARGEMENT =====
   async function chargerGalerie() {
     try {
-      const snap = await db.collection('galerie').orderBy('timestamp', 'desc').get();
+      const snap  = await db.collection('galerie').orderBy('timestamp', 'desc').get();
       const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-
       const photos = items.filter(i => i.type !== 'video');
       const videos = items.filter(i => i.type === 'video');
-
       document.getElementById('countPhotos').textContent = photos.length;
       document.getElementById('countVideos').textContent = videos.length;
-
-      afficherPhotos(photos);
-      afficherVideos(videos);
+      afficherCategories(photos, 'photosContainer', 'photo');
+      afficherCategories(videos, 'videosContainer', 'video');
     } catch(e) {
-      console.log('Galerie err:', e.message);
-      document.getElementById('photosContainer').innerHTML = `
-        <div class="empty-state">
-          <i class="fas fa-exclamation-circle"></i>
-          <p>Erreur de chargement. Vérifiez votre connexion.</p>
-        </div>`;
+      console.log('Erreur galerie:', e.message);
+      document.getElementById('photosContainer').innerHTML =
+        '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Erreur de chargement.</p></div>';
     }
   }
 
-  // ===== AFFICHER PHOTOS PAR CATEGORIE =====
-  function afficherPhotos(photos) {
-    const container = document.getElementById('photosContainer');
-
-    if (!photos.length) {
-      container.innerHTML = `
-        <div class="empty-state">
-          <i class="fas fa-images"></i>
-          <p>Aucune photo publiée pour le moment.</p>
-        </div>`;
+  // ===== AFFICHER CATEGORIES (vue principale) =====
+  function afficherCategories(items, containerId, type) {
+    const container = document.getElementById(containerId);
+    if (!items.length) {
+      container.innerHTML = `<div class="empty-state">
+        <i class="fas fa-${type === 'video' ? 'video' : 'images'}"></i>
+        <p>Aucun${type === 'video' ? 'e vidéo' : 'e photo'} publiée pour le moment.</p>
+      </div>`;
       return;
     }
 
-    // Regwoupe pa kategori
+    // Grouper par catégorie
     const groupes = {};
-    photos.forEach(p => {
-      const kat = p.kategoriNom || p.categorie || 'Galerie';
+    items.forEach(item => {
+      const kat = item.kategoriNom || item.categorie || 'Galerie';
       if (!groupes[kat]) groupes[kat] = [];
-      groupes[kat].push(p);
+      groupes[kat].push(item);
     });
 
-    // Enrejistre tout foto pou lightbox navigation
-    lbPhotos = photos;
+    container.innerHTML = `<div class="categories-grid">
+      ${Object.entries(groupes).map(([kat, imgs]) => {
+        const first   = imgs[0];
+        const thumb   = type === 'photo'
+          ? (first.url || '')
+          : (first.thumb || (first.videoId ? `https://img.youtube.com/vi/${first.videoId}/hqdefault.jpg` : ''));
 
-    const icons = { pasteur: 'fa-user-tie', eglise: 'fa-church' };
+        return `<div class="kat-card" onclick="ouvrirKategorie('${esc(kat)}', '${type}')">
+          <div class="kat-thumb">
+            ${thumb
+              ? `<img src="${esc(thumb)}" alt="${esc(kat)}" loading="lazy">`
+              : `<div class="kat-thumb-placeholder"><i class="fas fa-${type === 'video' ? 'video' : 'images'}"></i></div>`
+            }
+            ${type === 'video' ? `<div class="kat-thumb-play"><div class="kat-play-btn"><i class="fas fa-play"></i></div></div>` : ''}
+            <span class="kat-thumb-count">${imgs.length} ${type === 'video' ? 'vidéo' : 'photo'}${imgs.length > 1 ? 's' : ''}</span>
+          </div>
+          <div class="kat-info">
+            <h3>${esc(kat)}</h3>
+            <p>${imgs.length} ${type === 'video' ? 'vidéo' : 'photo'}${imgs.length > 1 ? 's' : ''} — Cliquer pour voir</p>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
 
-    container.innerHTML = Object.entries(groupes).map(([kat, imgs]) => `
-      <div class="kat-section">
-        <div class="kat-header">
-          <div class="kat-icon">
-            <i class="fas ${icons[imgs[0]?.categorie] || 'fa-folder-open'}"></i>
-          </div>
-          <div>
-            <h2 class="kat-title">${esc(kat)}</h2>
-          </div>
-          <span class="kat-count">${imgs.length} foto${imgs.length > 1 ? 's' : ''}</span>
-        </div>
-        <div class="photo-grid">
-          ${imgs.map(p => {
-            const idx = lbPhotos.findIndex(x => x.id === p.id);
-            return `
-            <div class="photo-card" onclick="openLb(${idx})">
-              <img src="${esc(p.url)}" alt="${esc(p.description || '')}" loading="lazy"
-                onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\'/%3E'">
-              <div class="photo-card-overlay">
-                <p>${esc(p.description || '')}</p>
-              </div>
-            </div>`;
-          }).join('')}
-        </div>
-      </div>
-    `).join('');
+    // Stocker tous les items groupés pour usage dans le modal
+    window._galerie = window._galerie || {};
+    window._galerie[type] = groupes;
   }
 
-  // ===== AFFICHER VIDEOS PAR CATEGORIE =====
-  function afficherVideos(videos) {
-    const container = document.getElementById('videosContainer');
+  // ===== OUVRIR MODAL D'UNE CATEGORIE =====
+  function ouvrirKategorie(kat, type) {
+    const groupes = window._galerie?.[type] || {};
+    const imgs    = groupes[kat] || [];
+    if (!imgs.length) return;
 
-    if (!videos.length) {
-      container.innerHTML = `
-        <div class="empty-state">
-          <i class="fas fa-video"></i>
-          <p>Aucune vidéo publiée pour le moment.</p>
+    document.getElementById('katModalTitle').textContent = kat;
+    document.getElementById('katModalIcon').className    = `fas fa-${type === 'video' ? 'play-circle' : 'images'}`;
+
+    if (type === 'photo') {
+      // Stocker photos pour lightbox
+      lbPhotos = imgs;
+
+      document.getElementById('katModalBody').innerHTML = `
+        <div class="modal-photo-grid">
+          ${imgs.map((p, idx) => `
+            <div class="modal-photo-item" onclick="ouvrirLightbox(${idx})">
+              <img src="${esc(p.url)}" alt="${esc(p.description || '')}" loading="lazy">
+            </div>`).join('')}
         </div>`;
-      return;
-    }
-
-    // Regwoupe pa kategori
-    const groupes = {};
-    videos.forEach(v => {
-      const kat = v.kategoriNom || v.categorie || 'Vidéos';
-      if (!groupes[kat]) groupes[kat] = [];
-      groupes[kat].push(v);
-    });
-
-    container.innerHTML = Object.entries(groupes).map(([kat, vids]) => `
-      <div class="kat-section">
-        <div class="kat-header">
-          <div class="kat-icon"><i class="fas fa-play-circle"></i></div>
-          <div><h2 class="kat-title">${esc(kat)}</h2></div>
-          <span class="kat-count">${vids.length} vidéo${vids.length > 1 ? 's' : ''}</span>
-        </div>
-        <div class="video-grid">
-          ${vids.map(v => {
-            // Sipòte toulede: URL Cloudinary dirèk ak YouTube
-            const isYT     = v.videoId || (v.videoUrl && v.videoUrl.includes('youtube'));
+    } else {
+      document.getElementById('katModalBody').innerHTML = `
+        <div class="modal-video-grid">
+          ${imgs.map(v => {
+            const isYT     = v.videoId || (v.videoUrl && String(v.videoUrl).includes('youtube'));
             const thumb    = v.thumb || (v.videoId ? `https://img.youtube.com/vi/${v.videoId}/hqdefault.jpg` : '');
             const embedUrl = isYT && v.videoId ? `https://www.youtube.com/embed/${v.videoId}?autoplay=1` : '';
-            const directUrl = v.url || v.videoUrl || '';
+            const directUrl= v.url || '';
+            const onclick  = isYT
+              ? `ouvrirVideoYT('${esc(embedUrl)}', '${esc(v.titre || '')}')`
+              : `ouvrirVideoDirect('${esc(directUrl)}', '${esc(v.titre || '')}')`;
             return `
-            <div class="video-card">
-              <div class="video-thumb" onclick="${isYT ? `openVid('${esc(embedUrl)}', '${esc(v.titre || '')}')` : `openDirectVid('${esc(directUrl)}', '${esc(v.titre || '')}')`}">
-                ${thumb ? `<img src="${esc(thumb)}" alt="${esc(v.titre || '')}">` : `<div style="width:100%;height:100%;background:linear-gradient(135deg,var(--primary),var(--secondary));"></div>`}
-                <div class="video-play">
-                  <div class="video-play-btn"><i class="fas fa-play"></i></div>
-                </div>
+            <div class="modal-video-card" onclick="${onclick}">
+              <div class="modal-video-thumb">
+                ${thumb ? `<img src="${esc(thumb)}" alt="${esc(v.titre || '')}">` : ''}
+                <div class="modal-video-play"><div class="modal-video-play-btn"><i class="fas fa-play"></i></div></div>
               </div>
-              <div class="video-body">
-                <h3>${esc(v.titre || 'Vidéo')}</h3>
-                ${v.description ? `<p>${esc(v.description)}</p>` : ''}
-                <div class="video-meta">
-                  ${v.date ? `<span><i class="fas fa-calendar"></i> ${esc(v.date)}</span>` : ''}
-                  ${v.kategoriNom ? `<span><i class="fas fa-folder"></i> ${esc(v.kategoriNom)}</span>` : ''}
-                </div>
+              <div class="modal-video-info">
+                <h4>${esc(v.titre || 'Vidéo')}</h4>
+                ${v.date ? `<p><i class="fas fa-calendar" style="color:var(--gold);margin-right:4px;"></i>${esc(v.date)}</p>` : ''}
               </div>
             </div>`;
           }).join('')}
-        </div>
-      </div>
-    `).join('');
+        </div>`;
+    }
+
+    document.getElementById('katModalOverlay').classList.add('open');
+    document.getElementById('katModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
   }
 
-  // ===== LIGHTBOX =====
-  function openLb(idx) {
-    lbIndex = idx;
-    updateLb();
+  function fermerKatModal() {
+    document.getElementById('katModalOverlay').classList.remove('open');
+    document.getElementById('katModal').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  function closeKatModal(e) {
+    if (e.target === document.getElementById('katModalOverlay')) fermerKatModal();
+  }
+
+  // ===== LIGHTBOX PHOTO =====
+  function ouvrirLightbox(idx) {
+    lbIdx = idx;
+    majLightbox();
     document.getElementById('lbOverlay').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
 
-  function updateLb() {
-    const p = lbPhotos[lbIndex];
+  function majLightbox() {
+    const p = lbPhotos[lbIdx];
     if (!p) return;
-    document.getElementById('lbImg').src = p.url;
+    document.getElementById('lbImg').src       = p.url;
     document.getElementById('lbCaption').textContent = p.description || '';
+    document.getElementById('lbCounter').textContent = (lbIdx + 1) + ' / ' + lbPhotos.length;
   }
 
   function lbNav(dir) {
-    lbIndex = (lbIndex + dir + lbPhotos.length) % lbPhotos.length;
-    updateLb();
+    lbIdx = (lbIdx + dir + lbPhotos.length) % lbPhotos.length;
+    majLightbox();
   }
 
   function closeLb() {
@@ -436,66 +404,64 @@
     document.body.style.overflow = '';
   }
 
-  function lbClickOutside(e) {
-    if (e.target === document.getElementById('lbOverlay')) closeLb();
-  }
-
-  // ===== VIDEO YouTube =====
-  function openVid(embedUrl, titre) {
+  // ===== VIDEO =====
+  function ouvrirVideoYT(embedUrl, titre) {
     if (!embedUrl) return;
-    document.getElementById('vidFrame').src = embedUrl;
+    document.getElementById('vidFrame').src          = embedUrl;
     document.getElementById('vidFrame').style.display = 'block';
-    document.getElementById('vidDirect').style.display = 'none';
+    document.getElementById('vidDirect').style.display= 'none';
     document.getElementById('vidCaption').textContent = titre || '';
     document.getElementById('vidOverlay').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
 
-  // ===== VIDEO Cloudinary dirèk =====
-  function openDirectVid(url, titre) {
+  function ouvrirVideoDirect(url, titre) {
     if (!url) return;
-    document.getElementById('vidDirect').src = url;
+    document.getElementById('vidDirect').src          = url;
     document.getElementById('vidDirect').style.display = 'block';
-    document.getElementById('vidFrame').style.display = 'none';
-    document.getElementById('vidFrame').src = '';
-    document.getElementById('vidCaption').textContent = titre || '';
+    document.getElementById('vidFrame').style.display  = 'none';
+    document.getElementById('vidFrame').src            = '';
+    document.getElementById('vidCaption').textContent  = titre || '';
     document.getElementById('vidOverlay').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
 
   function closeVid() {
-    document.getElementById('vidFrame').src = '';
-    document.getElementById('vidDirect').src = '';
+    document.getElementById('vidFrame').src         = '';
+    document.getElementById('vidDirect').src        = '';
+    document.getElementById('vidFrame').style.display  = 'none';
+    document.getElementById('vidDirect').style.display = 'none';
     document.getElementById('vidOverlay').classList.remove('open');
     document.body.style.overflow = '';
-  }
-
-  function vidClickOutside(e) {
-    if (e.target === document.getElementById('vidOverlay')) closeVid();
   }
 
   // ===== UTILS =====
   function esc(str) {
     if (!str) return '';
     return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
+      .replace(/&/g,'&amp;').replace(/"/g,'&quot;')
+      .replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
-  // Keyboard navigation
+  // Keyboard
   document.addEventListener('keydown', e => {
     if (document.getElementById('lbOverlay').classList.contains('open')) {
-      if (e.key === 'Escape') closeLb();
-      if (e.key === 'ArrowRight') lbNav(1);
-      if (e.key === 'ArrowLeft') lbNav(-1);
+      if (e.key === 'Escape')      closeLb();
+      if (e.key === 'ArrowRight')  lbNav(1);
+      if (e.key === 'ArrowLeft')   lbNav(-1);
     }
     if (document.getElementById('vidOverlay').classList.contains('open') && e.key === 'Escape') closeVid();
+    if (document.getElementById('katModal').style.display === 'block' && e.key === 'Escape') fermerKatModal();
   });
 
-  // Chaje galerie
+  // Click outside lightbox
+  document.getElementById('lbOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeLb();
+  });
+  document.getElementById('vidOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeVid();
+  });
+
   chargerGalerie();
 </script>
 </body>

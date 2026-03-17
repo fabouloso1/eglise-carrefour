@@ -1343,6 +1343,24 @@
   }
 
 
+
+  // ===== HELPER: Envoyer notification (attend que la fonction soit prête) =====
+  async function envoyerNotif(title, body, link) {
+    // Attendre jusqu'à 5 secondes que window.envoyerNotifAuto soit disponible
+    let tries = 0;
+    while (!window.envoyerNotifAuto && tries < 50) {
+      await new Promise(r => setTimeout(r, 100));
+      tries++;
+    }
+    if (window.envoyerNotifAuto) {
+      try {
+        await window.envoyerNotifAuto(title, body, link);
+      } catch(e) { console.log('Erreur notification:', e.message); }
+    } else {
+      console.log('envoyerNotifAuto non disponible après 5s');
+    }
+  }
+
   // ===== GALERIE — Sistèm Kategori =====
 
   let selectedFotoFiles = [];
@@ -1506,7 +1524,7 @@
       btn.innerHTML = '<i class="fas fa-upload"></i> Publier les Photos';
       setTimeout(() => { status.style.display = 'none'; }, 4000);
       loadFotos();
-      try { if (window.envoyerNotifAuto) await window.envoyerNotifAuto('Église de Dieu de la Prophétie', uploaded + ' nouvelle(s) photo(s) publiée(s) dans "' + katNom + '" !', 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html'); } catch(e) { console.log('Notif err:', e); }
+      envoyerNotif('Église de Dieu de la Prophétie', uploaded + ' nouvelle(s) photo(s) publiée(s) dans "' + katNom + '" !', 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html');
     } catch(err) {
       status.style.background = '#fee'; status.style.color = '#c00';
       status.textContent = '❌ Erreur : ' + err.message;
@@ -1660,7 +1678,7 @@
       setTimeout(() => { status.style.display = 'none'; }, 4000);
       loadFotos();
 
-      try { if (window.envoyerNotifAuto) await window.envoyerNotifAuto('Église de Dieu de la Prophétie', 'Nouvelle vidéo publiée : ' + titre, 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html'); } catch(e) { console.log('Notif err:', e); }
+      envoyerNotif('Église de Dieu de la Prophétie', 'Nouvelle vidéo publiée : ' + titre, 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html');
 
     } catch(err) {
       status.style.background = '#fee'; status.style.color = '#c00';
