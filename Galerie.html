@@ -62,8 +62,8 @@
     .categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; }
 
     /* ===== CARTE CATEGORIE ===== */
-    .kat-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); border: 1px solid var(--border); cursor: pointer; transition: box-shadow 0.2s, transform 0.2s; }
-    .kat-card:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.14); transform: translateY(-3px); }
+    .kat-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); border: 1px solid var(--border); cursor: pointer; }
+    .kat-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.14); }
     .kat-thumb { position: relative; aspect-ratio: 4/3; background: linear-gradient(135deg, var(--primary), var(--secondary)); overflow: hidden; }
     .kat-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .kat-thumb-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: rgba(241,196,15,0.4); }
@@ -84,13 +84,13 @@
     .kat-modal-header h2 i { color: var(--gold); }
     .kat-modal-close { background: rgba(255,255,255,0.15); border: none; width: 38px; height: 38px; border-radius: 50%; color: white; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .kat-modal-close:hover { background: rgba(255,255,255,0.28); }
-    .kat-modal-body { padding: 24px; }
+    .kat-modal-body { padding: 16px; }
 
     /* Grille photos dans modal */
-    .modal-photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
-    .modal-photo-item { position: relative; aspect-ratio: 1; border-radius: 10px; overflow: hidden; cursor: pointer; background: var(--light-bg); }
-    .modal-photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .modal-photo-item:hover { opacity: 0.88; }
+    .modal-photo-grid { display: flex; flex-direction: column; gap: 14px; }
+    .modal-photo-item { position: relative; width: 100%; border-radius: 12px; overflow: hidden; cursor: pointer; background: var(--light-bg); }
+    .modal-photo-item img { width: 100%; height: auto; display: block; object-fit: contain; max-height: 80vh; }
+    .modal-photo-item:active { opacity: 0.80; }
 
     /* Grille vidéos dans modal */
     .modal-video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
@@ -129,12 +129,12 @@
 
     @media (max-width: 768px) {
       .categories-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-      .modal-photo-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
+      /* modal-photo-grid stays vertical on mobile */
       .lb-nav { display: none; }
       .kat-modal { padding: 10px 8px 40px; }
     }
     @media (max-width: 400px) {
-      .categories-grid { grid-template-columns: 1fr; }
+      .categories-grid { grid-template-columns: 1fr; gap: 10px; }
     }
   </style>
 </head>
@@ -348,6 +348,9 @@
           ${imgs.map((p, idx) => `
             <div class="modal-photo-item" onclick="ouvrirLightbox(${idx})">
               <img src="${esc(p.url)}" alt="${esc(p.description || '')}" loading="lazy">
+              ${p.description ? `<div style="padding:10px 12px;background:white;border-top:1px solid #eee;">
+                <p style="margin:0;color:#222;font-size:0.92rem;font-weight:500;">${esc(p.description)}</p>
+              </div>` : ''}
             </div>`).join('')}
         </div>`;
     } else {
