@@ -83,17 +83,71 @@
     .empty-state p { color: var(--text-muted); font-size: 0.95rem; }
 
     /* ===== LIGHTBOX ===== */
-    .lb-overlay { display: none; position: fixed; inset: 0; background: rgba(5,5,15,0.95); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+    .lb-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(5,5,15,0.96);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
     .lb-overlay.open { display: flex; }
-    .lb-close { position: absolute; top: 18px; right: 22px; background: rgba(255,255,255,0.1); border: none; width: 40px; height: 40px; border-radius: 50%; color: white; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); z-index: 10; }
-    .lb-close:hover { background: rgba(255,255,255,0.2); color: var(--gold); }
-    .lb-img-wrap { max-width: min(900px, 94vw); }
-    .lb-img-wrap img { width: 100%; max-height: 82vh; object-fit: contain; border-radius: 10px; display: block; }
-    .lb-caption { color: var(--gold); font-size: 0.9rem; font-weight: 600; text-align: center; margin-top: 14px; }
-    .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: none; width: 44px; height: 44px; border-radius: 50%; color: white; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+    .lb-close {
+      position: fixed;
+      top: 16px; right: 16px;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      color: white;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: var(--transition);
+      z-index: 10000;
+    }
+    .lb-close:hover { background: rgba(255,255,255,0.25); color: var(--gold); }
+    .lb-img-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: min(880px, 96vw);
+      width: 100%;
+    }
+    .lb-img-wrap img {
+      width: 100%;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 12px;
+      display: block;
+    }
+    .lb-caption {
+      color: var(--gold);
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-align: center;
+      margin-top: 12px;
+      opacity: 0.9;
+    }
+    .lb-nav {
+      position: fixed;
+      top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.1);
+      border: none;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      color: white;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: var(--transition);
+      z-index: 10000;
+    }
     .lb-nav:hover { background: rgba(241,196,15,0.3); color: var(--gold); }
-    .lb-prev { left: 16px; }
-    .lb-next { right: 16px; }
+    .lb-prev { left: 12px; }
+    .lb-next { right: 12px; }
 
     /* ===== VIDEO MODAL ===== */
     .vid-overlay { display: none; position: fixed; inset: 0; background: rgba(5,5,15,0.96); z-index: 9999; align-items: center; justify-content: center; padding: 20px; flex-direction: column; }
@@ -180,7 +234,8 @@
   <button class="lb-close" onclick="closeVid()"><i class="fas fa-times"></i></button>
   <div class="vid-wrap">
     <div class="vid-frame">
-      <iframe id="vidFrame" allowfullscreen></iframe>
+      <iframe id="vidFrame" allowfullscreen style="display:none;"></iframe>
+      <video id="vidDirect" controls style="display:none;position:absolute;inset:0;width:100%;height:100%;border-radius:14px;"></video>
     </div>
     <p class="vid-caption" id="vidCaption"></p>
   </div>
@@ -328,12 +383,15 @@
         </div>
         <div class="video-grid">
           ${vids.map(v => {
-            const thumb   = v.thumb || (v.videoId ? `https://img.youtube.com/vi/${v.videoId}/hqdefault.jpg` : '');
-            const embedUrl = v.videoId ? `https://www.youtube.com/embed/${v.videoId}?autoplay=1` : '';
+            // Sipòte toulede: URL Cloudinary dirèk ak YouTube
+            const isYT     = v.videoId || (v.videoUrl && v.videoUrl.includes('youtube'));
+            const thumb    = v.thumb || (v.videoId ? `https://img.youtube.com/vi/${v.videoId}/hqdefault.jpg` : '');
+            const embedUrl = isYT && v.videoId ? `https://www.youtube.com/embed/${v.videoId}?autoplay=1` : '';
+            const directUrl = v.url || v.videoUrl || '';
             return `
             <div class="video-card">
-              <div class="video-thumb" onclick="openVid('${esc(embedUrl)}', '${esc(v.titre || '')}')">
-                ${thumb ? `<img src="${esc(thumb)}" alt="${esc(v.titre || '')}">` : ''}
+              <div class="video-thumb" onclick="${isYT ? `openVid('${esc(embedUrl)}', '${esc(v.titre || '')}')` : `openDirectVid('${esc(directUrl)}', '${esc(v.titre || '')}')`}">
+                ${thumb ? `<img src="${esc(thumb)}" alt="${esc(v.titre || '')}">` : `<div style="width:100%;height:100%;background:linear-gradient(135deg,var(--primary),var(--secondary));"></div>`}
                 <div class="video-play">
                   <div class="video-play-btn"><i class="fas fa-play"></i></div>
                 </div>
@@ -382,10 +440,24 @@
     if (e.target === document.getElementById('lbOverlay')) closeLb();
   }
 
-  // ===== VIDEO =====
+  // ===== VIDEO YouTube =====
   function openVid(embedUrl, titre) {
     if (!embedUrl) return;
     document.getElementById('vidFrame').src = embedUrl;
+    document.getElementById('vidFrame').style.display = 'block';
+    document.getElementById('vidDirect').style.display = 'none';
+    document.getElementById('vidCaption').textContent = titre || '';
+    document.getElementById('vidOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  // ===== VIDEO Cloudinary dirèk =====
+  function openDirectVid(url, titre) {
+    if (!url) return;
+    document.getElementById('vidDirect').src = url;
+    document.getElementById('vidDirect').style.display = 'block';
+    document.getElementById('vidFrame').style.display = 'none';
+    document.getElementById('vidFrame').src = '';
     document.getElementById('vidCaption').textContent = titre || '';
     document.getElementById('vidOverlay').classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -393,6 +465,7 @@
 
   function closeVid() {
     document.getElementById('vidFrame').src = '';
+    document.getElementById('vidDirect').src = '';
     document.getElementById('vidOverlay').classList.remove('open');
     document.body.style.overflow = '';
   }

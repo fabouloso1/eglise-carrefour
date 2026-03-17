@@ -299,7 +299,7 @@
       cursor: not-allowed;
     }
 
-    /* Upload zone foto */
+    /* Zone upload photo */
     .upload-zone {
       border: 2px dashed var(--border);
       border-radius: 12px;
@@ -316,7 +316,7 @@
     .upload-zone p { color: #888; font-size: 1rem; }
     .upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
 
-    /* Preview foto */
+    /* Aperçu photo */
     .photo-preview {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -354,7 +354,7 @@
       justify-content: center;
     }
 
-    /* Liste aktyalite/foto existant */
+    /* Liste actualités/photos existantes */
     .item-list { margin-top: 8px; }
 
     .item-card {
@@ -622,23 +622,23 @@
 
       <!-- BOUTON FOTO -->
       <div class="card">
-        <h3><i class="fas fa-camera"></i> Voye Foto</h3>
+        <h3><i class="fas fa-camera"></i> Envoyer Photos</h3>
 
-        <label>Kategori <span style="color:red">*</span></label>
+        <label>Catégorie <span style="color:red">*</span></label>
         <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
           <select id="kategoriFoto" style="flex:1;min-width:180px;">
-            <option value="">— Chwazi yon kategori —</option>
+            <option value="">— Choisir une catégorie —</option>
           </select>
           <button class="btn btn-primary btn-sm" onclick="toggleNouvoKategori()" style="white-space:nowrap;">
-            <i class="fas fa-plus"></i> Nouvo kategori
+            <i class="fas fa-plus"></i> Nouvelle catégorie
           </button>
         </div>
         <div id="nouvoKategoriBox" style="display:none;background:#f9f9f9;border:1.5px solid var(--gold);border-radius:10px;padding:14px;margin-bottom:14px;">
-          <label style="margin-bottom:6px;">Non kategori a <span style="color:red">*</span></label>
+          <label style="margin-bottom:6px;">Nom de la catégorie <span style="color:red">*</span></label>
           <div style="display:flex;gap:8px;">
-            <input type="text" id="nouvoKategoriNom" placeholder="Ex: Vizit Legliz Kafou, Reyinyon Lid..." style="flex:1;margin-bottom:0;">
+            <input type="text" id="nouvoKategoriNom" placeholder="Ex: Visite Église Carrefour, Réunion des leaders..." style="flex:1;margin-bottom:0;">
             <button class="btn btn-gold btn-sm" onclick="kreye_kategori()" style="white-space:nowrap;">
-              <i class="fas fa-check"></i> Kreye
+              <i class="fas fa-check"></i> Créer
             </button>
           </div>
         </div>
@@ -646,54 +646,63 @@
         <div class="upload-zone" id="uploadZoneFoto">
           <input type="file" id="fotoInput" accept="image/*" multiple onchange="handleFotoSelect(event)">
           <i class="fas fa-images" style="font-size:2rem;color:var(--gold);margin-bottom:10px;display:block;"></i>
-          <p><strong>Klike pou chwazi foto</strong><br>oswa glise-depoze isit<br><small style="color:#aaa">JPG, PNG — plizyè foto alafwa</small></p>
+          <p><strong>Cliquer pour choisir des photos</strong><br>ou glisser-déposer ici<br><small style="color:#aaa">JPG, PNG — plusieurs photos à la fois</small></p>
         </div>
         <div class="photo-preview" id="photoPreviewFoto"></div>
         <button class="btn btn-gold" id="uploadBtnFoto" onclick="uploadFotos()" style="width:100%;margin-top:4px;" disabled>
-          <i class="fas fa-upload"></i> Voye Foto yo
+          <i class="fas fa-upload"></i> Envoyer Photos yo
         </button>
         <div id="uploadFotoStatus" style="display:none;margin-top:10px;padding:12px;border-radius:8px;text-align:center;font-weight:600;"></div>
       </div>
 
       <!-- BOUTON VIDEO -->
       <div class="card" style="border-left:4px solid var(--gold);">
-        <h3><i class="fas fa-video" style="color:var(--gold)"></i> Voye Vidéo</h3>
+        <h3><i class="fas fa-video" style="color:var(--gold)"></i> Envoyer Vidéo</h3>
 
-        <label>Kategori Vidéo <span style="color:red">*</span></label>
+        <label>Catégorie Vidéo <span style="color:red">*</span></label>
         <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
           <select id="kategoriVideo" style="flex:1;min-width:180px;">
-            <option value="">— Chwazi yon kategori —</option>
+            <option value="">— Choisir une catégorie —</option>
           </select>
           <button class="btn btn-primary btn-sm" onclick="toggleNouvoKategoriVideo()" style="white-space:nowrap;">
-            <i class="fas fa-plus"></i> Nouvo kategori
+            <i class="fas fa-plus"></i> Nouvelle catégorie
           </button>
         </div>
         <div id="nouvoKategoriVideoBox" style="display:none;background:#f9f9f9;border:1.5px solid var(--gold);border-radius:10px;padding:14px;margin-bottom:14px;">
-          <label style="margin-bottom:6px;">Non kategori a</label>
+          <label style="margin-bottom:6px;">Nom de la catégorie</label>
           <div style="display:flex;gap:8px;">
-            <input type="text" id="nouvoKategoriVideoNom" placeholder="Ex: Predikasyon, Louanj..." style="flex:1;margin-bottom:0;">
+            <input type="text" id="nouvoKategoriVideoNom" placeholder="Ex: Prédication, Louange, Baptême..." style="flex:1;margin-bottom:0;">
             <button class="btn btn-gold btn-sm" onclick="kreye_kategori_video()" style="white-space:nowrap;">
-              <i class="fas fa-check"></i> Kreye
+              <i class="fas fa-check"></i> Créer
             </button>
           </div>
         </div>
 
-        <label>Lyen YouTube <span style="color:red">*</span></label>
-        <input type="text" id="videoUrl" placeholder="https://www.youtube.com/watch?v=XXXXXXXXX" />
-        <label>Tit Vidéo <span style="color:red">*</span></label>
+        <label>Titre de la vidéo <span style="color:red">*</span></label>
         <input type="text" id="videoTitre" placeholder="Ex: Kilt dimanch 15 jen..." />
-        <label>Deskripsyon (opsyonèl)</label>
+        <label>Description (optionnel)</label>
         <input type="text" id="videoDesc" placeholder="Ex: Mesaj Pastè Anouis Jean..." />
 
-        <button class="btn btn-gold" onclick="publishVideo()" style="width:100%">
-          <i class="fas fa-upload"></i> Voye Vidéo a
+        <div class="upload-zone" id="uploadZoneVideo" style="border-color:#f1c40f66;">
+          <input type="file" id="videoInput" accept="video/*" onchange="handleVideoSelect(event)">
+          <i class="fas fa-video" style="font-size:2rem;color:var(--gold);margin-bottom:10px;display:block;"></i>
+          <p><strong>Cliquer pour choisir une vidéo</strong><br>depuis votre téléphone ou tablette<br><small style="color:#aaa">MP4, MOV — max 200MB</small></p>
+        </div>
+
+        <div id="videoPreviewWrap" style="display:none;margin-bottom:14px;">
+          <video id="videoPreview" controls style="width:100%;border-radius:10px;max-height:220px;background:#000;"></video>
+          <p id="videoFileName" style="font-size:0.82rem;color:#888;margin-top:6px;text-align:center;"></p>
+        </div>
+
+        <button class="btn btn-gold" id="uploadBtnVideo" onclick="uploadVideo()" style="width:100%;" disabled>
+          <i class="fas fa-upload"></i> Envoyer Vidéo a
         </button>
         <div id="videoStatus" style="display:none;margin-top:10px;padding:12px;border-radius:8px;text-align:center;font-weight:600;"></div>
       </div>
 
       <!-- LIS FOTO PA KATEGORI -->
       <div class="card">
-        <h3><i class="fas fa-layer-group"></i> Foto ak Vidéo (<span id="fotoCount">0</span>)</h3>
+        <h3><i class="fas fa-layer-group"></i> Photos et Vidéos (<span id="fotoCount">0</span>)</h3>
         <div class="item-list" id="fotoList">
           <p style="color:#aaa;text-align:center;padding:20px;font-size:0.85rem;">Chargement...</p>
         </div>
@@ -704,7 +713,7 @@
     <!-- ===== ACTUALITES ===== -->
     <div class="tab-panel" id="tab-actualites">
 
-      <!-- Nouvo aktyalite -->
+      <!-- Nouvelle actualité -->
       <div class="card">
         <h3><i class="fas fa-pen"></i> Écrire une nouvelle actualité</h3>
 
@@ -765,7 +774,7 @@
     <!-- ===== ANNONCES ===== -->
     <div class="tab-panel" id="tab-annonces">
 
-      <!-- Nouvo anons -->
+      <!-- Nouvelle annonce -->
       <div class="card">
         <h3><i class="fas fa-bullhorn"></i> Ajouter une annonce</h3>
 
@@ -1345,12 +1354,12 @@
         window._query(window._collection(window._db, 'kategori'), window._orderBy('nom'))
       );
       const opts = snap.docs.map(d => `<option value="${d.id}">${d.data().nom}</option>`).join('');
-      const base = '<option value="">— Chwazi yon kategori —</option>';
+      const base = '<option value="">— Choisir une catégorie —</option>';
       const selFoto  = document.getElementById('kategoriFoto');
       const selVideo = document.getElementById('kategoriVideo');
       if (selFoto)  selFoto.innerHTML  = base + opts;
       if (selVideo) selVideo.innerHTML = base + opts;
-    } catch(e) { console.log('Kategori err:', e.message); }
+    } catch(e) { console.log('Erreur catégorie :', e.message); }
   }
 
   function toggleNouvoKategori() {
@@ -1367,7 +1376,7 @@
 
   async function kreye_kategori() {
     const nom = document.getElementById('nouvoKategoriNom').value.trim();
-    if (!nom) { showToast('Ekri non kategori a!', 'error'); return; }
+    if (!nom) { showToast('Veuillez saisir le nom de la catégorie !', 'error'); return; }
     try {
       const ref = await window._addDoc(window._collection(window._db, 'kategori'), {
         nom: nom, timestamp: window._serverTimestamp()
@@ -1376,13 +1385,13 @@
       document.getElementById('nouvoKategoriBox').style.display = 'none';
       await chargerKategori();
       document.getElementById('kategoriFoto').value = ref.id;
-      showToast('Kategori "' + nom + '" kreye !');
-    } catch(e) { showToast('Erè: ' + e.message, 'error'); }
+      showToast('Catégorie "' + nom + '" créée !');
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
   }
 
   async function kreye_kategori_video() {
     const nom = document.getElementById('nouvoKategoriVideoNom').value.trim();
-    if (!nom) { showToast('Ekri non kategori a!', 'error'); return; }
+    if (!nom) { showToast('Veuillez saisir le nom de la catégorie !', 'error'); return; }
     try {
       const ref = await window._addDoc(window._collection(window._db, 'kategori'), {
         nom: nom, timestamp: window._serverTimestamp()
@@ -1391,8 +1400,8 @@
       document.getElementById('nouvoKategoriVideoBox').style.display = 'none';
       await chargerKategori();
       document.getElementById('kategoriVideo').value = ref.id;
-      showToast('Kategori "' + nom + '" kreye !');
-    } catch(e) { showToast('Erè: ' + e.message, 'error'); }
+      showToast('Catégorie "' + nom + '" créée !');
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
   }
 
   // Seleksyon foto
@@ -1461,8 +1470,8 @@
   async function uploadFotos() {
     const katId  = document.getElementById('kategoriFoto').value;
     const katNom = document.getElementById('kategoriFoto').selectedOptions[0]?.text || '';
-    if (!katId) { showToast('Chwazi yon kategori anvan!', 'error'); return; }
-    if (!selectedFotoFiles.length) { showToast('Chwazi omwen yon foto!', 'error'); return; }
+    if (!katId) { showToast('Veuillez choisir une catégorie !', 'error'); return; }
+    if (!selectedFotoFiles.length) { showToast('Veuillez choisir au moins une photo !', 'error'); return; }
 
     const btn    = document.getElementById('uploadBtnFoto');
     const status = document.getElementById('uploadFotoStatus');
@@ -1489,20 +1498,20 @@
         uploaded++;
       }
       status.style.background = '#e8f5e9'; status.style.color = '#2e7d32';
-      status.textContent = '✅ ' + uploaded + ' foto publiye nan "' + katNom + '" !';
+      status.textContent = '✅ ' + uploaded + ' photo(s) publiée(s) dans "' + katNom + '" !';
       document.getElementById('photoPreviewFoto').innerHTML = '';
       document.getElementById('fotoInput').value = '';
       selectedFotoFiles = [];
       btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-upload"></i> Voye Foto yo';
+      btn.innerHTML = '<i class="fas fa-upload"></i> Publier les Photos';
       setTimeout(() => { status.style.display = 'none'; }, 4000);
       loadFotos();
-      try { await envoyerNotifAuto('Église de Dieu de la Prophétie', uploaded + ' nouvo foto publiye nan "' + katNom + '"!', 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html'); } catch(e) {}
+      try { if (window.envoyerNotifAuto) await window.envoyerNotifAuto('Église de Dieu de la Prophétie', uploaded + ' nouvelle(s) photo(s) publiée(s) dans "' + katNom + '" !', 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html'); } catch(e) { console.log('Notif err:', e); }
     } catch(err) {
       status.style.background = '#fee'; status.style.color = '#c00';
-      status.textContent = '❌ Erè: ' + err.message;
+      status.textContent = '❌ Erreur : ' + err.message;
       btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-upload"></i> Voye Foto yo';
+      btn.innerHTML = '<i class="fas fa-upload"></i> Publier les Photos';
     }
   }
 
@@ -1552,7 +1561,7 @@
         </div>
       `).join('');
     } catch(err) {
-      document.getElementById('fotoList').innerHTML = '<p style="color:#e74c3c;padding:10px;">Erè: ' + err.message + '</p>';
+      document.getElementById('fotoList').innerHTML = '<p style="color:#e74c3c;padding:10px;">Erreur : ' + err.message + '</p>';
     }
   }
 
@@ -1560,11 +1569,106 @@
     if (!confirm('Efase sa?')) return;
     try {
       await window._deleteDoc(window._doc(window._db, 'galerie', id));
-      showToast('Efase !');
+      showToast('Supprimé !');
       loadFotos();
-    } catch(err) { showToast('Erè: ' + err.message, 'error'); }
+    } catch(err) { showToast('Erreur : ' + err.message, 'error'); }
   }
 
+  // ===== VIDEO UPLOAD DIRÈK =====
+  let selectedVideoFile = null;
+
+  function handleVideoSelect(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Verifye gwosè — max 200MB
+    if (file.size > 200 * 1024 * 1024) {
+      showToast('Vidéo a twò gwo — max 200MB', 'error');
+      e.target.value = '';
+      return;
+    }
+
+    selectedVideoFile = file;
+    const preview  = document.getElementById('videoPreviewWrap');
+    const vidEl    = document.getElementById('videoPreview');
+    const nameEl   = document.getElementById('videoFileName');
+    const btn      = document.getElementById('uploadBtnVideo');
+
+    vidEl.src = URL.createObjectURL(file);
+    nameEl.textContent = file.name + ' (' + (file.size / (1024*1024)).toFixed(1) + ' MB)';
+    preview.style.display = 'block';
+    btn.disabled = false;
+  }
+
+  async function uploadVideo() {
+    const katId  = document.getElementById('kategoriVideo').value;
+    const katNom = document.getElementById('kategoriVideo').selectedOptions[0]?.text || '';
+    const titre  = document.getElementById('videoTitre').value.trim();
+    const desc   = document.getElementById('videoDesc').value.trim();
+
+    if (!katId)             { showToast('Veuillez choisir une catégorie !', 'error'); return; }
+    if (!titre)             { showToast('Veuillez saisir le titre de la vidéo !', 'error'); return; }
+    if (!selectedVideoFile) { showToast('Veuillez choisir une vidéo !', 'error'); return; }
+
+    const btn    = document.getElementById('uploadBtnVideo');
+    const status = document.getElementById('videoStatus');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Upload vidéo...';
+    status.style.display  = 'block';
+    status.style.background = '#fff8e1'; status.style.color = '#555';
+    status.textContent = '⏳ Upload en cours — ne fermez pas la page...';
+
+    try {
+      // Upload vidéo nan Cloudinary
+      const formData = new FormData();
+      formData.append('file', selectedVideoFile);
+      formData.append('upload_preset', 'eglise_upload');
+      formData.append('folder', 'videos/' + katId);
+      formData.append('resource_type', 'video');
+
+      const res = await fetch(
+        'https://api.cloudinary.com/v1_1/dvcxhpibq/video/upload',
+        { method: 'POST', body: formData }
+      );
+
+      if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || 'Cloudinary error'); }
+      const data = await res.json();
+
+      // Sove URL nan Firestore
+      await window._addDoc(window._collection(window._db, 'galerie'), {
+        type: 'video',
+        url: data.secure_url,
+        thumb: data.secure_url.replace('/upload/', '/upload/so_0,w_400/').replace(/\.[^/.]+$/, '.jpg'),
+        titre: titre,
+        description: desc,
+        kategoriId: katId,
+        kategoriNom: katNom,
+        date: new Date().toLocaleDateString('fr-FR'),
+        timestamp: window._serverTimestamp()
+      });
+
+      status.style.background = '#e8f5e9'; status.style.color = '#2e7d32';
+      status.textContent = '✅ Vidéo publiée dans "' + katNom + '" !';
+      document.getElementById('videoTitre').value = '';
+      document.getElementById('videoDesc').value  = '';
+      document.getElementById('videoPreviewWrap').style.display = 'none';
+      document.getElementById('videoPreview').src = '';
+      document.getElementById('videoInput').value = '';
+      selectedVideoFile = null;
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-upload"></i> Envoyer Vidéo a';
+      setTimeout(() => { status.style.display = 'none'; }, 4000);
+      loadFotos();
+
+      try { if (window.envoyerNotifAuto) await window.envoyerNotifAuto('Église de Dieu de la Prophétie', 'Nouvelle vidéo publiée : ' + titre, 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html'); } catch(e) { console.log('Notif err:', e); }
+
+    } catch(err) {
+      status.style.background = '#fee'; status.style.color = '#c00';
+      status.textContent = '❌ Erreur : ' + err.message;
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-upload"></i> Envoyer Vidéo a';
+    }
+  }
 
     // ===== ACTUALITES =====
   async function publishActu() {
@@ -1888,7 +1992,7 @@
     return data.access_token;
   }
 
-  // Fonksyon pou voye notif otomatikman (rele pa lòt fonksyon)
+  // Fonction pour envoyer les notifications automatiquement
   async function envoyerNotifAuto(title, body, link) {
     const snap = await db2.collection('fcm_tokens').get();
     if (snap.empty) return;
