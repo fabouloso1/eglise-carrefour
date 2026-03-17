@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Faire un Don — Église de Dieu de la Prophétie de Carrefour</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -207,7 +207,7 @@
       min-width: 80px;
       padding-top: 2px;
     }
-    .detail-value { word-break: keep-all; white-space: normal; min-width: 0; flex: 1; text-align: right;
+    .detail-value {
       font-family: 'Courier New', monospace;
       font-size: 0.92rem;
       font-weight: 600;
@@ -319,47 +319,6 @@
       .don-card-body { padding: 20px 16px; }
     }
   </style>
-  <!-- OneSignal Push Notifications -->
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-  <script>
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function(OneSignal) {
-      await OneSignal.init({
-        appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
-        promptOptions: {
-          slidedown: {
-            prompts: [
-              {
-                type: "push",
-                autoPrompt: true,
-                text: {
-                  actionMessage: "Restez connectés à notre église ! Recevez les annonces en temps réel.",
-                  acceptButton: "Oui, m'abonner",
-                  cancelButton: "Plus tard"
-                },
-                delay: { pageViews: 1, timeDelay: 5 }
-              }
-            ]
-          }
-        },
-        welcomeNotification: {
-          disable: false,
-          title: "Église de Dieu de la Prophétie",
-          message: "Bienvenue ! Vous recevrez désormais nos annonces. 🙏"
-        },
-        notifyButton: { enable: false },
-        allowLocalhostAsSecureOrigin: true
-      });
-    });
-  </script>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G9Y14X29NZ"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-G9Y14X29NZ');
-  </script>
 </head>
 <body>
 
@@ -420,72 +379,81 @@
   <!-- Options de don -->
   <div class="don-options">
 
-    <!-- MonCash -->
+    <!-- Virement Bancaire -->
     <div class="don-card">
-      <div class="don-card-header" style="background: linear-gradient(135deg, #c0392b, #e74c3c);">
-        <div class="don-card-icon" style="background:rgba(255,255,255,0.2);">
-          <img src="images/moncash.png" alt="MonCash" style="width:40px;height:40px;object-fit:contain;">
-        </div>
+      <div class="don-card-header">
+        <div class="don-card-icon"><i class="fas fa-university"></i></div>
         <div>
-          <h2 style="color:white;">MonCash</h2>
-          <p style="color:rgba(255,255,255,0.8);">Digicel Mon Cash</p>
+          <h2>Virement Bancaire</h2>
+          <p>Transfert sécurisé via banque</p>
         </div>
       </div>
       <div class="don-card-body">
         <div class="detail-row">
-          <span class="detail-label">Numéro</span>
+          <span class="detail-label">Titulaire</span>
+          <span class="detail-value" style="font-family:'Montserrat',sans-serif;">Église de Dieu de la Prophétie</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">IBAN</span>
           <span class="detail-value">
-            +509 3157 3591
-            <button class="copy-btn" onclick="copyText(this, '31573591')" title="Copier">
+            FR76 3000 4000 0100 1234 5678 900
+            <button class="copy-btn" onclick="copyText(this, 'FR7630004000010012345678900')" title="Copier">
               <i class="fas fa-copy"></i>
             </button>
           </span>
         </div>
-        <div class="detail-row" style="flex-direction:column; align-items:flex-start; gap:4px;">
-          <span class="detail-label">Référence</span>
-          <span style="font-family:'Montserrat',sans-serif; font-size:0.88rem; color:#555;">
-            Indiquez <strong style="color:var(--primary);">"Don Église"</strong> dans le message
+        <div class="detail-row">
+          <span class="detail-label">BIC</span>
+          <span class="detail-value">
+            BNPAFRPPXXX
+            <button class="copy-btn" onclick="copyText(this, 'BNPAFRPPXXX')" title="Copier">
+              <i class="fas fa-copy"></i>
+            </button>
           </span>
         </div>
         <div class="qr-wrap">
-          <p><i class="fas fa-qrcode"></i> Scannez pour envoyer de l'argent</p>
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=31573591&color=c0392b&bgcolor=ffffff"
-               alt="QR Code MonCash">
+          <p><i class="fas fa-qrcode"></i> Scannez pour copier l'IBAN</p>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=FR7630004000010012345678900&color=1c1c3c&bgcolor=ffffff"
+               alt="QR Code IBAN">
         </div>
       </div>
     </div>
 
-    <!-- NatCash -->
+    <!-- Mobile Money -->
     <div class="don-card">
-      <div class="don-card-header" style="background: linear-gradient(135deg, #e67e00, #f39c12);">
-        <div class="don-card-icon" style="background:rgba(255,255,255,0.2);">
-          <img src="images/natcash.png" alt="NatCash" style="width:40px;height:40px;object-fit:contain;">
-        </div>
+      <div class="don-card-header">
+        <div class="don-card-icon"><i class="fas fa-mobile-alt"></i></div>
         <div>
-          <h2 style="color:white;">NatCash</h2>
-          <p style="color:rgba(255,255,255,0.8);">Natcom NatCash</p>
+          <h2>Mobile Money</h2>
+          <p>MonCash, Lajan Kach, etc.</p>
         </div>
       </div>
       <div class="don-card-body">
         <div class="detail-row">
           <span class="detail-label">Numéro</span>
           <span class="detail-value">
-            +509 4028 0086
-            <button class="copy-btn" onclick="copyText(this, '40280086')" title="Copier">
+            +509 36 12 34 56
+            <button class="copy-btn" onclick="copyText(this, '+50936123456')" title="Copier">
               <i class="fas fa-copy"></i>
             </button>
           </span>
         </div>
-        <div class="detail-row" style="flex-direction:column; align-items:flex-start; gap:4px;">
+        <div class="detail-row">
           <span class="detail-label">Référence</span>
-          <span style="font-family:'Montserrat',sans-serif; font-size:0.88rem; color:#555;">
+          <span class="detail-value" style="font-family:'Montserrat',sans-serif; font-size:0.85rem; color:#555;">
             Indiquez <strong style="color:var(--primary);">"Don Église"</strong> dans le message
           </span>
         </div>
+        <div class="detail-row">
+          <span class="detail-label">Contact</span>
+          <span class="detail-value" style="font-family:'Montserrat',sans-serif; font-size:0.85rem;">
+            Trésorier : +509 36 98 76 54
+          </span>
+        </div>
         <div class="qr-wrap">
-          <p><i class="fas fa-qrcode"></i> Scannez pour envoyer de l'argent</p>
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=40280086&color=e67e00&bgcolor=ffffff"
-               alt="QR Code NatCash">
+          <p><i class="fas fa-qrcode"></i> Scannez pour appeler / envoyer</p>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=tel:+50936123456&color=1c1c3c&bgcolor=ffffff"
+               alt="QR Code Mobile Money">
         </div>
       </div>
     </div>
@@ -496,7 +464,7 @@
   <div class="don-message">
     <div class="don-message-icon"><i class="fas fa-hands-holding-heart"></i></div>
     <div>
-      <h3>Merci pour votre générosité ! !</h3>
+      <h3>Merci pour votre générosité !</h3>
       <p>
         <em>Celui qui sème abondamment moissonnera abondamment.</em> (2 Cor. 9:6)<br>
         Chaque don, grand ou petit, contribue directement à l'avancement du Royaume de Dieu à Carrefour.
@@ -526,8 +494,7 @@
 <div id="foot-placeholder"></div>
 
 <script src="lang.js"></script>
-<script>document.addEventListener('DOMContentLoaded', function(){ if(window.initLang) initLang(); });</script>
-  <script src="nav.js"></script>
+<script src="nav.js"></script>
 <script>
   // Initialiser meni + footer
   NAV.init('don.html');

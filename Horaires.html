@@ -2,8 +2,8 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Horaires — Église de Dieu de la Prophétie de Carrefour, waney 93</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Horaires — Église de Dieu de la Prophétie de Carrefour</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
@@ -70,152 +70,6 @@
     @media (max-width: 900px) { .schedule-grid { grid-template-columns: 1fr; } }
     @media (max-width: 480px) { .cta-buttons { flex-direction: column; align-items: center; } }
   </style>
-  <!-- OneSignal Push Notifications -->
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-  <script>
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function(OneSignal) {
-      await OneSignal.init({
-        appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
-        promptOptions: {
-          slidedown: {
-            prompts: [
-              {
-                type: "push",
-                autoPrompt: true,
-                text: {
-                  actionMessage: "Restez connectés à notre église ! Recevez les annonces en temps réel.",
-                  acceptButton: "Oui, m'abonner",
-                  cancelButton: "Plus tard"
-                },
-                delay: { pageViews: 1, timeDelay: 5 }
-              }
-            ]
-          }
-        },
-        welcomeNotification: {
-          disable: false,
-          title: "Église de Dieu de la Prophétie",
-          message: "Bienvenue ! Vous recevrez désormais nos annonces. 🙏"
-        },
-        notifyButton: { enable: false },
-        allowLocalhostAsSecureOrigin: true
-      });
-    });
-  </script>
-  <!-- Firebase -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-    import { getFirestore, collection, getDocs, query, orderBy, doc, getDoc }
-      from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
-      authDomain: "eglise-carrefour.firebaseapp.com",
-      projectId: "eglise-carrefour",
-      storageBucket: "eglise-carrefour.firebasestorage.app",
-      messagingSenderId: "421333694767",
-      appId: "1:421333694767:web:30c18da36ae020821a49da"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    async function chargerAnnoncesFirebase() {
-      try {
-        const q = query(collection(db, 'annonces'), orderBy('timestamp', 'desc'));
-        const snap = await getDocs(q);
-        const annonces = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        if (annonces.length > 0) afficherAnnonces(annonces);
-      } catch(e) {
-        console.log('Firebase annonces:', e.message);
-      }
-    }
-
-    function afficherAnnonces(annonces) {
-      const section = document.getElementById('firebase-annonces');
-      if (!section) return;
-      section.style.display = 'block';
-
-      const importanceColor = { 'Urgent': '#e74c3c', 'Important': '#e67e22', 'Normal': 'var(--primary)' };
-
-      section.querySelector('.timeline').innerHTML = annonces.map(a => `
-        <div class="timeline-item">
-          <div class="timeline-card" style="border-left: 3px solid ${importanceColor[a.importance] || 'var(--gold)'}">
-            <div class="t-date" style="color:${importanceColor[a.importance] || 'var(--gold)'}">
-              <i class="fas fa-calendar-day"></i> ${a.date || ''}
-              ${a.importance !== 'Normal' ? `<span style="margin-left:8px;background:${importanceColor[a.importance]};color:white;font-size:0.7rem;padding:2px 8px;border-radius:10px;">${a.importance}</span>` : ''}
-            </div>
-            <h3>${a.titre}</h3>
-            <p>${a.details || ''}</p>
-            ${a.heure ? `<p><i class="fas fa-clock" style="color:var(--gold)"></i> <strong>${a.heure}</strong></p>` : ''}
-          </div>
-        </div>
-      `).join('');
-    }
-
-    async function chargerHorairesFirebase() {
-      try {
-        const docRef = doc(db, 'config', 'horaires');
-        const snap = await getDoc(docRef);
-        if (!snap.exists() || !snap.data().list || snap.data().list.length === 0) return;
-
-        const list = snap.data().list;
-
-        // Gruope pa jou
-        const byDay = {};
-        list.forEach(h => {
-          const jou = h.jou || 'Autre';
-          if (!byDay[jou]) byDay[jou] = [];
-          byDay[jou].push(h);
-        });
-
-        const dayIcons = {
-          'Dimanche': 'fa-church', 'Lundi': 'fa-briefcase', 'Mardi': 'fa-hands-praying',
-          'Mercredi': 'fa-bible', 'Jeudi': 'fa-hands-praying', 'Vendredi': 'fa-moon',
-          'Samedi': 'fa-users'
-        };
-
-        const grid = document.getElementById('schedule-grid-firebase');
-        grid.innerHTML = Object.entries(byDay).map(([jou, items]) => `
-          <div class="schedule-card">
-            <div class="day-header">
-              <h2>${jou}</h2>
-              <div class="day-icon"><i class="fas ${dayIcons[jou] || 'fa-calendar'}"></i></div>
-            </div>
-            <ul class="schedule-list">
-              ${items.map(h => `
-                <li>
-                  <span class="s-time"><i class="fas fa-clock"></i> ${h['lè_kòmanse'] || ''} – ${h['lè_fini'] || ''}</span>
-                  <span class="s-event">${h.aktivite || ''}</span>
-                </li>
-              `).join('')}
-            </ul>
-          </div>
-        `).join('');
-
-        // Kache statik, montre Firebase
-        document.getElementById('schedule-grid-static').style.display = 'none';
-        grid.style.display = '';
-
-      } catch(e) {
-        console.log('Firebase horaires:', e.message);
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      chargerAnnoncesFirebase();
-      chargerHorairesFirebase();
-    });
-  </script>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G9Y14X29NZ"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-G9Y14X29NZ');
-  </script>
 </head>
 <body>
 
@@ -240,10 +94,10 @@
 <div class="horaires-main">
 
   <!-- Programme hebdomadaire -->
-  <h2 class="section-title">Programme</h2>
+  <h2 class="section-title">Programme Hebdomadaire</h2>
   <p class="section-subtitle">Nos activités régulières tout au long de la semaine</p>
 
-  <div class="schedule-grid" id="schedule-grid-static">
+  <div class="schedule-grid">
     <!-- Dimanche -->
     <div class="schedule-card">
       <div class="day-header">
@@ -251,54 +105,23 @@
         <div class="day-icon"><i class="fas fa-church"></i></div>
       </div>
       <ul class="schedule-list">
- 
         <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 6h30 – 7h30</span>
+          <span class="s-time"><i class="fas fa-clock"></i> 6h00 – 8h30</span>
+          <span class="s-event">Culte Principal</span>
+          <span class="s-note">Avec garderie d'enfants</span>
+        </li>
+        <li>
+          <span class="s-time"><i class="fas fa-clock"></i> 9h30 – 11h00</span>
           <span class="s-event">École du Dimanche</span>
           <span class="s-note">Pour tous les âges</span>
         </li>
-		        <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 16h00 – 18h00</span>
-          <span class="s-event">Réunion de Jeunesse</span>
-          <span class="s-note">Chaque dimanche</span>
-        </li>
         <li>
           <span class="s-time"><i class="fas fa-clock"></i> 15h00 – 17h00</span>
-          <span class="s-event">Clube Pré-marital</span>
-          <span class="s-note">Chaque 1er dimanchei</span>
-        </li>
-		        <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 14h00 – 18h00</span>
-          <span class="s-event">Clube des Mariés </span>
-          <span class="s-note">Chaque 4ième dimanche</span>
+          <span class="s-event">Réunion Nouveaux Membres</span>
+          <span class="s-note">1er dimanche du mois</span>
         </li>
       </ul>
     </div>
-	
-	 <div class="schedule-card">
-      <div class="day-header">
-        <h2>Mardi et Jeudi</h2>
-        <div class="day-icon"><i class="fas fa-hands-praying"></i></div>
-      </div>
-      <ul class="schedule-list">
-	  <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 16h00 – 18h00</span>
-          <span class="s-event">Chaque mardi Etude biblique </span>
-          <span class="s-note">Intervenant: Murat Louis</span>
-        </li>
-        <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 16h00 – 18h00</span>
-          <span class="s-event">Kalme Tanpet</span>
-          <span class="s-note">Chaque Jeudi</span>
-        </li>
-        <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 8h00 – 12h00</span>
-          <span class="s-event">Jeune des Dames</span>
-          <span class="s-note">chaque Jeudi</span>
-        </li>
-      </ul>
-    </div>
-
 
     <!-- Vendredi -->
     <div class="schedule-card">
@@ -307,20 +130,15 @@
         <div class="day-icon"><i class="fas fa-hands-praying"></i></div>
       </div>
       <ul class="schedule-list">
-	  <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 8h00 – 12h00</span>
-          <span class="s-event">Jeune vendredi</span>
-          <span class="s-note">Pour toute l'église</span>
-        </li>
         <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 20h00 – Minuit</span>
-          <span class="s-event">Veille de nuit</span>
+          <span class="s-time"><i class="fas fa-clock"></i> 19h00 – 21h00</span>
+          <span class="s-event">Veillée de Prière</span>
           <span class="s-note">Toute l'église</span>
         </li>
         <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 16h00 – 18h00</span>
-          <span class="s-event">Reunion des membres</span>
-          <span class="s-note">chaque dernier vendredi</span>
+          <span class="s-time"><i class="fas fa-clock"></i> 21h00 – 22h00</span>
+          <span class="s-event">Rencontre des Intercesseurs</span>
+          <span class="s-note">Groupe de prière avancé</span>
         </li>
       </ul>
     </div>
@@ -333,22 +151,18 @@
       </div>
       <ul class="schedule-list">
         <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 15h00 – 17h00</span>
-          <span class="s-event">Classe baptème</span>
-          <span class="s-note">Chaque samedi</span>
+          <span class="s-time"><i class="fas fa-clock"></i> 16h00 – 18h00</span>
+          <span class="s-event">Réunion des Jeunes</span>
+          <span class="s-note">12 – 25 ans</span>
         </li>
-        
-		 <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 15h00 – 17h00</span>
-          <span class="s-event">Sainte cène </span>
-          <span class="s-note">Chaque 1er samedi</span>
+        <li>
+          <span class="s-time"><i class="fas fa-clock"></i> 18h30 – 20h00</span>
+          <span class="s-event">Groupe de Maison</span>
+          <span class="s-note">Secteur Nord</span>
         </li>
       </ul>
     </div>
   </div>
-
-  <!-- Schedule Firebase (chaje si pastè mete ajou) -->
-  <div class="schedule-grid" id="schedule-grid-firebase" style="display:none;"></div>
 
   <!-- Événements spéciaux -->
   <div class="events-section">
@@ -357,47 +171,16 @@
     <div class="timeline">
       <div class="timeline-item">
         <div class="timeline-card">
-          <div class="t-date"><i class="fas fa-calendar-day"></i> Du 15 au 28 Mars 2025</div>
-          <h3>Reveil Annuel des hommes Mariés</h3>
-          <p>Une semaine de réveil qui sera organiser avec les hommes Mariés de l'eglise. Un moment de grâce à ne pas manquer !</p>
+          <div class="t-date"><i class="fas fa-calendar-day"></i> 15 Juillet 2025</div>
+          <h3>Conférence Annuelle</h3>
+          <p>Une semaine d'enseignement et de réveil avec des orateurs invités nationaux et internationaux. Un moment de grâce à ne pas manquer !</p>
         </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-card">
-          <div class="t-date"><i class="fas fa-calendar-day"></i> 12 Avril 2026</div>
-          <h3>Grand concert de levée de fonds</h3>
-          <p>
-
-L’Association de Jeunesse de l’Église de Dieu de la Prophétie de Waney 93 (JEM) a le plaisir de vous inviter à un grand concert de levée de fonds qui se tiendra :<p>
-
-<h4>📅 Dimanche 12 Avril 2026</h4>
-<h5>🕓 À partir de 4h00 PM</h5>
-
-<p>Venez vivre un moment exceptionnel de louange, d’adoration et de communion fraternelle avec plusieurs groupes et chorales invités.<p>
-
-<h3>✨ À l’affiche :</h3>
-<h4>🎤 Les chorales :</h4>
-<h5>Gospel Vision (GV)</h5>
-<h5>Joshua</h5>
-
-
-<h3>🎶 Les groupes :</h3>
-
-<h5>Les Sarments de Yahweh</h5>
-
-<h5>Worship Power</h5>
-
-<h5>Les Élus</h5>
-
-
-🎟 Contribution : 500 Gourdes
-
-📌 Note importante :
-Les fonds recueillis lors de ce concert serviront à aménager et préparer un espace spécial pour le Département des Enfants, afin d’offrir aux enfants de l’église un environnement approprié pour leur formation spirituelle et leurs activités.
-
-🙏 Nous comptons sur votre présence et votre soutien pour faire de cette activité une grande réussite.
-
-Que Dieu vous bénisse abondamment !</p>
+          <div class="t-date"><i class="fas fa-calendar-day"></i> 10 Août 2025</div>
+          <h3>Pique-nique Communautaire</h3>
+          <p>Journée de communion fraternelle en famille. Activités pour enfants, repas partagé et louange au parc municipal de Carrefour.</p>
         </div>
       </div>
       <div class="timeline-item">
@@ -410,14 +193,7 @@ Que Dieu vous bénisse abondamment !</p>
     </div>
   </div>
 
-  <!-- ===== ANNONCES FIREBASE ===== -->
-  <div id="firebase-annonces" style="display:none; margin-bottom: 50px;">
-    <h2 class="section-title"><i class="fas fa-bullhorn" style="color:var(--gold);margin-right:8px;"></i> Annonces du Pasteur</h2>
-    <p class="section-subtitle">Annonces et informations importantes de notre église</p>
-    <div class="timeline"></div>
-  </div>
-
-    <!-- CTA -->
+  <!-- CTA -->
   <div class="cta-banner">
     <i class="fas fa-church"></i>
     <h2>Venez nous rejoindre !</h2>
@@ -433,8 +209,7 @@ Que Dieu vous bénisse abondamment !</p>
 <div id="foot-placeholder"></div>
 
 <script src="lang.js"></script>
-<script>document.addEventListener('DOMContentLoaded', function(){ if(window.initLang) initLang(); });</script>
-  <script src="nav.js"></script>
+<script src="nav.js"></script>
 <script>NAV.init('Horaires.html');</script>
 </body>
 </html>

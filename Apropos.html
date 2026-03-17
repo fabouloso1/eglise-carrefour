@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>À propos — Église de Dieu de la Prophétie de Carrefour</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -358,26 +358,17 @@
     }
 
     .team-avatar {
-      width: 110px;
-      height: 110px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
       background: rgba(241,196,15,0.2);
-      border: 4px solid rgba(241,196,15,0.6);
-      margin: 0 auto 14px;
+      border: 3px solid rgba(241,196,15,0.5);
+      margin: 0 auto 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 2.2rem;
       color: var(--gold);
-      overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
-    .team-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center top;
-      display: block;
     }
 
     .team-card-top h3 {
@@ -641,49 +632,6 @@
       .team-grid { grid-template-columns: 1fr; }
     }
   </style>
-  <!-- OneSignal Push Notifications -->
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-  <script>
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function(OneSignal) {
-      await OneSignal.init({
-        appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
-        promptOptions: {
-          slidedown: {
-            prompts: [
-              {
-                type: "push",
-                autoPrompt: true,
-                text: {
-                  actionMessage: "Restez connectés à notre église ! Recevez les annonces en temps réel.",
-                  acceptButton: "Oui, m'abonner",
-                  cancelButton: "Plus tard"
-                },
-                delay: { pageViews: 1, timeDelay: 5 }
-              }
-            ]
-          }
-        },
-        welcomeNotification: {
-          disable: false,
-          title: "Église de Dieu de la Prophétie",
-          message: "Bienvenue ! Vous recevrez désormais nos annonces. 🙏"
-        },
-        notifyButton: { enable: false },
-        allowLocalhostAsSecureOrigin: true
-      });
-    });
-  </script>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G9Y14X29NZ"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-G9Y14X29NZ');
-  </script>
-<script src="lang.js"></script>
-<script>document.addEventListener('DOMContentLoaded', function(){ if(window.initLang) initLang(); });</script>
 </head>
 <body>
 
@@ -718,21 +666,7 @@
       <li><a href="Contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
       <li><a href="priere.html"><i class="fas fa-hands-praying"></i> Demande de prière</a></li>
       <li><a href="don.html" class="nav-don"><i class="fas fa-heart"></i> Faire un don</a></li>
-      <li><a href="Live.html" class="nav-live"><i class="fas fa-circle-dot"></i> Live</a></li>
-      <li><a href="admin.html" class="nav-admin"><i class="fas fa-lock"></i> Admin</a></li>
     </ul>
-    <!-- Bouton langue -->
-    <div class="lang-switcher" id="langSwitcher" style="margin-left:8px;">
-      <button class="lang-btn" id="langBtn" onclick="toggleLangMenu()" title="Changer la langue">
-        🌐 <i class="fas fa-chevron-down" style="font-size:0.65rem;"></i>
-      </button>
-      <div class="lang-menu" id="langMenu">
-        <button class="lang-option" data-lang="fr" onclick="applyLang('fr');toggleLangMenu()">🇫🇷 Français</button>
-        <button class="lang-option" data-lang="en" onclick="applyLang('en');toggleLangMenu()">🇬🇧 English</button>
-        <button class="lang-option" data-lang="es" onclick="applyLang('es');toggleLangMenu()">🇪🇸 Español</button>
-        <button class="lang-option" data-lang="ht" onclick="applyLang('ht');toggleLangMenu()">🇭🇹 Kreyòl</button>
-      </div>
-    </div>
   </div>
 </nav>
 <div class="nav-overlay" id="navOverlay"></div>
@@ -879,7 +813,7 @@
     <div class="team-grid">
       <div class="team-card">
         <div class="team-card-top">
-          <div class="team-avatar"><img src="images/28.jpg" alt="Pasteur Anouis Jean" onerror="this.outerHTML='<i class=\"fas fa-user-tie\"></i>'"></div>
+          <div class="team-avatar"><i class="fas fa-user-tie"></i></div>
           <h3>Pasteur Anouis Jean</h3>
           <span class="team-role">Pasteur Titulaire</span>
         </div>
@@ -890,7 +824,7 @@
 
       <div class="team-card">
         <div class="team-card-top">
-          <div class="team-avatar"><img src="images/29.jpg" alt="Pasteur Honore Pierre Jolius" onerror="this.outerHTML='<i class=\"fas fa-user-tie\"></i>'"></div>
+          <div class="team-avatar"><i class="fas fa-user-tie"></i></div>
           <h3>Pasteur Honore Pierre Jolius</h3>
           <span class="team-role">Deuxième Pasteur</span>
         </div>
@@ -901,7 +835,7 @@
 
       <div class="team-card">
         <div class="team-card-top">
-          <div class="team-avatar"><img src="images/30.jpg" alt="Pasteur Badeau Wilson" onerror="this.outerHTML='<i class=\"fas fa-user-tie\"></i>'"></div>
+          <div class="team-avatar"><i class="fas fa-user-tie"></i></div>
           <h3>Pasteur Badeau Wilson</h3>
           <span class="team-role">Troisième Pasteur</span>
         </div>
@@ -921,7 +855,7 @@
         <div class="min-card" onclick="openMin('louange')">
           <div class="min-icon"><i class="fas fa-music"></i></div>
           <div class="min-info">
-            <h4>Coeurs d'adoration</h4>
+            <h4>Ministère de Louange</h4>
             <p>Adoration &amp; Musique</p>
           </div>
           <i class="fas fa-chevron-right min-arrow"></i>
@@ -930,7 +864,7 @@
         <div class="min-card" onclick="openMin('enfants')">
           <div class="min-icon"><i class="fas fa-child"></i></div>
           <div class="min-info">
-            <h4>Eglise des Enfants</h4>
+            <h4>Ministère Enfants</h4>
             <p>École du Dimanche</p>
           </div>
           <i class="fas fa-chevron-right min-arrow"></i>
@@ -939,7 +873,7 @@
         <div class="min-card" onclick="openMin('jeunesse')">
           <div class="min-icon"><i class="fas fa-user-graduate"></i></div>
           <div class="min-info">
-            <h4>La Jeunesse</h4>
+            <h4>Ministère Jeunesse</h4>
             <p>12 – 25 ans</p>
           </div>
           <i class="fas fa-chevron-right min-arrow"></i>
@@ -1062,7 +996,7 @@
   </div>
 
   <div class="footer-bottom">
-    <p>© 2025 Église de Dieu de la Prophétie de Carrefour, Waney 93 — Tous droits réservés</p>
+    <p>© 2025 Église de Dieu de la Prophétie de Carrefour — Tous droits réservés</p>
   </div>
 </footer>
 
@@ -1141,8 +1075,8 @@
       sous: 'Adoration, Musique & Chant',
       desc: 'Le Ministère de Louange est le cœur de notre adoration collective. Composé de musiciens, chanteurs et choristes dévoués, ce ministère crée une atmosphère de révérence et de joie qui prépare les cœurs à recevoir la Parole de Dieu. Nous croyons que la louange est une arme puissante et une porte vers la présence de Dieu.',
       activites: [
-        { titre: 'Culte du Dimanche', detail: 'Louange et adoration lors des cultes hebdomadaires — 7h00 et 10h00' },
-        { titre: 'Répétition', detail: 'Chaque samedi à 16h — Salle principale de l\'église' },
+        { titre: 'Culte du Dimanche', detail: 'Louange et adoration lors des cultes hebdomadaires — 6h00 et 9h30' },
+        { titre: 'Répétition', detail: 'Chaque samedi à 14h — Salle principale de l\'église' },
         { titre: 'Groupe de Chant', detail: 'Chorale adulte et groupe de jeunes chanteurs réunis chaque semaine' },
         { titre: 'Formation musicale', detail: 'Ateliers mensuels pour développer les talents musicaux au service de Dieu' },
       ],
@@ -1150,11 +1084,11 @@
     },
     enfants: {
       icon: 'fa-child',
-      titre: 'Eglise des Enfants',
+      titre: 'Ministère Enfants',
       sous: 'École du Dimanche · 3 – 12 ans',
-      desc: 'Eglise des Enfants est dédié à l\'éducation biblique et au développement spirituel des plus jeunes membres de notre communauté. Nous croyons qu\'élever un enfant dans la foi est l\'un des plus grands cadeaux que nous puissions lui offrir. Des enseignants qualifiés et passionnés encadrent chaque enfant avec amour et patience.',
+      desc: 'Le Ministère Enfants est dédié à l\'éducation biblique et au développement spirituel des plus jeunes membres de notre communauté. Nous croyons qu\'élever un enfant dans la foi est l\'un des plus grands cadeaux que nous puissions lui offrir. Des enseignants qualifiés et passionnés encadrent chaque enfant avec amour et patience.',
       activites: [
-        { titre: 'École du Dimanche', detail: 'Chaque dimanche de 6h30 à 10h00 — Classe séparée par tranche d\'âge' },
+        { titre: 'École du Dimanche', detail: 'Chaque dimanche de 9h30 à 11h00 — Classe séparée par tranche d\'âge' },
         { titre: 'Activités bibliques', detail: 'Histoires illustrées, chants, jeux et mémorisation de versets chaque semaine' },
         { titre: 'Garderie pendant le culte', detail: 'Accueil des tout-petits (0–3 ans) pendant le culte principal du matin' },
         { titre: 'Programme de Noël', detail: 'Pièce de théâtre et récitation des enfants chaque année en décembre' },
@@ -1164,10 +1098,10 @@
     jeunesse: {
       icon: 'fa-user-graduate',
       titre: 'Ministère Jeunesse',
-      sous: '12 – 25 ans · Samedi 15h–17h',
-      desc: 'Le Ministère de la Jeunesse est un espace dynamique et sûr où les jeunes de 12 à 25 ans peuvent grandir dans leur foi, développer leurs dons et construire des amitiés chrétiennes solides. Nous abordons des sujets concrets : identité, avenir, relations, pression sociale — toujours à travers le prisme de la Parole de Dieu.',
+      sous: '12 – 25 ans · Samedi 16h–18h',
+      desc: 'Le Ministère Jeunesse est un espace dynamique et sûr où les jeunes de 12 à 25 ans peuvent grandir dans leur foi, développer leurs dons et construire des amitiés chrétiennes solides. Nous abordons des sujets concrets : identité, avenir, relations, pression sociale — toujours à travers le prisme de la Parole de Dieu.',
       activites: [
-        { titre: 'Réunion hebdomadaire', detail: 'Chaque dimanche de 15h à 17h — Enseignement, louange et partage en groupe' },
+        { titre: 'Réunion hebdomadaire', detail: 'Chaque samedi de 16h à 18h — Enseignement, louange et partage en groupe' },
         { titre: 'Études bibliques thématiques', detail: 'Séries mensuelles sur des sujets qui touchent directement la vie des jeunes' },
         { titre: 'Activités fraternelles', detail: 'Sorties, pique-niques, retraites spirituelles et événements communautaires' },
         { titre: 'Leadership', detail: 'Formation de jeunes leaders chrétiens prêts à servir leur communauté' },
@@ -1180,7 +1114,7 @@
       sous: 'Sœurs unies en Christ',
       desc: 'Le Ministère des Femmes est un espace de communion, d\'édification et de soutien mutuel pour toutes les femmes de l\'église. Qu\'elles soient mères, épouses, professionnelles ou étudiantes, toutes trouvent ici une famille spirituelle bienveillante. Ensemble, nous grandissons dans la foi et nous encourageons mutuellement à vivre selon la Parole de Dieu.',
       activites: [
-        { titre: 'Réunion 2 fois par semaine', detail: 'Lundi et Jeudi — Partage, prière et enseignement dédié aux femmes' },
+        { titre: 'Réunion mensuelle', detail: 'Premier vendredi du mois — Partage, prière et enseignement dédié aux femmes' },
         { titre: 'Groupe de lecture biblique', detail: 'Étude approfondie d\'un livre de la Bible chaque trimestre, en petit groupe' },
         { titre: 'Entraide & Solidarité', detail: 'Soutien aux veuves, mamans isolées et femmes dans le besoin de la communauté' },
         { titre: 'Journée de la femme', detail: 'Célébration spéciale chaque année avec témoignages, louange et encouragement' },
@@ -1295,5 +1229,6 @@
   <div class="min-modal-body" id="minModalBody"></div>
 </div>
 
+<script src="lang.js"></script>
 </body>
 </html>

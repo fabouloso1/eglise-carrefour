@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Témoignages — Église de Dieu de la Prophétie de Carrefour</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -69,122 +69,6 @@
       .temoignages-grid { grid-template-columns: 1fr; }
     }
   </style>
-  <!-- OneSignal Push Notifications -->
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-  <script>
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function(OneSignal) {
-      await OneSignal.init({
-        appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
-        promptOptions: {
-          slidedown: {
-            prompts: [
-              {
-                type: "push",
-                autoPrompt: true,
-                text: {
-                  actionMessage: "Restez connectés à notre église ! Recevez les annonces en temps réel.",
-                  acceptButton: "Oui, m'abonner",
-                  cancelButton: "Plus tard"
-                },
-                delay: { pageViews: 1, timeDelay: 5 }
-              }
-            ]
-          }
-        },
-        welcomeNotification: {
-          disable: false,
-          title: "Église de Dieu de la Prophétie",
-          message: "Bienvenue ! Vous recevrez désormais nos annonces. 🙏"
-        },
-        notifyButton: { enable: false },
-        allowLocalhostAsSecureOrigin: true
-      });
-    });
-  </script>
-  <!-- Firebase -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, query, orderBy, where, serverTimestamp }
-      from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-
-    const app = initializeApp({
-      apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
-      authDomain: "eglise-carrefour.firebaseapp.com",
-      projectId: "eglise-carrefour",
-      storageBucket: "eglise-carrefour.firebasestorage.app",
-      messagingSenderId: "421333694767",
-      appId: "1:421333694767:web:30c18da36ae020821a49da"
-    });
-    const db = getFirestore(app);
-
-    // Chaje tèmoinyaj apwouve yo
-    async function chargerTemoignages() {
-      try {
-        const q = query(
-          collection(db, 'temoignages'),
-          where('approuve', '==', true),
-          orderBy('timestamp', 'desc')
-        );
-        const snap = await getDocs(q);
-        if (snap.empty) return;
-
-        const grid = document.getElementById('temoignages-grid');
-        const catIcons = {
-          'Guérison': 'fa-heart-pulse',
-          'Délivrance': 'fa-dove',
-          'Provision': 'fa-hand-holding-heart',
-          'Conversion': 'fa-person-praying',
-          'Famille': 'fa-users',
-          'Autre': 'fa-star'
-        };
-
-        // Ajoute tèmoinyaj Firebase anvan tèmoinyaj statik yo
-        const cards = snap.docs.map(d => {
-          const t = d.data();
-          const initiales = (t.prenom || '?')[0].toUpperCase() + (t.nom || '?')[0].toUpperCase();
-          const icon = catIcons[t.categorie] || 'fa-star';
-          return `
-            <div class="temoignage-card">
-              <div class="t-header">
-                <div class="t-avatar">${initiales}</div>
-                <div>
-                  <div class="t-name">${t.prenom || ''} ${t.nom ? t.nom[0] + '.' : ''}</div>
-                  <div class="t-date">${t.date || ''}</div>
-                </div>
-              </div>
-              <p class="t-content">${t.temoignage || ''}</p>
-              <span class="t-category"><i class="fas ${icon}"></i> ${t.categorie || 'Témoignage'}</span>
-            </div>`;
-        }).join('');
-
-        grid.insertAdjacentHTML('afterbegin', cards);
-      } catch(e) {
-        console.log('Firebase:', e.message);
-      }
-    }
-
-    // Soumèt tèmoinyaj
-    async function soumetteTemoignage(data) {
-      await addDoc(collection(db, 'temoignages'), {
-        ...data,
-        approuve: false,
-        timestamp: serverTimestamp(),
-        date: new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
-      });
-    }
-
-    window._soumetteTemoignage = soumetteTemoignage;
-    document.addEventListener('DOMContentLoaded', chargerTemoignages);
-  </script>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G9Y14X29NZ"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-G9Y14X29NZ');
-  </script>
 </head>
 <body>
 
@@ -215,7 +99,7 @@
   </div>
 
   <!-- Grille -->
-  <div class="temoignages-grid" id="temoignages-grid">
+  <div class="temoignages-grid">
 
     <div class="temoignage-card">
       <div class="t-header">
@@ -326,34 +210,13 @@
 <div id="foot-placeholder"></div>
 
 <script src="lang.js"></script>
-<script>document.addEventListener('DOMContentLoaded', function(){ if(window.initLang) initLang(); });</script>
-  <script src="nav.js"></script>
+<script src="nav.js"></script>
 <script>
   NAV.init('Temoigner.html');
-  document.getElementById('testimonyForm').addEventListener('submit', async function(e) {
+  document.getElementById('testimonyForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    const btn = this.querySelector('.submit-btn');
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
-    btn.disabled = true;
-
-    const data = {
-      prenom: document.getElementById('tPrenom').value.trim(),
-      nom: document.getElementById('tNom').value.trim(),
-      categorie: document.getElementById('tCategorie').value,
-      temoignage: document.getElementById('tTexte').value.trim()
-    };
-
-    try {
-      if (window._soumetteTemoignage) {
-        await window._soumetteTemoignage(data);
-      }
-      this.style.display = 'none';
-      document.getElementById('successMsg').style.display = 'block';
-    } catch(err) {
-      btn.innerHTML = '<i class="fas fa-paper-plane"></i> Envoyer mon témoignage';
-      btn.disabled = false;
-      alert('Erreur lors de l\'envoi. Réessayez.');
-    }
+    this.style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
   });
 </script>
 </body>

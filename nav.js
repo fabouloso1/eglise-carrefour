@@ -34,7 +34,21 @@ const NAV = (() => {
     <nav class="menu" id="mainNav">
       <div class="nav-inner">
         <a href="index.html" class="nav-brand"><img src="logo.png" alt="Logo" class="nav-logo"></a>
-        <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+        <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
+          <div class="lang-switcher" id="langSwitcher">
+            <button class="lang-btn" onclick="toggleLangMenu()" aria-label="Langue">
+              <span id="langFlag">🇫🇷</span>
+              <i class="fas fa-chevron-down" style="font-size:0.6rem;opacity:0.7;"></i>
+            </button>
+            <div class="lang-menu" id="langMenu">
+              <button class="lang-option" data-lang="fr" onclick="changeLang('fr')">🇫🇷 Français</button>
+              <button class="lang-option" data-lang="en" onclick="changeLang('en')">🇺🇸 English</button>
+              <button class="lang-option" data-lang="es" onclick="changeLang('es')">🇪🇸 Español</button>
+              <button class="lang-option" data-lang="ht" onclick="changeLang('ht')">🇭🇹 Kreyòl</button>
+            </div>
+          </div>
+          <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+        </div>
         <ul class="nav-links" id="navLinks">${items}</ul>
       </div>
     </nav>
@@ -144,6 +158,34 @@ const NAV = (() => {
       document.getElementById('nav-placeholder').innerHTML  = buildNav(activePage);
       document.getElementById('foot-placeholder').innerHTML = buildFooter();
       initInteractions();
+
+      // Init lang apre nav chaje
+      const flags = { fr:'🇫🇷', en:'🇺🇸', es:'🇪🇸', ht:'🇭🇹' };
+      window.changeLang = function(lang) {
+        const flagEl = document.getElementById('langFlag');
+        if (flagEl) flagEl.textContent = flags[lang] || '🇫🇷';
+        // Mete active class
+        document.querySelectorAll('.lang-option').forEach(b => {
+          b.classList.toggle('active', b.getAttribute('data-lang') === lang);
+        });
+        // Fèmen menu
+        const m = document.getElementById('langMenu');
+        if (m) m.classList.remove('open');
+        // Aplike tradiksyon si lang.js chaje
+        if (window.applyLang) window.applyLang(lang);
+      };
+
+      // Restore lang sove
+      const saved = localStorage.getItem('site_lang') || 'fr';
+      const flagEl = document.getElementById('langFlag');
+      if (flagEl) flagEl.textContent = flags[saved] || '🇫🇷';
+      document.querySelectorAll('.lang-option').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-lang') === saved);
+      });
+
+      // Si lang.js deja chaje, aplike imedyatman
+      if (window.applyLang) window.applyLang(saved);
+      // Sinon, applyLang ap rele li menm nan DOMContentLoaded
     }
   };
 })();

@@ -2,27 +2,13 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Église de Dieu de la Prophétie de Carrefour, Waney 93</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Église de Dieu de la Prophétie de Carrefour</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
-  <!-- PWA -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#1c1c3c">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Église Carrefour">
-  <link rel="apple-touch-icon" href="logo.png">
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G9Y14X29NZ"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-G9Y14X29NZ');
-  </script>
 </head>
 <body>
 
@@ -61,29 +47,7 @@
       <li><a href="Contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
       <li><a href="priere.html"><i class="fas fa-hands-praying"></i> Demande de prière</a></li>
       <li><a href="don.html" class="nav-don"><i class="fas fa-heart"></i> Faire un don</a></li>
-      <li><a href="Live.html" class="nav-live"><i class="fas fa-circle-dot"></i> Live</a></li>
-      <li><a href="admin.html" class="nav-admin"><i class="fas fa-lock"></i> Admin</a></li>
     </ul>
-
-    <!-- Lang switcher + Klòch -->
-    <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-      <div class="lang-switcher" id="langSwitcher">
-        <button class="lang-btn" id="langBtn" onclick="toggleLangMenu()" title="Changer la langue">
-          🌐 <i class="fas fa-chevron-down" style="font-size:0.65rem;"></i>
-        </button>
-        <div class="lang-menu" id="langMenu">
-          <button class="lang-option" data-lang="fr" onclick="applyLang('fr');toggleLangMenu()">🇫🇷 Français</button>
-          <button class="lang-option" data-lang="en" onclick="applyLang('en');toggleLangMenu()">🇬🇧 English</button>
-          <button class="lang-option" data-lang="es" onclick="applyLang('es');toggleLangMenu()">🇪🇸 Español</button>
-          <button class="lang-option" data-lang="ht" onclick="applyLang('ht');toggleLangMenu()">🇭🇹 Kreyòl</button>
-        </div>
-      </div>
-      <button class="notif-bell" id="notifBell" onclick="toggleNotifSubscription()" title="Notifications" style="font-size:1rem;padding:2px 6px;">
-        <i class="fas fa-bell" id="bellIcon"></i>
-        <span class="notif-dot" id="notifDot"></span>
-      </button>
-    </div>
-
   </div>
 </nav>
 
@@ -96,7 +60,7 @@
     <img src="logo.png" alt="Logo Église de Dieu de la Prophétie" class="logo">
     <div class="header-text">
       <h1>Église de Dieu de la Prophétie</h1>
-      <p class="header-subtitle">de Carrefour, waney 93</p>
+      <p class="header-subtitle">de Carrefour</p>
       <p class="header-verse">"Je puis tout par celui qui me fortifie" — Phil. 4:13</p>
     </div>
   </div>
@@ -180,107 +144,66 @@
       <h2 data-i18n="welcome_title">Bienvenue dans notre famille</h2>
       <p data-i18n="welcome_text">Rejoignez-nous chaque dimanche pour adorer Dieu ensemble, grandir dans la foi et servir notre communauté.</p>
     </div>
-    <a href="Horaires.html" class="welcome-btn"><span data-i18n="welcome_btn">Voir nos horaires</span> <i class="fas fa-arrow-right"></i></a>
+    <a href="Horaires.html" class="welcome-btn" data-i18n="welcome_btn">Voir nos horaires <i class="fas fa-arrow-right"></i></a>
   </section>
 
   <!-- Grille de liens rapides -->
   <section class="quick-links">
     <a href="priere.html" class="quick-card">
       <i class="fas fa-hands-praying"></i>
-      <h3>Demande de prière</h3>
-      <p>Soumettez vos requêtes de prière</p>
+      <h3 data-i18n="quick_priere_title">Demande de prière</h3>
+      <p data-i18n="quick_priere_text">Soumettez vos requêtes de prière</p>
     </a>
     <a href="Temoigner.html" class="quick-card">
       <i class="fas fa-star"></i>
-      <h3>Témoignages</h3>
-      <p>Partagez ce que Dieu a fait</p>
+      <h3 data-i18n="quick_temo_title">Témoignages</h3>
+      <p data-i18n="quick_temo_text">Partagez ce que Dieu a fait</p>
     </a>
     <a href="Actualites.html" class="quick-card">
       <i class="fas fa-newspaper"></i>
-      <h3>Actualités</h3>
-      <p>Dernières nouvelles de l'église</p>
+      <h3 data-i18n="quick_actu_title">Actualités</h3>
+      <p data-i18n="quick_actu_text">Dernières nouvelles de l'église</p>
     </a>
     <a href="Galerie.html" class="quick-card">
       <i class="fas fa-images"></i>
-      <h3>Galerie</h3>
-      <p>Photos et vidéos de nos cultes</p>
+      <h3 data-i18n="quick_galerie_title">Galerie</h3>
+      <p data-i18n="quick_galerie_text">Photos et vidéos de nos cultes</p>
     </a>
   </section>
 
   <!-- Annonces -->
   <section class="annonces">
-    <h2><i class="fas fa-bullhorn"></i> <span data-i18n="annonces_title">Annonces</span></h2>
-    <ul id="annonces-list">
-      <!-- Annonces statik par defaut -->
+    <h2><i class="fas fa-bullhorn"></i> Annonces</h2>
+    <ul>
       <li>
         <span class="annonce-icon"><i class="fas fa-calendar-day"></i></span>
         <div>
-          <strong data-i18n="annonce1_title">Veille de nuit</strong>
-          <span class="annonce-date" data-i18n="annonce1_date">Vendredi — 20h00</span>
+          <strong>Veillée de prière</strong>
+          <span class="annonce-date">Vendredi — 19h00</span>
         </div>
       </li>
       <li>
         <span class="annonce-icon"><i class="fas fa-users"></i></span>
         <div>
-          <strong data-i18n="annonce2_title">Réunion de la jeunesse</strong>
-          <span class="annonce-date" data-i18n="annonce2_date">Dimanche après-midi — 16h00</span>
+          <strong>Réunion des jeunes</strong>
+          <span class="annonce-date">Samedi — 16h00</span>
         </div>
       </li>
       <li>
         <span class="annonce-icon"><i class="fas fa-church"></i></span>
         <div>
-          <strong data-i18n="annonce3_title">Culte principal</strong>
-          <span class="annonce-date" data-i18n="annonce3_date">Dimanche — 6h00 à 10h00</span>
+          <strong>Culte principal</strong>
+          <span class="annonce-date">Dimanche — 6h00 à 8h30</span>
         </div>
       </li>
     </ul>
-    <a href="Horaires.html" class="see-all-link"><span data-i18n="see_all_horaires">Voir tous les horaires</span> <i class="fas fa-arrow-right"></i></a>
+    <a href="Horaires.html" class="see-all-link">Voir tous les horaires <i class="fas fa-arrow-right"></i></a>
   </section>
-
-  <!-- Firebase Annonces SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-    import { getFirestore, collection, getDocs, query, orderBy, limit }
-      from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-
-    const app = initializeApp({
-      apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
-      authDomain: "eglise-carrefour.firebaseapp.com",
-      projectId: "eglise-carrefour",
-      storageBucket: "eglise-carrefour.firebasestorage.app",
-      messagingSenderId: "421333694767",
-      appId: "1:421333694767:web:30c18da36ae020821a49da"
-    });
-    const db = getFirestore(app);
-
-    const impIcon = { 'Urgent': 'fa-exclamation-circle', 'Important': 'fa-star', 'Normal': 'fa-calendar-day' };
-    const impColor = { 'Urgent': '#e74c3c', 'Important': '#e67e22', 'Normal': 'var(--gold)' };
-
-    try {
-      const q = query(collection(db, 'annonces'), orderBy('timestamp', 'desc'), limit(5));
-      const snap = await getDocs(q);
-      if (!snap.empty) {
-        const list = document.getElementById('annonces-list');
-        list.innerHTML = snap.docs.map(d => {
-          const a = d.data();
-          const color = impColor[a.importance] || 'var(--gold)';
-          const icon = impIcon[a.importance] || 'fa-calendar-day';
-          return `<li>
-            <span class="annonce-icon" style="color:${color}"><i class="fas ${icon}"></i></span>
-            <div>
-              <strong>${a.titre}</strong>
-              <span class="annonce-date">${a.date || ''} ${a.heure ? '— ' + a.heure : ''}</span>
-            </div>
-          </li>`;
-        }).join('');
-      }
-    } catch(e) { console.log('Firebase index:', e.message); }
-  </script>
 
   <!-- Verset du Jour -->
   <section id="versetDuJour">
     <div class="verset-icon"><i class="fas fa-book-open"></i></div>
-    <h2>Verset du Jour</h2>
+    <h2 data-i18n="verset_title">Verset du Jour</h2>
     <p id="verset">Je puis tout par celui qui me fortifie.</p>
     <span id="verset-ref" class="verset-ref">— Philippiens 4:13</span>
   </section>
@@ -290,8 +213,8 @@
     <div class="don-inner">
       <i class="fas fa-heart don-icon"></i>
       <div>
-        <h3>Soutenir notre ministère</h3>
-        <p data-i18n="don_text">Votre générosité nous aide à poursuivre notre mission évangélique.</p>
+        <h3 data-i18n="don_title">Soutenir notre ministère</h3>
+        <p>Votre générosité nous aide à poursuivre notre mission évangélique.</p>
       </div>
       <a href="don.html" class="don-button">Faire un don <i class="fas fa-hand-holding-heart"></i></a>
     </div>
@@ -304,7 +227,7 @@
   <div class="footer-inner">
     <div class="footer-brand">
       <img src="logo.png" alt="Logo" class="footer-logo">
-      <p class="footer-name">Église de Dieu de la Prophétie<br><span>de Carrefour, waney 93</span></p>
+      <p class="footer-name">Église de Dieu de la Prophétie<br><span>de Carrefour</span></p>
     </div>
 
     <div class="footer-links">
@@ -329,9 +252,9 @@
 
     <div class="footer-contact">
       <h4>Nous trouver</h4>
-      <p><i class="fas fa-map-marker-alt"></i> Carrefour Port-au-Prince, Haïti, WI</p>
-      <p><i class="fas fa-phone"></i> +509 3157-3591, 3653-9193, 4028-0086, 3407-6903</p>
-      <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1c797b70756f795c7f7d6e6e797a73696e327468">[email&#160;protected]</a></p>
+      <p><i class="fas fa-map-marker-alt"></i> Carrefour, Haïti</p>
+      <p><i class="fas fa-phone"></i> +509 1234 5678</p>
+      <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9bfefcf7f2e8fedbf8fae9e9fefdf4eee9b5f3ef">[email&#160;protected]</a></p>
       <div class="social-icons">
         <a href="#" title="Facebook" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
         <a href="#" title="YouTube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
@@ -341,12 +264,13 @@
   </div>
 
   <div class="footer-bottom">
-    <p>© 2025 Église de Dieu de la Prophétie de Carrefour waney 93— Tous droits réservés</p>
+    <p>© 2025 Église de Dieu de la Prophétie de Carrefour — Tous droits réservés</p>
   </div>
 </footer>
 
 
 <!-- ===== SCRIPTS ===== -->
+<script src="lang.js"></script>
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ===== MENU HAMBURGER =====
   const hamburgerBtn = document.getElementById('hamburgerBtn');
@@ -378,19 +302,33 @@
   navOverlay.addEventListener('click', closeMenu);
 
   // ===== MENU DROPDOWN =====
-  var dropdowns = document.querySelectorAll('.dropdown');
-  dropdowns.forEach(function(dropdown) {
-    var toggle = dropdown.querySelector('.dropdown-toggle');
+  const dropdowns = document.querySelectorAll('.dropdown');
+  dropdowns.forEach(dropdown => {
+    const toggle = dropdown.querySelector('.dropdown-toggle');
+
+    // Desktop: hover ouvri/fèmen submenu
+    dropdown.addEventListener('mouseenter', function() {
+      if (window.innerWidth > 768) dropdown.classList.add('active');
+    });
+    dropdown.addEventListener('mouseleave', function() {
+      if (window.innerWidth > 768) dropdown.classList.remove('active');
+    });
+
+    // Mobile: klik ouvri/fèmen submenu
     toggle.addEventListener('click', function(e) {
-      e.preventDefault();
-      var isActive = dropdown.classList.contains('active');
-      dropdowns.forEach(function(d) { d.classList.remove('active'); });
-      if (!isActive) dropdown.classList.add('active');
+      if (window.innerWidth <= 768) {
+        e.preventDefault();
+        dropdown.classList.toggle('active');
+      }
+      // Desktop: klik navige sou paj la (pa bloke)
     });
   });
+
+  // Fèmen dropdown sou mobile lè klike deyò
   document.addEventListener('click', function(e) {
-    if (!e.target.closest('.dropdown'))
-      dropdowns.forEach(function(d) { d.classList.remove('active'); });
+    if (window.innerWidth <= 768 && !e.target.closest('.dropdown')) {
+      dropdowns.forEach(d => d.classList.remove('active'));
+    }
   });
 
   // Fèmen menu lè yo klike sou yon lyen (mobile)
@@ -425,213 +363,42 @@
   document.addEventListener('DOMContentLoaded', afficherVerset);
 
   // ===== DIAPORAMA =====
-  var slideIndex = 1;
+  let slideIndex = 0;
+  let autoSlide;
 
-  function showSlides(n) {
-    var slides = document.getElementsByClassName("mySlides");
-    var dots = document.getElementsByClassName("dot");
-    if (n > slides.length) { slideIndex = 1; }
-    if (n < 1) { slideIndex = slides.length; }
-    for (var i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";
+  const slides = document.getElementsByClassName("mySlides");
+  const dots = document.getElementsByClassName("dot");
+
+  function showSlide(n) {
+    // Boucle
+    if (n >= slides.length) slideIndex = 0;
+    if (n < 0) slideIndex = slides.length - 1;
+
+    // Kache tout
+    for (let i = 0; i < slides.length; i++) {
+      slides[i].classList.remove("active-slide");
+      dots[i].classList.remove("active");
     }
-    for (var i = 0; i < dots.length; i++) {
-      dots[i].className = dots[i].className.replace(" active", "");
-    }
-    slides[slideIndex - 1].style.display = "block";
-    dots[slideIndex - 1].className += " active";
+
+    // Montre aktyèl
+    slides[slideIndex].classList.add("active-slide");
+    dots[slideIndex].classList.add("active");
   }
 
   function changeSlide(n) {
+    resetTimer();
     slideIndex += n;
-    showSlides(slideIndex);
+    showSlide(slideIndex);
   }
 
   function goToSlide(n) {
+    resetTimer();
     slideIndex = n;
-    showSlides(slideIndex);
+    showSlide(slideIndex);
   }
 
-  showSlides(slideIndex);
-
-  setInterval(function() {
-    slideIndex++;
-    showSlides(slideIndex);
-  }, 4000);
-
-</script>
-<script src="lang.js"></script>
-<script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getMessaging, getToken, deleteToken, onMessage } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js';
-  import { getFirestore, doc, setDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-
-  const VAPID_KEY = 'BJ1bOLbFM6qNV2XgVA4F9pA7cWng1NKPlU24sgSOk8MyqhhqWsBXVlN0V2Sjnt-Z7xFIHK8wiRS12xFGWddAtFI';
-  const SW_PATH = '/eglise-carrefour/firebase-messaging-sw.js';
-  const SW_SCOPE = '/eglise-carrefour/';
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
-    authDomain: "eglise-carrefour.firebaseapp.com",
-    projectId: "eglise-carrefour",
-    storageBucket: "eglise-carrefour.firebasestorage.app",
-    messagingSenderId: "421333694767",
-    appId: "1:421333694767:web:30c18da36ae020821a49da"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const messaging = getMessaging(app);
-
-  // Afiche notifikasyon lè ou sou sit la
-  onMessage(messaging, function(payload) {
-    const title = payload.notification ? payload.notification.title : 'Eglise de Dieu de la Prophetie';
-    const body  = payload.notification ? payload.notification.body  : '';
-    const link  = (payload.fcmOptions && payload.fcmOptions.link) ? payload.fcmOptions.link : '#';
-
-    const banner = document.createElement('div');
-    banner.style.position = 'fixed';
-    banner.style.top = '80px';
-    banner.style.right = '16px';
-    banner.style.zIndex = '99999';
-    banner.style.background = '#1c1c3c';
-    banner.style.color = 'white';
-    banner.style.padding = '14px 18px';
-    banner.style.borderRadius = '12px';
-    banner.style.maxWidth = '300px';
-    banner.style.boxShadow = '0 6px 25px rgba(0,0,0,0.4)';
-    banner.style.borderLeft = '4px solid #f0c040';
-    banner.style.cursor = 'pointer';
-    banner.innerHTML = '<div style="font-weight:700;font-size:0.95rem;margin-bottom:4px;">&#128276; ' + title + '</div><div style="font-size:0.85rem;opacity:0.85;">' + body + '</div>';
-    banner.onclick = function() { window.open(link, '_blank'); banner.remove(); };
-    document.body.appendChild(banner);
-    setTimeout(function() { if (banner.parentNode) banner.remove(); }, 6000);
-  });
-
-  function showBellToast(msg) {
-    const t = document.createElement('div');
-    t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1c1c3c;color:white;padding:10px 20px;border-radius:20px;z-index:9999;font-size:0.9rem;box-shadow:0 4px 15px rgba(0,0,0,0.3);';
-    t.textContent = msg;
-    document.body.appendChild(t);
-    setTimeout(function() { t.remove(); }, 3500);
-  }
-
-  function updateBellUI(subscribed) {
-    const bell = document.getElementById('notifBell');
-    const dot  = document.getElementById('notifDot');
-    if (bell) bell.classList.toggle('subscribed', subscribed);
-    if (dot)  dot.style.display = subscribed ? 'none' : 'block';
-  }
-
-  window.addEventListener('load', function() {
-    if (localStorage.getItem('fcm_subscribed') === 'true') updateBellUI(true);
-  });
-
-  window.toggleNotifSubscription = async function() {
-    try {
-      if (!('Notification' in window)) {
-        showBellToast('❌ Votre navigateur ne supporte pas les notifications');
-        return;
-      }
-      if (Notification.permission === 'denied') {
-        showBellToast('❌ Notifications bloquees — activez-les dans les parametres');
-        return;
-      }
-
-      const isSubscribed = localStorage.getItem('fcm_subscribed') === 'true';
-
-      if (isSubscribed) {
-        // Dezabòne
-        try { await deleteToken(messaging); } catch(e) {}
-        const oldToken = localStorage.getItem('fcm_token');
-        if (oldToken) {
-          try { await deleteDoc(doc(db, 'fcm_tokens', oldToken.substring(0, 40))); } catch(e) {}
-        }
-        localStorage.removeItem('fcm_subscribed');
-        localStorage.removeItem('fcm_token');
-        localStorage.removeItem('fcm_nom');
-        updateBellUI(false);
-        showBellToast('🔕 Notifications desactivees');
-      } else {
-        // Ouvri modal pou mande non
-        ouvrirNotifModal();
-      }
-    } catch(e) {
-      console.error('FCM error:', e);
-      showBellToast('❌ Erreur : ' + e.message);
-    }
-  };
-
-  // Fonksyon ki rele lè moun konfime non yo
-  window.confirmerAbonnement = async function() {
-    const nom = document.getElementById('notifNameInput').value.trim();
-    if (!nom) {
-      document.getElementById('notifNameInput').style.border = '2px solid red';
-      return;
-    }
-    fermerNotifModal();
-    showBellToast('🔔 Demande de permission...');
-    try {
-      const swReg = await navigator.serviceWorker.register(SW_PATH, { scope: SW_SCOPE });
-      await navigator.serviceWorker.ready;
-      const token = await getToken(messaging, { vapidKey: VAPID_KEY, serviceWorkerRegistration: swReg });
-      if (token) {
-        await setDoc(doc(db, 'fcm_tokens', token.substring(0, 40)), {
-          token: token,
-          nom: nom,
-          date: new Date().toISOString(),
-          platform: navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop'
-        });
-        localStorage.setItem('fcm_subscribed', 'true');
-        localStorage.setItem('fcm_token', token);
-        localStorage.setItem('fcm_nom', nom);
-        updateBellUI(true);
-        showBellToast('🔔 Bienvenue ' + nom + ' ! Vous recevrez nos notifications');
-      }
-    } catch(e) {
-      console.error('FCM error:', e);
-      showBellToast('❌ Erreur : ' + e.message);
-    }
-  };
-</script>
-<script>
-  if(window.initLang) initLang();
-</script>
-<!-- Modal mande non pou abònman -->
-<div id="notifNameModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:99999;align-items:center;justify-content:center;">
-  <div style="background:white;border-radius:16px;padding:28px 24px;max-width:320px;width:90%;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
-    <div style="font-size:2.5rem;margin-bottom:8px;">🔔</div>
-    <h3 style="color:#1c1c3c;margin-bottom:6px;font-size:1.1rem;">Recevoir les notifications</h3>
-    <p style="color:#666;font-size:0.9rem;margin-bottom:18px;">Entrez votre prénom pour vous abonner aux annonces de l'église.</p>
-    <input type="text" id="notifNameInput" placeholder="Votre prénom..." maxlength="40"
-      style="width:100%;padding:10px 14px;border:2px solid #ddd;border-radius:8px;font-size:1rem;box-sizing:border-box;margin-bottom:14px;outline:none;text-align:center;">
-    <button onclick="confirmerAbonnement()"
-      style="width:100%;padding:11px;background:#1c1c3c;color:white;border:none;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:8px;">
-      <i class="fas fa-bell"></i> S'abonner
-    </button>
-    <button onclick="fermerNotifModal()"
-      style="width:100%;padding:8px;background:none;color:#aaa;border:none;font-size:0.9rem;cursor:pointer;">
-      Plus tard
-    </button>
-  </div>
-</div>
-
-<script>
-function ouvrirNotifModal() {
-  var modal = document.getElementById('notifNameModal');
-  modal.style.display = 'flex';
-  setTimeout(function() { document.getElementById('notifNameInput').focus(); }, 200);
-}
-
-function fermerNotifModal() {
-  document.getElementById('notifNameModal').style.display = 'none';
-}
-
-// Enter pou konfime
-document.getElementById('notifNameInput').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') confirmerAbonnement();
-});
-</script>
-
-</body>
-</html>
+  function resetTimer() {
+    clearInterval(autoSlide);
+    autoSlide = setInterval(() => {
+      slideIndex++;
+      showSlide

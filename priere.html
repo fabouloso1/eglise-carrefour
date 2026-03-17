@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Demande de Prière — Église de Dieu de la Prophétie de Carrefour</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -66,72 +66,6 @@
       .priere-verse { padding: 28px 24px; }
     }
   </style>
-  <!-- OneSignal Push Notifications -->
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-  <script>
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function(OneSignal) {
-      await OneSignal.init({
-        appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
-        promptOptions: {
-          slidedown: {
-            prompts: [
-              {
-                type: "push",
-                autoPrompt: true,
-                text: {
-                  actionMessage: "Restez connectés à notre église ! Recevez les annonces en temps réel.",
-                  acceptButton: "Oui, m'abonner",
-                  cancelButton: "Plus tard"
-                },
-                delay: { pageViews: 1, timeDelay: 5 }
-              }
-            ]
-          }
-        },
-        welcomeNotification: {
-          disable: false,
-          title: "Église de Dieu de la Prophétie",
-          message: "Bienvenue ! Vous recevrez désormais nos annonces. 🙏"
-        },
-        notifyButton: { enable: false },
-        allowLocalhostAsSecureOrigin: true
-      });
-    });
-  </script>
-  <!-- Firebase -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp }
-      from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-
-    const app = initializeApp({
-      apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
-      authDomain: "eglise-carrefour.firebaseapp.com",
-      projectId: "eglise-carrefour",
-      storageBucket: "eglise-carrefour.firebasestorage.app",
-      messagingSenderId: "421333694767",
-      appId: "1:421333694767:web:30c18da36ae020821a49da"
-    });
-    const db = getFirestore(app);
-
-    window._savePriere = async function(data) {
-      await addDoc(collection(db, 'prieres'), {
-        ...data,
-        lu: false,
-        timestamp: serverTimestamp(),
-        date: new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
-      });
-    };
-  </script>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G9Y14X29NZ"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-G9Y14X29NZ');
-  </script>
 </head>
 <body>
 
@@ -187,50 +121,46 @@
     <h2 class="form-title">Soumettez votre demande</h2>
     <p class="form-subtitle">Aucune demande n'est trop petite ou trop grande pour Dieu. Nous prions avec foi, croyant que <em>"la prière fervente du juste a une grande efficace"</em> (Jacques 5:16).</p>
 
-    <form id="priereForm" action="https://formspree.io/f/anouisjean@yahoo.fr" method="POST">
-      <!-- Champs cachés pou Formspree -->
-      <input type="hidden" name="_subject" value="🙏 Nouvelle demande de prière — Église de Carrefour">
-      <input type="hidden" name="_replyto" id="hidden_email">
-
+    <form id="priereForm">
       <div class="form-row">
         <div class="form-group">
           <label for="nom">Votre nom *</label>
-          <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
+          <input type="text" id="nom" placeholder="Votre nom" required>
         </div>
         <div class="form-group">
           <label for="telephone">Téléphone (optionnel)</label>
-          <input type="tel" id="telephone" name="telephone" placeholder="+509 ...">
+          <input type="tel" id="telephone" placeholder="+509 ...">
         </div>
       </div>
 
       <div class="form-group">
         <label for="categorie">Catégorie de la demande</label>
-        <select id="categorie" name="categorie">
+        <select id="categorie">
           <option value="">-- Choisissez --</option>
-          <option value="Santé & Guérison">Santé &amp; Guérison</option>
-          <option value="Famille & Relations">Famille &amp; Relations</option>
-          <option value="Travail & Finances">Travail &amp; Finances</option>
-          <option value="Salut d'un proche">Salut d'un proche</option>
-          <option value="Délivrance">Délivrance</option>
-          <option value="Autre besoin">Autre besoin</option>
+          <option value="sante">Santé & Guérison</option>
+          <option value="famille">Famille & Relations</option>
+          <option value="travail">Travail & Finances</option>
+          <option value="salut">Salut d'un proche</option>
+          <option value="delivrance">Délivrance</option>
+          <option value="autre">Autre besoin</option>
         </select>
       </div>
 
       <div class="form-group">
         <label for="sujet">Votre demande de prière *</label>
-        <textarea id="sujet" name="demande" placeholder="Partagez votre besoin avec nous. Dieu entend chaque prière..." required></textarea>
+        <textarea id="sujet" placeholder="Partagez votre besoin avec nous. Dieu entend chaque prière..." required></textarea>
       </div>
 
       <div class="form-group">
         <div class="checkbox-group">
-          <input type="checkbox" id="urgent" name="urgent" value="Oui — demande urgente">
+          <input type="checkbox" id="urgent">
           <label for="urgent">Cette demande est urgente — je souhaite être contacté(e) rapidement par l'équipe pastorale.</label>
         </div>
       </div>
 
       <div class="form-group">
         <div class="checkbox-group">
-          <input type="checkbox" id="anonyme" name="anonyme" value="Oui — rester anonyme">
+          <input type="checkbox" id="anonyme">
           <label for="anonyme">Je souhaite rester anonyme — ne pas divulguer mon nom lors des prières collectives.</label>
         </div>
       </div>
@@ -244,11 +174,6 @@
       <i class="fas fa-check-circle"></i>
       <h3>Demande reçue — Nous prions pour vous !</h3>
       <p>Votre demande a été transmise à notre équipe d'intercesseurs. Nous la porterons devant le Seigneur avec foi et ferveur.<br><br><em>"L'Éternel est près de ceux qui ont le cœur brisé, il sauve ceux qui ont l'esprit dans l'abattement."</em> — Psaume 34:18</p>
-      <div style="margin-top:20px;">
-        <a id="whatsappBtn" href="#" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:white;padding:12px 24px;border-radius:25px;font-weight:700;font-size:0.92rem;text-decoration:none;">
-          <i class="fab fa-whatsapp"></i> Envoyer aussi sur WhatsApp
-        </a>
-      </div>
     </div>
   </div>
 
@@ -257,68 +182,12 @@
 <div id="foot-placeholder"></div>
 
 <script src="lang.js"></script>
-<script>document.addEventListener('DOMContentLoaded', function(){ if(window.initLang) initLang(); });</script>
-  <script src="nav.js"></script>
+<script src="nav.js"></script>
 <script>
   NAV.init('priere.html');
-
   document.getElementById('priereForm').addEventListener('submit', function(e) {
     e.preventDefault();
-
-    var nom = document.getElementById('nom').value;
-    var telephone = document.getElementById('telephone').value;
-    var categorie = document.getElementById('categorie').value;
-    var demande = document.getElementById('sujet').value;
-    var urgent = document.getElementById('urgent').checked ? 'Oui' : 'Non';
-    var anonyme = document.getElementById('anonyme').checked ? 'Oui' : 'Non';
-
-    // Envoye pa Formspree (email)
-    var formData = new FormData(this);
-    fetch(this.action, {
-      method: 'POST',
-      body: formData,
-      headers: { 'Accept': 'application/json' }
-    });
-
-    // Prepare mesaj WhatsApp
-    var msg = '🙏 *Nouvelle demande de prière*\n\n';
-    msg += '👤 *Nom:* ' + nom + '\n';
-    if (telephone) msg += '📞 *Téléphone:* ' + telephone + '\n';
-    if (categorie) msg += '📂 *Catégorie:* ' + categorie + '\n';
-    msg += '\n📝 *Demande:*\n' + demande + '\n\n';
-    msg += '⚡ *Urgent:* ' + urgent + '\n';
-    msg += '🔒 *Anonyme:* ' + anonyme;
-
-    var waUrl = 'https://wa.me/50931573591?text=' + encodeURIComponent(msg);
-    document.getElementById('whatsappBtn').href = waUrl;
-
-    // Sove nan Firebase + voye notif bay pastè
-    if (window._savePriere) {
-      window._savePriere({
-        nom: anonyme === 'Oui' ? 'Anonyme' : nom,
-        telephone: telephone,
-        categorie: categorie,
-        demande: demande,
-        urgent: urgent,
-        anonyme: anonyme
-      }).then(function() {
-        // Voye notif bay pastè via FCM token pastè a
-        var notifNom = anonyme === 'Oui' ? 'Anonyme' : nom;
-        var notifTitle = urgent === 'Oui' ? '🚨 Demande URGENTE de prière !' : '🙏 Nouvelle demande de prière';
-        var notifBody  = notifNom + ' a soumis une demande' + (urgent === 'Oui' ? ' urgente' : '') + '. Ouvrez le panel pour lire.';
-        var notifLink  = 'https://fabouloso1.github.io/eglise-carrefour/admin.html';
-        // Rele FCM REST API pou voye notif bay token pastè a
-        var pasteurToken = localStorage.getItem('fcm_token');
-        if (pasteurToken) {
-          // Si pastè li menm ki soumèt, pa voye
-        }
-        // Sove yon dokiman "alerte" pou admin panel ka detekte
-        if (window._addAlerte) window._addAlerte({ type: 'priere', nom: notifNom, urgent: urgent });
-      }).catch(function(e) { console.log('Firebase priere:', e.message); });
-    }
-
-    // Montre mesaj siksè
-    document.getElementById('priereForm').style.display = 'none';
+    this.style.display = 'none';
     document.getElementById('successMsg').style.display = 'block';
     window.scrollTo({ top: document.getElementById('successMsg').offsetTop - 100, behavior: 'smooth' });
   });

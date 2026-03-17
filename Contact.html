@@ -2,107 +2,81 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact — Église de Dieu de la Prophétie de Carrefour</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="icon" href="logo.png">
-
   <style>
-    .contact-hero {
-      background: linear-gradient(135deg, #1c1c3c 0%, #2d2d6b 100%);
-      color: white; text-align: center; padding: 80px 20px 50px;
+    .contact-hero { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 70px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+    .contact-hero::before { content: '\f0e0'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: -40px; top: -40px; font-size: 220px; opacity: 0.04; color: white; }
+    .contact-hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(241,196,15,0.15); border: 1px solid rgba(241,196,15,0.35); color: var(--gold); padding: 6px 18px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
+    .contact-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 14px; }
+    .contact-hero p { font-size: 1.05rem; opacity: 0.82; max-width: 500px; margin: 0 auto; }
+
+    .breadcrumb { background: white; border-bottom: 1px solid var(--border); padding: 12px 24px; }
+    .breadcrumb-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--text-muted); }
+    .breadcrumb a { color: var(--text-muted); transition: var(--transition); }
+    .breadcrumb a:hover { color: var(--primary); }
+    .breadcrumb i { font-size: 0.65rem; color: #bbb; }
+    .breadcrumb span { color: var(--primary); font-weight: 600; }
+
+    .contact-main { max-width: 1100px; margin: 0 auto; padding: 50px 24px 80px; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 32px; }
+
+    /* Infos côté gauche */
+    .contact-info { display: flex; flex-direction: column; gap: 20px; }
+    .info-card { background: white; border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); display: flex; align-items: flex-start; gap: 18px; transition: var(--transition); }
+    .info-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: rgba(241,196,15,0.4); }
+    .info-icon { width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1.1rem; flex-shrink: 0; }
+    .info-card h3 { color: var(--primary); font-size: 0.95rem; margin-bottom: 5px; }
+    .info-card p, .info-card a { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; text-decoration: none; transition: var(--transition); }
+    .info-card a:hover { color: var(--primary); }
+
+    .horaires-card { background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: var(--radius); padding: 28px; color: white; }
+    .horaires-card h3 { color: var(--gold); font-size: 1rem; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .horaires-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .horaires-list li { display: flex; justify-content: space-between; font-size: 0.88rem; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .horaires-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .h-day { font-weight: 600; color: rgba(255,255,255,0.9); }
+    .h-time { color: var(--gold); font-weight: 500; }
+
+    /* Formulaire côté droit */
+    .contact-form-wrap { background: white; border-radius: var(--radius); padding: 40px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
+    .form-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--primary); margin-bottom: 8px; }
+    .form-subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 30px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 7px; font-weight: 600; color: var(--primary); font-size: 0.88rem; }
+    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px 16px; border: 1.5px solid #e0e0e0; border-radius: var(--radius-sm); font-family: 'Montserrat', sans-serif; font-size: 0.92rem; color: var(--text); transition: var(--transition); background: #fafafa; }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--gold); background: white; box-shadow: 0 0 0 3px rgba(241,196,15,0.12); }
+    .form-group textarea { min-height: 130px; resize: vertical; }
+    .submit-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 30px; font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .submit-btn:hover { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--primary); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(241,196,15,0.35); }
+    .success-msg { display: none; background: #e8f5e9; border-left: 4px solid #4caf50; border-radius: var(--radius-sm); padding: 20px 24px; text-align: center; margin-top: 20px; }
+    .success-msg i { color: #4caf50; font-size: 2rem; margin-bottom: 8px; display: block; }
+    .success-msg h3 { color: #2e7d32; margin-bottom: 5px; }
+    .success-msg p { color: #555; font-size: 0.9rem; }
+
+    /* Map */
+    .map-section { margin-top: 40px; background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
+    .map-section-header { padding: 24px 28px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+    .map-section-header i { color: var(--gold); font-size: 1.2rem; }
+    .map-section-header h2 { color: var(--primary); font-size: 1.2rem; }
+    .map-placeholder { background: linear-gradient(135deg, #e8eaf6, #f3e5f5); height: 280px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px; color: #7986cb; }
+    .map-placeholder i { font-size: 3rem; opacity: 0.5; }
+    .map-placeholder p { font-size: 0.9rem; opacity: 0.7; }
+
+    @media (max-width: 900px) {
+      .contact-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
     }
-    .contact-hero h1 { font-size: 2.2rem; margin-bottom: 10px; }
-    .contact-hero p { opacity: 0.8; font-size: 1rem; }
-    .contact-container {
-      max-width: 1100px; margin: 0 auto; padding: 50px 20px;
-      display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px;
+    @media (max-width: 480px) {
+      .contact-form-wrap { padding: 24px 18px; }
     }
-    @media (max-width: 768px) { .contact-container { grid-template-columns: 1fr; } }
-    .contact-info-card, .contact-form-wrap {
-      background: white; border-radius: 16px; padding: 30px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    }
-    .contact-info-card h2 { color: #1c1c3c; margin-bottom: 20px; font-size: 1.3rem; }
-    .info-item { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 20px; }
-    .info-icon {
-      width: 42px; height: 42px; border-radius: 10px;
-      background: linear-gradient(135deg, #1c1c3c, #2d2d6b);
-      display: flex; align-items: center; justify-content: center;
-      color: #f0c040; font-size: 1rem; flex-shrink: 0;
-    }
-    .info-label { font-weight: 700; color: #1c1c3c; font-size: 1rem; }
-    .info-value { color: #444; font-size: 0.95rem; margin-top: 3px; line-height: 1.6; }
-    .info-value a { color: #2d2d6b; text-decoration: none; }
-    .form-title { color: #1c1c3c; font-size: 1.4rem; margin-bottom: 6px; }
-    .form-subtitle { color: #888; font-size: 0.9rem; margin-bottom: 24px; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
-    .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; font-weight: 600; color: #1c1c3c; font-size: 0.88rem; margin-bottom: 6px; }
-    .form-group input, .form-group select, .form-group textarea {
-      width: 100%; padding: 11px 14px; border: 1.5px solid #e0e0e0; border-radius: 8px;
-      font-size: 0.95rem; font-family: inherit; transition: border 0.2s;
-      box-sizing: border-box; background: #fafafa;
-    }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-      outline: none; border-color: #2d2d6b; background: white;
-    }
-    .form-group textarea { height: 120px; resize: vertical; }
-    .submit-btn {
-      width: 100%; padding: 14px;
-      background: linear-gradient(135deg, #1c1c3c, #2d2d6b);
-      color: white; border: none; border-radius: 30px;
-      font-family: inherit; font-size: 1rem; font-weight: 700; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s;
-    }
-    .submit-btn:hover { background: linear-gradient(135deg, #f0c040, #c9a84c); color: #1c1c3c; }
-    .success-msg {
-      display: none; text-align: center; padding: 30px;
-      background: #e8f5e9; border-radius: 12px; color: #2e7d32;
-    }
-    .success-msg i { font-size: 3rem; margin-bottom: 12px; display: block; }
-    .success-msg h3 { font-size: 1.3rem; margin-bottom: 8px; }
-    .map-section { padding: 40px 20px; background: #f5f5f5; }
-    .map-section-header { text-align: center; margin-bottom: 20px; color: #1c1c3c; }
-    .map-placeholder {
-      max-width: 800px; margin: 0 auto; background: #ddd; border-radius: 12px;
-      height: 250px; display: flex; align-items: center;
-      justify-content: center; flex-direction: column; color: #888;
-    }
-    .map-placeholder i { font-size: 2.5rem; margin-bottom: 10px; }
   </style>
-
-  <!-- Firebase Contact -->
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
-    import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
-    const app = initializeApp({
-      apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
-      authDomain: "eglise-carrefour.firebaseapp.com",
-      projectId: "eglise-carrefour",
-      storageBucket: "eglise-carrefour.firebasestorage.app",
-      messagingSenderId: "421333694767",
-      appId: "1:421333694767:web:30c18da36ae020821a49da"
-    });
-    const db = getFirestore(app);
-    window._saveContact = async function(data) {
-      await addDoc(collection(db, 'contacts'), {
-        ...data, lu: false, timestamp: serverTimestamp(),
-        date: new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
-      });
-    };
-  </script>
-
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G9Y14X29NZ"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date()); gtag('config', 'G-G9Y14X29NZ');
-  </script>
 </head>
 <body>
 
@@ -110,121 +84,102 @@
 
 <!-- HERO -->
 <div class="contact-hero">
-  <h1 data-i18n="contact_title"><i class="fas fa-envelope" style="color:#f0c040;margin-right:10px;"></i>Contactez-nous</h1>
-  <p data-i18n="contact_subtitle">Nous sommes là pour vous. N'hésitez pas à nous écrire ou nous appeler.</p>
+  <div class="contact-hero-badge"><i class="fas fa-envelope"></i> Contactez-nous</div>
+  <h1>Nous sommes là pour vous</h1>
+  <p>Une question, un témoignage ou besoin de soutien ? Notre équipe est disponible pour vous.</p>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+    <i class="fas fa-chevron-right"></i>
+    <span>Contact</span>
+  </div>
 </div>
 
 <!-- CONTENU -->
-<div class="contact-container">
+<div class="contact-main">
+  <div class="contact-grid">
 
-  <!-- GAUCHE : Infos -->
-  <div class="contact-info-card">
-    <h2 data-i18n="contact_info_title"><i class="fas fa-info-circle" style="color:#f0c040;margin-right:8px;"></i>Nos coordonnées</h2>
-
-    <div class="info-item">
-      <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
-      <div>
-        <div class="info-label">Adresse</div>
-        <div class="info-value">Carrefour, Waney 93<br>Port-au-Prince, Haïti</div>
-      </div>
-    </div>
-
-    <div class="info-item">
-      <div class="info-icon"><i class="fas fa-phone"></i></div>
-      <div>
-        <div class="info-label">Téléphone</div>
-        <div class="info-value"><a href="tel:+50931573591">+509 3157-3591</a></div>
-      </div>
-    </div>
-
-    <div class="info-item">
-      <div class="info-icon"><i class="fab fa-whatsapp"></i></div>
-      <div>
-        <div class="info-label">WhatsApp</div>
-        <div class="info-value"><a href="https://wa.me/50931573591" target="_blank">+509 3157-3591</a></div>
-      </div>
-    </div>
-
-    <div class="info-item">
-      <div class="info-icon"><i class="fas fa-envelope"></i></div>
-      <div>
-        <div class="info-label">Email</div>
-        <div class="info-value"><a href="/cdn-cgi/l/email-protection#ddbcb3b2a8b4aeb7b8bcb39da4bcb5b2b2f3bbaf"><span class="__cf_email__" data-cfemail="e98887869c809a838c8887a99088818686c78f9b">[email&#160;protected]</span></a></div>
-      </div>
-    </div>
-
-    <div class="info-item">
-      <div class="info-icon"><i class="fas fa-clock"></i></div>
-      <div>
-        <div class="info-label">Heures de culte</div>
-        <div class="info-value">Dimanche : 9h00 – 12h00<br>Mercredi : 18h00 – 20h00</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- DROITE : Formulaire -->
-  <div class="contact-form-wrap">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
-      <div style="width:44px;height:44px;background:linear-gradient(135deg,#1c1c3c,#2d2d6b);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-        <i class="fas fa-paper-plane" style="color:#f0c040;font-size:1.1rem;"></i>
-      </div>
-      <div>
-        <h2 style="color:#1c1c3c;font-size:1.5rem;margin:0;font-weight:800;">Envoyez-nous un message</h2>
-        <p style="color:#888;font-size:0.95rem;margin:0;">Nous vous répondrons rapidement 🙏</p>
-      </div>
-    </div>
-
-    <div style="height:1px;background:#f0f0f0;margin:18px 0;"></div>
-
-    <form id="contactForm">
-
-      <!-- Nom konplè -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+    <!-- GAUCHE : Infos -->
+    <div class="contact-info">
+      <div class="info-card">
+        <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
         <div>
-          <label style="font-size:0.95rem;font-weight:700;color:#333;display:block;margin-bottom:6px;">Prénom *</label>
-          <div style="position:relative;">
-            <i class="fas fa-user" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#aaa;font-size:0.85rem;"></i>
-            <input type="text" id="prenom" placeholder="Jean" required
-              style="width:100%;padding:12px 12px 12px 38px;border:1.5px solid #e8e8e8;border-radius:10px;font-size:1rem;box-sizing:border-box;background:#fafafa;font-family:inherit;">
+          <h3>Notre adresse</h3>
+          <p>Carrefour, Haïti<br>Disponible chaque dimanche dès 6h00</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon"><i class="fas fa-phone"></i></div>
+        <div>
+          <h3>Téléphone</h3>
+          <a href="tel:+50912345678">+509 1234 5678</a><br>
+          <a href="tel:+50912345678">+509 1234 5678</a>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon"><i class="fas fa-envelope"></i></div>
+        <div>
+          <h3>Email</h3>
+          <a href="/cdn-cgi/l/email-protection#6005070c091305200301121205060f15124e0814"><span class="__cf_email__" data-cfemail="7e1b1912170d1b3e1d1f0c0c1b18110b0c50160a">[email&#160;protected]</span></a>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon"><i class="fab fa-facebook"></i></div>
+        <div>
+          <h3>Réseaux sociaux</h3>
+          <a href="#">Facebook — Église de Carrefour</a><br>
+          <a href="#">YouTube — Cultes en direct</a>
+        </div>
+      </div>
+
+      <!-- Horaires rapides -->
+      <div class="horaires-card">
+        <h3><i class="fas fa-clock"></i> Horaires des cultes</h3>
+        <ul class="horaires-list">
+          <li><span class="h-day">Dimanche</span><span class="h-time">6h00 – 8h30</span></li>
+          <li><span class="h-day">Dimanche</span><span class="h-time">9h30 – 11h00</span></li>
+          <li><span class="h-day">Vendredi</span><span class="h-time">19h00 – 21h00</span></li>
+          <li><span class="h-day">Samedi</span><span class="h-time">16h00 – 18h00</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- DROITE : Formulaire -->
+    <div class="contact-form-wrap">
+      <h2 class="form-title">Envoyez-nous un message</h2>
+      <p class="form-subtitle">Nous vous répondrons dans les plus brefs délais. Que Dieu vous bénisse !</p>
+
+      <form id="contactForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="prenom">Prénom *</label>
+            <input type="text" id="prenom" placeholder="Jean" required>
+          </div>
+          <div class="form-group">
+            <label for="nom">Nom *</label>
+            <input type="text" id="nom" placeholder="Dupont" required>
           </div>
         </div>
-        <div>
-          <label style="font-size:0.95rem;font-weight:700;color:#333;display:block;margin-bottom:6px;">Nom *</label>
-          <div style="position:relative;">
-            <i class="fas fa-user" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#aaa;font-size:0.85rem;"></i>
-            <input type="text" id="nom" placeholder="Dupont" required
-              style="width:100%;padding:12px 12px 12px 38px;border:1.5px solid #e8e8e8;border-radius:10px;font-size:1rem;box-sizing:border-box;background:#fafafa;font-family:inherit;">
-          </div>
-        </div>
-      </div>
 
-      <!-- Email -->
-      <div style="margin-bottom:14px;">
-        <label style="font-size:0.95rem;font-weight:700;color:#333;display:block;margin-bottom:6px;">Adresse email *</label>
-        <div style="position:relative;">
-          <i class="fas fa-envelope" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#aaa;font-size:0.85rem;"></i>
-          <input type="email" id="email" placeholder="votre@email.com" required
-            style="width:100%;padding:12px 12px 12px 38px;border:1.5px solid #e8e8e8;border-radius:10px;font-size:1rem;box-sizing:border-box;background:#fafafa;font-family:inherit;">
+        <div class="form-group">
+          <label for="email">Adresse email *</label>
+          <input type="email" id="email" placeholder="votre@email.com" required>
         </div>
-      </div>
 
-      <!-- Téléphone -->
-      <div style="margin-bottom:14px;">
-        <label style="font-size:0.95rem;font-weight:700;color:#333;display:block;margin-bottom:6px;">Téléphone <span style="color:#aaa;font-weight:400;">(optionnel)</span></label>
-        <div style="position:relative;">
-          <i class="fas fa-phone" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#aaa;font-size:0.85rem;"></i>
-          <input type="tel" id="telephone" placeholder="+509 ..."
-            style="width:100%;padding:12px 12px 12px 38px;border:1.5px solid #e8e8e8;border-radius:10px;font-size:1rem;box-sizing:border-box;background:#fafafa;font-family:inherit;">
+        <div class="form-group">
+          <label for="telephone">Téléphone (optionnel)</label>
+          <input type="tel" id="telephone" placeholder="+509 ...">
         </div>
-      </div>
 
-      <!-- Sujet -->
-      <div style="margin-bottom:14px;">
-        <label style="font-size:0.95rem;font-weight:700;color:#333;display:block;margin-bottom:6px;">Sujet *</label>
-        <div style="position:relative;">
-          <i class="fas fa-tag" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#aaa;font-size:0.85rem;pointer-events:none;"></i>
-          <select id="sujet" required
-            style="width:100%;padding:12px 12px 12px 38px;border:1.5px solid #e8e8e8;border-radius:10px;font-size:1rem;box-sizing:border-box;background:#fafafa;appearance:none;font-family:inherit;">
+        <div class="form-group">
+          <label for="sujet">Sujet *</label>
+          <select id="sujet" required>
             <option value="">-- Choisissez un sujet --</option>
             <option value="info">Informations générales</option>
             <option value="priere">Demande de prière</option>
@@ -233,91 +188,43 @@
             <option value="autre">Autre</option>
           </select>
         </div>
-      </div>
 
-      <!-- Message -->
-      <div style="margin-bottom:18px;">
-        <label style="font-size:0.95rem;font-weight:700;color:#333;display:block;margin-bottom:6px;">Votre message *</label>
-        <textarea id="message" placeholder="Écrivez votre message ici..." required
-          style="width:100%;padding:14px;border:1.5px solid #e8e8e8;border-radius:10px;font-size:1rem;box-sizing:border-box;background:#fafafa;font-family:inherit;height:150px;resize:vertical;line-height:1.6;"></textarea>
-      </div>
+        <div class="form-group">
+          <label for="message">Votre message *</label>
+          <textarea id="message" placeholder="Écrivez votre message ici..." required></textarea>
+        </div>
 
-      <button type="submit"
-        style="width:100%;padding:14px;background:linear-gradient(135deg,#1c1c3c,#2d2d6b);color:white;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px;transition:0.2s;"
-        onmouseover="this.style.background='linear-gradient(135deg,#f0c040,#c9a84c)';this.style.color='#1c1c3c';"
-        onmouseout="this.style.background='linear-gradient(135deg,#1c1c3c,#2d2d6b)';this.style.color='white';">
-        <i class="fas fa-paper-plane"></i> Envoyer le message
-      </button>
-    </form>
+        <button type="submit" class="submit-btn">
+          <i class="fas fa-paper-plane"></i> Envoyer le message
+        </button>
+      </form>
 
-    <!-- Siksè -->
-    <div id="successMsg" style="display:none;text-align:center;padding:30px 20px;background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border-radius:12px;border:1px solid #c8e6c9;">
-      <div style="width:60px;height:60px;background:#27ae60;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
-        <i class="fas fa-check" style="color:white;font-size:1.5rem;"></i>
+      <div class="success-msg" id="successMsg">
+        <i class="fas fa-check-circle"></i>
+        <h3>Message envoyé !</h3>
+        <p>Merci de nous avoir contactés. Nous vous répondrons très bientôt. Que Dieu vous bénisse !</p>
       </div>
-      <h3 style="color:#2e7d32;font-size:1.2rem;margin-bottom:8px;">Message envoyé !</h3>
-      <p style="color:#555;font-size:0.9rem;">Merci de nous avoir contactés.<br>Nous vous répondrons très bientôt. Que Dieu vous bénisse ! 🙏</p>
     </div>
   </div>
-</div>
 
-<!-- MAP -->
-<div class="map-section">
-  <div class="map-section-header">
-    <i class="fas fa-map-marker-alt" style="color:#f0c040;font-size:1.5rem;margin-right:8px;"></i>
-    <h2 style="display:inline;">Nous trouver à Carrefour, Port-au-Prince, Haïti</h2>
-  </div>
-  <div class="map-placeholder">
-    <i class="fas fa-map-marked-alt"></i>
-    <p>Carrefour, Waney 93 — Port-au-Prince, Haïti</p>
+  <!-- MAP -->
+  <div class="map-section">
+    <div class="map-section-header">
+      <i class="fas fa-map-marker-alt"></i>
+      <h2>Nous trouver à Carrefour, Haïti</h2>
+    </div>
+    <div class="map-placeholder">
+      <i class="fas fa-map-marked-alt"></i>
+      <p>Carte Google Maps — Remplacez avec votre iframe Maps</p>
+    </div>
   </div>
 </div>
 
 <div id="foot-placeholder"></div>
 
-<script src="lang.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="lang.js"></script>
 <script src="nav.js"></script>
 <script>
   NAV.init('Contact.html');
-  document.addEventListener('DOMContentLoaded', function() {
-    if (window.initLang) initLang();
-  });
 
-  document.getElementById('contactForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    var prenom    = document.getElementById('prenom').value.trim();
-    var nom       = document.getElementById('nom').value.trim();
-    var email     = document.getElementById('email').value.trim();
-    var telephone = document.getElementById('telephone').value.trim();
-    var sujet     = document.getElementById('sujet').value;
-    var message   = document.getElementById('message').value.trim();
-
-    if (!prenom || !nom || !email || !sujet || !message) return;
-
-    // Sove nan Firebase
-    if (window._saveContact) {
-      window._saveContact({
-        prenom: prenom, nom: nom, email: email,
-        telephone: telephone, sujet: sujet, message: message
-      }).catch(function(err) { console.log('Firebase contact:', err.message); });
-    }
-
-    // Afiche mesaj siksè
-    window._saveContact({
-      prenom: prenom, nom: nom, email: email,
-      telephone: telephone, sujet: sujet, message: message
-    }).then(function() {
-      document.getElementById('contactForm').style.display = 'none';
-      document.getElementById('successMsg').style.display = 'block';
-      window.scrollTo({ top: document.getElementById('successMsg').offsetTop - 100, behavior: 'smooth' });
-    }).catch(function(err) {
-      console.log('Firebase contact:', err.message);
-      // Menm si Firebase echwe, montre mesaj siksè
-      document.getElementById('contactForm').style.display = 'none';
-      document.getElementById('successMsg').style.display = 'block';
-    });
-  });
-</script>
-</body>
-</html>
+  // Formulaire de con

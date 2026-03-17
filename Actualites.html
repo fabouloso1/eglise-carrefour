@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Actualités — Église de Dieu de la Prophétie de Carrefour</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -91,82 +91,6 @@
       .art-modal-meta { gap: 10px; }
     }
   </style>
-  <!-- OneSignal Push Notifications -->
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-  <script>
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function(OneSignal) {
-      await OneSignal.init({
-        appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
-        promptOptions: {
-          slidedown: {
-            prompts: [
-              {
-                type: "push",
-                autoPrompt: true,
-                text: {
-                  actionMessage: "Restez connectés à notre église ! Recevez les annonces en temps réel.",
-                  acceptButton: "Oui, m'abonner",
-                  cancelButton: "Plus tard"
-                },
-                delay: { pageViews: 1, timeDelay: 5 }
-              }
-            ]
-          }
-        },
-        welcomeNotification: {
-          disable: false,
-          title: "Église de Dieu de la Prophétie",
-          message: "Bienvenue ! Vous recevrez désormais nos annonces. 🙏"
-        },
-        notifyButton: { enable: false },
-        allowLocalhostAsSecureOrigin: true
-      });
-    });
-  </script>
-  <!-- Firebase -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-    import { getFirestore, collection, getDocs, query, orderBy }
-      from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
-      authDomain: "eglise-carrefour.firebaseapp.com",
-      projectId: "eglise-carrefour",
-      storageBucket: "eglise-carrefour.firebasestorage.app",
-      messagingSenderId: "421333694767",
-      appId: "1:421333694767:web:30c18da36ae020821a49da"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    async function chargerActualitesFirebase() {
-      try {
-        const q = query(collection(db, 'actualites'), orderBy('timestamp', 'desc'));
-        const snap = await getDocs(q);
-        const articles = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        window._articlesFirebase = articles;
-        afficherArticlesFirebase(articles);
-      } catch(e) {
-        console.log('Firebase:', e.message);
-        window._articlesFirebase = [];
-        document.getElementById('firebase-section').style.display = 'none';
-      }
-    }
-
-    window.chargerActualitesFirebase = chargerActualitesFirebase;
-    document.addEventListener('DOMContentLoaded', chargerActualitesFirebase);
-  </script>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G9Y14X29NZ"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-G9Y14X29NZ');
-  </script>
 </head>
 <body>
 
@@ -274,23 +198,6 @@
 
   </div>
 
-  <!-- ===== ACTUALITES FIREBASE (Pasteur) ===== -->
-  <div id="firebase-section" style="margin-bottom: 50px;">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
-      <h2 style="font-family:'Playfair Display',serif;color:var(--primary);font-size:1.5rem;">
-        <i class="fas fa-user-tie" style="color:var(--gold);margin-right:8px;"></i>
-        Messages du Pasteur
-      </h2>
-      <span id="firebase-count" style="background:var(--gold);color:var(--primary);font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:20px;"></span>
-    </div>
-    <div class="news-grid" id="firebaseGrid">
-      <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">
-        <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--gold);margin-bottom:12px;display:block;"></i>
-        Chargement des actualités...
-      </div>
-    </div>
-  </div>
-
   <div class="newsletter">
     <i class="fas fa-envelope-open-text nl-icon"></i>
     <h2>Restez informés</h2>
@@ -319,8 +226,7 @@
 </div>
 
 <script src="lang.js"></script>
-<script>document.addEventListener('DOMContentLoaded', function(){ if(window.initLang) initLang(); });</script>
-  <script src="nav.js"></script>
+<script src="nav.js"></script>
 <script>
   NAV.init('Actualites.html');
 
@@ -486,93 +392,6 @@
     e.preventDefault();
     this.innerHTML = '<p style="color:var(--gold);font-weight:700;font-size:1rem;"><i class="fas fa-check-circle"></i> Merci ! Vous êtes abonné(e). Que Dieu vous bénisse !</p>';
   });
-
-  // ===== ARTICLES FIREBASE =====
-  window._articlesFirebase = [];
-
-  const catMap = {
-    'Événements': 'events',
-    'Annonces': 'announcements',
-    'Spirituel': 'spiritual'
-  };
-
-  const iconMap = {
-    'Événements': 'fa-star',
-    'Annonces': 'fa-bullhorn',
-    'Spirituel': 'fa-book-open'
-  };
-
-  function afficherArticlesFirebase(articles) {
-    const grid = document.getElementById('firebaseGrid');
-    const section = document.getElementById('firebase-section');
-    const count = document.getElementById('firebase-count');
-
-    if (!articles || articles.length === 0) {
-      section.style.display = 'none';
-      return;
-    }
-
-    section.style.display = 'block';
-    count.textContent = articles.length + ' article' + (articles.length > 1 ? 's' : '');
-
-    const filterActif = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
-
-    const filtrees = articles.filter(a => {
-      if (filterActif === 'all') return true;
-      return catMap[a.categorie] === filterActif;
-    });
-
-    if (filtrees.length === 0) {
-      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:30px;">Aucun article dans cette catégorie.</p>';
-      return;
-    }
-
-    grid.innerHTML = filtrees.map(a => `
-      <article class="news-card" data-category="${catMap[a.categorie] || 'events'}">
-        <div class="news-img-placeholder"><i class="fas ${iconMap[a.categorie] || 'fa-newspaper'}"></i></div>
-        <div class="news-body">
-          <h3>${a.titre}</h3>
-          <p>${a.intro || a.contenu?.replace(/<[^>]*>/g,'').substring(0,120) + '...' || ''}</p>
-          <div class="news-footer">
-            <span class="news-author"><i class="fas fa-calendar"></i> ${a.date || ''}</span>
-            <button class="read-more" onclick="openFirebaseArticle('${a.id}')">Lire plus <i class="fas fa-arrow-right"></i></button>
-          </div>
-        </div>
-      </article>
-    `).join('');
-  }
-
-  function openFirebaseArticle(id) {
-    const a = (window._articlesFirebase || []).find(x => x.id === id);
-    if (!a) return;
-
-    document.getElementById('artTag').textContent = a.categorie || 'Actualité';
-    document.getElementById('artTitle').textContent = a.titre;
-    document.getElementById('artMeta').innerHTML =
-      `<span><i class="fas fa-calendar"></i> ${a.date || ''}</span>
-       <span><i class="fas fa-user"></i> ${a.auteur || 'Pasteur Anouis Jean'}</span>`;
-
-    document.getElementById('artBody').innerHTML =
-      `<p class="art-intro">${a.intro || ''}</p>
-       <div class="art-content">${a.contenu ? a.contenu.replace(/\n/g,'<br>') : ''}</div>`;
-
-    document.getElementById('artFooter').innerHTML =
-      `<a href="priere.html" class="art-btn art-btn-primary"><i class="fas fa-hands-praying"></i> Demande de prière</a>
-       <button class="art-btn art-btn-outline" onclick="closeArticle()"><i class="fas fa-times"></i> Fermer</button>`;
-
-    document.getElementById('artOverlay').classList.add('show');
-    document.getElementById('artModal').classList.add('show');
-    document.body.style.overflow = 'hidden';
-  }
-
-  // Mete a jou Firebase section lè filtre chanje
-  const origFilterHandler = document.querySelector('.filter-bar');
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      setTimeout(() => afficherArticlesFirebase(window._articlesFirebase || []), 10);
-    });
-  });
-
 </script>
 </body>
 </html>
