@@ -9,6 +9,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1c1c3c">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Église Carrefour">
+  <link rel="apple-touch-icon" href="logo.png">
 
   <style>
     /* ===== STYLES SPÉCIFIQUES À PROPOS ===== */
@@ -987,7 +994,7 @@
       <h4>Nous trouver</h4>
       <p><i class="fas fa-map-marker-alt"></i> Carrefour, Haïti</p>
       <p><i class="fas fa-phone"></i> +509 1234 5678</p>
-      <p><i class="fas fa-envelope"></i> eglise@carrefour.ht</p>
+      <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="244143484d5741644745565641424b51560a4c50">[email&#160;protected]</a></p>
       <div class="social-icons">
         <a href="#" title="Facebook" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
         <a href="#" title="YouTube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
@@ -1231,14 +1238,7 @@
   <div class="min-modal-body" id="minModalBody"></div>
 </div>
 
-<script src="lang.js"></script>
-<script src="nav.js"></script>
-<script>
-  NAV.init('Apropos.html');
-  (function() {
-    var lang = localStorage.getItem('site_lang') || 'fr';
-    if (window.applyLang) window.applyLang(lang);
-  })();
-</script>
+<script src="lang.js"></scr
+<script src="pwa.js"></script>
 </body>
 </html>

@@ -9,6 +9,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1c1c3c">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Église Carrefour">
+  <link rel="apple-touch-icon" href="logo.png">
   <style>
     .contact-hero { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 70px 24px 60px; text-align: center; position: relative; overflow: hidden; }
     .contact-hero::before { content: '\f0e0'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: -40px; top: -40px; font-size: 220px; opacity: 0.04; color: white; }
@@ -125,7 +132,7 @@
         <div class="info-icon"><i class="fas fa-envelope"></i></div>
         <div>
           <h3 data-i18n="contact_email_title">Email</h3>
-          eglise@carrefour.ht
+          <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dabfbdb6b3a9bf9ab9bba8a8bfbcb5afa8f4b2ae">[email&#160;protected]</a>
         </div>
       </div>
 
@@ -225,11 +232,7 @@
 <script src="lang.js"></script>
 <script src="nav.js"></script>
 <script>
-  NAV.init('Contact.html');
-  // Applique la traduction après que le nav soit injecté
-  (function() {
-    var lang = localStorage.getItem('site_lang') || 'fr';
-    if (window.applyLang) window.applyLang(lang);
-  })();
-
-  // Formulaire de con
+  NAV.init('C
+<script src="pwa.js"></script>
+</body>
+</html>
