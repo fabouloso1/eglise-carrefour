@@ -77,7 +77,7 @@
 
 <div class="page-hero">
   <div class="page-hero-badge"><i class="fas fa-clock"></i> Horaires</div>
-  <h1>Horaires des Cultes</h1>
+  <h1 data-i18n="nav_horaires">Horaires des Cultes</h1>
   <p>Rejoignez-nous pour adorer Dieu ensemble. Tous sont les bienvenus dans notre famille !</p>
 </div>
 
@@ -94,7 +94,7 @@
 <div class="horaires-main">
 
   <!-- Programme hebdomadaire -->
-  <h2 class="section-title">Programme Hebdomadaire</h2>
+  <h2 class="section-title" data-i18n="annonces_title">Programme Hebdomadaire</h2>
   <p class="section-subtitle">Nos activités régulières tout au long de la semaine</p>
 
   <div class="schedule-grid">
@@ -196,7 +196,7 @@
   <!-- CTA -->
   <div class="cta-banner">
     <i class="fas fa-church"></i>
-    <h2>Venez nous rejoindre !</h2>
+    <h2><span data-i18n="welcome_btn">Voir nos horaires</span> !</h2>
     <p>Que vous soyez nouveau dans la foi ou croyant de longue date, vous êtes les bienvenus dans notre famille. Nos portes sont ouvertes pour tous.</p>
     <div class="cta-buttons">
       <a href="Contact.html" class="cta-btn cta-btn-primary"><i class="fas fa-envelope"></i> Nous contacter</a>
@@ -210,6 +210,11 @@
 
 <script src="lang.js"></script>
 <script src="nav.js"></script>
-<script>NAV.init('Horaires.html');</script>
+<script>NAV.init('Horaires.html');
+  // Applique la traduction après que le nav soit injecté
+  (function() {
+    var lang = localStorage.getItem('site_lang') || 'fr';
+    if (window.applyLang) window.applyLang(lang);
+  })();</script>
 </body>
 </html>

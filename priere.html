@@ -74,7 +74,7 @@
 <!-- HERO -->
 <div class="priere-hero">
   <div class="priere-hero-badge"><i class="fas fa-hands-praying"></i> Prière</div>
-  <h1>Demande de Prière</h1>
+  <h1 data-i18n="nav_priere">Demande de Prière</h1>
   <p>Nous sommes honorés de pouvoir prier pour vous. Partagez votre besoin et notre équipe portera votre demande devant Dieu.</p>
 </div>
 
@@ -185,6 +185,11 @@
 <script src="nav.js"></script>
 <script>
   NAV.init('priere.html');
+  // Applique la traduction après que le nav soit injecté
+  (function() {
+    var lang = localStorage.getItem('site_lang') || 'fr';
+    if (window.applyLang) window.applyLang(lang);
+  })();
   document.getElementById('priereForm').addEventListener('submit', function(e) {
     e.preventDefault();
     this.style.display = 'none';

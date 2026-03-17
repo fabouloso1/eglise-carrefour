@@ -213,6 +213,11 @@
 <script src="nav.js"></script>
 <script>
   NAV.init('Temoigner.html');
+  // Applique la traduction après que le nav soit injecté
+  (function() {
+    var lang = localStorage.getItem('site_lang') || 'fr';
+    if (window.applyLang) window.applyLang(lang);
+  })();
   document.getElementById('testimonyForm').addEventListener('submit', function(e) {
     e.preventDefault();
     this.style.display = 'none';

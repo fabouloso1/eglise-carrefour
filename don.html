@@ -498,6 +498,11 @@
 <script>
   // Initialiser meni + footer
   NAV.init('don.html');
+  // Applique la traduction après que le nav soit injecté
+  (function() {
+    var lang = localStorage.getItem('site_lang') || 'fr';
+    if (window.applyLang) window.applyLang(lang);
+  })();
 
   // Fonksyon kopye nan clipboard
   function copyText(btn, text) {

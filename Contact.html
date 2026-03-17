@@ -85,7 +85,7 @@
 <!-- HERO -->
 <div class="contact-hero">
   <div class="contact-hero-badge"><i class="fas fa-envelope"></i> Contactez-nous</div>
-  <h1>Nous sommes là pour vous</h1>
+  <h1><span data-i18n="contact_hero_title">Nous sommes là pour vous</span></h1>
   <p>Une question, un témoignage ou besoin de soutien ? Notre équipe est disponible pour vous.</p>
 </div>
 
@@ -107,7 +107,7 @@
       <div class="info-card">
         <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
         <div>
-          <h3>Notre adresse</h3>
+          <h3 data-i18n="contact_address_title">Notre adresse</h3>
           <p>Carrefour, Haïti<br>Disponible chaque dimanche dès 6h00</p>
         </div>
       </div>
@@ -115,7 +115,7 @@
       <div class="info-card">
         <div class="info-icon"><i class="fas fa-phone"></i></div>
         <div>
-          <h3>Téléphone</h3>
+          <h3 data-i18n="contact_phone_title">Téléphone</h3>
           <a href="tel:+50912345678">+509 1234 5678</a><br>
           <a href="tel:+50912345678">+509 1234 5678</a>
         </div>
@@ -124,15 +124,15 @@
       <div class="info-card">
         <div class="info-icon"><i class="fas fa-envelope"></i></div>
         <div>
-          <h3>Email</h3>
-          <a href="/cdn-cgi/l/email-protection#6005070c091305200301121205060f15124e0814"><span class="__cf_email__" data-cfemail="7e1b1912170d1b3e1d1f0c0c1b18110b0c50160a">[email&#160;protected]</span></a>
+          <h3 data-i18n="contact_email_title">Email</h3>
+          eglise@carrefour.ht
         </div>
       </div>
 
       <div class="info-card">
         <div class="info-icon"><i class="fab fa-facebook"></i></div>
         <div>
-          <h3>Réseaux sociaux</h3>
+          <h3 data-i18n="contact_social_title">Réseaux sociaux</h3>
           <a href="#">Facebook — Église de Carrefour</a><br>
           <a href="#">YouTube — Cultes en direct</a>
         </div>
@@ -152,24 +152,24 @@
 
     <!-- DROITE : Formulaire -->
     <div class="contact-form-wrap">
-      <h2 class="form-title">Envoyez-nous un message</h2>
+      <h2 class="form-title"><span data-i18n="contact_form_title">Envoyez-nous un message</span></h2>
       <p class="form-subtitle">Nous vous répondrons dans les plus brefs délais. Que Dieu vous bénisse !</p>
 
       <form id="contactForm">
         <div class="form-row">
           <div class="form-group">
-            <label for="prenom">Prénom *</label>
+            <label for="prenom" data-i18n="contact_firstname">Prénom *</label>
             <input type="text" id="prenom" placeholder="Jean" required>
           </div>
           <div class="form-group">
-            <label for="nom">Nom *</label>
+            <label for="nom" data-i18n="contact_lastname">Nom *</label>
             <input type="text" id="nom" placeholder="Dupont" required>
           </div>
         </div>
 
         <div class="form-group">
           <label for="email">Adresse email *</label>
-          <input type="email" id="email" placeholder="votre@email.com" required>
+          <input type="email" id="email" placeholder="votre@email.com" data-i18n-ph="contact_email_label" required>
         </div>
 
         <div class="form-group">
@@ -222,9 +222,14 @@
 
 <div id="foot-placeholder"></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="lang.js"></script>
+<script src="lang.js"></script>
 <script src="nav.js"></script>
 <script>
   NAV.init('Contact.html');
+  // Applique la traduction après que le nav soit injecté
+  (function() {
+    var lang = localStorage.getItem('site_lang') || 'fr';
+    if (window.applyLang) window.applyLang(lang);
+  })();
 
   // Formulaire de con

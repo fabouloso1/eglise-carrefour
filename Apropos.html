@@ -636,7 +636,8 @@
 <body>
 
 <!-- ===== NAVIGATION (menm ke index.html) ===== -->
-<nav class="menu" id="mainNav">
+<div id="nav-placeholder"></div>
+<nav class="menu" id="mainNav" style="display:none;">
   <div class="nav-inner">
     <a href="index.html" class="nav-brand">
       <img src="logo.png" alt="Logo" class="nav-logo">
@@ -986,7 +987,7 @@
       <h4>Nous trouver</h4>
       <p><i class="fas fa-map-marker-alt"></i> Carrefour, Haïti</p>
       <p><i class="fas fa-phone"></i> +509 1234 5678</p>
-      <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7015171c190315301311020215161f05025e1804">[email&#160;protected]</a></p>
+      <p><i class="fas fa-envelope"></i> eglise@carrefour.ht</p>
       <div class="social-icons">
         <a href="#" title="Facebook" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
         <a href="#" title="YouTube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
@@ -999,10 +1000,11 @@
     <p>© 2025 Église de Dieu de la Prophétie de Carrefour — Tous droits réservés</p>
   </div>
 </footer>
+<div id="foot-placeholder"></div>
 
 
 <!-- ===== SCRIPTS ===== -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   // ===== MENU HAMBURGER =====
   const hamburgerBtn = document.getElementById('hamburgerBtn');
   const navLinks = document.getElementById('navLinks');
@@ -1230,5 +1232,13 @@
 </div>
 
 <script src="lang.js"></script>
+<script src="nav.js"></script>
+<script>
+  NAV.init('Apropos.html');
+  (function() {
+    var lang = localStorage.getItem('site_lang') || 'fr';
+    if (window.applyLang) window.applyLang(lang);
+  })();
+</script>
 </body>
 </html>
