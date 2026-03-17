@@ -17,60 +17,127 @@
   <meta name="apple-mobile-web-app-title" content="Église Carrefour">
   <link rel="apple-touch-icon" href="logo.png">
   <style>
-    .priere-hero { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 70px 24px 60px; text-align: center; position: relative; overflow: hidden; }
-    .priere-hero::before { content: '\f684'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: -40px; bottom: -40px; font-size: 220px; opacity: 0.04; color: white; }
-    .priere-hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(241,196,15,0.15); border: 1px solid rgba(241,196,15,0.35); color: var(--gold); padding: 6px 18px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
+    /* ========== HERO ========== */
+    .priere-hero { background: linear-gradient(135deg, #1c1c3c 0%, #3a1c3c 100%); color: white; padding: 70px 24px 60px; text-align: center; position: relative; overflow: hidden; }
     .priere-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 14px; }
-    .priere-hero p { font-size: 1.05rem; opacity: 0.82; max-width: 560px; margin: 0 auto; }
+    .priere-hero p { font-size: 1.05rem; opacity: 0.85; max-width: 560px; margin: 0 auto; }
+    .priere-hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(241,196,15,0.15); border: 1px solid rgba(241,196,15,0.35); color: #f1c40f; padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
 
-    .breadcrumb { background: white; border-bottom: 1px solid var(--border); padding: 12px 24px; }
-    .breadcrumb-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--text-muted); }
-    .breadcrumb a { color: var(--text-muted); transition: var(--transition); }
-    .breadcrumb a:hover { color: var(--primary); }
-    .breadcrumb i { font-size: 0.65rem; color: #bbb; }
-    .breadcrumb span { color: var(--primary); font-weight: 600; }
+    /* ========== BREADCRUMB ========== */
+    .breadcrumb { background: white; border-bottom: 1px solid #e0e0e0; padding: 12px 24px; }
+    .breadcrumb-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #444 !important; }
+    .breadcrumb a { color: #444 !important; text-decoration: none; }
+    .breadcrumb span { color: #1c1c3c !important; font-weight: 700 !important; }
 
+    /* ========== MAIN ========== */
     .priere-main { max-width: 1000px; margin: 0 auto; padding: 50px 24px 80px; }
 
-    /* Verset d'encouragement */
-    .priere-verse { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border-radius: var(--radius); padding: 36px 40px; text-align: center; margin-bottom: 36px; position: relative; overflow: hidden; }
-    .priere-verse::before { content: '\201C'; font-family: 'Playfair Display', serif; position: absolute; top: -20px; left: 10px; font-size: 160px; opacity: 0.06; color: var(--gold); line-height: 1; }
-    .priere-verse i { font-size: 2rem; color: var(--gold); margin-bottom: 14px; display: block; }
-    .priere-verse blockquote { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.15rem; line-height: 1.8; opacity: 0.92; margin-bottom: 10px; }
-    .priere-verse cite { color: var(--gold); font-size: 0.9rem; font-weight: 600; }
+    /* ========== VERSET ========== */
+    .priere-verse { background: linear-gradient(135deg, #1c1c3c, #3a1c3c); color: white; border-radius: 14px; padding: 36px 40px; text-align: center; margin-bottom: 36px; }
+    .priere-verse blockquote { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.15rem; line-height: 1.8; color: white !important; margin-bottom: 10px; }
+    .priere-verse cite { color: #f1c40f !important; font-size: 0.95rem; font-weight: 700; }
 
-    /* Promesses */
+    /* ========== PROMISE CARDS ========== */
     .promises-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 36px; }
-    .promise-card { background: white; border-radius: var(--radius); padding: 24px 20px; text-align: center; box-shadow: var(--shadow-sm); border: 1px solid var(--border); border-top: 3px solid var(--gold); }
-    .promise-card i { font-size: 1.8rem; color: var(--gold); margin-bottom: 10px; display: block; }
-    .promise-card h3 { color: var(--primary); font-size: 1rem; margin-bottom: 6px; font-weight: 700; }
-    .promise-card p { color: #333333; font-size: 0.92rem; line-height: 1.6; font-weight: 500; }
+    .promise-card { background: white; border-radius: 14px; padding: 24px 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #e0e0e0; border-top: 3px solid #f1c40f; }
+    .promise-card h3 { color: #111111 !important; font-size: 1.05rem !important; margin-bottom: 8px; font-weight: 700 !important; }
+    .promise-card p { color: #2a2a2a !important; font-size: 0.95rem !important; line-height: 1.6; font-weight: 500 !important; }
 
-    /* Formulaire */
-    .priere-form-wrap { background: white; border-radius: var(--radius); padding: 40px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); border-left: 5px solid var(--gold); }
-    .form-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--primary); margin-bottom: 8px; }
-    .form-subtitle { color: #222222; font-size: 1rem; margin-bottom: 30px; line-height: 1.7; font-weight: 500; }
-    .form-group { margin-bottom: 22px; }
-    .form-group label { display: block; margin-bottom: 8px; font-weight: 700; color: #111111; font-size: 1rem; }
-    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 13px 16px; border: 2px solid #bbbbbb; border-radius: var(--radius-sm); font-family: 'Montserrat', sans-serif; font-size: 1rem; color: #111111; transition: var(--transition); background: #f5f5f5; }
-    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--gold); background: white; box-shadow: 0 0 0 3px rgba(241,196,15,0.12); }
+    /* ========== FORMULAIRE ========== */
+    .priere-form-wrap { background: white; border-radius: 14px; padding: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #e0e0e0; border-left: 5px solid #f1c40f; }
+
+    .form-title { font-family: 'Playfair Display', serif; font-size: 1.7rem !important; color: #111111 !important; margin-bottom: 10px; font-weight: 700 !important; }
+
+    .form-subtitle { color: #222222 !important; font-size: 1rem !important; margin-bottom: 28px; line-height: 1.7; font-weight: 500 !important; }
+
+    .form-group { margin-bottom: 24px; }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700 !important;
+      color: #111111 !important;
+      font-size: 1rem !important;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 14px 16px !important;
+      border: 2px solid #aaaaaa !important;
+      border-radius: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem !important;
+      color: #111111 !important;
+      background: #f5f5f5 !important;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #f1c40f !important;
+      background: white !important;
+      box-shadow: 0 0 0 3px rgba(241,196,15,0.15);
+    }
+
     .form-group textarea { min-height: 150px; resize: vertical; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .checkbox-group { display: flex; align-items: flex-start; gap: 10px; }
-    .checkbox-group input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--gold); flex-shrink: 0; cursor: pointer; }
-    .checkbox-group label { font-weight: 600; font-size: 0.95rem; color: #222222; margin-bottom: 0; line-height: 1.5; cursor: pointer; }
-    .submit-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 30px; font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px; }
-    .submit-btn:hover { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--primary); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(241,196,15,0.35); }
-    .success-msg { display: none; background: #e8f5e9; border-left: 4px solid #4caf50; border-radius: var(--radius-sm); padding: 30px 24px; text-align: center; }
-    .success-msg i { color: #4caf50; font-size: 2.5rem; margin-bottom: 12px; display: block; }
-    .success-msg h3 { color: #1b5e20; margin-bottom: 8px; font-size: 1.4rem; font-weight: 700; }
-    .success-msg p { color: #1a1a1a; font-size: 1rem; line-height: 1.7; font-weight: 500; }
 
+    /* ========== CHECKBOX ========== */
+    .checkbox-group { display: flex; align-items: flex-start; gap: 12px; }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 22px !important;
+      height: 22px !important;
+      min-width: 22px;
+      margin-top: 2px;
+      accent-color: #1c1c3c;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .checkbox-group label {
+      font-weight: 600 !important;
+      font-size: 1rem !important;
+      color: #1a1a1a !important;
+      margin-bottom: 0;
+      line-height: 1.6;
+      cursor: pointer;
+    }
+
+    /* ========== BOUTON ========== */
+    .submit-btn {
+      width: 100%;
+      padding: 17px !important;
+      background: linear-gradient(135deg, #1c1c3c, #3a1c3c) !important;
+      color: white !important;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.1rem !important;
+      font-weight: 700 !important;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    /* ========== SUCCESS MSG ========== */
+    .success-msg { display: none; background: #e8f5e9; border-left: 5px solid #4caf50; border-radius: 12px; padding: 32px 24px; text-align: center; }
+    .success-msg h3 { color: #1b5e20 !important; margin-bottom: 10px; font-size: 1.4rem !important; font-weight: 800 !important; }
+    .success-msg p { color: #1a1a1a !important; font-size: 1rem !important; line-height: 1.7; font-weight: 500 !important; }
+
+    /* ========== RESPONSIVE ========== */
     @media (max-width: 768px) {
       .promises-grid { grid-template-columns: 1fr; }
       .form-row { grid-template-columns: 1fr; }
-      .priere-form-wrap { padding: 28px 18px; }
-      .priere-verse { padding: 28px 24px; }
+      .priere-form-wrap { padding: 24px 16px; }
+      .priere-verse { padding: 28px 20px; }
     }
   </style>
 </head>
