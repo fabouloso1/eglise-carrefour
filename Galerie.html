@@ -55,9 +55,8 @@
     /* ===== GRILLE PHOTOS ===== */
     .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
     .photo-card { position: relative; border-radius: 12px; overflow: hidden; background: var(--light-bg); aspect-ratio: 1; box-shadow: var(--shadow-sm); transition: var(--transition); cursor: pointer; }
-    .photo-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-    .photo-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: var(--transition); }
-    .photo-card:hover img { transform: scale(1.04); }
+    .photo-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .photo-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .photo-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(18,18,42,0.7) 0%, transparent 55%); opacity: 0; transition: var(--transition); display: flex; align-items: flex-end; padding: 14px; }
     .photo-card:hover .photo-card-overlay { opacity: 1; }
     .photo-card-overlay p { color: white; font-size: 0.8rem; font-weight: 600; line-height: 1.3; }
@@ -70,7 +69,7 @@
     .video-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .video-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); transition: var(--transition); }
     .video-play-btn { width: 54px; height: 54px; background: rgba(241,196,15,0.92); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1.1rem; padding-left: 3px; transition: var(--transition); }
-    .video-card:hover .video-play-btn { transform: scale(1.1); background: var(--gold); }
+    .video-card:hover .video-play-btn { background: var(--gold); }
     .video-body { padding: 18px; }
     .video-body h3 { color: var(--primary); font-size: 0.95rem; margin-bottom: 6px; line-height: 1.4; }
     .video-body p { color: var(--text-muted); font-size: 0.82rem; line-height: 1.5; }

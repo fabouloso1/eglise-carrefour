@@ -620,96 +620,86 @@
     <!-- ===== GALERIE ===== -->
     <div class="tab-panel" id="tab-galerie">
 
-      <!-- Enstriksyon Cloudinary (kache apre konfigirasyon) -->
-      <div class="card" id="cloudinary-setup" style="border-left:4px solid var(--gold); display:block;">
-        <h3><i class="fas fa-cloud"></i> Konfigirasyon Cloudinary <span style="font-size:0.75rem;background:#27ae60;color:white;padding:2px 8px;border-radius:10px;margin-left:6px;">100% GRATIS</span></h3>
-        <p style="font-size:0.92rem;color:#555;line-height:1.7;margin-bottom:14px;">
-          Pou upload foto gratis, ou bezwen kreye yon <strong>Cloudinary preset</strong> yon sèl fwa :<br>
-        </p>
-        <ol style="font-size:0.9rem;color:#444;line-height:2;padding-left:20px;margin-bottom:16px;">
-          <li>Ale sou <strong><a href="https://cloudinary.com/users/register_free" target="_blank" style="color:var(--primary);">cloudinary.com</a></strong> → Kreye yon kont gratis</li>
-          <li>Ale nan <strong>Settings → Upload → Upload presets</strong></li>
-          <li>Klike <strong>"Add upload preset"</strong></li>
-          <li>Mete non an: <code style="background:#f0f0f0;padding:2px 8px;border-radius:4px;font-weight:700;">eglise_upload</code></li>
-          <li>Chanje <strong>Signing Mode</strong> → <strong>"Unsigned"</strong></li>
-          <li>Klike <strong>Save</strong></li>
-          <li>Retounen ici, chanje <code style="background:#f0f0f0;padding:2px 8px;border-radius:4px;">eglise-carrefour</code> nan kòd la pa <strong>Cloud Name</strong> ou a (jwenn li nan Dashboard Cloudinary)</li>
-        </ol>
-        <p style="font-size:0.85rem;color:#27ae60;font-weight:600;"><i class="fas fa-check-circle"></i> Apre sa, upload foto ap mache pafè — 25GB gratis, san kat kredi !</p>
-        <button onclick="document.getElementById('cloudinary-setup').style.display='none'" style="background:#eee;color:#555;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:0.85rem;margin-top:8px;">
-          <i class="fas fa-times"></i> Kache enstriksyon yo
-        </button>
-      </div>
-
-      <!-- Ajoute foto LEGLIZ -->
+      <!-- BOUTON FOTO -->
       <div class="card">
-        <h3><i class="fas fa-church"></i> Ajouter des photos — <span style="color:var(--gold)">Église</span></h3>
-        <p style="font-size:0.88rem;color:#888;margin-bottom:14px;">Ces photos iront dans la section <strong>Galerie générale</strong> du site.</p>
+        <h3><i class="fas fa-camera"></i> Voye Foto</h3>
 
-        <label>Description (optionnel)</label>
-        <input type="text" id="fotoDescEglise" placeholder="Ex : Culte dimanche 15 juin..." />
-
-        <div class="upload-zone" id="uploadZoneEglise">
-          <input type="file" id="fotoInputEglise" accept="image/*" multiple onchange="handleFotoSelect(event, 'eglise')">
-          <i class="fas fa-church" style="font-size:2rem;color:var(--gold);margin-bottom:10px;display:block;"></i>
-          <p><strong>Photos Église</strong><br>Cliquer ou glisser-déposer<br><small style="color:#aaa">JPG, PNG</small></p>
+        <label>Kategori <span style="color:red">*</span></label>
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+          <select id="kategoriFoto" style="flex:1;min-width:180px;">
+            <option value="">— Chwazi yon kategori —</option>
+          </select>
+          <button class="btn btn-primary btn-sm" onclick="toggleNouvoKategori()" style="white-space:nowrap;">
+            <i class="fas fa-plus"></i> Nouvo kategori
+          </button>
+        </div>
+        <div id="nouvoKategoriBox" style="display:none;background:#f9f9f9;border:1.5px solid var(--gold);border-radius:10px;padding:14px;margin-bottom:14px;">
+          <label style="margin-bottom:6px;">Non kategori a <span style="color:red">*</span></label>
+          <div style="display:flex;gap:8px;">
+            <input type="text" id="nouvoKategoriNom" placeholder="Ex: Vizit Legliz Kafou, Reyinyon Lid..." style="flex:1;margin-bottom:0;">
+            <button class="btn btn-gold btn-sm" onclick="kreye_kategori()" style="white-space:nowrap;">
+              <i class="fas fa-check"></i> Kreye
+            </button>
+          </div>
         </div>
 
-        <div class="photo-preview" id="photoPreviewEglise"></div>
-
-        <button class="btn btn-primary" id="uploadBtnEglise" onclick="uploadFotos('eglise')" style="width:100%" disabled>
-          <i class="fas fa-upload"></i> Publier dans Galerie Église
+        <div class="upload-zone" id="uploadZoneFoto">
+          <input type="file" id="fotoInput" accept="image/*" multiple onchange="handleFotoSelect(event)">
+          <i class="fas fa-images" style="font-size:2rem;color:var(--gold);margin-bottom:10px;display:block;"></i>
+          <p><strong>Klike pou chwazi foto</strong><br>oswa glise-depoze isit<br><small style="color:#aaa">JPG, PNG — plizyè foto alafwa</small></p>
+        </div>
+        <div class="photo-preview" id="photoPreviewFoto"></div>
+        <button class="btn btn-gold" id="uploadBtnFoto" onclick="uploadFotos()" style="width:100%;margin-top:4px;" disabled>
+          <i class="fas fa-upload"></i> Voye Foto yo
         </button>
+        <div id="uploadFotoStatus" style="display:none;margin-top:10px;padding:12px;border-radius:8px;text-align:center;font-weight:600;"></div>
       </div>
 
-      <!-- Ajoute foto PASTÈ -->
+      <!-- BOUTON VIDEO -->
       <div class="card" style="border-left:4px solid var(--gold);">
-        <h3><i class="fas fa-user-tie"></i> Ajouter des photos — <span style="color:var(--gold)">Pasteur</span></h3>
-        <p style="font-size:0.88rem;color:#888;margin-bottom:14px;">Ces photos iront dans la section <strong>Photos du Pasteur</strong> du site.</p>
+        <h3><i class="fas fa-video" style="color:var(--gold)"></i> Voye Vidéo</h3>
 
-        <label>Description (optionnel)</label>
-        <input type="text" id="fotoDescPasteur" placeholder="Ex : Message du Pasteur Anouis Jean..." />
-
-        <div class="upload-zone" id="uploadZonePasteur">
-          <input type="file" id="fotoInputPasteur" accept="image/*" multiple onchange="handleFotoSelect(event, 'pasteur')">
-          <i class="fas fa-user-tie" style="font-size:2rem;color:var(--gold);margin-bottom:10px;display:block;"></i>
-          <p><strong>Photos Pasteur</strong><br>Cliquer ou glisser-déposer<br><small style="color:#aaa">JPG, PNG</small></p>
+        <label>Kategori Vidéo <span style="color:red">*</span></label>
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+          <select id="kategoriVideo" style="flex:1;min-width:180px;">
+            <option value="">— Chwazi yon kategori —</option>
+          </select>
+          <button class="btn btn-primary btn-sm" onclick="toggleNouvoKategoriVideo()" style="white-space:nowrap;">
+            <i class="fas fa-plus"></i> Nouvo kategori
+          </button>
+        </div>
+        <div id="nouvoKategoriVideoBox" style="display:none;background:#f9f9f9;border:1.5px solid var(--gold);border-radius:10px;padding:14px;margin-bottom:14px;">
+          <label style="margin-bottom:6px;">Non kategori a</label>
+          <div style="display:flex;gap:8px;">
+            <input type="text" id="nouvoKategoriVideoNom" placeholder="Ex: Predikasyon, Louanj..." style="flex:1;margin-bottom:0;">
+            <button class="btn btn-gold btn-sm" onclick="kreye_kategori_video()" style="white-space:nowrap;">
+              <i class="fas fa-check"></i> Kreye
+            </button>
+          </div>
         </div>
 
-        <div class="photo-preview" id="photoPreviewPasteur"></div>
-
-        <button class="btn btn-gold" id="uploadBtnPasteur" onclick="uploadFotos('pasteur')" style="width:100%" disabled>
-          <i class="fas fa-upload"></i> Publier dans Photos Pasteur
-        </button>
-      </div>
-
-      <!-- Ajoute video -->
-      <div class="card">
-        <h3><i class="fas fa-video" style="color:var(--gold)"></i> Ajouter une vidéo à la galerie</h3>
-
-        <label>Lien YouTube ou Facebook (URL complète) *</label>
-        <input type="text" id="videoUrl" placeholder="Ex : https://www.youtube.com/watch?v=XXXXXXXXX" />
-
-        <label>Titre de la vidéo *</label>
-        <input type="text" id="videoTitre" placeholder="Ex : Culte du dimanche 15 juin..." />
-
-        <label>Description (optionnel)</label>
-        <input type="text" id="videoDesc" placeholder="Ex : Message du Pasteur Anouis Jean..." />
+        <label>Lyen YouTube <span style="color:red">*</span></label>
+        <input type="text" id="videoUrl" placeholder="https://www.youtube.com/watch?v=XXXXXXXXX" />
+        <label>Tit Vidéo <span style="color:red">*</span></label>
+        <input type="text" id="videoTitre" placeholder="Ex: Kilt dimanch 15 jen..." />
+        <label>Deskripsyon (opsyonèl)</label>
+        <input type="text" id="videoDesc" placeholder="Ex: Mesaj Pastè Anouis Jean..." />
 
         <button class="btn btn-gold" onclick="publishVideo()" style="width:100%">
-          <i class="fas fa-upload"></i> Publier la vidéo sur le site
+          <i class="fas fa-upload"></i> Voye Vidéo a
         </button>
-        <div id="videoStatus" style="display:none;margin-top:10px;padding:10px;border-radius:8px;text-align:center;font-weight:600;"></div>
+        <div id="videoStatus" style="display:none;margin-top:10px;padding:12px;border-radius:8px;text-align:center;font-weight:600;"></div>
       </div>
 
-      <!-- Foto existant yo -->
+      <!-- LIS FOTO PA KATEGORI -->
       <div class="card">
-        <h3><i class="fas fa-th"></i> Photos en galerie (<span id="fotoCount">0</span>)</h3>
+        <h3><i class="fas fa-layer-group"></i> Foto ak Vidéo (<span id="fotoCount">0</span>)</h3>
         <div class="item-list" id="fotoList">
-          <p style="color:#aaa;text-align:center;padding:20px;font-size:0.85rem;">Chargement des photos...</p>
+          <p style="color:#aaa;text-align:center;padding:20px;font-size:0.85rem;">Chargement...</p>
         </div>
       </div>
     </div>
+
 
     <!-- ===== ACTUALITES ===== -->
     <div class="tab-panel" id="tab-actualites">
@@ -1333,6 +1323,7 @@
 
   // ===== LOAD ALL =====
   function loadAll() {
+    chargerKategori();
     loadFotos();
     loadLive();
     loadTemoignages();
@@ -1342,97 +1333,124 @@
     loadAnnonces();
   }
 
-  // ===== GALERIE — 2 kategori: eglise ak pasteur =====
 
-  // Stòk fichier separe pou chak kategori
-  let selectedFilesEglise  = [];
-  let selectedFilesPasteur = [];
+  // ===== GALERIE — Sistèm Kategori =====
 
-  function handleFotoSelect(e, categorie) {
-    const files = Array.from(e.target.files);
-    const previewId = categorie === 'pasteur' ? 'photoPreviewPasteur' : 'photoPreviewEglise';
-    const btnId     = categorie === 'pasteur' ? 'uploadBtnPasteur'    : 'uploadBtnEglise';
-    const preview   = document.getElementById(previewId);
+  let selectedFotoFiles = [];
+
+  // Chaje tout kategori nan dropdown yo
+  async function chargerKategori() {
+    try {
+      const snap = await window._getDocs(
+        window._query(window._collection(window._db, 'kategori'), window._orderBy('nom'))
+      );
+      const opts = snap.docs.map(d => `<option value="${d.id}">${d.data().nom}</option>`).join('');
+      const base = '<option value="">— Chwazi yon kategori —</option>';
+      const selFoto  = document.getElementById('kategoriFoto');
+      const selVideo = document.getElementById('kategoriVideo');
+      if (selFoto)  selFoto.innerHTML  = base + opts;
+      if (selVideo) selVideo.innerHTML = base + opts;
+    } catch(e) { console.log('Kategori err:', e.message); }
+  }
+
+  function toggleNouvoKategori() {
+    const b = document.getElementById('nouvoKategoriBox');
+    b.style.display = b.style.display === 'none' ? 'block' : 'none';
+    if (b.style.display === 'block') document.getElementById('nouvoKategoriNom').focus();
+  }
+
+  function toggleNouvoKategoriVideo() {
+    const b = document.getElementById('nouvoKategoriVideoBox');
+    b.style.display = b.style.display === 'none' ? 'block' : 'none';
+    if (b.style.display === 'block') document.getElementById('nouvoKategoriVideoNom').focus();
+  }
+
+  async function kreye_kategori() {
+    const nom = document.getElementById('nouvoKategoriNom').value.trim();
+    if (!nom) { showToast('Ekri non kategori a!', 'error'); return; }
+    try {
+      const ref = await window._addDoc(window._collection(window._db, 'kategori'), {
+        nom: nom, timestamp: window._serverTimestamp()
+      });
+      document.getElementById('nouvoKategoriNom').value = '';
+      document.getElementById('nouvoKategoriBox').style.display = 'none';
+      await chargerKategori();
+      document.getElementById('kategoriFoto').value = ref.id;
+      showToast('Kategori "' + nom + '" kreye !');
+    } catch(e) { showToast('Erè: ' + e.message, 'error'); }
+  }
+
+  async function kreye_kategori_video() {
+    const nom = document.getElementById('nouvoKategoriVideoNom').value.trim();
+    if (!nom) { showToast('Ekri non kategori a!', 'error'); return; }
+    try {
+      const ref = await window._addDoc(window._collection(window._db, 'kategori'), {
+        nom: nom, timestamp: window._serverTimestamp()
+      });
+      document.getElementById('nouvoKategoriVideoNom').value = '';
+      document.getElementById('nouvoKategoriVideoBox').style.display = 'none';
+      await chargerKategori();
+      document.getElementById('kategoriVideo').value = ref.id;
+      showToast('Kategori "' + nom + '" kreye !');
+    } catch(e) { showToast('Erè: ' + e.message, 'error'); }
+  }
+
+  // Seleksyon foto
+  function handleFotoSelect(e) {
+    selectedFotoFiles = Array.from(e.target.files);
+    const preview = document.getElementById('photoPreviewFoto');
     preview.innerHTML = '';
-
-    if (categorie === 'pasteur') selectedFilesPasteur = files;
-    else selectedFilesEglise = files;
-
-    files.forEach((f, i) => {
+    selectedFotoFiles.forEach((f, i) => {
       const reader = new FileReader();
-      reader.onload = function(ev) {
-        preview.innerHTML += `
-          <div class="photo-preview-item">
-            <img src="${ev.target.result}">
-            <button class="remove-photo" onclick="removePreview(${i}, '${categorie}')">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>`;
+      reader.onload = ev => {
+        preview.innerHTML += `<div class="photo-preview-item">
+          <img src="${ev.target.result}">
+          <button class="remove-photo" onclick="removeFotoPreview(${i})"><i class="fas fa-times"></i></button>
+        </div>`;
       };
       reader.readAsDataURL(f);
     });
-
-    document.getElementById(btnId).disabled = files.length === 0;
+    document.getElementById('uploadBtnFoto').disabled = selectedFotoFiles.length === 0;
   }
 
-  function removePreview(i, categorie) {
-    const previewId = categorie === 'pasteur' ? 'photoPreviewPasteur' : 'photoPreviewEglise';
-    const btnId     = categorie === 'pasteur' ? 'uploadBtnPasteur'    : 'uploadBtnEglise';
-    if (categorie === 'pasteur') selectedFilesPasteur.splice(i, 1);
-    else selectedFilesEglise.splice(i, 1);
-    const arr = categorie === 'pasteur' ? selectedFilesPasteur : selectedFilesEglise;
-    if (arr.length === 0) {
-      document.getElementById(previewId).innerHTML = '';
-      document.getElementById(btnId).disabled = true;
+  function removeFotoPreview(i) {
+    selectedFotoFiles.splice(i, 1);
+    if (!selectedFotoFiles.length) {
+      document.getElementById('photoPreviewFoto').innerHTML = '';
+      document.getElementById('uploadBtnFoto').disabled = true;
     }
   }
 
-  function resetUploadBtn(categorie) {
-    if (categorie === 'pasteur') {
-      const btn = document.getElementById('uploadBtnPasteur');
-      if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-upload"></i> Publier dans Photos Pasteur'; }
-    } else {
-      const btn = document.getElementById('uploadBtnEglise');
-      if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-upload"></i> Publier dans Galerie Église'; }
-    }
-  }
-
-  // ===== CLOUDINARY CONFIG =====
+  // ===== CLOUDINARY =====
   const CLOUDINARY_CLOUD  = 'dvcxhpibq';
   const CLOUDINARY_PRESET = 'eglise_upload';
 
-  async function uploadVersCloudinary(file, categorie) {
+  async function uploadVersCloudinary(file, dossier) {
     const blob = await compresserImaj(file);
-    const formData = new FormData();
-    formData.append('file', blob);
-    formData.append('upload_preset', CLOUDINARY_PRESET);
-    formData.append('folder', categorie === 'pasteur' ? 'pasteur' : 'galerie');
-    const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,
-      { method: 'POST', body: formData }
-    );
-    if (!res.ok) { const err = await res.json(); throw new Error(err.error?.message || 'Erreur Cloudinary'); }
-    const data = await res.json();
-    return data.secure_url;
+    const fd = new FormData();
+    fd.append('file', blob);
+    fd.append('upload_preset', CLOUDINARY_PRESET);
+    fd.append('folder', dossier || 'galerie');
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method:'POST', body:fd });
+    if (!res.ok) { const err = await res.json(); throw new Error(err.error?.message || 'Cloudinary error'); }
+    return (await res.json()).secure_url;
   }
 
   function compresserImaj(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onerror = () => reject(new Error('Echec lecture fichier'));
-      reader.onload = (e) => {
+      reader.onerror = () => reject(new Error('Echec lecture'));
+      reader.onload = e => {
         const img = new Image();
-        img.onerror = () => reject(new Error('Imaj pa valid'));
+        img.onerror = () => reject(new Error('Imaj invalide'));
         img.onload = () => {
-          try {
-            const canvas = document.createElement('canvas');
-            const maxW = 1200;
-            let w = img.width, h = img.height;
-            if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
-            canvas.width = w; canvas.height = h;
-            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-            canvas.toBlob(blob => resolve(blob), 'image/jpeg', 0.82);
-          } catch(e) { reject(e); }
+          const canvas = document.createElement('canvas');
+          const maxW = 1200;
+          let w = img.width, h = img.height;
+          if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+          canvas.width = w; canvas.height = h;
+          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+          canvas.toBlob(blob => resolve(blob), 'image/jpeg', 0.82);
         };
         img.src = e.target.result;
       };
@@ -1440,189 +1458,115 @@
     });
   }
 
-  async function uploadFotos(categorie) {
-    const files   = categorie === 'pasteur' ? selectedFilesPasteur : selectedFilesEglise;
-    const descId  = categorie === 'pasteur' ? 'fotoDescPasteur'    : 'fotoDescEglise';
-    const inputId = categorie === 'pasteur' ? 'fotoInputPasteur'   : 'fotoInputEglise';
-    const prevId  = categorie === 'pasteur' ? 'photoPreviewPasteur': 'photoPreviewEglise';
-    const btnId   = categorie === 'pasteur' ? 'uploadBtnPasteur'   : 'uploadBtnEglise';
+  async function uploadFotos() {
+    const katId  = document.getElementById('kategoriFoto').value;
+    const katNom = document.getElementById('kategoriFoto').selectedOptions[0]?.text || '';
+    if (!katId) { showToast('Chwazi yon kategori anvan!', 'error'); return; }
+    if (!selectedFotoFiles.length) { showToast('Chwazi omwen yon foto!', 'error'); return; }
 
-    if (!files.length) return;
-    const btn = document.getElementById(btnId);
+    const btn    = document.getElementById('uploadBtnFoto');
+    const status = document.getElementById('uploadFotoStatus');
     btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span> Upload en cours...';
+    btn.innerHTML = '<span class="spinner"></span> Upload...';
+    status.style.display = 'block';
+    status.style.background = '#fff8e1'; status.style.color = '#555';
 
-    const desc = document.getElementById(descId).value.trim();
-    const filesToUpload = [...files];
+    const files = [...selectedFotoFiles];
     let uploaded = 0;
-    const total = filesToUpload.length;
 
     try {
-      for (let i = 0; i < filesToUpload.length; i++) {
-        const file = filesToUpload[i];
-        btn.innerHTML = `<span class="spinner"></span> Photo ${i+1}/${total}...`;
-
-        const url = await uploadVersCloudinary(file, categorie);
-
+      for (let i = 0; i < files.length; i++) {
+        status.textContent = 'Photo ' + (i+1) + '/' + files.length + ' en cours...';
+        const url = await uploadVersCloudinary(files[i], 'galerie/' + katId);
         await window._addDoc(window._collection(window._db, 'galerie'), {
-          url: url,
-          description: desc || file.name.replace(/\.[^/.]+$/, ''),
-          categorie: categorie,   // 'eglise' oswa 'pasteur'
-          nom: file.name,
-          date: new Date().toISOString(),
+          url, type: 'photo',
+          kategoriId: katId,
+          kategoriNom: katNom,
+          description: files[i].name.replace(/\.[^/.]+$/, ''),
+          date: new Date().toLocaleDateString('fr-FR'),
           timestamp: window._serverTimestamp()
         });
         uploaded++;
       }
-
-      const label = categorie === 'pasteur' ? 'Photos Pasteur' : 'Galerie Église';
-      showToast(uploaded + ' photo(s) publiée(s) dans ' + label + ' !');
-      document.getElementById(descId).value  = '';
-      document.getElementById(prevId).innerHTML = '';
-      document.getElementById(inputId).value = '';
-      if (categorie === 'pasteur') selectedFilesPasteur = [];
-      else selectedFilesEglise = [];
-      resetUploadBtn(categorie);
+      status.style.background = '#e8f5e9'; status.style.color = '#2e7d32';
+      status.textContent = '✅ ' + uploaded + ' foto publiye nan "' + katNom + '" !';
+      document.getElementById('photoPreviewFoto').innerHTML = '';
+      document.getElementById('fotoInput').value = '';
+      selectedFotoFiles = [];
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-upload"></i> Voye Foto yo';
+      setTimeout(() => { status.style.display = 'none'; }, 4000);
       loadFotos();
-
-      // Notifikasyon otomatik
-      try {
-        const notifBody = uploaded > 1
-          ? 'Le pasteur a publié ' + uploaded + ' nouvelles photos !'
-          : 'Le pasteur a publié une nouvelle photo !';
-        await envoyerNotifAuto('Église de Dieu de la Prophétie', notifBody,
-          'https://fabouloso1.github.io/eglise-carrefour/Galerie.html');
-      } catch(e) { console.log('Notif auto error:', e); }
-
-    } catch (err) {
-      if (err.message.includes('preset') || err.message.includes('upload_preset')) {
-        showToast('⚙️ Konfigire Cloudinary preset la — wè enstriksyon yo', 'error');
-      document.getElementById('cloudinary-setup').style.display = 'block';
-      } else {
-        showToast('Erreur : ' + err.message, 'error');
-      }
-      resetUploadBtn(categorie);
+      try { await envoyerNotifAuto('Église de Dieu de la Prophétie', uploaded + ' nouvo foto publiye nan "' + katNom + '"!', 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html'); } catch(e) {}
+    } catch(err) {
+      status.style.background = '#fee'; status.style.color = '#c00';
+      status.textContent = '❌ Erè: ' + err.message;
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-upload"></i> Voye Foto yo';
     }
   }
 
   async function loadFotos() {
     try {
-      const q = window._query(window._collection(window._db, 'galerie'), window._orderBy('timestamp', 'desc'));
-      const snap = await window._getDocs(q);
-      const fotos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-
-      document.getElementById('fotoCount').textContent = fotos.length;
-      document.getElementById('statFoto').textContent = fotos.length;
+      const snap = await window._getDocs(
+        window._query(window._collection(window._db, 'galerie'), window._orderBy('timestamp', 'desc'))
+      );
+      const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      document.getElementById('fotoCount').textContent = items.length;
+      document.getElementById('statFoto').textContent  = items.length;
 
       const list = document.getElementById('fotoList');
-      if (fotos.length === 0) {
-        list.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px;font-size:0.85rem;">Aucune photo pour le moment</p>';
+      if (!items.length) {
+        list.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px;">Okenn foto/vidéo pou kounye a.</p>';
         return;
       }
 
-      list.innerHTML = fotos.map(f => `
-        <div class="item-card">
-          <img src="${f.url}" alt="${f.description}" onerror="this.src='https://via.placeholder.com/60'">
-          <div class="item-card-info">
-            <h4>${f.description || 'Foto'}</h4>
-            <p>${f.categorie} · ${new Date(f.date).toLocaleDateString('fr-FR')}</p>
+      // Regwoupe pa kategori
+      const groupes = {};
+      items.forEach(item => {
+        const kat = item.kategoriNom || item.categorie || 'Sans catégorie';
+        if (!groupes[kat]) groupes[kat] = [];
+        groupes[kat].push(item);
+      });
+
+      list.innerHTML = Object.entries(groupes).map(([kat, imgs]) => `
+        <div style="margin-bottom:20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:10px;margin-bottom:10px;">
+            <span style="color:white;font-weight:700;font-size:0.95rem;">
+              <i class="fas fa-folder-open" style="color:var(--gold);margin-right:8px;"></i>${kat}
+              <span style="background:rgba(241,196,15,0.2);color:var(--gold);font-size:0.75rem;padding:2px 8px;border-radius:10px;margin-left:8px;">${imgs.length}</span>
+            </span>
           </div>
-          <div class="item-card-actions">
-            <button class="btn btn-danger btn-sm" onclick="deleteFoto('${f.id}')">
-              <i class="fas fa-trash"></i>
-            </button>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+            ${imgs.map(item => item.type === 'video'
+              ? `<div style="position:relative;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:8px;overflow:hidden;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;">
+                  <i class="fas fa-play" style="color:var(--gold);font-size:1.4rem;"></i>
+                  <button onclick="deleteFoto('${item.id}')" style="position:absolute;top:4px;right:4px;background:rgba(231,76,60,0.85);color:white;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:0.65rem;display:flex;align-items:center;justify-content:center;"><i class="fas fa-trash"></i></button>
+                </div>`
+              : `<div style="position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;">
+                  <img src="${item.url}" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
+                  <button onclick="deleteFoto('${item.id}')" style="position:absolute;top:4px;right:4px;background:rgba(231,76,60,0.85);color:white;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:0.65rem;display:flex;align-items:center;justify-content:center;"><i class="fas fa-trash"></i></button>
+                </div>`
+            ).join('')}
           </div>
         </div>
       `).join('');
-    } catch (err) {
-      document.getElementById('fotoList').innerHTML = '<p style="color:#e74c3c;padding:10px;">Erreur de chargement : ' + err.message + '</p>';
+    } catch(err) {
+      document.getElementById('fotoList').innerHTML = '<p style="color:#e74c3c;padding:10px;">Erè: ' + err.message + '</p>';
     }
   }
 
   async function deleteFoto(id) {
-    if (!confirm('Supprimer cette photo ?')) return;
+    if (!confirm('Efase sa?')) return;
     try {
       await window._deleteDoc(window._doc(window._db, 'galerie', id));
-      showToast('Photo supprimée !');
+      showToast('Efase !');
       loadFotos();
-    } catch (err) {
-      showToast('Erreur : ' + err.message, 'error');
-    }
+    } catch(err) { showToast('Erè: ' + err.message, 'error'); }
   }
 
-  // ===== VIDEO =====
-  function getVideoEmbed(url) {
-    // YouTube
-    let match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-    if (match) return { type: 'youtube', id: match[1], thumb: 'https://img.youtube.com/vi/' + match[1] + '/hqdefault.jpg' };
-    // Facebook
-    if (url.includes('facebook.com')) return { type: 'facebook', id: url, thumb: '' };
-    return null;
-  }
 
-  async function publishVideo() {
-    const url   = document.getElementById('videoUrl').value.trim();
-    const titre = document.getElementById('videoTitre').value.trim();
-    const desc  = document.getElementById('videoDesc').value.trim();
-    const status = document.getElementById('videoStatus');
-
-    if (!url || !titre) {
-      status.style.display = 'block';
-      status.style.background = '#fee'; status.style.color = '#c00';
-      status.textContent = '❌ URL ak titre obligatwa';
-      return;
-    }
-
-    const embed = getVideoEmbed(url);
-    if (!embed) {
-      status.style.display = 'block';
-      status.style.background = '#fee'; status.style.color = '#c00';
-      status.textContent = '❌ URL pa valid — YouTube oswa Facebook sèlman';
-      return;
-    }
-
-    status.style.display = 'block';
-    status.style.background = '#fff8e1'; status.style.color = '#555';
-    status.textContent = '⏳ Publication en cours...';
-
-    try {
-      await window._addDoc(window._collection(window._db, 'galerie'), {
-        type: 'video',
-        videoUrl: url,
-        videoType: embed.type,
-        videoId: embed.id,
-        thumb: embed.thumb,
-        titre: titre,
-        description: desc,
-        categorie: 'pasteur',
-        nom: 'Pasteur Anouis Jean',
-        date: new Date().toLocaleDateString('fr-FR'),
-        timestamp: window._serverTimestamp()
-      });
-      status.style.background = '#e8f5e9'; status.style.color = '#2e7d32';
-      status.textContent = '✅ Vidéo publiée avec succès !';
-      document.getElementById('videoUrl').value = '';
-      document.getElementById('videoTitre').value = '';
-      document.getElementById('videoDesc').value = '';
-      loadFotos();
-      setTimeout(() => { status.style.display = 'none'; }, 3000);
-
-      // Notifikasyon otomatik
-      try {
-        await envoyerNotifAuto(
-          'Église de Dieu de la Prophétie',
-          'Le pasteur a publié une nouvelle vidéo : ' + titre,
-          'https://fabouloso1.github.io/eglise-carrefour/Galerie.html'
-        );
-      } catch(e) { console.log('Notif video error:', e); }
-
-    } catch(e) {
-      status.style.background = '#fee'; status.style.color = '#c00';
-      status.textContent = '❌ Erreur : ' + e.message;
-    }
-  }
-
-  // ===== ACTUALITES =====
+    // ===== ACTUALITES =====
   async function publishActu() {
     const titre = document.getElementById('actuTitre').value.trim();
     if (!titre) { showToast('Veuillez saisir un titre !', 'error'); return; }
@@ -1823,27 +1767,15 @@
     }
   }
 
-  // Upload zone drag & drop — Legliz
-  const zoneEglise = document.getElementById('uploadZoneEglise');
-  if (zoneEglise) {
-    zoneEglise.addEventListener('dragover', e => { e.preventDefault(); zoneEglise.classList.add('drag'); });
-    zoneEglise.addEventListener('dragleave', () => zoneEglise.classList.remove('drag'));
-    zoneEglise.addEventListener('drop', e => {
-      e.preventDefault(); zoneEglise.classList.remove('drag');
+  // Upload zone drag & drop
+  const zoneFoto = document.getElementById('uploadZoneFoto');
+  if (zoneFoto) {
+    zoneFoto.addEventListener('dragover', e => { e.preventDefault(); zoneFoto.classList.add('drag'); });
+    zoneFoto.addEventListener('dragleave', () => zoneFoto.classList.remove('drag'));
+    zoneFoto.addEventListener('drop', e => {
+      e.preventDefault(); zoneFoto.classList.remove('drag');
       const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
-      if (files.length) handleFotoSelect({ target: { files } }, 'eglise');
-    });
-  }
-
-  // Upload zone drag & drop — Pastè
-  const zonePasteur = document.getElementById('uploadZonePasteur');
-  if (zonePasteur) {
-    zonePasteur.addEventListener('dragover', e => { e.preventDefault(); zonePasteur.classList.add('drag'); });
-    zonePasteur.addEventListener('dragleave', () => zonePasteur.classList.remove('drag'));
-    zonePasteur.addEventListener('drop', e => {
-      e.preventDefault(); zonePasteur.classList.remove('drag');
-      const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
-      if (files.length) handleFotoSelect({ target: { files } }, 'pasteur');
+      if (files.length) handleFotoSelect({ target: { files } });
     });
   }
 </script>
