@@ -84,85 +84,93 @@
         bottom: 0; left: 0; right: 0;
         background: white;
         border-radius: 20px 20px 0 0;
-        padding: 28px 24px 36px;
+        padding: 28px 24px 40px;
         z-index: 99999;
-        box-shadow: 0 -8px 40px rgba(0,0,0,0.2);
+        box-shadow: 0 -8px 40px rgba(0,0,0,0.25);
         animation: pwaSlideUp 0.35s cubic-bezier(0.34,1.56,0.64,1);
         max-width: 520px;
         margin: 0 auto;
       }
       #pwa-icon {
-        width: 72px; height: 72px;
-        border-radius: 18px;
+        width: 80px; height: 80px;
+        border-radius: 20px;
         overflow: hidden;
-        margin: 0 auto 16px;
-        border: 2px solid #f0f0f0;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        margin: 0 auto 20px;
+        border: 2px solid #e0e0e0;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.12);
       }
       #pwa-icon img { width: 100%; height: 100%; object-fit: cover; }
       #pwa-content { text-align: center; }
       #pwa-content h3 {
         font-family: 'Playfair Display', serif;
-        font-size: 1.3rem;
-        color: #1c1c3c;
-        margin-bottom: 8px;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #111111;
+        margin-bottom: 10px;
+        line-height: 1.3;
       }
       #pwa-content p {
-        color: #666;
-        font-size: 0.9rem;
-        line-height: 1.6;
-        margin-bottom: 14px;
+        color: #333333;
+        font-size: 1rem;
+        line-height: 1.7;
+        margin-bottom: 16px;
+        font-weight: 500;
       }
       #pwa-benefits {
         list-style: none;
         padding: 0;
-        margin: 0 0 20px;
+        margin: 0 0 22px;
         display: flex;
         flex-direction: column;
-        gap: 6px;
+        gap: 8px;
         text-align: left;
       }
       #pwa-benefits li {
-        font-size: 0.85rem;
-        color: #444;
-        padding: 6px 12px;
-        background: #f8f8f8;
-        border-radius: 8px;
+        font-size: 0.95rem;
+        color: #222222;
+        font-weight: 600;
+        padding: 10px 14px;
+        background: #f0f0f0;
+        border-radius: 10px;
+        border-left: 4px solid #1c1c3c;
       }
       #pwa-actions {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 12px;
       }
       #pwa-btn-install {
         width: 100%;
-        padding: 14px;
+        padding: 16px;
         background: linear-gradient(135deg, #1c1c3c, #3a1c3c);
         color: white;
         border: none;
         border-radius: 30px;
         font-family: 'Montserrat', sans-serif;
-        font-size: 1rem;
+        font-size: 1.1rem;
         font-weight: 700;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
+        gap: 10px;
         transition: transform 0.2s;
+        letter-spacing: 0.3px;
       }
-      #pwa-btn-install:hover { transform: translateY(-1px); }
+      #pwa-btn-install:hover { transform: translateY(-2px); }
       #pwa-btn-dismiss {
         width: 100%;
-        padding: 12px;
-        background: transparent;
-        color: #999;
+        padding: 14px;
+        background: #f0f0f0;
+        color: #444444;
         border: none;
+        border-radius: 30px;
         font-family: 'Montserrat', sans-serif;
-        font-size: 0.9rem;
+        font-size: 0.95rem;
+        font-weight: 600;
         cursor: pointer;
       }
-      #pwa-btn-dismiss:hover { color: #666; }
+      #pwa-btn-dismiss:hover { background: #e0e0e0; color: #222; }
       @keyframes pwaFadeIn { from { opacity: 0; } to { opacity: 1; } }
       @keyframes pwaSlideUp {
         from { transform: translateY(100%); }
