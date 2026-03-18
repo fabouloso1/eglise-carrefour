@@ -2107,6 +2107,19 @@
     } catch(e) { showToast('Erreur : '+e.message,'error'); }
   }
 
+  // ===== HELPER NOTIF =====
+  async function envoyerNotif(title, body, link) {
+    let tries = 0;
+    while (!window.envoyerNotifAuto && tries < 50) {
+      await new Promise(r => setTimeout(r, 100));
+      tries++;
+    }
+    if (window.envoyerNotifAuto) {
+      try { await window.envoyerNotifAuto(title, body, link); } 
+      catch(e) { console.log('Notif err:', e.message); }
+    }
+  }
+
   async function lancerEtude() {
     const titre    = document.getElementById('etudeTitre').value.trim();
     const theme    = document.getElementById('etudeTheme').value.trim();
