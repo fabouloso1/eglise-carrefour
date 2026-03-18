@@ -627,93 +627,166 @@
     <!-- ===== GALERIE ===== -->
     <div class="tab-panel" id="tab-galerie">
 
-      <!-- BOUTON FOTO -->
-      <div class="card">
-        <h3><i class="fas fa-camera"></i> Envoyer Photos</h3>
+      <!-- SECTION PHOTOS -->
+      <div style="background:linear-gradient(135deg,#0d1f4a,#1a0a3c);border-radius:20px;padding:26px 22px;margin-bottom:20px;">
 
-        <label>Catégorie <span style="color:red">*</span></label>
-        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
-          <select id="kategoriFoto" style="flex:1;min-width:180px;">
-            <option value="">— Choisir une catégorie —</option>
-          </select>
-          <button class="btn btn-primary btn-sm" onclick="toggleNouvoKategori()" style="white-space:nowrap;">
-            <i class="fas fa-plus"></i> Nouvelle catégorie
-          </button>
+        <!-- Header -->
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;">
+          <div style="width:50px;height:50px;background:rgba(241,196,15,0.2);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fas fa-camera" style="color:#f1c40f;font-size:1.3rem;"></i>
+          </div>
+          <div>
+            <h3 style="color:#f1c40f!important;font-size:1.2rem!important;font-weight:800!important;margin:0!important;">Publier des Photos</h3>
+            <p style="color:rgba(255,255,255,0.55)!important;font-size:0.85rem!important;margin:0!important;">Choisissez une catégorie et envoyez vos photos</p>
+          </div>
         </div>
-        <div id="nouvoKategoriBox" style="display:none;background:#f9f9f9;border:1.5px solid var(--gold);border-radius:10px;padding:14px;margin-bottom:14px;">
-          <label style="margin-bottom:6px;">Nom de la catégorie <span style="color:red">*</span></label>
+
+        <!-- Catégorie -->
+        <div style="margin-bottom:16px;">
+          <label style="display:block;color:#f1c40f!important;font-size:0.9rem!important;font-weight:700!important;margin-bottom:8px;">
+            <i class="fas fa-folder" style="margin-right:6px;"></i>Catégorie *
+          </label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <select id="kategoriFoto" style="flex:1;min-width:160px;padding:13px 14px;border:2px solid rgba(241,196,15,0.3);border-radius:12px;background:rgba(255,255,255,0.08);color:white;font-size:0.95rem;font-weight:600;">
+              <option value="" style="background:#1a0a3c;">— Choisir une catégorie —</option>
+            </select>
+            <button onclick="toggleNouvoKategori()"
+              style="padding:13px 16px;background:rgba(241,196,15,0.15);border:2px solid rgba(241,196,15,0.3);border-radius:12px;color:#f1c40f;font-size:0.88rem;font-weight:700;cursor:pointer;white-space:nowrap;">
+              <i class="fas fa-plus"></i> Nouvelle
+            </button>
+          </div>
+        </div>
+
+        <!-- Nouvelle catégorie box -->
+        <div id="nouvoKategoriBox" style="display:none;background:rgba(255,255,255,0.06);border:1.5px solid rgba(241,196,15,0.3);border-radius:14px;padding:16px;margin-bottom:16px;">
+          <label style="display:block;color:#f1c40f!important;font-size:0.88rem!important;font-weight:700!important;margin-bottom:8px;">
+            Nom de la nouvelle catégorie *
+          </label>
           <div style="display:flex;gap:8px;">
-            <input type="text" id="nouvoKategoriNom" placeholder="Ex: Visite Église Carrefour, Réunion des leaders..." style="flex:1;margin-bottom:0;">
-            <button class="btn btn-gold btn-sm" onclick="kreye_kategori()" style="white-space:nowrap;">
+            <input type="text" id="nouvoKategoriNom" placeholder="Ex: Baptême, Culte de Noël..."
+              style="flex:1;padding:12px 14px;border:2px solid rgba(241,196,15,0.25);border-radius:10px;background:rgba(255,255,255,0.08);color:white;font-size:0.95rem;font-weight:600;margin-bottom:0;">
+            <button onclick="kreye_kategori()"
+              style="padding:12px 16px;background:linear-gradient(135deg,#f1c40f,#e67e22);border:none;border-radius:10px;color:#0d1f4a;font-size:0.9rem;font-weight:800;cursor:pointer;">
               <i class="fas fa-check"></i> Créer
             </button>
           </div>
         </div>
 
-        <div class="upload-zone" id="uploadZoneFoto">
+        <!-- Zone upload photos -->
+        <div class="upload-zone" id="uploadZoneFoto"
+          style="border:2px dashed rgba(241,196,15,0.4);border-radius:16px;background:rgba(255,255,255,0.05);padding:28px;text-align:center;margin-bottom:16px;cursor:pointer;">
           <input type="file" id="fotoInput" accept="image/*" multiple onchange="handleFotoSelect(event)">
-          <i class="fas fa-images" style="font-size:2rem;color:var(--gold);margin-bottom:10px;display:block;"></i>
-          <p><strong>Cliquer pour choisir des photos</strong><br>ou glisser-déposer ici<br><small style="color:#aaa">JPG, PNG — plusieurs photos à la fois</small></p>
+          <i class="fas fa-images" style="font-size:2.4rem;color:#f1c40f;margin-bottom:12px;display:block;"></i>
+          <p style="color:white!important;font-size:1rem!important;font-weight:700!important;margin-bottom:4px;">Cliquer pour choisir des photos</p>
+          <p style="color:rgba(255,255,255,0.45)!important;font-size:0.85rem!important;">JPG, PNG — plusieurs photos à la fois</p>
         </div>
         <div class="photo-preview" id="photoPreviewFoto"></div>
-        <button class="btn btn-gold" id="uploadBtnFoto" onclick="uploadFotos()" style="width:100%;margin-top:4px;" disabled>
-          <i class="fas fa-upload"></i> Envoyer Photos yo
+
+        <button id="uploadBtnFoto" onclick="uploadFotos()" disabled
+          style="width:100%;padding:16px;background:linear-gradient(135deg,#f1c40f,#e67e22);border:none;border-radius:30px;color:#0d1f4a!important;font-size:1.05rem!important;font-weight:800!important;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;opacity:0.5;">
+          <i class="fas fa-upload"></i> Publier les Photos
         </button>
-        <div id="uploadFotoStatus" style="display:none;margin-top:10px;padding:12px;border-radius:8px;text-align:center;font-weight:600;"></div>
+        <div id="uploadFotoStatus" style="display:none;margin-top:12px;padding:14px;border-radius:12px;text-align:center;font-weight:700;font-size:0.95rem;"></div>
       </div>
 
-      <!-- BOUTON VIDEO -->
-      <div class="card" style="border-left:4px solid var(--gold);">
-        <h3><i class="fas fa-video" style="color:var(--gold)"></i> Envoyer Vidéo</h3>
+      <!-- SECTION VIDEO -->
+      <div style="background:linear-gradient(135deg,#1a0a3c,#0d2a1f);border-radius:20px;padding:26px 22px;margin-bottom:20px;">
 
-        <label>Catégorie Vidéo <span style="color:red">*</span></label>
-        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
-          <select id="kategoriVideo" style="flex:1;min-width:180px;">
-            <option value="">— Choisir une catégorie —</option>
-          </select>
-          <button class="btn btn-primary btn-sm" onclick="toggleNouvoKategoriVideo()" style="white-space:nowrap;">
-            <i class="fas fa-plus"></i> Nouvelle catégorie
-          </button>
+        <!-- Header -->
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;">
+          <div style="width:50px;height:50px;background:rgba(46,213,115,0.15);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fas fa-video" style="color:#2ed573;font-size:1.3rem;"></i>
+          </div>
+          <div>
+            <h3 style="color:#2ed573!important;font-size:1.2rem!important;font-weight:800!important;margin:0!important;">Publier une Vidéo</h3>
+            <p style="color:rgba(255,255,255,0.55)!important;font-size:0.85rem!important;margin:0!important;">Depuis votre téléphone — max 200MB</p>
+          </div>
         </div>
-        <div id="nouvoKategoriVideoBox" style="display:none;background:#f9f9f9;border:1.5px solid var(--gold);border-radius:10px;padding:14px;margin-bottom:14px;">
-          <label style="margin-bottom:6px;">Nom de la catégorie</label>
+
+        <!-- Catégorie vidéo -->
+        <div style="margin-bottom:16px;">
+          <label style="display:block;color:#2ed573!important;font-size:0.9rem!important;font-weight:700!important;margin-bottom:8px;">
+            <i class="fas fa-folder" style="margin-right:6px;"></i>Catégorie Vidéo *
+          </label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <select id="kategoriVideo" style="flex:1;min-width:160px;padding:13px 14px;border:2px solid rgba(46,213,115,0.3);border-radius:12px;background:rgba(255,255,255,0.08);color:white;font-size:0.95rem;font-weight:600;">
+              <option value="" style="background:#1a0a3c;">— Choisir une catégorie —</option>
+            </select>
+            <button onclick="toggleNouvoKategoriVideo()"
+              style="padding:13px 16px;background:rgba(46,213,115,0.12);border:2px solid rgba(46,213,115,0.3);border-radius:12px;color:#2ed573;font-size:0.88rem;font-weight:700;cursor:pointer;white-space:nowrap;">
+              <i class="fas fa-plus"></i> Nouvelle
+            </button>
+          </div>
+        </div>
+
+        <!-- Nouvelle catégorie vidéo -->
+        <div id="nouvoKategoriVideoBox" style="display:none;background:rgba(255,255,255,0.06);border:1.5px solid rgba(46,213,115,0.3);border-radius:14px;padding:16px;margin-bottom:16px;">
+          <label style="display:block;color:#2ed573!important;font-size:0.88rem!important;font-weight:700!important;margin-bottom:8px;">
+            Nom de la nouvelle catégorie
+          </label>
           <div style="display:flex;gap:8px;">
-            <input type="text" id="nouvoKategoriVideoNom" placeholder="Ex: Prédication, Louange, Baptême..." style="flex:1;margin-bottom:0;">
-            <button class="btn btn-gold btn-sm" onclick="kreye_kategori_video()" style="white-space:nowrap;">
+            <input type="text" id="nouvoKategoriVideoNom" placeholder="Ex: Prédication, Louange..."
+              style="flex:1;padding:12px 14px;border:2px solid rgba(46,213,115,0.25);border-radius:10px;background:rgba(255,255,255,0.08);color:white;font-size:0.95rem;font-weight:600;margin-bottom:0;">
+            <button onclick="kreye_kategori_video()"
+              style="padding:12px 16px;background:linear-gradient(135deg,#2ed573,#1abc9c);border:none;border-radius:10px;color:#0d1f4a;font-size:0.9rem;font-weight:800;cursor:pointer;">
               <i class="fas fa-check"></i> Créer
             </button>
           </div>
         </div>
 
-        <label>Titre de la vidéo <span style="color:red">*</span></label>
-        <input type="text" id="videoTitre" placeholder="Ex: Kilt dimanch 15 jen..." />
-        <label>Description (optionnel)</label>
-        <input type="text" id="videoDesc" placeholder="Ex: Mesaj Pastè Anouis Jean..." />
+        <!-- Titre + Description -->
+        <div style="margin-bottom:14px;">
+          <label style="display:block;color:#2ed573!important;font-size:0.9rem!important;font-weight:700!important;margin-bottom:8px;">
+            <i class="fas fa-pen" style="margin-right:6px;"></i>Titre de la vidéo *
+          </label>
+          <input type="text" id="videoTitre" placeholder="Ex: Culte dimanche 15 juin..."
+            style="width:100%;padding:14px 16px;border:2px solid rgba(46,213,115,0.25);border-radius:12px;background:rgba(255,255,255,0.08);color:white;font-size:1rem;font-weight:600;" />
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="display:block;color:#2ed573!important;font-size:0.9rem!important;font-weight:700!important;margin-bottom:8px;">
+            <i class="fas fa-align-left" style="margin-right:6px;"></i>Description (optionnel)
+          </label>
+          <input type="text" id="videoDesc" placeholder="Ex: Message du Pasteur Anouis Jean..."
+            style="width:100%;padding:14px 16px;border:2px solid rgba(46,213,115,0.25);border-radius:12px;background:rgba(255,255,255,0.08);color:white;font-size:1rem;font-weight:600;" />
+        </div>
 
-        <div class="upload-zone" id="uploadZoneVideo" style="border-color:#f1c40f66;">
+        <!-- Zone upload vidéo -->
+        <div class="upload-zone" id="uploadZoneVideo"
+          style="border:2px dashed rgba(46,213,115,0.4);border-radius:16px;background:rgba(255,255,255,0.05);padding:28px;text-align:center;margin-bottom:16px;cursor:pointer;">
           <input type="file" id="videoInput" accept="video/*" onchange="handleVideoSelect(event)">
-          <i class="fas fa-video" style="font-size:2rem;color:var(--gold);margin-bottom:10px;display:block;"></i>
-          <p><strong>Cliquer pour choisir une vidéo</strong><br>depuis votre téléphone ou tablette<br><small style="color:#aaa">MP4, MOV — max 200MB</small></p>
+          <i class="fas fa-video" style="font-size:2.4rem;color:#2ed573;margin-bottom:12px;display:block;"></i>
+          <p style="color:white!important;font-size:1rem!important;font-weight:700!important;margin-bottom:4px;">Cliquer pour choisir une vidéo</p>
+          <p style="color:rgba(255,255,255,0.45)!important;font-size:0.85rem!important;">depuis votre téléphone ou tablette — MP4, MOV</p>
         </div>
 
-        <div id="videoPreviewWrap" style="display:none;margin-bottom:14px;">
-          <video id="videoPreview" controls style="width:100%;border-radius:10px;max-height:220px;background:#000;"></video>
-          <p id="videoFileName" style="font-size:0.82rem;color:#888;margin-top:6px;text-align:center;"></p>
+        <div id="videoPreviewWrap" style="display:none;margin-bottom:16px;">
+          <video id="videoPreview" controls style="width:100%;border-radius:12px;max-height:220px;background:#000;"></video>
+          <p id="videoFileName" style="font-size:0.85rem;color:rgba(255,255,255,0.5);margin-top:8px;text-align:center;"></p>
         </div>
 
-        <button class="btn btn-gold" id="uploadBtnVideo" onclick="uploadVideo()" style="width:100%;" disabled>
-          <i class="fas fa-upload"></i> Envoyer Vidéo a
+        <button id="uploadBtnVideo" onclick="uploadVideo()" disabled
+          style="width:100%;padding:16px;background:linear-gradient(135deg,#2ed573,#1abc9c);border:none;border-radius:30px;color:#0d1f4a!important;font-size:1.05rem!important;font-weight:800!important;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;opacity:0.5;">
+          <i class="fas fa-upload"></i> Publier la Vidéo
         </button>
-        <div id="videoStatus" style="display:none;margin-top:10px;padding:12px;border-radius:8px;text-align:center;font-weight:600;"></div>
+        <div id="videoStatus" style="display:none;margin-top:12px;padding:14px;border-radius:12px;text-align:center;font-weight:700;font-size:0.95rem;"></div>
       </div>
 
-      <!-- LIS FOTO PA KATEGORI -->
-      <div class="card">
-        <h3><i class="fas fa-layer-group"></i> Photos et Vidéos (<span id="fotoCount">0</span>)</h3>
+      <!-- LISTE PHOTOS & VIDEOS -->
+      <div style="background:white;border-radius:20px;padding:22px 20px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+          <div style="width:44px;height:44px;background:linear-gradient(135deg,#1c1c3c,#3a1c5c);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+            <i class="fas fa-layer-group" style="color:#f1c40f;"></i>
+          </div>
+          <div>
+            <h3 style="color:#111!important;font-size:1.1rem!important;font-weight:800!important;margin:0!important;">Photos & Vidéos publiées</h3>
+            <p style="color:#888!important;font-size:0.82rem!important;margin:0!important;"><span id="fotoCount">0</span> élément(s)</p>
+          </div>
+        </div>
         <div class="item-list" id="fotoList">
-          <p style="color:#aaa;text-align:center;padding:20px;font-size:0.85rem;">Chargement...</p>
+          <p style="color:#aaa;text-align:center;padding:20px;">Chargement...</p>
         </div>
       </div>
+
     </div>
 
 
