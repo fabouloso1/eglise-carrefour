@@ -1223,7 +1223,7 @@
   document.getElementById('loadingOverlay').style.display = 'none';
 
   // Verifye si deja login
-  if (sessionStorage.getItem('admin_ok') === 'true') {
+  if (localStorage.getItem('admin_ok') === 'true') {
     document.getElementById('adminPanel').style.display = 'block';
     loadAll();
   } else {
@@ -1242,7 +1242,7 @@
   function doLogin() {
     var pw = document.getElementById('loginPassword').value.trim();
     if (pw === 'Kafou2025') {
-      sessionStorage.setItem('admin_ok', 'true');
+      localStorage.setItem('admin_ok', 'true');
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('adminPanel').style.display = 'block';
       loadAll();
@@ -1257,7 +1257,7 @@
   });
 
   function doLogout() {
-    sessionStorage.removeItem('admin_ok');
+    localStorage.removeItem('admin_ok');
     location.reload();
   }
 
