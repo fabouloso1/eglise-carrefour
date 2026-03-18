@@ -1180,7 +1180,7 @@
 <!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, getDoc, orderBy, query, where, serverTimestamp, onSnapshot }
+  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, getDoc, updateDoc, orderBy, query, where, serverTimestamp, onSnapshot }
     from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
   // ===== CONFIG FIREBASE =====
@@ -1214,20 +1214,31 @@
   window._doc = doc;
   window._setDoc = setDoc;
   window._getDoc = getDoc;
+  window._updateDoc = updateDoc;
   window._query = query;
   window._orderBy = orderBy;
   window._serverTimestamp = serverTimestamp;
   window._ADMIN_PASSWORD = ADMIN_PASSWORD;
 
-  // Init
-  document.getElementById('loadingOverlay').style.display = 'none';
+  // Siyal Firebase prè
+  window._firebaseReady = true;
+  document.dispatchEvent(new CustomEvent('firebaseReady'));
 
-  // Verifye si deja login
-  if (localStorage.getItem('admin_ok') === 'true') {
-    document.getElementById('adminPanel').style.display = 'block';
-    loadAll();
+  // Verifye si deja login — APRE Firebase prè
+  function initAdmin() {
+    document.getElementById('loadingOverlay').style.display = 'none';
+    if (localStorage.getItem('admin_ok') === 'true') {
+      document.getElementById('adminPanel').style.display = 'block';
+      loadAll();
+    } else {
+      document.getElementById('loginScreen').style.display = 'flex';
+    }
+  }
+
+  if (window._firebaseReady) {
+    initAdmin();
   } else {
-    document.getElementById('loginScreen').style.display = 'flex';
+    document.addEventListener('firebaseReady', initAdmin);
   }
 </script>
 
