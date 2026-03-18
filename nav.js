@@ -4,6 +4,7 @@ const NAV = (() => {
     { href: 'Apropos.html',  icon: 'fa-church',         label: 'À propos',          i18n: 'nav_apropos', dropdown: [
         { href: 'Horaires.html',   icon: 'fa-clock',     label: 'Horaires des cultes', i18n: 'nav_horaires' },
         { href: 'Galerie.html',    icon: 'fa-images',    label: 'Galerie & Vidéos',    i18n: 'nav_galerie' },
+        { href: 'Etude.html',      icon: 'fa-book-open', label: 'Étude Biblique',      i18n: 'nav_etude' },
         { href: 'Actualites.html', icon: 'fa-newspaper', label: 'Actualités',          i18n: 'nav_actualites' },
         { href: 'Temoigner.html',  icon: 'fa-star',      label: 'Témoignages',         i18n: 'nav_temoignages' },
       ]

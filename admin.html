@@ -544,8 +544,8 @@
     <button class="tab-btn" onclick="showTab('galerie')">
       <i class="fas fa-images"></i> Galerie
     </button>
-    <button class="tab-btn" onclick="showTab('actualites')">
-      <i class="fas fa-newspaper"></i> Actualités
+    <button class="tab-btn" onclick="showTab('etude')">
+      <i class="fas fa-book-open"></i> Étude
     </button>
     <button class="tab-btn" onclick="showTab('evenements')">
       <i class="fas fa-calendar-star"></i> Événements
@@ -608,7 +608,7 @@
         <button class="btn btn-gold" style="width:100%;margin-bottom:10px" onclick="showTab('galerie')">
           <i class="fas fa-camera"></i> Ajouter des photos à la galerie
         </button>
-        <button class="btn btn-primary" style="width:100%;margin-bottom:10px" onclick="showTab('actualites')">
+        <button class="btn btn-primary" style="width:100%;margin-bottom:10px" onclick="showTab('etude')">
           <i class="fas fa-pen"></i> Écrire une actualité
         </button>
         <button class="btn btn-primary" style="width:100%;" onclick="showTab('annonces')">
@@ -791,46 +791,97 @@
 
 
     <!-- ===== ACTUALITES ===== -->
-    <div class="tab-panel" id="tab-actualites">
+    <!-- ===== ÉTUDE BIBLIQUE ===== -->
+    <div class="tab-panel" id="tab-etude">
 
-      <!-- Nouvelle actualité -->
-      <div class="card">
-        <h3><i class="fas fa-pen"></i> Écrire une nouvelle actualité</h3>
+      <!-- ÉTUDE ACTIVE -->
+      <div id="etude-active-wrap" style="display:none;background:linear-gradient(135deg,#0d1f4a,#1a0a3c);border-radius:20px;padding:26px 22px;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:46px;height:46px;background:rgba(241,196,15,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+              <i class="fas fa-book-open" style="color:#f1c40f;font-size:1.2rem;"></i>
+            </div>
+            <div>
+              <h3 style="color:#f1c40f!important;font-size:1.1rem!important;font-weight:800!important;margin:0!important;">Étude en cours</h3>
+              <p style="color:rgba(255,255,255,0.55)!important;font-size:0.82rem!important;margin:0!important;" id="etude-active-titre">—</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button onclick="toggleQuestions(true)"
+              style="padding:10px 16px;background:rgba(46,213,115,0.2);border:1.5px solid rgba(46,213,115,0.4);border-radius:20px;color:#2ed573;font-size:0.85rem;font-weight:700;cursor:pointer;">
+              <i class="fas fa-unlock"></i> Questions ouvertes
+            </button>
+            <button onclick="toggleQuestions(false)"
+              style="padding:10px 16px;background:rgba(231,76,60,0.2);border:1.5px solid rgba(231,76,60,0.4);border-radius:20px;color:#ff6b6b;font-size:0.85rem;font-weight:700;cursor:pointer;">
+              <i class="fas fa-lock"></i> Fermer questions
+            </button>
+            <button onclick="terminerEtude()"
+              style="padding:10px 16px;background:rgba(231,76,60,0.15);border:1.5px solid rgba(231,76,60,0.3);border-radius:20px;color:#ff6b6b;font-size:0.85rem;font-weight:700;cursor:pointer;">
+              <i class="fas fa-stop-circle"></i> Terminer l'étude
+            </button>
+          </div>
+        </div>
 
-        <label>Titre *</label>
-        <input type="text" id="actuTitre" placeholder="Ex : Conférence Annuelle 2025..." />
-
-        <label>Catégorie</label>
-        <select id="actuCategorie">
-          <option value="Événements">Événement</option>
-          <option value="Annonces">Annonces</option>
-          <option value="Spirituel">Espirityèl</option>
-        </select>
-
-        <label>Date</label>
-        <input type="date" id="actuDate" />
-
-        <label>Une phrase courte (intro)</label>
-        <input type="text" id="actuIntro" placeholder="Quelques mots pour résumer l'actualité..." />
-
-        <label>Contenu complet</label>
-        <textarea id="actuContenu" placeholder="Écrivez tous les détails de l'actualité ici..."></textarea>
-
-        <label>Nom de l'auteur</label>
-        <input type="text" id="actuAuteur" placeholder="Ex : Pasteur Anouis Jean" value="Pasteur Anouis Jean" />
-
-        <button class="btn btn-gold" onclick="publishActu()" style="width:100%">
-          <i class="fas fa-paper-plane"></i> Publier l'actualité
-        </button>
-      </div>
-
-      <!-- Actualités existant -->
-      <div class="card">
-        <h3><i class="fas fa-list"></i> Actualités publiées (<span id="actuCount">0</span>)</h3>
-        <div class="item-list" id="actuList">
-          <p style="color:#aaa;text-align:center;padding:20px;font-size:0.85rem;">Chargement des actualités...</p>
+        <!-- Questions reçues -->
+        <div style="background:rgba(255,255,255,0.05);border-radius:14px;padding:16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <h4 style="color:white!important;font-size:1rem!important;font-weight:700!important;margin:0!important;">
+              <i class="fas fa-comments" style="color:#f1c40f;margin-right:8px;"></i>
+              Questions reçues (<span id="questionsCount">0</span>)
+            </h4>
+          </div>
+          <div id="questionsList">
+            <p style="color:rgba(255,255,255,0.35);text-align:center;padding:20px;font-size:0.9rem;">Aucune question pour le moment...</p>
+          </div>
         </div>
       </div>
+
+      <!-- CRÉER NOUVELLE ÉTUDE -->
+      <div style="background:linear-gradient(135deg,#1a0a3c,#0d2a1f);border-radius:20px;padding:26px 22px;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:22px;">
+          <div style="width:46px;height:46px;background:rgba(46,213,115,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+            <i class="fas fa-plus-circle" style="color:#2ed573;font-size:1.2rem;"></i>
+          </div>
+          <div>
+            <h3 style="color:#2ed573!important;font-size:1.1rem!important;font-weight:800!important;margin:0!important;">Lancer une nouvelle étude</h3>
+            <p style="color:rgba(255,255,255,0.5)!important;font-size:0.82rem!important;margin:0!important;">Une notification sera envoyée automatiquement</p>
+          </div>
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <label style="display:block;color:#2ed573!important;font-size:0.9rem!important;font-weight:700!important;margin-bottom:8px;">
+            <i class="fas fa-heading" style="margin-right:6px;"></i>Titre du sujet *
+          </label>
+          <input type="text" id="etudeTitre"
+            placeholder="Ex: La puissance de la prière, La foi qui déplace les montagnes..."
+            style="width:100%;padding:15px 16px;border:2px solid rgba(46,213,115,0.25);border-radius:12px;background:rgba(255,255,255,0.07);color:white;font-size:1rem;font-weight:600;">
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <label style="display:block;color:#2ed573!important;font-size:0.9rem!important;font-weight:700!important;margin-bottom:8px;">
+            <i class="fas fa-align-left" style="margin-right:6px;"></i>Développement / Contenu *
+          </label>
+          <textarea id="etudeContenu"
+            placeholder="Développez le sujet ici... Partagez les versets, les points importants, les réflexions..."
+            style="width:100%;padding:15px 16px;border:2px solid rgba(46,213,115,0.25);border-radius:12px;background:rgba(255,255,255,0.07);color:white;font-size:0.95rem;font-weight:500;min-height:140px;resize:vertical;"></textarea>
+        </div>
+
+        <div style="margin-bottom:20px;">
+          <label style="display:block;color:#2ed573!important;font-size:0.9rem!important;font-weight:700!important;margin-bottom:8px;">
+            <i class="fas fa-bible" style="margin-right:6px;"></i>Verset de référence (optionnel)
+          </label>
+          <input type="text" id="etudeVerset"
+            placeholder="Ex: Jean 3:16, Philippiens 4:13..."
+            style="width:100%;padding:15px 16px;border:2px solid rgba(46,213,115,0.25);border-radius:12px;background:rgba(255,255,255,0.07);color:white;font-size:1rem;font-weight:600;">
+        </div>
+
+        <button onclick="lancerEtude()"
+          style="width:100%;padding:17px;background:linear-gradient(135deg,#2ed573,#1abc9c);border:none;border-radius:30px;color:#0d1f4a!important;font-size:1.05rem!important;font-weight:800!important;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;">
+          <i class="fas fa-broadcast-tower"></i> Lancer l'étude & notifier
+        </button>
+        <div id="etudeStatus" style="display:none;margin-top:12px;padding:14px;border-radius:12px;text-align:center;font-weight:700;"></div>
+      </div>
+
     </div>
 
     <!-- ===== HORAIRES ===== -->
@@ -1224,7 +1275,7 @@
     // Chaje done pou chak tab
     if (name === 'prieres') loadPrieres();
     if (name === 'galerie') loadFotos();
-    if (name === 'actualites') loadActus();
+    if (name === 'etude') chargerEtudeActive();
     if (name === 'temoignages') loadTemoignages();
     if (name === 'notifs') loadNotifCount();
     if (name === 'contacts') loadContacts();
@@ -1945,73 +1996,192 @@
     }
   }
 
-    // ===== ACTUALITES =====
-  async function publishActu() {
-    const titre = document.getElementById('actuTitre').value.trim();
-    if (!titre) { showToast('Veuillez saisir un titre !', 'error'); return; }
+    // ===== ÉTUDE BIBLIQUE =====
+  let etudeListener = null; // listener an dirèk pou kesyon yo
+
+  async function lancerEtude() {
+    const titre   = document.getElementById('etudeTitre').value.trim();
+    const contenu = document.getElementById('etudeContenu').value.trim();
+    const verset  = document.getElementById('etudeVerset').value.trim();
+    if (!titre)   { showToast('Veuillez saisir un titre !', 'error'); return; }
+    if (!contenu) { showToast('Veuillez développer le sujet !', 'error'); return; }
+
+    const status = document.getElementById('etudeStatus');
+    status.style.display = 'block';
+    status.style.background = '#fff8e1';
+    status.style.color = '#555';
+    status.textContent = '⏳ Lancement en cours...';
 
     try {
-      const date = document.getElementById('actuDate').value;
-      await window._addDoc(window._collection(window._db, 'actualites'), {
-        titre,
-        categorie: document.getElementById('actuCategorie').value,
-        date: date || new Date().toLocaleDateString('fr-FR'),
-        intro: document.getElementById('actuIntro').value,
-        contenu: document.getElementById('actuContenu').value,
-        auteur: document.getElementById('actuAuteur').value || 'Pasteur Anouis Jean',
-        timestamp: window._serverTimestamp()
-      });
-
-      showToast('Actualité publiée !');
-      ['actuTitre','actuIntro','actuContenu','actuDate'].forEach(id => document.getElementById(id).value = '');
-      loadActualites();
-    } catch (err) {
-      showToast('Erreur : ' + err.message, 'error');
-    }
-  }
-
-  async function loadActualites() {
-    try {
-      const q = window._query(window._collection(window._db, 'actualites'), window._orderBy('timestamp', 'desc'));
-      const snap = await window._getDocs(q);
-      const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-
-      document.getElementById('actuCount').textContent = items.length;
-      document.getElementById('statActu').textContent = items.length;
-
-      const list = document.getElementById('actuList');
-      if (items.length === 0) {
-        list.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px;font-size:0.85rem;">Aucune actualité pour le moment</p>';
-        return;
+      // Efase tout vye kesyon yo
+      const oldQ = await window._getDocs(window._collection(window._db, 'etude_questions'));
+      for (const d of oldQ.docs) {
+        await window._deleteDoc(window._doc(window._db, 'etude_questions', d.id));
       }
 
-      list.innerHTML = items.map(a => `
-        <div class="item-card">
-          <div class="item-card-info">
-            <h4>${a.titre}</h4>
-            <p>${a.categorie} · ${a.date} · ${a.auteur}</p>
-          </div>
-          <div class="item-card-actions">
-            <button class="btn btn-danger btn-sm" onclick="deleteActu('${a.id}')">
-              <i class="fas fa-trash"></i>
-            </button>
-          </div>
-        </div>
-      `).join('');
-    } catch (err) {
-      document.getElementById('actuList').innerHTML = '<p style="color:#e74c3c;padding:10px;">Erreur : ' + err.message + '</p>';
+      // Sove nouvo etude
+      await window._setDoc(window._doc(window._db, 'config', 'etude'), {
+        titre, contenu, verset,
+        actif: true,
+        questionsOuvertes: true,
+        timestamp: window._serverTimestamp(),
+        date: new Date().toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' })
+      });
+
+      // Voye notifikasyon
+      envoyerNotif(
+        '📖 Étude Biblique — ' + titre,
+        'Une nouvelle étude vient d'être lancée. Venez poser vos questions !',
+        'https://fabouloso1.github.io/eglise-carrefour/Etude.html'
+      );
+
+      status.style.background = '#e8f5e9';
+      status.style.color = '#2e7d32';
+      status.textContent = '✅ Étude lancée ! Notification envoyée.';
+      document.getElementById('etudeTitre').value  = '';
+      document.getElementById('etudeContenu').value = '';
+      document.getElementById('etudeVerset').value  = '';
+      setTimeout(() => { status.style.display = 'none'; }, 4000);
+
+      chargerEtudeActive();
+    } catch(err) {
+      status.style.background = '#fee';
+      status.style.color = '#c00';
+      status.textContent = '❌ Erreur : ' + err.message;
     }
   }
 
-  async function deleteActu(id) {
-    if (!confirm('Supprimer cette actualité ?')) return;
+  async function chargerEtudeActive() {
     try {
-      await window._deleteDoc(window._doc(window._db, 'actualites', id));
-      showToast('Actualités efase!');
-      loadActualites();
-    } catch (err) {
-      showToast('Erreur : ' + err.message, 'error');
+      const snap = await window._getDoc(window._doc(window._db, 'config', 'etude'));
+      const wrap = document.getElementById('etude-active-wrap');
+      if (!snap.exists() || !snap.data().actif) {
+        wrap.style.display = 'none';
+        return;
+      }
+      const etude = snap.data();
+      wrap.style.display = 'block';
+      document.getElementById('etude-active-titre').textContent = etude.titre;
+
+      // Ecout kesyon yo an dirèk
+      if (etudeListener) etudeListener(); // detache vye listener
+      etudeListener = window._onSnapshot
+        ? window._onSnapshot(
+            window._query(window._collection(window._db, 'etude_questions'), window._orderBy('timestamp', 'asc')),
+            (snap) => afficherQuestions(snap.docs)
+          )
+        : null;
+
+      // Si onSnapshot pa disponib, chaje yon sèl fwa
+      if (!window._onSnapshot) {
+        const qSnap = await window._getDocs(
+          window._query(window._collection(window._db, 'etude_questions'), window._orderBy('timestamp', 'asc'))
+        );
+        afficherQuestions(qSnap.docs);
+      }
+    } catch(e) { console.log('Étude:', e.message); }
+  }
+
+  function afficherQuestions(docs) {
+    const list = document.getElementById('questionsList');
+    const countEl = document.getElementById('questionsCount');
+    countEl.textContent = docs.length;
+
+    if (!docs.length) {
+      list.innerHTML = '<p style="color:rgba(255,255,255,0.35);text-align:center;padding:20px;font-size:0.9rem;">Aucune question pour le moment...</p>';
+      return;
     }
+
+    list.innerHTML = docs.map(d => {
+      const q = d.data();
+      return `
+      <div style="background:rgba(255,255,255,0.06);border-radius:14px;padding:16px;margin-bottom:12px;border-left:3px solid #f1c40f;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px;">
+          <div>
+            <div style="color:white!important;font-size:1rem!important;font-weight:700!important;margin-bottom:4px;">${q.question||''}</div>
+            <div style="color:rgba(255,255,255,0.45);font-size:0.78rem;">
+              <i class="fas fa-user" style="margin-right:4px;color:#f1c40f;"></i>${q.auteur||'Anonyme'}
+              · <i class="fas fa-clock" style="margin-left:4px;margin-right:4px;"></i>${q.heure||''}
+            </div>
+          </div>
+          <button onclick="supprimerQuestion('${d.id}')"
+            style="background:rgba(231,76,60,0.2);border:none;color:#ff6b6b;width:32px;height:32px;border-radius:8px;cursor:pointer;flex-shrink:0;">
+            <i class="fas fa-trash" style="font-size:0.8rem;"></i>
+          </button>
+        </div>
+
+        ${q.reponse ? `
+        <div style="background:rgba(46,213,115,0.1);border:1px solid rgba(46,213,115,0.25);border-radius:10px;padding:12px;margin-bottom:10px;">
+          <div style="color:#2ed573!important;font-size:0.8rem!important;font-weight:700!important;margin-bottom:4px;">
+            <i class="fas fa-reply" style="margin-right:5px;"></i>Réponse du Pasteur
+          </div>
+          <div style="color:rgba(255,255,255,0.85)!important;font-size:0.92rem!important;">${q.reponse}</div>
+        </div>` : ''}
+
+        <div style="display:flex;gap:8px;">
+          <input type="text" placeholder="Répondre à cette question..."
+            id="rep-${d.id}"
+            style="flex:1;padding:10px 14px;border:1.5px solid rgba(241,196,15,0.25);border-radius:10px;background:rgba(255,255,255,0.07);color:white;font-size:0.9rem;font-weight:500;">
+          <button onclick="repondreQuestion('${d.id}')"
+            style="padding:10px 16px;background:linear-gradient(135deg,#f1c40f,#e67e22);border:none;border-radius:10px;color:#0d1f4a;font-weight:800;cursor:pointer;font-size:0.88rem;white-space:nowrap;">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  async function repondreQuestion(id) {
+    const input = document.getElementById('rep-' + id);
+    const rep = input.value.trim();
+    if (!rep) return;
+    try {
+      await window._updateDoc(window._doc(window._db, 'etude_questions', id), {
+        reponse: rep,
+        reponduPar: 'Pasteur Anouis Jean',
+        reponduA: new Date().toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' })
+      });
+      input.value = '';
+      showToast('Réponse envoyée !');
+      // Rechaje si pas de listener
+      if (!window._onSnapshot) {
+        const qSnap = await window._getDocs(
+          window._query(window._collection(window._db, 'etude_questions'), window._orderBy('timestamp', 'asc'))
+        );
+        afficherQuestions(qSnap.docs);
+      }
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+
+  async function supprimerQuestion(id) {
+    if (!confirm('Supprimer cette question ?')) return;
+    try {
+      await window._deleteDoc(window._doc(window._db, 'etude_questions', id));
+      showToast('Question supprimée !');
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+
+  async function toggleQuestions(ouvert) {
+    try {
+      await window._updateDoc(window._doc(window._db, 'config', 'etude'), { questionsOuvertes: ouvert });
+      showToast(ouvert ? '✅ Questions ouvertes !' : '🔒 Questions fermées !');
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+
+  async function terminerEtude() {
+    if (!confirm('Terminer cette étude ? Toutes les questions seront supprimées.')) return;
+    try {
+      // Efase tout kesyon
+      const qSnap = await window._getDocs(window._collection(window._db, 'etude_questions'));
+      for (const d of qSnap.docs) {
+        await window._deleteDoc(window._doc(window._db, 'etude_questions', d.id));
+      }
+      // Dezaktive etude
+      await window._updateDoc(window._doc(window._db, 'config', 'etude'), { actif: false });
+      document.getElementById('etude-active-wrap').style.display = 'none';
+      if (etudeListener) { etudeListener(); etudeListener = null; }
+      showToast('Étude terminée !');
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
   }
 
   // ===== ÉVÉNEMENTS =====
