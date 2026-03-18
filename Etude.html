@@ -4,365 +4,498 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  <title>Étude Biblique — Église de Dieu de la Prophétie de Carrefour</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <title>Étude Biblique — Église de Dieu de la Prophétie</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#1c1c3c">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#128C7E">
   <link rel="apple-touch-icon" href="logo.png">
 
   <style>
-    body { background: #0d1117; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* HERO */
-    .e-hero {
-      background: linear-gradient(135deg, #0d1f4a 0%, #1a0a3c 100%);
+    body {
+      background: #ECE5DD;
+      font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ===== HEADER WhatsApp ===== */
+    .wa-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #075E54;
       color: white;
-      padding: 70px 24px 60px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      border-bottom: 3px solid rgba(241,196,15,0.3);
-    }
-    .e-hero::before {
-      content: '\f518';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      position: absolute;
-      right: -20px; top: -20px;
-      font-size: 200px;
-      opacity: 0.04; color: #f1c40f;
-    }
-    .e-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(241,196,15,0.15);
-      border: 1px solid rgba(241,196,15,0.4);
-      color: #f1c40f;
-      padding: 7px 20px; border-radius: 30px;
-      font-size: 0.82rem; font-weight: 700;
-      letter-spacing: 1.5px; text-transform: uppercase;
-      margin-bottom: 20px;
-    }
-    .e-hero h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.8rem, 5vw, 2.8rem);
-      margin-bottom: 12px;
-    }
-    .e-hero p { font-size: 1rem; opacity: 0.7; max-width: 460px; margin: 0 auto; }
-
-    /* MAIN */
-    .e-main { max-width: 800px; margin: 0 auto; padding: 32px 16px 80px; }
-
-    /* PAS D'ÉTUDE */
-    .e-vide {
-      text-align: center;
-      padding: 60px 20px;
-      background: linear-gradient(135deg, #0d1f4a, #1a0a3c);
-      border-radius: 24px;
-      border: 1px solid rgba(241,196,15,0.15);
-    }
-    .e-vide i { font-size: 3rem; color: rgba(241,196,15,0.3); display: block; margin-bottom: 20px; }
-    .e-vide h2 { color: white !important; font-size: 1.3rem !important; margin-bottom: 10px; }
-    .e-vide p { color: rgba(255,255,255,0.5) !important; font-size: 0.95rem !important; }
-
-    /* CARTE ÉTUDE */
-    .e-card {
-      background: linear-gradient(135deg, #0d1f4a, #1a0a3c);
-      border-radius: 24px;
-      border: 1px solid rgba(241,196,15,0.2);
-      overflow: hidden;
-      margin-bottom: 24px;
-    }
-    .e-card-header {
-      background: rgba(241,196,15,0.08);
-      border-bottom: 1px solid rgba(241,196,15,0.15);
-      padding: 24px 24px 20px;
-    }
-    .e-card-header .e-meta {
-      display: flex; align-items: center; gap: 10px;
-      margin-bottom: 14px; flex-wrap: wrap;
-    }
-    .e-tag {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(241,196,15,0.15);
-      border: 1px solid rgba(241,196,15,0.3);
-      color: #f1c40f !important;
-      padding: 5px 14px; border-radius: 20px;
-      font-size: 0.82rem; font-weight: 700;
-    }
-    .e-date { color: rgba(255,255,255,0.45) !important; font-size: 0.82rem !important; font-weight: 500 !important; }
-    .e-card-header h2 {
-      font-family: 'Playfair Display', serif;
-      color: white !important;
-      font-size: clamp(1.3rem, 4vw, 1.8rem) !important;
-      margin-bottom: 16px; line-height: 1.35;
-    }
-    .e-verset {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(255,255,255,0.06);
-      border-radius: 10px; padding: 10px 16px;
-      color: rgba(255,255,255,0.7) !important;
-      font-size: 0.9rem !important; font-style: italic;
-    }
-    .e-verset i { color: #f1c40f; }
-
-    .e-contenu {
-      padding: 24px;
-      color: rgba(255,255,255,0.85) !important;
-      font-size: 1rem !important;
-      line-height: 1.9 !important;
-      font-weight: 500 !important;
-      white-space: pre-line;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 0;
     }
 
-    /* ZONE QUESTIONS */
-    .e-questions-section { padding: 24px; }
-    .e-questions-header {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
-    }
-    .e-questions-header h3 {
-      color: #f1c40f !important;
-      font-size: 1.05rem !important;
-      font-weight: 800 !important;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .e-q-closed {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(231,76,60,0.15);
-      border: 1px solid rgba(231,76,60,0.3);
-      color: #ff6b6b !important;
-      padding: 5px 14px; border-radius: 20px;
-      font-size: 0.82rem; font-weight: 700;
-    }
-    .e-q-open {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(46,213,115,0.12);
-      border: 1px solid rgba(46,213,115,0.3);
-      color: #2ed573 !important;
-      padding: 5px 14px; border-radius: 20px;
-      font-size: 0.82rem; font-weight: 700;
+    .wa-nav-bar {
+      background: #075E54;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
     }
 
-    /* FORMULAIRE QUESTION */
-    .e-ask-form {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(241,196,15,0.15);
-      border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 24px;
-    }
-    .e-ask-form label {
-      display: block;
-      color: #f1c40f !important;
-      font-size: 0.88rem !important;
-      font-weight: 700 !important;
-      margin-bottom: 10px;
-    }
-    .e-ask-form input,
-    .e-ask-form textarea {
-      width: 100%;
-      padding: 13px 16px;
-      border: 2px solid rgba(241,196,15,0.2) !important;
-      border-radius: 12px;
-      background: rgba(255,255,255,0.07) !important;
-      color: white !important;
-      font-size: 0.95rem !important;
-      font-weight: 500 !important;
-      font-family: 'Montserrat', sans-serif;
-      margin-bottom: 10px;
-      box-sizing: border-box;
-    }
-    .e-ask-form input::placeholder,
-    .e-ask-form textarea::placeholder { color: rgba(255,255,255,0.3) !important; }
-    .e-ask-form input:focus,
-    .e-ask-form textarea:focus {
-      outline: none !important;
-      border-color: #f1c40f !important;
-      box-shadow: 0 0 0 3px rgba(241,196,15,0.1);
-    }
-    .e-ask-form textarea { min-height: 90px; resize: vertical; }
-    .e-ask-btn {
-      width: 100%;
-      padding: 15px;
-      background: linear-gradient(135deg, #f1c40f, #e67e22);
-      color: #0d1f4a !important;
-      border: none; border-radius: 30px;
-      font-size: 1rem !important; font-weight: 800 !important;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      font-family: 'Montserrat', sans-serif;
-    }
-    #askStatus {
-      display: none;
-      margin-top: 10px; padding: 12px;
-      border-radius: 10px;
-      text-align: center;
-      font-weight: 700; font-size: 0.92rem;
+    .wa-back {
+      color: white;
+      font-size: 1.2rem;
+      text-decoration: none;
+      display: flex; align-items: center;
     }
 
-    /* LISTE QUESTIONS */
-    .q-item {
-      background: rgba(255,255,255,0.05);
-      border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 14px;
-      border-left: 3px solid rgba(241,196,15,0.4);
-    }
-    .q-auteur {
-      display: flex; align-items: center; gap: 10px;
-      margin-bottom: 10px;
-    }
-    .q-avatar {
-      width: 36px; height: 36px;
-      background: linear-gradient(135deg, #1c1c3c, #3a1c5c);
+    .wa-avatar {
+      width: 40px; height: 40px;
+      background: #128C7E;
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      color: #f1c40f; font-size: 0.9rem; flex-shrink: 0;
+      font-size: 1.1rem; color: white; flex-shrink: 0;
     }
-    .q-nom { color: #f1c40f !important; font-size: 0.88rem !important; font-weight: 700 !important; }
-    .q-time { color: rgba(255,255,255,0.35) !important; font-size: 0.75rem !important; }
-    .q-text {
-      color: white !important;
-      font-size: 1rem !important;
-      font-weight: 500 !important;
-      line-height: 1.7;
-      margin-bottom: 12px;
-    }
-    .q-reponse {
-      background: rgba(46,213,115,0.08);
-      border: 1px solid rgba(46,213,115,0.2);
+
+    .wa-info { flex: 1; }
+    .wa-name { font-size: 1rem; font-weight: 700; color: white; }
+    .wa-status { font-size: 0.75rem; color: rgba(255,255,255,0.7); }
+
+    /* ===== SUJET CARD ===== */
+    .wa-sujet {
+      background: #DCF8C6;
+      margin: 8px 12px;
       border-radius: 12px;
       padding: 14px 16px;
+      border-left: 4px solid #128C7E;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    }
+
+    .wa-sujet-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #128C7E;
+      color: white;
+      font-size: 0.72rem; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px;
+      margin-bottom: 8px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+
+    .wa-sujet h2 {
+      color: #1a1a1a;
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    .wa-sujet-meta {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .wa-meta-tag {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(18,140,126,0.12);
+      border: 1px solid rgba(18,140,126,0.25);
+      color: #075E54;
+      font-size: 0.8rem; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px;
+    }
+
+    .wa-objectif {
+      background: rgba(18,140,126,0.08);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 8px;
+    }
+
+    .wa-objectif-label {
+      color: #128C7E;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .wa-objectif-text {
+      color: #333;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .wa-contenu {
+      color: #222;
+      font-size: 0.92rem;
+      line-height: 1.7;
+      margin-top: 10px;
+      white-space: pre-line;
+    }
+
+    .wa-ref {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #075E54;
+      color: white;
+      font-size: 0.78rem; font-weight: 700;
+      padding: 4px 12px; border-radius: 20px;
       margin-top: 10px;
     }
-    .q-reponse-label {
-      color: #2ed573 !important;
-      font-size: 0.8rem !important;
-      font-weight: 800 !important;
-      display: flex; align-items: center; gap: 6px;
+
+    .wa-sujet-time {
+      text-align: right;
+      color: #888;
+      font-size: 0.72rem;
+      margin-top: 8px;
+    }
+
+    /* ===== MESSAGES ZONE ===== */
+    .wa-messages {
+      padding: 8px 12px 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-height: 50vh;
+    }
+
+    /* ===== ÉTAT VIDE ===== */
+    .wa-vide {
+      text-align: center;
+      padding: 40px 20px;
+      margin: 20px 12px;
+    }
+
+    .wa-vide-bubble {
+      background: rgba(18,140,126,0.1);
+      border-radius: 16px;
+      padding: 28px 20px;
+      border: 1px solid rgba(18,140,126,0.2);
+    }
+
+    .wa-vide i { font-size: 2.5rem; color: #128C7E; display: block; margin-bottom: 14px; }
+    .wa-vide h3 { color: #1a1a1a; font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+    .wa-vide p { color: #666; font-size: 0.9rem; line-height: 1.6; }
+
+    /* ===== BULLES MESSAGES ===== */
+    .msg-wrap {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 2px;
+    }
+
+    .msg-wrap.moi { align-items: flex-end; }
+    .msg-wrap.autre { align-items: flex-start; }
+
+    .msg-bubble {
+      max-width: 80%;
+      padding: 8px 12px;
+      border-radius: 12px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.13);
+      position: relative;
+    }
+
+    .msg-wrap.autre .msg-bubble {
+      background: white;
+      border-top-left-radius: 4px;
+    }
+
+    .msg-wrap.moi .msg-bubble {
+      background: #DCF8C6;
+      border-top-right-radius: 4px;
+    }
+
+    .msg-nom {
+      color: #075E54;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .msg-text {
+      color: #1a1a1a;
+      font-size: 0.92rem;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .msg-img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .msg-audio {
+      width: 100%;
+      height: 36px;
+      margin-bottom: 4px;
+    }
+
+    .msg-time {
+      font-size: 0.68rem;
+      color: #888;
+      text-align: right;
+      margin-top: 3px;
+    }
+
+    /* Réponse pasteur */
+    .msg-reponse {
+      background: #E8F5E9;
+      border-left: 3px solid #128C7E;
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-top: 6px;
+    }
+
+    .msg-reponse-label {
+      color: #128C7E;
+      font-size: 0.72rem;
+      font-weight: 800;
+      margin-bottom: 3px;
+      display: flex; align-items: center; gap: 4px;
+    }
+
+    .msg-reponse-text {
+      color: #1a1a1a;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    /* Questions fermées */
+    .wa-closed {
+      text-align: center;
+      background: rgba(0,0,0,0.05);
+      border-radius: 20px;
+      padding: 8px 16px;
+      margin: 12px auto;
+      width: fit-content;
+      font-size: 0.8rem;
+      color: #666;
+    }
+
+    /* ===== INPUT ZONE WhatsApp ===== */
+    .wa-input-zone {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: #F0F0F0;
+      padding: 8px 10px;
+      z-index: 200;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .wa-input-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .wa-input-box {
+      flex: 1;
+      background: white;
+      border-radius: 24px;
+      display: flex;
+      align-items: flex-end;
+      padding: 8px 14px;
+      gap: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .wa-input-box textarea {
+      flex: 1;
+      border: none;
+      outline: none;
+      resize: none;
+      font-family: inherit;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      max-height: 100px;
+      min-height: 24px;
+      background: transparent;
+      color: #1a1a1a;
+    }
+
+    .wa-input-box textarea::placeholder { color: #aaa; }
+
+    .wa-attach-btn, .wa-mic-btn {
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 4px;
+      display: flex; align-items: center;
+      flex-shrink: 0;
+    }
+
+    .wa-send-btn {
+      width: 46px; height: 46px;
+      background: #128C7E;
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(18,140,126,0.4);
+    }
+
+    /* Enregistrement audio */
+    .wa-recording {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      border-radius: 24px;
+      padding: 10px 16px;
+      flex: 1;
+    }
+
+    .wa-recording.active { display: flex; }
+    .wa-rec-dot { width: 10px; height: 10px; background: #e74c3c; border-radius: 50%; animation: recPulse 1s infinite; }
+    @keyframes recPulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+    .wa-rec-time { color: #e74c3c; font-size: 0.9rem; font-weight: 700; flex: 1; }
+    .wa-rec-cancel { color: #888; background: none; border: none; font-size: 0.85rem; cursor: pointer; }
+
+    /* Preview image */
+    .wa-img-preview {
+      display: none;
+      background: white;
+      border-radius: 12px;
+      padding: 8px;
       margin-bottom: 6px;
-    }
-    .q-reponse-text {
-      color: rgba(255,255,255,0.85) !important;
-      font-size: 0.95rem !important;
-      line-height: 1.6; font-weight: 500 !important;
+      position: relative;
     }
 
-    /* LOADING */
-    .e-loading {
-      text-align: center; padding: 40px;
-      color: rgba(255,255,255,0.3) !important;
+    .wa-img-preview img { max-height: 120px; border-radius: 8px; display: block; }
+    .wa-img-preview button {
+      position: absolute; top: 4px; right: 4px;
+      background: rgba(0,0,0,0.5); color: white;
+      border: none; border-radius: 50%;
+      width: 24px; height: 24px;
+      cursor: pointer; font-size: 0.75rem;
     }
-    .e-loading i { font-size: 2rem; display: block; margin-bottom: 12px; }
 
-    @media (max-width: 600px) {
-      .e-card-header, .e-contenu, .e-questions-section { padding: 18px 16px; }
+    /* Input file caché */
+    #imgInput { display: none; }
+
+    /* Chargement */
+    .wa-loading {
+      text-align: center;
+      padding: 40px 20px;
+      color: #128C7E;
+    }
+
+    .wa-loading i { font-size: 2rem; display: block; margin-bottom: 10px; }
+
+    @media (min-width: 800px) {
+      .wa-input-zone { left: 50%; transform: translateX(-50%); width: 800px; }
     }
   </style>
 
-  <!-- Firebase compat -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
 </head>
 <body>
 
 <div id="nav-placeholder"></div>
 
-<!-- HERO -->
-<div class="e-hero">
-  <div class="e-badge"><i class="fas fa-book-open"></i> Étude Biblique</div>
-  <h1>Étude Biblique Interactive</h1>
-  <p>Participez, posez vos questions et grandissez ensemble dans la Parole de Dieu.</p>
+<!-- HEADER WhatsApp -->
+<div class="wa-header">
+  <div class="wa-nav-bar">
+    <a href="index.html" class="wa-back"><i class="fas fa-arrow-left"></i></a>
+    <div class="wa-avatar"><i class="fas fa-book-open"></i></div>
+    <div class="wa-info">
+      <div class="wa-name">Étude Biblique</div>
+      <div class="wa-status" id="waStatus">Chargement...</div>
+    </div>
+    <span id="qCountHeader" style="background:rgba(255,255,255,0.2);color:white;font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:20px;display:none;">
+      <i class="fas fa-comments"></i> <span id="qCountNum">0</span>
+    </span>
+  </div>
 </div>
 
-<div class="e-main">
+<!-- CONTENU -->
+<div style="max-width:800px;margin:0 auto;">
 
   <!-- CHARGEMENT -->
-  <div class="e-loading" id="eLoading">
-    <i class="fas fa-spinner fa-spin" style="color:#f1c40f;"></i>
-    <p>Chargement de l'étude...</p>
+  <div class="wa-loading" id="eLoading">
+    <i class="fas fa-spinner fa-spin"></i>
+    <p>Chargement...</p>
   </div>
 
-  <!-- PAS D'ÉTUDE ACTIVE -->
-  <div class="e-vide" id="eVide" style="display:none;">
-    <i class="fas fa-book"></i>
-    <h2>Aucune étude en cours</h2>
-    <p>Le pasteur n'a pas encore lancé d'étude. Revenez bientôt ou activez les notifications pour être alerté !</p>
-    <div style="margin-top:24px;">
-      <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;padding:13px 26px;background:rgba(241,196,15,0.15);border:1px solid rgba(241,196,15,0.3);color:#f1c40f;border-radius:30px;font-weight:700;font-size:0.9rem;text-decoration:none;">
-        <i class="fas fa-home"></i> Retour à l'accueil
-      </a>
+  <!-- PAS D'ÉTUDE -->
+  <div id="eVide" style="display:none;" class="wa-vide">
+    <div class="wa-vide-bubble">
+      <i class="fas fa-bible"></i>
+      <h3>Aucune étude en cours</h3>
+      <p>Le pasteur n'a pas encore lancé d'étude. Activez les notifications pour être alerté !</p>
     </div>
   </div>
 
   <!-- ÉTUDE ACTIVE -->
   <div id="eContenu" style="display:none;">
 
-    <div class="e-card">
-      <!-- Header sujet -->
-      <div class="e-card-header">
-        <div class="e-meta">
-          <span class="e-tag"><i class="fas fa-book-open"></i> Étude du jour</span>
-          <span class="e-date" id="eDate"></span>
-        </div>
-        <h2 id="eTitre"></h2>
-        <div id="eVerset" style="display:none;" class="e-verset">
-          <i class="fas fa-bible"></i>
-          <span id="eVersetText"></span>
-        </div>
+    <!-- Sujet de l'étude -->
+    <div class="wa-sujet" id="waSupjet">
+      <div class="wa-sujet-badge"><i class="fas fa-book-open"></i> Étude du jour</div>
+      <h2 id="eTitre"></h2>
+      <div class="wa-sujet-meta">
+        <span class="wa-meta-tag" id="eThemeWrap" style="display:none;"><i class="fas fa-tag"></i> <span id="eThemeText"></span></span>
+        <span class="wa-meta-tag" id="eVersetWrap" style="display:none;"><i class="fas fa-bible"></i> <span id="eVersetText"></span></span>
+        <span class="wa-meta-tag" style="color:#888;"><i class="fas fa-calendar"></i> <span id="eDate"></span></span>
       </div>
-
-      <!-- Contenu développement -->
-      <!-- Thème -->
-      <div id="eThemeWrap" style="display:none;" class="e-verset" style="margin-bottom:8px;">
-        <i class="fas fa-tag"></i>
-        <span>Thème : <strong id="eThemeText"></strong></span>
+      <div class="wa-objectif" id="eObjectifWrap" style="display:none;">
+        <div class="wa-objectif-label"><i class="fas fa-bullseye" style="margin-right:4px;"></i>Objectif</div>
+        <div class="wa-objectif-text" id="eObjectifText"></div>
       </div>
+      <div class="wa-contenu" id="eTexte"></div>
+      <div class="wa-sujet-time" id="eDateBottom"></div>
+    </div>
 
-      <!-- Objectif -->
-      <div id="eObjectifWrap" style="display:none;background:rgba(46,213,115,0.07);border:1px solid rgba(46,213,115,0.2);border-radius:12px;padding:14px 18px;margin:0 24px 0;">
-        <div style="color:#2ed573!important;font-size:0.82rem!important;font-weight:700!important;margin-bottom:6px;"><i class="fas fa-bullseye" style="margin-right:6px;"></i>OBJECTIF DE L'ÉTUDE</div>
-        <div id="eObjectifText" style="color:rgba(255,255,255,0.85)!important;font-size:0.95rem!important;line-height:1.7;font-weight:500!important;"></div>
-      </div>
-
-      <div class="e-contenu" id="eTexte"></div>
-
-      <!-- ZONE QUESTIONS -->
-      <div class="e-questions-section">
-        <div class="e-questions-header">
-          <h3><i class="fas fa-comments"></i> Questions (<span id="qCount">0</span>)</h3>
-          <span id="qStatut"></span>
-        </div>
-
-        <!-- Formulaire poser question -->
-        <div class="e-ask-form" id="askForm">
-          <label><i class="fas fa-hand-point-right" style="margin-right:6px;"></i>Posez votre question</label>
-          <input type="text" id="askNom" placeholder="Votre prénom *">
-          <textarea id="askQuestion" placeholder="Écrivez votre question ici..."></textarea>
-          <button class="e-ask-btn" onclick="envoyerQuestion()">
-            <i class="fas fa-paper-plane"></i> Envoyer ma question
-          </button>
-          <div id="askStatus"></div>
-        </div>
-
-        <!-- Liste questions -->
-        <div id="qListe">
-          <p style="color:rgba(255,255,255,0.3);text-align:center;padding:20px;font-size:0.9rem;">
-            Aucune question pour le moment. Soyez le premier !
-          </p>
-        </div>
+    <!-- MESSAGES / QUESTIONS -->
+    <div class="wa-messages" id="qListe">
+      <div style="text-align:center;color:#888;font-size:0.82rem;padding:20px;">
+        Aucune question pour le moment. Soyez le premier !
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- INPUT ZONE -->
+<div class="wa-input-zone" id="inputZone" style="display:none;">
+
+  <!-- Preview image -->
+  <div class="wa-img-preview" id="imgPreview">
+    <img id="imgPreviewImg" src="" alt="">
+    <button onclick="annulerImage()"><i class="fas fa-times"></i></button>
+  </div>
+
+  <!-- Enregistrement audio -->
+  <div class="wa-recording" id="recZone">
+    <div class="wa-rec-dot"></div>
+    <span class="wa-rec-time" id="recTime">0:00</span>
+    <button class="wa-rec-cancel" onclick="annulerAudio()"><i class="fas fa-trash"></i> Annuler</button>
+    <button class="wa-send-btn" onclick="envoyerAudio()" style="width:40px;height:40px;">
+      <i class="fas fa-paper-plane"></i>
+    </button>
+  </div>
+
+  <div class="wa-input-row" id="normalInput">
+    <div class="wa-input-box">
+      <button class="wa-attach-btn" onclick="document.getElementById('imgInput').click()" title="Envoyer une image">
+        <i class="fas fa-image"></i>
+      </button>
+      <textarea id="askQuestion" placeholder="Écrire une question..." rows="1"
+        oninput="autoResize(this)" onkeydown="handleEnter(event)"></textarea>
+    </div>
+    <button class="wa-mic-btn" id="micBtn" onclick="toggleAudio()" title="Message vocal" style="background:#128C7E;border-radius:50%;width:46px;height:46px;color:white;font-size:1.1rem;box-shadow:0 2px 6px rgba(18,140,126,0.4);">
+      <i class="fas fa-microphone"></i>
+    </button>
+    <button class="wa-send-btn" id="sendBtn" onclick="envoyerQuestion()" style="display:none;">
+      <i class="fas fa-paper-plane"></i>
+    </button>
+    <input type="file" id="imgInput" accept="image/*" onchange="previewImage(event)">
   </div>
 </div>
 
@@ -373,18 +506,50 @@
 <script>
   NAV.init('Etude.html');
 
-  // Firebase init
+  // Firebase
   if (!firebase.apps.length) {
     firebase.initializeApp({
       apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
       authDomain: "eglise-carrefour.firebaseapp.com",
       projectId: "eglise-carrefour",
-      storageBucket: "eglise-carrefour.firebasestorage.app",
+      storageBucket: "eglise-carrefour.appspot.com",
       messagingSenderId: "421333694767",
       appId: "1:421333694767:web:30c18da36ae020821a49da"
     });
   }
-  const db = firebase.firestore();
+  const db      = firebase.firestore();
+  const storage = firebase.storage();
+
+  // ===== NOM UTILISATEUR (depuis localStorage gate) =====
+  function getNomUtilisateur() {
+    try {
+      const data = localStorage.getItem('eglise_membre');
+      if (data) {
+        const m = JSON.parse(data);
+        return m.nom ? m.nom.split(' ')[0] : null; // Sèlman prenon an
+      }
+    } catch(e) {}
+    return null;
+  }
+
+  const nomAuto = getNomUtilisateur();
+
+  // ===== CLOUDINARY upload =====
+  async function uploadCloudinary(file, type) {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'eglise_upload');
+    formData.append('folder', 'etude/' + type);
+
+    const endpoint = type === 'image'
+      ? 'https://api.cloudinary.com/v1_1/dvcxhpibq/image/upload'
+      : 'https://api.cloudinary.com/v1_1/dvcxhpibq/video/upload';
+
+    const res  = await fetch(endpoint, { method: 'POST', body: formData });
+    const data = await res.json();
+    if (!data.secure_url) throw new Error('Upload échoué');
+    return data.secure_url;
+  }
 
   // ===== CHARGER ÉTUDE =====
   async function chargerEtude() {
@@ -393,140 +558,259 @@
       document.getElementById('eLoading').style.display = 'none';
 
       if (!snap.exists || !snap.data().actif) {
-        document.getElementById('eVide').style.display = 'block';
+        document.getElementById('eVide').style.display   = 'block';
+        document.getElementById('waStatus').textContent  = 'Aucune étude active';
         return;
       }
 
       const e = snap.data();
       document.getElementById('eContenu').style.display = 'block';
-      document.getElementById('eTitre').textContent = e.titre || '';
+      document.getElementById('eTitre').textContent     = e.titre  || '';
+      document.getElementById('eTexte').textContent     = e.contenu || '';
+      document.getElementById('eDate').textContent      = e.date   || '';
+      document.getElementById('eDateBottom').textContent = e.date  || '';
 
-      // Theme
-      if (e.theme) {
-        const themeEl = document.getElementById('eThemeWrap');
-        if (themeEl) { themeEl.style.display='flex'; document.getElementById('eThemeText').textContent = e.theme; }
-      }
-      // Objectif
-      if (e.objectif) {
-        const objEl = document.getElementById('eObjectifWrap');
-        if (objEl) { objEl.style.display='block'; document.getElementById('eObjectifText').textContent = e.objectif; }
-      }
-      document.getElementById('eTexte').textContent    = e.contenu || '';
-      document.getElementById('eDate').textContent     = e.date || '';
-
-      if (e.verset) {
-        document.getElementById('eVerset').style.display    = 'flex';
-        document.getElementById('eVersetText').textContent  = e.verset;
-      }
+      if (e.theme)   { document.getElementById('eThemeWrap').style.display='inline-flex'; document.getElementById('eThemeText').textContent = e.theme; }
+      if (e.verset)  { document.getElementById('eVersetWrap').style.display='inline-flex'; document.getElementById('eVersetText').textContent = e.verset; }
+      if (e.objectif){ document.getElementById('eObjectifWrap').style.display='block'; document.getElementById('eObjectifText').textContent = e.objectif; }
 
       // Statut questions
-      const qStatut = document.getElementById('qStatut');
-      const askForm  = document.getElementById('askForm');
       if (e.questionsOuvertes) {
-        qStatut.innerHTML = '<span class="e-q-open"><i class="fas fa-comments"></i> Questions ouvertes</span>';
-        askForm.style.display = 'block';
+        document.getElementById('waStatus').textContent = 'Questions ouvertes · ' + (nomAuto || '');
+        document.getElementById('inputZone').style.display = 'block';
       } else {
-        qStatut.innerHTML = '<span class="e-q-closed"><i class="fas fa-lock"></i> Questions fermées</span>';
-        askForm.style.display = 'none';
+        document.getElementById('waStatus').textContent = 'Questions fermées';
+        document.getElementById('inputZone').style.display = 'none';
       }
 
-      // Écouter questions en temps réel
+      // Header count
+      document.getElementById('qCountHeader').style.display = 'inline-block';
+
+      // Écouter questions temps réel
       db.collection('etude_questions')
         .orderBy('timestamp', 'asc')
-        .onSnapshot(snap => afficherQuestions(snap.docs));
+        .onSnapshot(snap => afficherQuestions(snap.docs, e.questionsOuvertes));
 
-    } catch(e) {
+    } catch(err) {
       document.getElementById('eLoading').style.display = 'none';
-      document.getElementById('eVide').style.display = 'block';
-      console.log('Erreur:', e.message);
+      document.getElementById('eVide').style.display    = 'block';
     }
   }
 
-  // ===== AFFICHER QUESTIONS =====
-  function afficherQuestions(docs) {
-    document.getElementById('qCount').textContent = docs.length;
-    const liste = document.getElementById('qListe');
+  // ===== AFFICHER QUESTIONS (style bulle WhatsApp) =====
+  function afficherQuestions(docs, questionsOuvertes) {
+    const liste   = document.getElementById('qListe');
+    const countEl = document.getElementById('qCountNum');
+    if (countEl) countEl.textContent = docs.length;
 
     if (!docs.length) {
-      liste.innerHTML = '<p style="color:rgba(255,255,255,0.3);text-align:center;padding:20px;font-size:0.9rem;">Aucune question pour le moment. Soyez le premier !</p>';
+      liste.innerHTML = '<div style="text-align:center;color:#888;font-size:0.82rem;padding:20px;background:rgba(0,0,0,0.04);border-radius:20px;margin:12px;">Aucune question. Soyez le premier !</div>';
       return;
     }
+
+    const monNom = nomAuto || '';
 
     liste.innerHTML = docs.map(d => {
-      const q = d.data();
+      const q    = d.data();
+      const estMoi = monNom && q.auteur && q.auteur.startsWith(monNom.split(' ')[0]);
+
+      let contenu = '';
+
+      // Image
+      if (q.imageUrl) {
+        contenu += `<img src="${q.imageUrl}" class="msg-img" onclick="window.open('${q.imageUrl}','_blank')">`;
+      }
+      // Audio
+      if (q.audioUrl) {
+        contenu += `<audio class="msg-audio" controls src="${q.audioUrl}"></audio>`;
+      }
+      // Texte
+      if (q.question) {
+        contenu += `<div class="msg-text">${esc(q.question)}</div>`;
+      }
+
+      // Réponse pasteur
+      const reponse = q.reponse ? `
+        <div class="msg-reponse">
+          <div class="msg-reponse-label"><i class="fas fa-reply"></i> Pasteur Anouis Jean</div>
+          <div class="msg-reponse-text">${esc(q.reponse)}</div>
+        </div>` : '';
+
       return `
-      <div class="q-item">
-        <div class="q-auteur">
-          <div class="q-avatar"><i class="fas fa-user"></i></div>
-          <div>
-            <div class="q-nom">${esc(q.auteur||'Anonyme')}</div>
-            <div class="q-time">${q.heure||''}</div>
-          </div>
+      <div class="msg-wrap ${estMoi ? 'moi' : 'autre'}">
+        <div class="msg-bubble">
+          ${!estMoi ? `<div class="msg-nom">${esc(q.auteur||'Anonyme')}</div>` : ''}
+          ${contenu}
+          ${reponse}
+          <div class="msg-time">${q.heure||''} ${estMoi ? '<i class="fas fa-check-double" style="color:#4FC3F7;font-size:0.65rem;"></i>' : ''}</div>
         </div>
-        <div class="q-text">${esc(q.question||'')}</div>
-        ${q.reponse ? `
-        <div class="q-reponse">
-          <div class="q-reponse-label">
-            <i class="fas fa-reply"></i> Réponse du Pasteur
-          </div>
-          <div class="q-reponse-text">${esc(q.reponse)}</div>
-        </div>` : ''}
       </div>`;
     }).join('');
+
+    // Scroll anba
+    setTimeout(() => { liste.scrollTop = liste.scrollHeight; }, 100);
   }
 
-  // ===== ENVOYER QUESTION =====
+  // ===== ENVOYER QUESTION (texte ou image) =====
+  let imgFile = null;
+
+  function previewImage(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    imgFile = file;
+    const url = URL.createObjectURL(file);
+    document.getElementById('imgPreviewImg').src = url;
+    document.getElementById('imgPreview').style.display = 'block';
+    // Montre bouton envoye
+    document.getElementById('sendBtn').style.display = 'flex';
+    document.getElementById('micBtn').style.display  = 'none';
+  }
+
+  function annulerImage() {
+    imgFile = null;
+    document.getElementById('imgPreview').style.display = 'none';
+    document.getElementById('imgInput').value = '';
+    document.getElementById('sendBtn').style.display = 'none';
+    document.getElementById('micBtn').style.display  = 'flex';
+  }
+
   async function envoyerQuestion() {
-    const nom = document.getElementById('askNom').value.trim();
-    const q   = document.getElementById('askQuestion').value.trim();
-    const st  = document.getElementById('askStatus');
+    const nom  = nomAuto || 'Anonyme';
+    const texte = document.getElementById('askQuestion').value.trim();
 
-    if (!nom) {
-      st.style.display = 'block';
-      st.style.background = 'rgba(231,76,60,0.15)';
-      st.style.color = '#ff6b6b';
-      st.textContent = '⚠️ Veuillez saisir votre prénom.';
-      return;
-    }
-    if (!q) {
-      st.style.display = 'block';
-      st.style.background = 'rgba(231,76,60,0.15)';
-      st.style.color = '#ff6b6b';
-      st.textContent = '⚠️ Veuillez écrire votre question.';
-      return;
-    }
+    if (!imgFile && !texte) return;
 
-    st.style.display = 'block';
-    st.style.background = 'rgba(255,255,255,0.05)';
-    st.style.color = 'rgba(255,255,255,0.6)';
-    st.textContent = '⏳ Envoi en cours...';
+    // Dezaktive bouton
+    document.getElementById('sendBtn').disabled = true;
 
     try {
+      const doc = {
+        auteur:    nom,
+        question:  texte,
+        heure:     new Date().toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' }),
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      // Upload imaj si gen youn
+      if (imgFile) {
+        const url = await uploadCloudinary(imgFile, 'image');
+        doc.imageUrl = url;
+        imgFile = null;
+        document.getElementById('imgPreview').style.display = 'none';
+        document.getElementById('imgInput').value = '';
+      }
+
+      await db.collection('etude_questions').add(doc);
+
+      document.getElementById('askQuestion').value = '';
+      document.getElementById('askQuestion').style.height = 'auto';
+      document.getElementById('sendBtn').style.display = 'none';
+      document.getElementById('micBtn').style.display  = 'flex';
+
+    } catch(err) {
+      alert('Erreur : ' + err.message);
+    }
+
+    document.getElementById('sendBtn').disabled = false;
+  }
+
+  // ===== AUDIO =====
+  let mediaRecorder = null;
+  let audioChunks   = [];
+  let recInterval   = null;
+  let recSeconds    = 0;
+
+  function toggleAudio() {
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+      envoyerAudio();
+    } else {
+      demarrerAudio();
+    }
+  }
+
+  async function demarrerAudio() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream);
+      audioChunks   = [];
+      recSeconds    = 0;
+
+      mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+      mediaRecorder.start();
+
+      // UI
+      document.getElementById('normalInput').style.display = 'none';
+      document.getElementById('recZone').classList.add('active');
+
+      recInterval = setInterval(() => {
+        recSeconds++;
+        const m = Math.floor(recSeconds / 60);
+        const s = recSeconds % 60;
+        document.getElementById('recTime').textContent = m + ':' + String(s).padStart(2,'0');
+      }, 1000);
+
+    } catch(e) {
+      alert('Microphone non accessible : ' + e.message);
+    }
+  }
+
+  function annulerAudio() {
+    if (mediaRecorder) { mediaRecorder.stop(); mediaRecorder.stream.getTracks().forEach(t=>t.stop()); }
+    clearInterval(recInterval);
+    document.getElementById('recZone').classList.remove('active');
+    document.getElementById('normalInput').style.display = 'flex';
+  }
+
+  async function envoyerAudio() {
+    if (!mediaRecorder) return;
+
+    mediaRecorder.stop();
+    mediaRecorder.stream.getTracks().forEach(t => t.stop());
+    clearInterval(recInterval);
+
+    await new Promise(r => { mediaRecorder.onstop = r; });
+
+    const blob = new Blob(audioChunks, { type: 'audio/webm' });
+    const file = new File([blob], 'voice.webm', { type: 'audio/webm' });
+
+    document.getElementById('recZone').classList.remove('active');
+    document.getElementById('normalInput').style.display = 'flex';
+
+    const nom = nomAuto || 'Anonyme';
+
+    try {
+      const url = await uploadCloudinary(file, 'audio');
       await db.collection('etude_questions').add({
         auteur:    nom,
-        question:  q,
+        question:  '🎤 Message vocal',
+        audioUrl:  url,
         heure:     new Date().toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' }),
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       });
-
-      document.getElementById('askNom').value      = '';
-      document.getElementById('askQuestion').value = '';
-      st.style.background = 'rgba(46,213,115,0.1)';
-      st.style.color = '#2ed573';
-      st.textContent = '✅ Question envoyée ! Le pasteur vous répondra bientôt.';
-      setTimeout(() => { st.style.display = 'none'; }, 4000);
     } catch(e) {
-      st.style.background = 'rgba(231,76,60,0.15)';
-      st.style.color = '#ff6b6b';
-      st.textContent = '❌ Erreur : ' + e.message;
+      alert('Erreur envoi audio : ' + e.message);
+    }
+  }
+
+  // ===== UTILS =====
+  function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+    const hasTxt = el.value.trim().length > 0;
+    document.getElementById('sendBtn').style.display = hasTxt ? 'flex' : 'none';
+    document.getElementById('micBtn').style.display  = hasTxt ? 'none' : 'flex';
+  }
+
+  function handleEnter(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      envoyerQuestion();
     }
   }
 
   function esc(str) {
     if (!str) return '';
-    return String(str)
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
   chargerEtude();
