@@ -512,16 +512,16 @@
 <div id="loginScreen" style="display:none;">
   <div class="login-box">
     <div class="login-logo">⛪</div>
-    <h1>Panel <span style="color:var(--gold)">Pasteur</span></h1>
+    <h1>Panneau <span style="color:var(--gold)">Pasteur</span></h1>
     <p>Église de Dieu de la Prophétie — Carrefour</p>
-    <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,0.6);font-size:0.9rem;text-decoration:none;margin-bottom:16px;transition:color 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,0.6);font-size:0.9rem;text-decoration:none;margin-bottom:16px;">
       <i class="fas fa-arrow-left"></i> Retour au site
     </a>
-    <input type="password" id="loginPassword" placeholder="Mot de passe admin..." />
+    <input type="password" id="loginPassword" placeholder="Mot de passe..." autocomplete="current-password" />
     <button class="login-btn" onclick="doLogin()">
-      <i class="fas fa-sign-in-alt"></i> Antre
+      <i class="fas fa-sign-in-alt"></i> Se connecter
     </button>
-    <p class="login-error" id="loginError">❌ Mot de passe incorrect. Réessayez.</p>
+    <p class="login-error" id="loginError" style="display:none;">❌ Mot de passe incorrect. Réessayez.</p>
   </div>
 </div>
 
@@ -1253,9 +1253,15 @@
     var pw = document.getElementById('loginPassword').value.trim();
     if (pw === 'Kafou2025') {
       localStorage.setItem('admin_ok', 'true');
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('adminPanel').style.display = 'block';
-      loadAll();
+      document.getElementById('loginScreen').style.display  = 'none';
+      document.getElementById('loginError').style.display   = 'none';
+      document.getElementById('adminPanel').style.display   = 'block';
+      // Tann Firebase prè anvan loadAll
+      if (window._db) {
+        loadAll();
+      } else {
+        document.addEventListener('firebaseReady', function() { loadAll(); }, { once: true });
+      }
     } else {
       document.getElementById('loginError').style.display = 'block';
       document.getElementById('loginPassword').value = '';
