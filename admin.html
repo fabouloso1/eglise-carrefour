@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta name="version" content="1773839944">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel Admin — Église de Carrefour</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
@@ -303,7 +302,7 @@
       cursor: not-allowed;
     }
 
-    /* Zone upload photo */
+    /* Upload zone foto */
     .upload-zone {
       border: 2px dashed var(--border);
       border-radius: 12px;
@@ -320,7 +319,7 @@
     .upload-zone p { color: #888; font-size: 1rem; }
     .upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
 
-    /* Aperçu photo */
+    /* Preview foto */
     .photo-preview {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -358,7 +357,7 @@
       justify-content: center;
     }
 
-    /* Liste actualités/photos existantes */
+    /* Liste aktyalite/foto existant */
     .item-list { margin-top: 8px; }
 
     .item-card {
@@ -503,7 +502,7 @@
 <body>
 
 <!-- ===== LOADING ===== -->
-<div class="loading-overlay" id="loadingOverlay" style="display:none;">
+<div class="loading-overlay" id="loadingOverlay">
   <div class="big-spinner"></div>
   <p>Connexion à Firebase...</p>
 </div>
@@ -514,19 +513,19 @@
     <div class="login-logo">⛪</div>
     <h1>Panneau <span style="color:var(--gold)">Pasteur</span></h1>
     <p>Église de Dieu de la Prophétie — Carrefour</p>
-    <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,0.6);font-size:0.9rem;text-decoration:none;margin-bottom:16px;">
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,0.6);font-size:0.9rem;text-decoration:none;margin-bottom:16px;transition:color 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">
       <i class="fas fa-arrow-left"></i> Retour au site
     </a>
-    <input type="password" id="loginPassword" placeholder="Mot de passe..." autocomplete="current-password" />
+    <input type="password" id="loginPassword" placeholder="Mot de passe..." />
     <button class="login-btn" onclick="doLogin()">
       <i class="fas fa-sign-in-alt"></i> Se connecter
     </button>
-    <p class="login-error" id="loginError" style="display:none;">❌ Mot de passe incorrect. Réessayez.</p>
+    <p class="login-error" id="loginError">❌ Mot de passe incorrect. Réessayez.</p>
   </div>
 </div>
 
 <!-- ===== PANEL ADMIN ===== -->
-<div id="adminPanel" style="display:none;">
+<div id="adminPanel">
 
   <!-- Header -->
   <div class="admin-header">
@@ -543,6 +542,9 @@
     </button>
     <button class="tab-btn" onclick="showTab('galerie')">
       <i class="fas fa-images"></i> Galerie
+    </button>
+    <button class="tab-btn" onclick="showTab('membres')">
+      <i class="fas fa-users"></i> Membres
     </button>
     <button class="tab-btn" onclick="showTab('etude')">
       <i class="fas fa-book-open"></i> Étude
@@ -562,9 +564,6 @@
     <button class="tab-btn" onclick="showTab('prieres');clearPriereBadge()">
       <i class="fas fa-hands-praying"></i> Prières
       <span id="priereBadge" style="display:none;background:#e74c3c;color:white;font-size:0.7rem;padding:1px 6px;border-radius:10px;margin-left:4px;"></span>
-    </button>
-    <button class="tab-btn" onclick="showTab('membres')">
-      <i class="fas fa-users"></i> Membres
     </button>
     <button class="tab-btn" onclick="showTab('contacts')">
       <i class="fas fa-envelope"></i> Contacts
@@ -627,367 +626,138 @@
     <!-- ===== GALERIE ===== -->
     <div class="tab-panel" id="tab-galerie">
 
-      <!-- SECTION PHOTOS -->
-      <div style="background:linear-gradient(135deg,#0d1f4a,#1a0a3c);border-radius:20px;padding:26px 22px;margin-bottom:20px;">
+      <!-- Ajoute foto -->
+      <div class="card">
+        <h3><i class="fas fa-camera"></i> Ajouter des photos à la galerie</h3>
 
-        <!-- Header -->
-        <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;">
-          <div style="width:50px;height:50px;background:rgba(241,196,15,0.2);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <i class="fas fa-camera" style="color:#f1c40f;font-size:1.3rem;"></i>
-          </div>
-          <div>
-            <h3 style="color:#f1c40f!important;font-size:1.2rem!important;font-weight:800!important;margin:0!important;">Publier des Photos</h3>
-            <p style="color:rgba(255,255,255,0.55)!important;font-size:0.85rem!important;margin:0!important;">Choisissez une catégorie et envoyez vos photos</p>
-          </div>
-        </div>
+        <label>Description de la photo (optionnel)</label>
+        <input type="text" id="fotoDesc" placeholder="Ex : Culte dimanche 15 juin..." />
 
-        <!-- Catégorie -->
-        <div style="margin-bottom:16px;">
-          <label style="display:block;color:#f1c40f!important;font-size:0.9rem!important;font-weight:700!important;margin-bottom:8px;">
-            <i class="fas fa-folder" style="margin-right:6px;"></i>Catégorie *
-          </label>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <select id="kategoriFoto" style="flex:1;min-width:160px;padding:13px 14px;border:2px solid rgba(241,196,15,0.3);border-radius:12px;background:rgba(255,255,255,0.08);color:white;font-size:0.95rem;font-weight:600;">
-              <option value="" style="background:#1a0a3c;">— Choisir une catégorie —</option>
-            </select>
-            <button onclick="toggleNouvoKategori()"
-              style="padding:13px 16px;background:rgba(241,196,15,0.15);border:2px solid rgba(241,196,15,0.3);border-radius:12px;color:#f1c40f;font-size:0.88rem;font-weight:700;cursor:pointer;white-space:nowrap;">
-              <i class="fas fa-plus"></i> Nouvelle
-            </button>
-          </div>
-        </div>
-
-        <!-- Nouvelle catégorie box -->
-        <div id="nouvoKategoriBox" style="display:none;background:rgba(255,255,255,0.06);border:1.5px solid rgba(241,196,15,0.3);border-radius:14px;padding:16px;margin-bottom:16px;">
-          <label style="display:block;color:#f1c40f!important;font-size:0.88rem!important;font-weight:700!important;margin-bottom:8px;">
-            Nom de la nouvelle catégorie *
-          </label>
-          <div style="display:flex;gap:8px;">
-            <input type="text" id="nouvoKategoriNom" placeholder="Ex: Baptême, Culte de Noël..."
-              style="flex:1;padding:12px 14px;border:2px solid rgba(241,196,15,0.25);border-radius:10px;background:rgba(255,255,255,0.08);color:white;font-size:0.95rem;font-weight:600;margin-bottom:0;">
-            <button onclick="kreye_kategori()"
-              style="padding:12px 16px;background:linear-gradient(135deg,#f1c40f,#e67e22);border:none;border-radius:10px;color:#0d1f4a;font-size:0.9rem;font-weight:800;cursor:pointer;">
-              <i class="fas fa-check"></i> Créer
-            </button>
-          </div>
-        </div>
-
-        <!-- Zone upload photos -->
-        <div class="upload-zone" id="uploadZoneFoto"
-          style="border:2px dashed rgba(241,196,15,0.4);border-radius:16px;background:rgba(255,255,255,0.05);padding:28px;text-align:center;margin-bottom:16px;cursor:pointer;">
+        <div class="upload-zone" id="uploadZone">
           <input type="file" id="fotoInput" accept="image/*" multiple onchange="handleFotoSelect(event)">
-          <i class="fas fa-images" style="font-size:2.4rem;color:#f1c40f;margin-bottom:12px;display:block;"></i>
-          <p style="color:white!important;font-size:1rem!important;font-weight:700!important;margin-bottom:4px;">Cliquer pour choisir des photos</p>
-          <p style="color:rgba(255,255,255,0.45)!important;font-size:0.85rem!important;">JPG, PNG — plusieurs photos à la fois</p>
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p><strong>Cliquer pour choisir des photos</strong><br>ou glisser-déposer ici<br><small style="color:#aaa">JPG, PNG — max 5MB chacune</small></p>
         </div>
-        <div class="photo-preview" id="photoPreviewFoto"></div>
 
-        <button id="uploadBtnFoto" onclick="uploadFotos()" disabled
-          style="width:100%;padding:16px;background:linear-gradient(135deg,#f1c40f,#e67e22);border:none;border-radius:30px;color:#0d1f4a!important;font-size:1.05rem!important;font-weight:800!important;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;opacity:0.5;">
-          <i class="fas fa-upload"></i> Publier les Photos
+        <div class="photo-preview" id="photoPreview"></div>
+
+        <button class="btn btn-gold" id="uploadBtn" onclick="uploadFotos()" style="width:100%" disabled>
+          <i class="fas fa-upload"></i> Publier les photos sur le site
         </button>
-        <div id="uploadFotoStatus" style="display:none;margin-top:12px;padding:14px;border-radius:12px;text-align:center;font-weight:700;font-size:0.95rem;"></div>
       </div>
 
-      <!-- SECTION VIDEO -->
-      <div style="background:linear-gradient(135deg,#1a0a3c,#0d2a1f);border-radius:20px;padding:26px 22px;margin-bottom:20px;">
+      <!-- Ajoute video -->
+      <div class="card">
+        <h3><i class="fas fa-video" style="color:var(--gold)"></i> Ajouter une vidéo à la galerie</h3>
 
-        <!-- Header -->
-        <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;">
-          <div style="width:50px;height:50px;background:rgba(46,213,115,0.15);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <i class="fas fa-video" style="color:#2ed573;font-size:1.3rem;"></i>
-          </div>
-          <div>
-            <h3 style="color:#2ed573!important;font-size:1.2rem!important;font-weight:800!important;margin:0!important;">Publier une Vidéo</h3>
-            <p style="color:rgba(255,255,255,0.55)!important;font-size:0.85rem!important;margin:0!important;">Depuis votre téléphone — max 200MB</p>
-          </div>
-        </div>
+        <label>Lien YouTube ou Facebook (URL complète) *</label>
+        <input type="text" id="videoUrl" placeholder="Ex : https://www.youtube.com/watch?v=XXXXXXXXX" />
 
-        <!-- Catégorie vidéo -->
-        <div style="margin-bottom:16px;">
-          <label style="display:block;color:#2ed573!important;font-size:0.9rem!important;font-weight:700!important;margin-bottom:8px;">
-            <i class="fas fa-folder" style="margin-right:6px;"></i>Catégorie Vidéo *
-          </label>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <select id="kategoriVideo" style="flex:1;min-width:160px;padding:13px 14px;border:2px solid rgba(46,213,115,0.3);border-radius:12px;background:rgba(255,255,255,0.08);color:white;font-size:0.95rem;font-weight:600;">
-              <option value="" style="background:#1a0a3c;">— Choisir une catégorie —</option>
-            </select>
-            <button onclick="toggleNouvoKategoriVideo()"
-              style="padding:13px 16px;background:rgba(46,213,115,0.12);border:2px solid rgba(46,213,115,0.3);border-radius:12px;color:#2ed573;font-size:0.88rem;font-weight:700;cursor:pointer;white-space:nowrap;">
-              <i class="fas fa-plus"></i> Nouvelle
-            </button>
-          </div>
-        </div>
+        <label>Titre de la vidéo *</label>
+        <input type="text" id="videoTitre" placeholder="Ex : Culte du dimanche 15 juin..." />
 
-        <!-- Nouvelle catégorie vidéo -->
-        <div id="nouvoKategoriVideoBox" style="display:none;background:rgba(255,255,255,0.06);border:1.5px solid rgba(46,213,115,0.3);border-radius:14px;padding:16px;margin-bottom:16px;">
-          <label style="display:block;color:#2ed573!important;font-size:0.88rem!important;font-weight:700!important;margin-bottom:8px;">
-            Nom de la nouvelle catégorie
-          </label>
-          <div style="display:flex;gap:8px;">
-            <input type="text" id="nouvoKategoriVideoNom" placeholder="Ex: Prédication, Louange..."
-              style="flex:1;padding:12px 14px;border:2px solid rgba(46,213,115,0.25);border-radius:10px;background:rgba(255,255,255,0.08);color:white;font-size:0.95rem;font-weight:600;margin-bottom:0;">
-            <button onclick="kreye_kategori_video()"
-              style="padding:12px 16px;background:linear-gradient(135deg,#2ed573,#1abc9c);border:none;border-radius:10px;color:#0d1f4a;font-size:0.9rem;font-weight:800;cursor:pointer;">
-              <i class="fas fa-check"></i> Créer
-            </button>
-          </div>
-        </div>
+        <label>Description (optionnel)</label>
+        <input type="text" id="videoDesc" placeholder="Ex : Message du Pasteur Anouis Jean..." />
 
-        <!-- Titre + Description -->
-        <div style="margin-bottom:14px;">
-          <label style="display:block;color:#2ed573!important;font-size:0.9rem!important;font-weight:700!important;margin-bottom:8px;">
-            <i class="fas fa-pen" style="margin-right:6px;"></i>Titre de la vidéo *
-          </label>
-          <input type="text" id="videoTitre" placeholder="Ex: Culte dimanche 15 juin..."
-            style="width:100%;padding:14px 16px;border:2px solid rgba(46,213,115,0.25);border-radius:12px;background:rgba(255,255,255,0.08);color:white;font-size:1rem;font-weight:600;" />
-        </div>
-        <div style="margin-bottom:16px;">
-          <label style="display:block;color:#2ed573!important;font-size:0.9rem!important;font-weight:700!important;margin-bottom:8px;">
-            <i class="fas fa-align-left" style="margin-right:6px;"></i>Description (optionnel)
-          </label>
-          <input type="text" id="videoDesc" placeholder="Ex: Message du Pasteur Anouis Jean..."
-            style="width:100%;padding:14px 16px;border:2px solid rgba(46,213,115,0.25);border-radius:12px;background:rgba(255,255,255,0.08);color:white;font-size:1rem;font-weight:600;" />
-        </div>
-
-        <!-- Zone upload vidéo -->
-        <div class="upload-zone" id="uploadZoneVideo"
-          style="border:2px dashed rgba(46,213,115,0.4);border-radius:16px;background:rgba(255,255,255,0.05);padding:28px;text-align:center;margin-bottom:16px;cursor:pointer;">
-          <input type="file" id="videoInput" accept="video/*" onchange="handleVideoSelect(event)">
-          <i class="fas fa-video" style="font-size:2.4rem;color:#2ed573;margin-bottom:12px;display:block;"></i>
-          <p style="color:white!important;font-size:1rem!important;font-weight:700!important;margin-bottom:4px;">Cliquer pour choisir une vidéo</p>
-          <p style="color:rgba(255,255,255,0.45)!important;font-size:0.85rem!important;">depuis votre téléphone ou tablette — MP4, MOV</p>
-        </div>
-
-        <div id="videoPreviewWrap" style="display:none;margin-bottom:16px;">
-          <video id="videoPreview" controls style="width:100%;border-radius:12px;max-height:220px;background:#000;"></video>
-          <p id="videoFileName" style="font-size:0.85rem;color:rgba(255,255,255,0.5);margin-top:8px;text-align:center;"></p>
-        </div>
-
-        <button id="uploadBtnVideo" onclick="uploadVideo()" disabled
-          style="width:100%;padding:16px;background:linear-gradient(135deg,#2ed573,#1abc9c);border:none;border-radius:30px;color:#0d1f4a!important;font-size:1.05rem!important;font-weight:800!important;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;opacity:0.5;">
-          <i class="fas fa-upload"></i> Publier la Vidéo
+        <button class="btn btn-gold" onclick="publishVideo()" style="width:100%">
+          <i class="fas fa-upload"></i> Publier la vidéo sur le site
         </button>
-        <div id="videoStatus" style="display:none;margin-top:12px;padding:14px;border-radius:12px;text-align:center;font-weight:700;font-size:0.95rem;"></div>
+        <div id="videoStatus" style="display:none;margin-top:10px;padding:10px;border-radius:8px;text-align:center;font-weight:600;"></div>
       </div>
 
-      <!-- LISTE PHOTOS & VIDEOS -->
-      <div style="background:white;border-radius:20px;padding:22px 20px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
-          <div style="width:44px;height:44px;background:linear-gradient(135deg,#1c1c3c,#3a1c5c);border-radius:12px;display:flex;align-items:center;justify-content:center;">
-            <i class="fas fa-layer-group" style="color:#f1c40f;"></i>
-          </div>
-          <div>
-            <h3 style="color:#111!important;font-size:1.1rem!important;font-weight:800!important;margin:0!important;">Photos & Vidéos publiées</h3>
-            <p style="color:#888!important;font-size:0.82rem!important;margin:0!important;"><span id="fotoCount">0</span> élément(s)</p>
-          </div>
-        </div>
+      <!-- Foto existant yo -->
+      <div class="card">
+        <h3><i class="fas fa-th"></i> Photos en galerie (<span id="fotoCount">0</span>)</h3>
         <div class="item-list" id="fotoList">
+          <p style="color:#aaa;text-align:center;padding:20px;font-size:0.85rem;">Chargement des photos...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ACTUALITES ===== -->
+    <div class="tab-panel" id="tab-membres">
+      <div class="card">
+        <h3><i class="fas fa-users"></i> Membres inscrits (<span id="membresCount">0</span>)</h3>
+        <p style="color:#888;font-size:0.9rem;margin-bottom:16px;">Personnes inscrites via le site</p>
+        <div class="item-list" id="membresList">
           <p style="color:#aaa;text-align:center;padding:20px;">Chargement...</p>
         </div>
       </div>
-
     </div>
 
-
-    <!-- ===== ACTUALITES ===== -->
-    <!-- ===== ÉTUDE BIBLIQUE ===== -->
+    <!-- ===== ÉTUDE ===== -->
     <div class="tab-panel" id="tab-etude">
-
-      <!-- ÉTUDE ACTIVE -->
-      <div id="etude-active-wrap" style="display:none;background:linear-gradient(135deg,#0d1f4a,#1a0a3c);border-radius:20px;padding:26px 22px;margin-bottom:20px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
-          <div style="display:flex;align-items:center;gap:12px;">
-            <div style="width:46px;height:46px;background:rgba(241,196,15,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
-              <i class="fas fa-book-open" style="color:#f1c40f;font-size:1.2rem;"></i>
-            </div>
-            <div>
-              <h3 style="color:#f1c40f!important;font-size:1.1rem!important;font-weight:800!important;margin:0!important;">Étude en cours</h3>
-              <p style="color:rgba(255,255,255,0.55)!important;font-size:0.82rem!important;margin:0!important;" id="etude-active-titre">—</p>
-            </div>
-          </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button onclick="toggleQuestions(true)"
-              style="padding:10px 16px;background:rgba(46,213,115,0.2);border:1.5px solid rgba(46,213,115,0.4);border-radius:20px;color:#2ed573;font-size:0.85rem;font-weight:700;cursor:pointer;">
-              <i class="fas fa-unlock"></i> Questions ouvertes
+      <div class="card" style="background:linear-gradient(135deg,#0d1f4a,#1a0a3c);border:none;">
+        <div id="etude-active-wrap" style="display:none;margin-bottom:20px;">
+          <h3 style="color:#f1c40f!important;margin-bottom:8px;"><i class="fas fa-broadcast-tower"></i> Étude en cours</h3>
+          <p id="etude-active-titre" style="color:white!important;font-size:1rem!important;font-weight:600!important;margin-bottom:14px;"></p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+            <button onclick="toggleQuestions(true)" style="padding:10px 16px;background:rgba(46,213,115,0.2);border:1.5px solid #2ed573;border-radius:20px;color:#2ed573;font-weight:700;cursor:pointer;font-size:0.9rem;">
+              <i class="fas fa-unlock"></i> Ouvrir questions
             </button>
-            <button onclick="toggleQuestions(false)"
-              style="padding:10px 16px;background:rgba(231,76,60,0.2);border:1.5px solid rgba(231,76,60,0.4);border-radius:20px;color:#ff6b6b;font-size:0.85rem;font-weight:700;cursor:pointer;">
+            <button onclick="toggleQuestions(false)" style="padding:10px 16px;background:rgba(231,76,60,0.2);border:1.5px solid #ff6b6b;border-radius:20px;color:#ff6b6b;font-weight:700;cursor:pointer;font-size:0.9rem;">
               <i class="fas fa-lock"></i> Fermer questions
             </button>
-            <button onclick="terminerEtude()"
-              style="padding:10px 16px;background:rgba(231,76,60,0.15);border:1.5px solid rgba(231,76,60,0.3);border-radius:20px;color:#ff6b6b;font-size:0.85rem;font-weight:700;cursor:pointer;">
-              <i class="fas fa-stop-circle"></i> Terminer l'étude
+            <button onclick="terminerEtude()" style="padding:10px 16px;background:rgba(231,76,60,0.1);border:1.5px solid rgba(231,76,60,0.4);border-radius:20px;color:#ff6b6b;font-weight:700;cursor:pointer;font-size:0.9rem;">
+              <i class="fas fa-stop-circle"></i> Terminer
             </button>
           </div>
-        </div>
-
-        <!-- Questions reçues -->
-        <div style="background:rgba(255,255,255,0.05);border-radius:14px;padding:16px;">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-            <h4 style="color:white!important;font-size:1rem!important;font-weight:700!important;margin:0!important;">
-              <i class="fas fa-comments" style="color:#f1c40f;margin-right:8px;"></i>
-              Questions reçues (<span id="questionsCount">0</span>)
-            </h4>
-          </div>
-          <div id="questionsList">
-            <p style="color:rgba(255,255,255,0.35);text-align:center;padding:20px;font-size:0.9rem;">Aucune question pour le moment...</p>
+          <h4 style="color:#f1c40f!important;margin-bottom:10px;">Questions reçues (<span id="questionsCount">0</span>)</h4>
+          <div id="questionsList" style="background:rgba(255,255,255,0.05);border-radius:12px;padding:14px;max-height:400px;overflow-y:auto;">
+            <p style="color:rgba(255,255,255,0.35);text-align:center;padding:16px;">Aucune question pour le moment...</p>
           </div>
         </div>
-      </div>
-
-      <!-- CRÉER NOUVELLE ÉTUDE -->
-      <div style="background:linear-gradient(135deg,#1a0a3c,#0d2a1f);border-radius:20px;padding:26px 22px;margin-bottom:20px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:22px;">
-          <div style="width:46px;height:46px;background:rgba(46,213,115,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;">
-            <i class="fas fa-plus-circle" style="color:#2ed573;font-size:1.2rem;"></i>
-          </div>
-          <div>
-            <h3 style="color:#2ed573!important;font-size:1.1rem!important;font-weight:800!important;margin:0!important;">Lancer une nouvelle étude</h3>
-            <p style="color:rgba(255,255,255,0.5)!important;font-size:0.82rem!important;margin:0!important;">Une notification sera envoyée automatiquement</p>
-          </div>
-        </div>
-
-        <div style="margin-bottom:16px;">
-          <label style="display:block;color:#2ed573!important;font-size:0.9rem!important;font-weight:700!important;margin-bottom:8px;">
-            <i class="fas fa-heading" style="margin-right:6px;"></i>Titre du sujet *
-          </label>
-          <input type="text" id="etudeTitre"
-            placeholder="Ex: La puissance de la prière, La foi qui déplace les montagnes..."
-            style="width:100%;padding:15px 16px;border:2px solid rgba(46,213,115,0.25);border-radius:12px;background:rgba(255,255,255,0.07);color:white;font-size:1rem;font-weight:600;">
-        </div>
-
-        <div style="margin-bottom:16px;">
-          <label style="display:block;color:#2ed573!important;font-size:0.9rem!important;font-weight:700!important;margin-bottom:8px;">
-            <i class="fas fa-align-left" style="margin-right:6px;"></i>Développement / Contenu *
-          </label>
-          <textarea id="etudeContenu"
-            placeholder="Développez le sujet ici... Partagez les versets, les points importants, les réflexions..."
-            style="width:100%;padding:15px 16px;border:2px solid rgba(46,213,115,0.25);border-radius:12px;background:rgba(255,255,255,0.07);color:white;font-size:0.95rem;font-weight:500;min-height:140px;resize:vertical;"></textarea>
-        </div>
-
-        <div style="margin-bottom:20px;">
-          <label style="display:block;color:#2ed573!important;font-size:0.9rem!important;font-weight:700!important;margin-bottom:8px;">
-            <i class="fas fa-bible" style="margin-right:6px;"></i>Verset de référence (optionnel)
-          </label>
-          <input type="text" id="etudeVerset"
-            placeholder="Ex: Jean 3:16, Philippiens 4:13..."
-            style="width:100%;padding:15px 16px;border:2px solid rgba(46,213,115,0.25);border-radius:12px;background:rgba(255,255,255,0.07);color:white;font-size:1rem;font-weight:600;">
-        </div>
-
-        <button onclick="lancerEtude()"
-          style="width:100%;padding:17px;background:linear-gradient(135deg,#2ed573,#1abc9c);border:none;border-radius:30px;color:#0d1f4a!important;font-size:1.05rem!important;font-weight:800!important;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;">
-          <i class="fas fa-broadcast-tower"></i> Lancer l'étude & notifier
+        <h3 style="color:#2ed573!important;margin-bottom:16px;"><i class="fas fa-plus-circle"></i> Lancer une nouvelle étude</h3>
+        <label style="color:#2ed573!important;font-weight:700!important;display:block;margin-bottom:6px;">Titre du sujet *</label>
+        <input type="text" id="etudeTitre" placeholder="Ex: La puissance de la prière..." style="border-color:rgba(46,213,115,0.3)!important;background:rgba(255,255,255,0.07)!important;color:white!important;" />
+        <label style="color:#2ed573!important;font-weight:700!important;display:block;margin-bottom:6px;">Développement *</label>
+        <textarea id="etudeContenu" placeholder="Développez le sujet, les versets..." style="min-height:120px;border-color:rgba(46,213,115,0.3)!important;background:rgba(255,255,255,0.07)!important;color:white!important;"></textarea>
+        <label style="color:#2ed573!important;font-weight:700!important;display:block;margin-bottom:6px;">Verset de référence (optionnel)</label>
+        <input type="text" id="etudeVerset" placeholder="Ex: Jean 3:16..." style="border-color:rgba(46,213,115,0.3)!important;background:rgba(255,255,255,0.07)!important;color:white!important;" />
+        <button onclick="lancerEtude()" style="width:100%;padding:16px;background:linear-gradient(135deg,#2ed573,#1abc9c);border:none;border-radius:30px;color:#0d1f4a!important;font-size:1.05rem!important;font-weight:800!important;cursor:pointer;">
+          <i class="fas fa-broadcast-tower"></i> Lancer l'étude
         </button>
-        <div id="etudeStatus" style="display:none;margin-top:12px;padding:14px;border-radius:12px;text-align:center;font-weight:700;"></div>
+        <div id="etudeStatus" style="display:none;margin-top:10px;padding:12px;border-radius:10px;text-align:center;font-weight:700;"></div>
       </div>
-
     </div>
 
-    <!-- ===== HORAIRES ===== -->
+    <!-- ===== ÉVÉNEMENTS ===== -->
     <div class="tab-panel" id="tab-evenements">
-
-      <!-- FORMULAIRE AJOUT -->
-      <div style="background:linear-gradient(135deg,#1c1c3c,#3a1c5c);border-radius:20px;padding:28px 22px;margin-bottom:22px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
-          <div style="width:48px;height:48px;background:rgba(241,196,15,0.2);border-radius:14px;display:flex;align-items:center;justify-content:center;">
-            <i class="fas fa-calendar-plus" style="color:#f1c40f;font-size:1.3rem;"></i>
+      <div class="card" style="background:linear-gradient(135deg,#1c1c3c,#3a1c5c);border:none;">
+        <h3 style="color:#f1c40f!important;margin-bottom:16px;"><i class="fas fa-calendar-plus"></i> Ajouter un événement</h3>
+        <label style="color:#f1c40f!important;font-weight:700!important;display:block;margin-bottom:6px;">Titre *</label>
+        <input type="text" id="evTitre" placeholder="Ex: Grand Concert JEM..." style="border-color:rgba(241,196,15,0.3)!important;background:rgba(255,255,255,0.07)!important;color:white!important;" />
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <label style="color:#f1c40f!important;font-weight:700!important;display:block;margin-bottom:6px;">Date *</label>
+            <input type="date" id="evDate" style="border-color:rgba(241,196,15,0.3)!important;background:rgba(255,255,255,0.07)!important;color:white!important;" />
           </div>
           <div>
-            <h3 style="color:white!important;font-size:1.2rem!important;margin:0!important;">Ajouter un événement</h3>
-            <p style="color:rgba(255,255,255,0.6)!important;font-size:0.85rem!important;margin:0!important;">Les événements passés sont supprimés automatiquement</p>
+            <label style="color:#f1c40f!important;font-weight:700!important;display:block;margin-bottom:6px;">Heure</label>
+            <input type="time" id="evHeure" style="border-color:rgba(241,196,15,0.3)!important;background:rgba(255,255,255,0.07)!important;color:white!important;" />
           </div>
         </div>
-
-        <!-- Titre -->
-        <div style="margin-bottom:16px;">
-          <label style="color:#f1c40f!important;font-size:0.85rem!important;font-weight:700!important;display:block;margin-bottom:6px;">
-            <i class="fas fa-pen" style="margin-right:6px;"></i>Titre de l'événement *
-          </label>
-          <input type="text" id="evTitre" placeholder="Ex : Grand Concert JEM, Réveil annuel..."
-            style="width:100%;padding:14px 16px;border:2px solid rgba(255,255,255,0.15);border-radius:12px;background:rgba(255,255,255,0.1);color:white!important;font-size:1rem!important;font-weight:600!important;" />
-        </div>
-
-        <!-- Date + Heure -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
-          <div>
-            <label style="color:#f1c40f!important;font-size:0.85rem!important;font-weight:700!important;display:block;margin-bottom:6px;">
-              <i class="fas fa-calendar-day" style="margin-right:6px;"></i>Date *
-            </label>
-            <input type="date" id="evDate"
-              style="width:100%;padding:14px 16px;border:2px solid rgba(255,255,255,0.15);border-radius:12px;background:rgba(255,255,255,0.1);color:white!important;font-size:1rem!important;font-weight:600!important;" />
-          </div>
-          <div>
-            <label style="color:#f1c40f!important;font-size:0.85rem!important;font-weight:700!important;display:block;margin-bottom:6px;">
-              <i class="fas fa-clock" style="margin-right:6px;"></i>Heure
-            </label>
-            <input type="time" id="evHeure"
-              style="width:100%;padding:14px 16px;border:2px solid rgba(255,255,255,0.15);border-radius:12px;background:rgba(255,255,255,0.1);color:white!important;font-size:1rem!important;font-weight:600!important;" />
-          </div>
-        </div>
-
-        <!-- Description -->
-        <div style="margin-bottom:16px;">
-          <label style="color:#f1c40f!important;font-size:0.85rem!important;font-weight:700!important;display:block;margin-bottom:6px;">
-            <i class="fas fa-align-left" style="margin-right:6px;"></i>Description
-          </label>
-          <textarea id="evDesc" placeholder="Détails de l'événement..."
-            style="width:100%;padding:14px 16px;border:2px solid rgba(255,255,255,0.15);border-radius:12px;background:rgba(255,255,255,0.1);color:white!important;font-size:0.95rem!important;font-weight:500!important;min-height:90px;resize:vertical;"></textarea>
-        </div>
-
-        <!-- Prix + Importance -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px;">
-          <div>
-            <label style="color:#f1c40f!important;font-size:0.85rem!important;font-weight:700!important;display:block;margin-bottom:6px;">
-              <i class="fas fa-ticket" style="margin-right:6px;"></i>Contribution
-            </label>
-            <input type="text" id="evPrix" placeholder="Ex: 500 Gourdes"
-              style="width:100%;padding:14px 16px;border:2px solid rgba(255,255,255,0.15);border-radius:12px;background:rgba(255,255,255,0.1);color:white!important;font-size:1rem!important;font-weight:600!important;" />
-          </div>
-          <div>
-            <label style="color:#f1c40f!important;font-size:0.85rem!important;font-weight:700!important;display:block;margin-bottom:6px;">
-              <i class="fas fa-signal" style="margin-right:6px;"></i>Importance
-            </label>
-            <select id="evImportance"
-              style="width:100%;padding:14px 16px;border:2px solid rgba(255,255,255,0.15);border-radius:12px;background:rgba(30,20,60,0.9);color:white!important;font-size:1rem!important;font-weight:600!important;">
-              <option value="Normal">Normal</option>
-              <option value="Important">⚠️ Important</option>
-              <option value="Urgent">🔴 Urgent</option>
-            </select>
-          </div>
-        </div>
-
-        <button onclick="publierEvenement()"
-          style="width:100%;padding:16px;background:linear-gradient(135deg,#f1c40f,#e67e22);color:#1c1c3c!important;border:none;border-radius:30px;font-size:1.1rem!important;font-weight:800!important;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;">
+        <label style="color:#f1c40f!important;font-weight:700!important;display:block;margin-bottom:6px;">Description</label>
+        <textarea id="evDesc" placeholder="Détails de l'événement..." style="min-height:80px;border-color:rgba(241,196,15,0.3)!important;background:rgba(255,255,255,0.07)!important;color:white!important;"></textarea>
+        <label style="color:#f1c40f!important;font-weight:700!important;display:block;margin-bottom:6px;">Contribution</label>
+        <input type="text" id="evPrix" placeholder="Ex: 500 Gourdes, Gratuit..." style="border-color:rgba(241,196,15,0.3)!important;background:rgba(255,255,255,0.07)!important;color:white!important;" />
+        <button onclick="publierEvenement()" style="width:100%;padding:16px;background:linear-gradient(135deg,#f1c40f,#e67e22);border:none;border-radius:30px;color:#1c1c3c!important;font-size:1.05rem!important;font-weight:800!important;cursor:pointer;margin-top:8px;">
           <i class="fas fa-calendar-plus"></i> Publier l'événement
         </button>
-        <div id="evStatus" style="display:none;margin-top:12px;padding:14px;border-radius:12px;text-align:center;font-weight:700;font-size:1rem;"></div>
+        <div id="evStatus" style="display:none;margin-top:10px;padding:12px;border-radius:10px;text-align:center;font-weight:700;"></div>
       </div>
-
-      <!-- LISTE ÉVÉNEMENTS -->
-      <div style="background:white;border-radius:20px;padding:24px 20px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-          <div style="display:flex;align-items:center;gap:12px;">
-            <div style="width:44px;height:44px;background:linear-gradient(135deg,#1c1c3c,#3a1c5c);border-radius:12px;display:flex;align-items:center;justify-content:center;">
-              <i class="fas fa-list" style="color:#f1c40f;"></i>
-            </div>
-            <div>
-              <h3 style="color:#111!important;font-size:1.1rem!important;margin:0!important;">Événements à venir</h3>
-              <p style="color:#888!important;font-size:0.82rem!important;margin:0!important;"><span id="evCount">0</span> événement(s)</p>
-            </div>
-          </div>
-        </div>
-        <div id="evList">
-          <p style="color:#aaa;text-align:center;padding:30px;font-size:0.9rem;">Chargement...</p>
+      <div class="card" style="margin-top:16px;">
+        <h3><i class="fas fa-list"></i> Événements à venir (<span id="evCount">0</span>)</h3>
+        <div class="item-list" id="evList">
+          <p style="color:#aaa;text-align:center;padding:20px;">Chargement...</p>
         </div>
       </div>
-
     </div>
 
     <!-- ===== ANNONCES ===== -->
     <div class="tab-panel" id="tab-annonces">
 
-      <!-- Nouvelle annonce -->
+      <!-- Nouvo anons -->
       <div class="card">
         <h3><i class="fas fa-bullhorn"></i> Ajouter une annonce</h3>
 
@@ -1082,27 +852,6 @@
       </div>
     </div>
 
-    <!-- TAB MEMBRES -->
-    <div class="tab-panel" id="tab-membres">
-      <div style="background:linear-gradient(135deg,#1c1c3c,#3a1c5c);border-radius:20px;padding:24px 22px;margin-bottom:20px;">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:44px;height:44px;background:rgba(241,196,15,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
-            <i class="fas fa-users" style="color:#f1c40f;font-size:1.2rem;"></i>
-          </div>
-          <div>
-            <h3 style="color:white!important;font-size:1.1rem!important;margin:0!important;">Membres inscrits</h3>
-            <p style="color:rgba(255,255,255,0.6)!important;font-size:0.85rem!important;margin:0!important;">Personnes inscrites via le site</p>
-          </div>
-          <span id="membresCount" style="margin-left:auto;background:rgba(241,196,15,0.2);color:#f1c40f;font-weight:800;font-size:1rem;padding:4px 14px;border-radius:20px;">0</span>
-        </div>
-      </div>
-      <div style="background:white;border-radius:20px;padding:20px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
-        <div id="membresList">
-          <p style="color:#aaa;text-align:center;padding:30px;">Chargement...</p>
-        </div>
-      </div>
-    </div>
-
     <!-- TAB CONTACTS -->
     <div class="tab-panel" id="tab-contacts">
       <div class="card">
@@ -1182,6 +931,8 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
   import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, getDoc, updateDoc, orderBy, query, where, serverTimestamp, onSnapshot }
     from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+  import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject }
+    from "https://www.gstatic.com/firebasejs/11.0.2/firebase-storage.js";
 
   // ===== CONFIG FIREBASE =====
   const firebaseConfig = {
@@ -1195,6 +946,7 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const storage = getStorage(app);
 
   // ===== MODPAS ADMIN =====
   const ADMIN_PASSWORD = "Kafou2025";
@@ -1202,6 +954,7 @@
   // ===== EXPOSE GLOBALS =====
   window._db = db;
   window._onSnapshot = onSnapshot;
+  window._storage = storage;
   window._collection = collection;
   window._addDoc = addDoc;
     window._query = query;
@@ -1218,32 +971,27 @@
   window._query = query;
   window._orderBy = orderBy;
   window._serverTimestamp = serverTimestamp;
+  window._ref = ref;
+  window._uploadBytes = uploadBytes;
+  window._getDownloadURL = getDownloadURL;
+  window._deleteObject = deleteObject;
   window._ADMIN_PASSWORD = ADMIN_PASSWORD;
 
-  // Siyal Firebase prè
-  window._firebaseReady = true;
-  document.dispatchEvent(new CustomEvent('firebaseReady'));
+  // Init
+  document.getElementById('loadingOverlay').style.display = 'none';
 
-  // Verifye si deja login — APRE Firebase prè
-  function initAdmin() {
-    document.getElementById('loadingOverlay').style.display = 'none';
-    if (localStorage.getItem('admin_ok') === 'true') {
-      document.getElementById('loginScreen').style.display  = 'none';
-      document.getElementById('adminPanel').style.display   = 'block';
-      loadAll();
-    } else {
-      document.getElementById('loginScreen').style.display  = 'flex';
-      document.getElementById('adminPanel').style.display   = 'none';
-    }
+  // Verifye si deja login
+  if (localStorage.getItem('admin_ok') === 'true') {
+    document.getElementById('adminPanel').style.display = 'block';
+    loadAll();
+  } else {
+    document.getElementById('loginScreen').style.display = 'flex';
   }
-
-  // Rele initAdmin imedyatman — pa tann
-  initAdmin();
 </script>
 
 <script>
   // ===== FICHYE SELEKSYONE POU UPLOAD =====
-  // (jere nan selectedFilesEglise ak selectedFilesPasteur pi ba)
+  let selectedFiles = [];
 
   // Modpas la — eksplike dirèkteman isit (pa depann sou module)
   var ADMIN_PW = "Kafou2025";
@@ -1253,15 +1001,9 @@
     var pw = document.getElementById('loginPassword').value.trim();
     if (pw === 'Kafou2025') {
       localStorage.setItem('admin_ok', 'true');
-      document.getElementById('loginScreen').style.display  = 'none';
-      document.getElementById('loginError').style.display   = 'none';
-      document.getElementById('adminPanel').style.display   = 'block';
-      // Tann Firebase prè anvan loadAll
-      if (window._db) {
-        loadAll();
-      } else {
-        document.addEventListener('firebaseReady', function() { loadAll(); }, { once: true });
-      }
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminPanel').style.display = 'block';
+      loadAll();
     } else {
       document.getElementById('loginError').style.display = 'block';
       document.getElementById('loginPassword').value = '';
@@ -1292,6 +1034,8 @@
     if (name === 'prieres') loadPrieres();
     if (name === 'galerie') loadFotos();
     if (name === 'etude') chargerEtudeActive();
+    if (name === 'evenements') chargerEvenements();
+    if (name === 'membres') chargerMembres();
     if (name === 'temoignages') loadTemoignages();
     if (name === 'notifs') loadNotifCount();
     if (name === 'contacts') loadContacts();
@@ -1303,78 +1047,6 @@
     t.innerHTML = (type === 'success' ? '✅ ' : '❌ ') + msg;
     t.className = 'toast show ' + type;
     setTimeout(() => t.classList.remove('show'), 3000);
-  }
-
-  // ===== MEMBRES =====
-  async function chargerMembres() {
-    try {
-      const snap = await window._getDocs(
-        window._query(window._collection(window._db, 'membres'),
-        window._orderBy('timestamp', 'desc'))
-      );
-      const list    = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      const countEl = document.getElementById('membresCount');
-      const listEl  = document.getElementById('membresList');
-      if (countEl) countEl.textContent = list.length;
-      if (!list.length) {
-        listEl.innerHTML = '<p style="color:#aaa;text-align:center;padding:30px;">Aucun membre inscrit pour le moment.</p>';
-        return;
-      }
-      listEl.innerHTML = list.map((m, i) => `
-        <div style="display:flex;align-items:center;gap:14px;padding:14px;border-bottom:1px solid #f0f0f0;${i===list.length-1?'border-bottom:none;':''}">
-          <div style="width:42px;height:42px;background:linear-gradient(135deg,#1c1c3c,#3a1c5c);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <i class="fas fa-user" style="color:#f1c40f;font-size:1rem;"></i>
-          </div>
-          <div style="flex:1;">
-            <div style="font-weight:700;color:#111;font-size:0.95rem;">${m.nom||'—'}</div>
-            <div style="font-size:0.82rem;color:#555;margin-top:2px;">
-              <i class="fas fa-phone" style="color:var(--gold);margin-right:4px;"></i>${m.telephone||'—'}
-              ${m.ville ? `<span style="margin-left:10px;"><i class="fas fa-map-marker-alt" style="color:var(--gold);margin-right:4px;"></i>${m.ville}</span>` : ''}
-            </div>
-            <div style="font-size:0.75rem;color:#aaa;margin-top:2px;">
-              <i class="fas fa-calendar" style="margin-right:4px;"></i>${m.date||'—'}
-            </div>
-          </div>
-        </div>
-      `).join('');
-    } catch(err) {
-      console.log('Membres:', err.message);
-    }
-  }
-
-  // ===== MEMBRES =====
-  async function chargerMembres() {
-    try {
-      const snap = await window._getDocs(
-        window._query(window._collection(window._db, 'membres'),
-        window._orderBy('timestamp', 'desc'))
-      );
-      const list    = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      const countEl = document.getElementById('membresCount');
-      const listEl  = document.getElementById('membresList');
-      if (countEl) countEl.textContent = list.length;
-      if (!list.length) {
-        listEl.innerHTML = '<p style="color:#aaa;text-align:center;padding:30px;">Aucun membre inscrit pour le moment.</p>';
-        return;
-      }
-      listEl.innerHTML = list.map((m, i) => `
-        <div style="display:flex;align-items:center;gap:14px;padding:14px;border-bottom:1px solid #f0f0f0;">
-          <div style="width:44px;height:44px;background:linear-gradient(135deg,#1c1c3c,#3a1c5c);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <i class="fas fa-user" style="color:#f1c40f;"></i>
-          </div>
-          <div style="flex:1;">
-            <div style="font-weight:700;color:#111;font-size:1rem;">${m.nom||'—'}</div>
-            <div style="font-size:0.85rem;color:#555;margin-top:3px;">
-              <i class="fas fa-phone" style="color:#f1c40f;margin-right:4px;"></i>${m.telephone||'—'}
-              ${m.ville ? '<span style="margin-left:10px;"><i class="fas fa-map-marker-alt" style="color:#f1c40f;margin-right:4px;"></i>'+m.ville+'</span>' : ''}
-            </div>
-            <div style="font-size:0.78rem;color:#aaa;margin-top:2px;">
-              <i class="fas fa-calendar" style="margin-right:4px;"></i>${m.date||'—'}
-            </div>
-          </div>
-        </div>
-      `).join('');
-    } catch(err) { console.log('Membres:', err.message); }
   }
 
   // ===== CONTACTS =====
@@ -1654,154 +1326,127 @@
 
   // ===== LOAD ALL =====
   function loadAll() {
-    chargerKategori();
     loadFotos();
     loadLive();
     loadTemoignages();
     loadPrieres();
-    chargerEtudeActive();
+    loadAnnonces();
     chargerEvenements();
     chargerMembres();
-    loadAnnonces();
-    loadContacts();
   }
 
-
-
-  // ===== HELPER: Envoyer notification (attend que la fonction soit prête) =====
-  async function envoyerNotif(title, body, link) {
-    // Attendre jusqu'à 5 secondes que window.envoyerNotifAuto soit disponible
-    let tries = 0;
-    while (!window.envoyerNotifAuto && tries < 50) {
-      await new Promise(r => setTimeout(r, 100));
-      tries++;
-    }
-    if (window.envoyerNotifAuto) {
-      try {
-        await window.envoyerNotifAuto(title, body, link);
-      } catch(e) { console.log('Erreur notification:', e.message); }
-    } else {
-      console.log('envoyerNotifAuto non disponible après 5s');
-    }
-  }
-
-  // ===== GALERIE — Sistèm Kategori =====
-
-  let selectedFotoFiles = [];
-
-  // Chaje tout kategori nan dropdown yo
-  async function chargerKategori() {
-    try {
-      const snap = await window._getDocs(
-        window._query(window._collection(window._db, 'kategori'), window._orderBy('nom'))
-      );
-      const opts = snap.docs.map(d => `<option value="${d.id}">${d.data().nom}</option>`).join('');
-      const base = '<option value="">— Choisir une catégorie —</option>';
-      const selFoto  = document.getElementById('kategoriFoto');
-      const selVideo = document.getElementById('kategoriVideo');
-      if (selFoto)  selFoto.innerHTML  = base + opts;
-      if (selVideo) selVideo.innerHTML = base + opts;
-    } catch(e) { console.log('Erreur catégorie :', e.message); }
-  }
-
-  function toggleNouvoKategori() {
-    const b = document.getElementById('nouvoKategoriBox');
-    b.style.display = b.style.display === 'none' ? 'block' : 'none';
-    if (b.style.display === 'block') document.getElementById('nouvoKategoriNom').focus();
-  }
-
-  function toggleNouvoKategoriVideo() {
-    const b = document.getElementById('nouvoKategoriVideoBox');
-    b.style.display = b.style.display === 'none' ? 'block' : 'none';
-    if (b.style.display === 'block') document.getElementById('nouvoKategoriVideoNom').focus();
-  }
-
-  async function kreye_kategori() {
-    const nom = document.getElementById('nouvoKategoriNom').value.trim();
-    if (!nom) { showToast('Veuillez saisir le nom de la catégorie !', 'error'); return; }
-    try {
-      const ref = await window._addDoc(window._collection(window._db, 'kategori'), {
-        nom: nom, timestamp: window._serverTimestamp()
-      });
-      document.getElementById('nouvoKategoriNom').value = '';
-      document.getElementById('nouvoKategoriBox').style.display = 'none';
-      await chargerKategori();
-      document.getElementById('kategoriFoto').value = ref.id;
-      showToast('Catégorie "' + nom + '" créée !');
-    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
-  }
-
-  async function kreye_kategori_video() {
-    const nom = document.getElementById('nouvoKategoriVideoNom').value.trim();
-    if (!nom) { showToast('Veuillez saisir le nom de la catégorie !', 'error'); return; }
-    try {
-      const ref = await window._addDoc(window._collection(window._db, 'kategori'), {
-        nom: nom, timestamp: window._serverTimestamp()
-      });
-      document.getElementById('nouvoKategoriVideoNom').value = '';
-      document.getElementById('nouvoKategoriVideoBox').style.display = 'none';
-      await chargerKategori();
-      document.getElementById('kategoriVideo').value = ref.id;
-      showToast('Catégorie "' + nom + '" créée !');
-    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
-  }
-
-  // Seleksyon foto
+  // ===== GALERIE =====
   function handleFotoSelect(e) {
-    selectedFotoFiles = Array.from(e.target.files);
-    const preview = document.getElementById('photoPreviewFoto');
+    const files = Array.from(e.target.files);
+    selectedFiles = files;
+    const preview = document.getElementById('photoPreview');
     preview.innerHTML = '';
-    selectedFotoFiles.forEach((f, i) => {
+
+    files.forEach((f, i) => {
+      if (f.size > 10 * 1024 * 1024) { showToast('Foto ' + f.name + ' twò gwo (maks 10MB)', 'error'); return; }
       const reader = new FileReader();
-      reader.onload = ev => {
-        preview.innerHTML += `<div class="photo-preview-item">
-          <img src="${ev.target.result}">
-          <button class="remove-photo" onclick="removeFotoPreview(${i})"><i class="fas fa-times"></i></button>
-        </div>`;
+      reader.onload = function(ev) {
+        preview.innerHTML += `
+          <div class="photo-preview-item">
+            <img src="${ev.target.result}">
+            <button class="remove-photo" onclick="removePreview(${i})"><i class="fas fa-times"></i></button>
+          </div>`;
       };
       reader.readAsDataURL(f);
     });
-    document.getElementById('uploadBtnFoto').disabled = selectedFotoFiles.length === 0;
+
+    document.getElementById('uploadBtn').disabled = files.length === 0;
   }
 
-  function removeFotoPreview(i) {
-    selectedFotoFiles.splice(i, 1);
-    if (!selectedFotoFiles.length) {
-      document.getElementById('photoPreviewFoto').innerHTML = '';
-      document.getElementById('uploadBtnFoto').disabled = true;
+  function removePreview(i) {
+    selectedFiles.splice(i, 1);
+    if (selectedFiles.length === 0) {
+      document.getElementById('photoPreview').innerHTML = '';
+      document.getElementById('uploadBtn').disabled = true;
     }
   }
 
-  // ===== CLOUDINARY =====
-  const CLOUDINARY_CLOUD  = 'dvcxhpibq';
-  const CLOUDINARY_PRESET = 'eglise_upload';
-
-  async function uploadVersCloudinary(file, dossier) {
-    const blob = await compresserImaj(file);
-    const fd = new FormData();
-    fd.append('file', blob);
-    fd.append('upload_preset', CLOUDINARY_PRESET);
-    fd.append('folder', dossier || 'galerie');
-    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method:'POST', body:fd });
-    if (!res.ok) { const err = await res.json(); throw new Error(err.error?.message || 'Cloudinary error'); }
-    return (await res.json()).secure_url;
+  function resetUploadBtn() {
+    const btn = document.getElementById('uploadBtn');
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-upload"></i> Publier les photos sur le site';
+    }
   }
 
-  function compresserImaj(file) {
+  async function uploadFotos() {
+    if (!selectedFiles.length) return;
+    const btn = document.getElementById('uploadBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Publication en cours...';
+
+    const desc = document.getElementById('fotoDesc').value.trim();
+    const filesToUpload = [...selectedFiles];
+    let uploaded = 0;
+
+    try {
+      for (const file of filesToUpload) {
+        const base64 = await fileToBase64(file);
+        await window._addDoc(window._collection(window._db, 'galerie'), {
+          url: base64,
+          description: desc || file.name.replace(/\.[^/.]+$/, ''),
+          categorie: 'pasteur',
+          nom: file.name,
+          date: new Date().toISOString(),
+          timestamp: window._serverTimestamp()
+        });
+        uploaded++;
+      }
+
+      showToast(uploaded + ' photo(s) publiée(s) avec succès !');
+      document.getElementById('fotoDesc').value = '';
+      document.getElementById('photoPreview').innerHTML = '';
+      document.getElementById('fotoInput').value = '';
+      selectedFiles = [];
+      resetUploadBtn();
+      loadFotos();
+
+      // Voye notifikasyon otomatik bay tout abòne
+      try {
+        const notifTitle = 'Église de Dieu de la Prophétie';
+        const notifBody  = uploaded > 1
+          ? 'Le pasteur a publié ' + uploaded + ' nouvelles photos !'
+          : 'Le pasteur a publié une nouvelle photo !';
+        const notifLink  = 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html#pasteur';
+        await envoyerNotifAuto(notifTitle, notifBody, notifLink);
+      } catch(e) { console.log('Notif auto error:', e); }
+    } catch (err) {
+      showToast('Erreur publication : ' + err.message, 'error');
+      resetUploadBtn();
+    }
+  }
+
+  function fileToBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onerror = () => reject(new Error('Echec lecture'));
-      reader.onload = e => {
+      reader.onerror = () => reject(new Error('Echec lecture fichier'));
+      reader.onload = (e) => {
         const img = new Image();
-        img.onerror = () => reject(new Error('Imaj invalide'));
+        img.onerror = () => reject(new Error('Imaj pa valid'));
         img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const maxW = 1200;
-          let w = img.width, h = img.height;
-          if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
-          canvas.width = w; canvas.height = h;
-          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-          canvas.toBlob(blob => resolve(blob), 'image/jpeg', 0.82);
+          try {
+            const canvas = document.createElement('canvas');
+            const maxW = 1000;
+            let w = img.width, h = img.height;
+            if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            // Konprese - kòmanse ak 0.8, redui si twò gwo
+            let quality = 0.8;
+            let result = canvas.toDataURL('image/jpeg', quality);
+            while (result.length > 900000 && quality > 0.3) {
+              quality -= 0.1;
+              result = canvas.toDataURL('image/jpeg', quality);
+            }
+            resolve(result);
+          } catch(e) { reject(e); }
         };
         img.src = e.target.result;
       };
@@ -1809,539 +1454,241 @@
     });
   }
 
-  async function uploadFotos() {
-    const katId  = document.getElementById('kategoriFoto').value;
-    const katNom = document.getElementById('kategoriFoto').selectedOptions[0]?.text || '';
-    if (!katId) { showToast('Veuillez choisir une catégorie !', 'error'); return; }
-    if (!selectedFotoFiles.length) { showToast('Veuillez choisir au moins une photo !', 'error'); return; }
-
-    const btn    = document.getElementById('uploadBtnFoto');
-    const status = document.getElementById('uploadFotoStatus');
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span> Upload...';
-    status.style.display = 'block';
-    status.style.background = '#fff8e1'; status.style.color = '#555';
-
-    const files = [...selectedFotoFiles];
-    let uploaded = 0;
-
-    try {
-      for (let i = 0; i < files.length; i++) {
-        status.textContent = 'Photo ' + (i+1) + '/' + files.length + ' en cours...';
-        const url = await uploadVersCloudinary(files[i], 'galerie/' + katId);
-        await window._addDoc(window._collection(window._db, 'galerie'), {
-          url, type: 'photo',
-          kategoriId: katId,
-          kategoriNom: katNom,
-          description: files[i].name.replace(/\.[^/.]+$/, ''),
-          date: new Date().toLocaleDateString('fr-FR'),
-          timestamp: window._serverTimestamp()
-        });
-        uploaded++;
-      }
-      status.style.background = '#e8f5e9'; status.style.color = '#2e7d32';
-      status.textContent = '✅ ' + uploaded + ' photo(s) publiée(s) dans "' + katNom + '" !';
-      document.getElementById('photoPreviewFoto').innerHTML = '';
-      document.getElementById('fotoInput').value = '';
-      selectedFotoFiles = [];
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-upload"></i> Publier les Photos';
-      setTimeout(() => { status.style.display = 'none'; }, 4000);
-      loadFotos();
-      envoyerNotif('Église de Dieu de la Prophétie', uploaded + ' nouvelle(s) photo(s) publiée(s) dans "' + katNom + '" !', 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html');
-    } catch(err) {
-      status.style.background = '#fee'; status.style.color = '#c00';
-      status.textContent = '❌ Erreur : ' + err.message;
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-upload"></i> Publier les Photos';
-    }
-  }
-
   async function loadFotos() {
     try {
-      const snap = await window._getDocs(
-        window._query(window._collection(window._db, 'galerie'), window._orderBy('timestamp', 'desc'))
-      );
-      const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      document.getElementById('fotoCount').textContent = items.length;
-      document.getElementById('statFoto').textContent  = items.length;
+      const q = window._query(window._collection(window._db, 'galerie'), window._orderBy('timestamp', 'desc'));
+      const snap = await window._getDocs(q);
+      const fotos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      document.getElementById('fotoCount').textContent = fotos.length;
+      document.getElementById('statFoto').textContent = fotos.length;
 
       const list = document.getElementById('fotoList');
-      if (!items.length) {
-        list.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px;">Okenn foto/vidéo pou kounye a.</p>';
+      if (fotos.length === 0) {
+        list.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px;font-size:0.85rem;">Aucune photo pour le moment</p>';
         return;
       }
 
-      // Regwoupe pa kategori
-      const groupes = {};
-      items.forEach(item => {
-        const kat = item.kategoriNom || item.categorie || 'Sans catégorie';
-        if (!groupes[kat]) groupes[kat] = [];
-        groupes[kat].push(item);
-      });
-
-      list.innerHTML = Object.entries(groupes).map(([kat, imgs]) => `
-        <div style="margin-bottom:20px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:10px;margin-bottom:10px;">
-            <span style="color:white;font-weight:700;font-size:0.95rem;">
-              <i class="fas fa-folder-open" style="color:var(--gold);margin-right:8px;"></i>${kat}
-              <span style="background:rgba(241,196,15,0.2);color:var(--gold);font-size:0.75rem;padding:2px 8px;border-radius:10px;margin-left:8px;">${imgs.length}</span>
-            </span>
+      list.innerHTML = fotos.map(f => `
+        <div class="item-card">
+          <img src="${f.url}" alt="${f.description}" onerror="this.src='https://via.placeholder.com/60'">
+          <div class="item-card-info">
+            <h4>${f.description || 'Foto'}</h4>
+            <p>${f.categorie} · ${new Date(f.date).toLocaleDateString('fr-FR')}</p>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
-            ${imgs.map(item => item.type === 'video'
-              ? `<div style="position:relative;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:8px;overflow:hidden;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;">
-                  <i class="fas fa-play" style="color:var(--gold);font-size:1.4rem;"></i>
-                  <button onclick="deleteFoto('${item.id}')" style="position:absolute;top:4px;right:4px;background:rgba(231,76,60,0.85);color:white;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:0.65rem;display:flex;align-items:center;justify-content:center;"><i class="fas fa-trash"></i></button>
-                </div>`
-              : `<div style="position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;">
-                  <img src="${item.url}" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
-                  <button onclick="deleteFoto('${item.id}')" style="position:absolute;top:4px;right:4px;background:rgba(231,76,60,0.85);color:white;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:0.65rem;display:flex;align-items:center;justify-content:center;"><i class="fas fa-trash"></i></button>
-                </div>`
-            ).join('')}
+          <div class="item-card-actions">
+            <button class="btn btn-danger btn-sm" onclick="deleteFoto('${f.id}')">
+              <i class="fas fa-trash"></i>
+            </button>
           </div>
         </div>
       `).join('');
-    } catch(err) {
-      document.getElementById('fotoList').innerHTML = '<p style="color:#e74c3c;padding:10px;">Erreur : ' + err.message + '</p>';
+    } catch (err) {
+      document.getElementById('fotoList').innerHTML = '<p style="color:#e74c3c;padding:10px;">Erreur de chargement : ' + err.message + '</p>';
     }
   }
 
   async function deleteFoto(id) {
-    if (!confirm('Efase sa?')) return;
+    if (!confirm('Supprimer cette photo ?')) return;
     try {
       await window._deleteDoc(window._doc(window._db, 'galerie', id));
-      showToast('Supprimé !');
+      showToast('Photo supprimée !');
       loadFotos();
-    } catch(err) { showToast('Erreur : ' + err.message, 'error'); }
-  }
-
-  // ===== VIDEO UPLOAD DIRÈK =====
-  let selectedVideoFile = null;
-
-  function handleVideoSelect(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    // Verifye gwosè — max 200MB
-    if (file.size > 200 * 1024 * 1024) {
-      showToast('Vidéo a twò gwo — max 200MB', 'error');
-      e.target.value = '';
-      return;
+    } catch (err) {
+      showToast('Erreur : ' + err.message, 'error');
     }
-
-    selectedVideoFile = file;
-    const preview  = document.getElementById('videoPreviewWrap');
-    const vidEl    = document.getElementById('videoPreview');
-    const nameEl   = document.getElementById('videoFileName');
-    const btn      = document.getElementById('uploadBtnVideo');
-
-    vidEl.src = URL.createObjectURL(file);
-    nameEl.textContent = file.name + ' (' + (file.size / (1024*1024)).toFixed(1) + ' MB)';
-    preview.style.display = 'block';
-    btn.disabled = false;
   }
 
-  async function uploadVideo() {
-    const katId  = document.getElementById('kategoriVideo').value;
-    const katNom = document.getElementById('kategoriVideo').selectedOptions[0]?.text || '';
-    const titre  = document.getElementById('videoTitre').value.trim();
-    const desc   = document.getElementById('videoDesc').value.trim();
+  // ===== VIDEO =====
+  function getVideoEmbed(url) {
+    // YouTube
+    let match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    if (match) return { type: 'youtube', id: match[1], thumb: 'https://img.youtube.com/vi/' + match[1] + '/hqdefault.jpg' };
+    // Facebook
+    if (url.includes('facebook.com')) return { type: 'facebook', id: url, thumb: '' };
+    return null;
+  }
 
-    if (!katId)             { showToast('Veuillez choisir une catégorie !', 'error'); return; }
-    if (!titre)             { showToast('Veuillez saisir le titre de la vidéo !', 'error'); return; }
-    if (!selectedVideoFile) { showToast('Veuillez choisir une vidéo !', 'error'); return; }
-
-    const btn    = document.getElementById('uploadBtnVideo');
+  async function publishVideo() {
+    const url   = document.getElementById('videoUrl').value.trim();
+    const titre = document.getElementById('videoTitre').value.trim();
+    const desc  = document.getElementById('videoDesc').value.trim();
     const status = document.getElementById('videoStatus');
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span> Upload vidéo...';
-    status.style.display  = 'block';
-    status.style.background = '#fff8e1'; status.style.color = '#555';
-    status.textContent = '⏳ Upload en cours — ne fermez pas la page...';
 
-    try {
-      // Upload vidéo nan Cloudinary
-      const formData = new FormData();
-      formData.append('file', selectedVideoFile);
-      formData.append('upload_preset', 'eglise_upload');
-      formData.append('folder', 'videos/' + katId);
-      formData.append('resource_type', 'video');
-
-      const res = await fetch(
-        'https://api.cloudinary.com/v1_1/dvcxhpibq/video/upload',
-        { method: 'POST', body: formData }
-      );
-
-      if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || 'Cloudinary error'); }
-      const data = await res.json();
-
-      // Sove URL nan Firestore
-      await window._addDoc(window._collection(window._db, 'galerie'), {
-        type: 'video',
-        url: data.secure_url,
-        thumb: data.secure_url.replace('/upload/', '/upload/so_0,w_400/').replace(/\.[^/.]+$/, '.jpg'),
-        titre: titre,
-        description: desc,
-        kategoriId: katId,
-        kategoriNom: katNom,
-        date: new Date().toLocaleDateString('fr-FR'),
-        timestamp: window._serverTimestamp()
-      });
-
-      status.style.background = '#e8f5e9'; status.style.color = '#2e7d32';
-      status.textContent = '✅ Vidéo publiée dans "' + katNom + '" !';
-      document.getElementById('videoTitre').value = '';
-      document.getElementById('videoDesc').value  = '';
-      document.getElementById('videoPreviewWrap').style.display = 'none';
-      document.getElementById('videoPreview').src = '';
-      document.getElementById('videoInput').value = '';
-      selectedVideoFile = null;
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-upload"></i> Envoyer Vidéo a';
-      setTimeout(() => { status.style.display = 'none'; }, 4000);
-      loadFotos();
-
-      envoyerNotif('Église de Dieu de la Prophétie', 'Nouvelle vidéo publiée : ' + titre, 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html');
-
-    } catch(err) {
+    if (!url || !titre) {
+      status.style.display = 'block';
       status.style.background = '#fee'; status.style.color = '#c00';
-      status.textContent = '❌ Erreur : ' + err.message;
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-upload"></i> Envoyer Vidéo a';
-    }
-  }
-
-    // ===== ÉTUDE BIBLIQUE =====
-  let etudeListener = null; // listener an dirèk pou kesyon yo
-
-  async function lancerEtude() {
-    const titre   = document.getElementById('etudeTitre').value.trim();
-    const contenu = document.getElementById('etudeContenu').value.trim();
-    const verset  = document.getElementById('etudeVerset').value.trim();
-    if (!titre)   { showToast('Veuillez saisir un titre !', 'error'); return; }
-    if (!contenu) { showToast('Veuillez développer le sujet !', 'error'); return; }
-
-    const status = document.getElementById('etudeStatus');
-    status.style.display = 'block';
-    status.style.background = '#fff8e1';
-    status.style.color = '#555';
-    status.textContent = '⏳ Lancement en cours...';
-
-    try {
-      // Efase tout vye kesyon yo
-      const oldQ = await window._getDocs(window._collection(window._db, 'etude_questions'));
-      for (const d of oldQ.docs) {
-        await window._deleteDoc(window._doc(window._db, 'etude_questions', d.id));
-      }
-
-      // Sove nouvo etude
-      await window._setDoc(window._doc(window._db, 'config', 'etude'), {
-        titre, contenu, verset,
-        actif: true,
-        questionsOuvertes: true,
-        timestamp: window._serverTimestamp(),
-        date: new Date().toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' })
-      });
-
-      // Voye notifikasyon
-      envoyerNotif(
-        '📖 Étude Biblique — ' + titre,
-        'Une nouvelle étude vient d'être lancée. Venez poser vos questions !',
-        'https://fabouloso1.github.io/eglise-carrefour/Etude.html'
-      );
-
-      status.style.background = '#e8f5e9';
-      status.style.color = '#2e7d32';
-      status.textContent = '✅ Étude lancée ! Notification envoyée.';
-      document.getElementById('etudeTitre').value  = '';
-      document.getElementById('etudeContenu').value = '';
-      document.getElementById('etudeVerset').value  = '';
-      setTimeout(() => { status.style.display = 'none'; }, 4000);
-
-      chargerEtudeActive();
-    } catch(err) {
-      status.style.background = '#fee';
-      status.style.color = '#c00';
-      status.textContent = '❌ Erreur : ' + err.message;
-    }
-  }
-
-  async function chargerEtudeActive() {
-    try {
-      const snap = await window._getDoc(window._doc(window._db, 'config', 'etude'));
-      const wrap = document.getElementById('etude-active-wrap');
-      if (!snap.exists() || !snap.data().actif) {
-        wrap.style.display = 'none';
-        return;
-      }
-      const etude = snap.data();
-      wrap.style.display = 'block';
-      document.getElementById('etude-active-titre').textContent = etude.titre;
-
-      // Ecout kesyon yo an dirèk
-      if (etudeListener) etudeListener(); // detache vye listener
-      etudeListener = window._onSnapshot
-        ? window._onSnapshot(
-            window._query(window._collection(window._db, 'etude_questions'), window._orderBy('timestamp', 'asc')),
-            (snap) => afficherQuestions(snap.docs)
-          )
-        : null;
-
-      // Si onSnapshot pa disponib, chaje yon sèl fwa
-      if (!window._onSnapshot) {
-        const qSnap = await window._getDocs(
-          window._query(window._collection(window._db, 'etude_questions'), window._orderBy('timestamp', 'asc'))
-        );
-        afficherQuestions(qSnap.docs);
-      }
-    } catch(e) { console.log('Étude:', e.message); }
-  }
-
-  function afficherQuestions(docs) {
-    const list = document.getElementById('questionsList');
-    const countEl = document.getElementById('questionsCount');
-    countEl.textContent = docs.length;
-
-    if (!docs.length) {
-      list.innerHTML = '<p style="color:rgba(255,255,255,0.35);text-align:center;padding:20px;font-size:0.9rem;">Aucune question pour le moment...</p>';
+      status.textContent = '❌ URL ak titre obligatwa';
       return;
     }
 
-    list.innerHTML = docs.map(d => {
-      const q = d.data();
-      return `
-      <div style="background:rgba(255,255,255,0.06);border-radius:14px;padding:16px;margin-bottom:12px;border-left:3px solid #f1c40f;">
-        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px;">
-          <div>
-            <div style="color:white!important;font-size:1rem!important;font-weight:700!important;margin-bottom:4px;">${q.question||''}</div>
-            <div style="color:rgba(255,255,255,0.45);font-size:0.78rem;">
-              <i class="fas fa-user" style="margin-right:4px;color:#f1c40f;"></i>${q.auteur||'Anonyme'}
-              · <i class="fas fa-clock" style="margin-left:4px;margin-right:4px;"></i>${q.heure||''}
-            </div>
-          </div>
-          <button onclick="supprimerQuestion('${d.id}')"
-            style="background:rgba(231,76,60,0.2);border:none;color:#ff6b6b;width:32px;height:32px;border-radius:8px;cursor:pointer;flex-shrink:0;">
-            <i class="fas fa-trash" style="font-size:0.8rem;"></i>
-          </button>
-        </div>
-
-        ${q.reponse ? `
-        <div style="background:rgba(46,213,115,0.1);border:1px solid rgba(46,213,115,0.25);border-radius:10px;padding:12px;margin-bottom:10px;">
-          <div style="color:#2ed573!important;font-size:0.8rem!important;font-weight:700!important;margin-bottom:4px;">
-            <i class="fas fa-reply" style="margin-right:5px;"></i>Réponse du Pasteur
-          </div>
-          <div style="color:rgba(255,255,255,0.85)!important;font-size:0.92rem!important;">${q.reponse}</div>
-        </div>` : ''}
-
-        <div style="display:flex;gap:8px;">
-          <input type="text" placeholder="Répondre à cette question..."
-            id="rep-${d.id}"
-            style="flex:1;padding:10px 14px;border:1.5px solid rgba(241,196,15,0.25);border-radius:10px;background:rgba(255,255,255,0.07);color:white;font-size:0.9rem;font-weight:500;">
-          <button onclick="repondreQuestion('${d.id}')"
-            style="padding:10px 16px;background:linear-gradient(135deg,#f1c40f,#e67e22);border:none;border-radius:10px;color:#0d1f4a;font-weight:800;cursor:pointer;font-size:0.88rem;white-space:nowrap;">
-            <i class="fas fa-paper-plane"></i>
-          </button>
-        </div>
-      </div>`;
-    }).join('');
-  }
-
-  async function repondreQuestion(id) {
-    const input = document.getElementById('rep-' + id);
-    const rep = input.value.trim();
-    if (!rep) return;
-    try {
-      await window._updateDoc(window._doc(window._db, 'etude_questions', id), {
-        reponse: rep,
-        reponduPar: 'Pasteur Anouis Jean',
-        reponduA: new Date().toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' })
-      });
-      input.value = '';
-      showToast('Réponse envoyée !');
-      // Rechaje si pas de listener
-      if (!window._onSnapshot) {
-        const qSnap = await window._getDocs(
-          window._query(window._collection(window._db, 'etude_questions'), window._orderBy('timestamp', 'asc'))
-        );
-        afficherQuestions(qSnap.docs);
-      }
-    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
-  }
-
-  async function supprimerQuestion(id) {
-    if (!confirm('Supprimer cette question ?')) return;
-    try {
-      await window._deleteDoc(window._doc(window._db, 'etude_questions', id));
-      showToast('Question supprimée !');
-    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
-  }
-
-  async function toggleQuestions(ouvert) {
-    try {
-      await window._updateDoc(window._doc(window._db, 'config', 'etude'), { questionsOuvertes: ouvert });
-      showToast(ouvert ? '✅ Questions ouvertes !' : '🔒 Questions fermées !');
-    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
-  }
-
-  async function terminerEtude() {
-    if (!confirm('Terminer cette étude ? Toutes les questions seront supprimées.')) return;
-    try {
-      // Efase tout kesyon
-      const qSnap = await window._getDocs(window._collection(window._db, 'etude_questions'));
-      for (const d of qSnap.docs) {
-        await window._deleteDoc(window._doc(window._db, 'etude_questions', d.id));
-      }
-      // Dezaktive etude
-      await window._updateDoc(window._doc(window._db, 'config', 'etude'), { actif: false });
-      document.getElementById('etude-active-wrap').style.display = 'none';
-      if (etudeListener) { etudeListener(); etudeListener = null; }
-      showToast('Étude terminée !');
-    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
-  }
-
-  // ===== ÉVÉNEMENTS =====
-  async function publierEvenement() {
-    const titre = document.getElementById('evTitre').value.trim();
-    const date  = document.getElementById('evDate').value;
-    if (!titre) { showToast('Veuillez saisir un titre !', 'error'); return; }
-    if (!date)  { showToast('Veuillez choisir une date !', 'error'); return; }
-
-    // Verifye si dat la pa pase
-    const dateEv = new Date(date);
-    const jodi   = new Date();
-    jodi.setHours(0,0,0,0);
-    if (dateEv < jodi) {
-      showToast('La date est déjà passée !', 'error');
+    const embed = getVideoEmbed(url);
+    if (!embed) {
+      status.style.display = 'block';
+      status.style.background = '#fee'; status.style.color = '#c00';
+      status.textContent = '❌ URL pa valid — YouTube oswa Facebook sèlman';
       return;
     }
 
-    const status = document.getElementById('evStatus');
     status.style.display = 'block';
-    status.style.background = '#fff8e1';
-    status.style.color = '#555';
+    status.style.background = '#fff8e1'; status.style.color = '#555';
     status.textContent = '⏳ Publication en cours...';
 
     try {
-      await window._addDoc(window._collection(window._db, 'evenements'), {
-        titre,
-        date,
-        heure:       document.getElementById('evHeure').value || '',
-        description: document.getElementById('evDesc').value || '',
-        prix:        document.getElementById('evPrix').value || '',
-        importance:  document.getElementById('evImportance').value,
-        timestamp:   window._serverTimestamp()
+      await addDoc(collection(db, 'galerie'), {
+        type: 'video',
+        videoUrl: url,
+        videoType: embed.type,
+        videoId: embed.id,
+        thumb: embed.thumb,
+        titre: titre,
+        description: desc,
+        categorie: 'pasteur',
+        nom: 'Pasteur Anouis Jean',
+        date: new Date().toLocaleDateString('fr-FR'),
+        timestamp: serverTimestamp()
       });
-
-      status.style.background = '#e8f5e9';
-      status.style.color = '#2e7d32';
-      status.textContent = '✅ Événement publié !';
-      ['evTitre','evDate','evHeure','evDesc','evPrix'].forEach(id => document.getElementById(id).value = '');
+      status.style.background = '#e8f5e9'; status.style.color = '#2e7d32';
+      status.textContent = '✅ Vidéo publiée avec succès !';
+      document.getElementById('videoUrl').value = '';
+      document.getElementById('videoTitre').value = '';
+      document.getElementById('videoDesc').value = '';
       setTimeout(() => { status.style.display = 'none'; }, 3000);
-      chargerEvenements();
-    chargerMembres();
-    chargerMembres();
-      envoyerNotif('Église de Dieu de la Prophétie', '📅 Nouvel événement : ' + titre + ' — ' + new Date(date).toLocaleDateString('fr-FR'), 'https://fabouloso1.github.io/eglise-carrefour/Horaires.html');
-    } catch(err) {
-      status.style.background = '#fee';
-      status.style.color = '#c00';
-      status.textContent = '❌ Erreur : ' + err.message;
+    } catch(e) {
+      status.style.background = '#fee'; status.style.color = '#c00';
+      status.textContent = '❌ Erreur : ' + e.message;
     }
   }
 
-  async function chargerEvenements() {
+  // ===== ACTUALITES =====
+  async function publishActu() {
+    const titre = document.getElementById('actuTitre').value.trim();
+    if (!titre) { showToast('Veuillez saisir un titre !', 'error'); return; }
+
     try {
-      const snap = await window._getDocs(
-        window._query(window._collection(window._db, 'evenements'),
-        window._orderBy('date', 'asc'))
-      );
-      const jodi = new Date();
-      jodi.setHours(0,0,0,0);
-
-      const list     = document.getElementById('evList');
-      const countEl  = document.getElementById('evCount');
-      let   count    = 0;
-      const items    = [];
-      const aEffacer = [];
-
-      snap.docs.forEach(d => {
-        const ev    = { id: d.id, ...d.data() };
-        const dateEv = new Date(ev.date);
-        // Efase otomatikman si dat pase
-        if (dateEv < jodi) {
-          aEffacer.push(d.id);
-        } else {
-          items.push(ev);
-          count++;
-        }
+      const date = document.getElementById('actuDate').value;
+      await window._addDoc(window._collection(window._db, 'actualites'), {
+        titre,
+        categorie: document.getElementById('actuCategorie').value,
+        date: date || new Date().toLocaleDateString('fr-FR'),
+        intro: document.getElementById('actuIntro').value,
+        contenu: document.getElementById('actuContenu').value,
+        auteur: document.getElementById('actuAuteur').value || 'Pasteur Anouis Jean',
+        timestamp: window._serverTimestamp()
       });
 
-      // Efase vye evenement yo silansyezman
-      for (const id of aEffacer) {
-        try { await window._deleteDoc(window._doc(window._db, 'evenements', id)); } catch(e) {}
-      }
+      showToast('Actualité publiée !');
+      ['actuTitre','actuIntro','actuContenu','actuDate'].forEach(id => document.getElementById(id).value = '');
+      loadActualites();
+    } catch (err) {
+      showToast('Erreur : ' + err.message, 'error');
+    }
+  }
 
-      countEl.textContent = count;
+  async function loadActualites() {
+    try {
+      const q = window._query(window._collection(window._db, 'actualites'), window._orderBy('timestamp', 'desc'));
+      const snap = await window._getDocs(q);
+      const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-      if (!items.length) {
-        list.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px;">Aucun événement à venir.</p>';
+      document.getElementById('actuCount').textContent = items.length;
+      document.getElementById('statActu').textContent = items.length;
+
+      const list = document.getElementById('actuList');
+      if (items.length === 0) {
+        list.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px;font-size:0.85rem;">Aucune actualité pour le moment</p>';
         return;
       }
 
-      const colors = { Urgent:'#e74c3c', Important:'#e67e22', Normal:'#1c1c3c' };
-
-      const bgColors = { Urgent:'#fff0f0', Important:'#fff8f0', Normal:'#f0f4ff' };
-      const bdColors = { Urgent:'#e74c3c', Important:'#e67e22', Normal:'#1c1c3c' };
-      const badges   = { Urgent:'🔴 Urgent', Important:'⚠️ Important', Normal:'✅ Normal' };
-
-      list.innerHTML = items.map(ev => {
-        const dateFormate = new Date(ev.date).toLocaleDateString('fr-FR', {
-          weekday:'long', day:'numeric', month:'long', year:'numeric'
-        });
-        return `
-        <div style="background:${bgColors[ev.importance]||'#f0f4ff'};border-radius:16px;padding:18px;margin-bottom:14px;border-left:5px solid ${bdColors[ev.importance]||'#1c1c3c'};">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
-            <div style="flex:1;">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
-                <span style="background:${bdColors[ev.importance]||'#1c1c3c'};color:white;font-size:0.78rem;font-weight:700;padding:3px 12px;border-radius:20px;">
-                  ${badges[ev.importance]||'Normal'}
-                </span>
-              </div>
-              <div style="font-weight:800;color:#111;font-size:1.05rem;margin-bottom:8px;">${ev.titre}</div>
-              <div style="display:flex;flex-wrap:wrap;gap:10px;">
-                <span style="display:inline-flex;align-items:center;gap:5px;background:white;padding:5px 12px;border-radius:20px;font-size:0.88rem;font-weight:600;color:#333;">
-                  <i class="fas fa-calendar" style="color:#1c1c3c;"></i> ${dateFormate}
-                </span>
-                ${ev.heure ? `<span style="display:inline-flex;align-items:center;gap:5px;background:white;padding:5px 12px;border-radius:20px;font-size:0.88rem;font-weight:600;color:#333;">
-                  <i class="fas fa-clock" style="color:#1c1c3c;"></i> ${ev.heure}
-                </span>` : ''}
-                ${ev.prix ? `<span style="display:inline-flex;align-items:center;gap:5px;background:#fff8e1;padding:5px 12px;border-radius:20px;font-size:0.88rem;font-weight:700;color:#b8860b;">
-                  <i class="fas fa-ticket"></i> ${ev.prix}
-                </span>` : ''}
-              </div>
-              ${ev.description ? `<div style="margin-top:10px;font-size:0.9rem;color:#444;font-weight:500;line-height:1.6;background:rgba(255,255,255,0.6);padding:10px 14px;border-radius:10px;">${ev.description}</div>` : ''}
-            </div>
-            <button onclick="effacerEvenement('${ev.id}')"
-              style="background:#fee;border:none;color:#e74c3c;width:38px;height:38px;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      list.innerHTML = items.map(a => `
+        <div class="item-card">
+          <div class="item-card-info">
+            <h4>${a.titre}</h4>
+            <p>${a.categorie} · ${a.date} · ${a.auteur}</p>
+          </div>
+          <div class="item-card-actions">
+            <button class="btn btn-danger btn-sm" onclick="deleteActu('${a.id}')">
               <i class="fas fa-trash"></i>
             </button>
           </div>
-        </div>`;
-      }).join('');
-    } catch(err) {
-      console.log('Erreur événements:', err.message);
+        </div>
+      `).join('');
+    } catch (err) {
+      document.getElementById('actuList').innerHTML = '<p style="color:#e74c3c;padding:10px;">Erreur : ' + err.message + '</p>';
     }
   }
 
-  async function effacerEvenement(id) {
-    if (!confirm('Supprimer cet événement ?')) return;
+  async function deleteActu(id) {
+    if (!confirm('Supprimer cette actualité ?')) return;
     try {
-      await window._deleteDoc(window._doc(window._db, 'evenements', id));
-      showToast('Événement supprimé !');
-      chargerEvenements();
-    chargerMembres();
-    chargerMembres();
-    } catch(err) {
+      await window._deleteDoc(window._doc(window._db, 'actualites', id));
+      showToast('Actualités efase!');
+      loadActualites();
+    } catch (err) {
+      showToast('Erreur : ' + err.message, 'error');
+    }
+  }
+
+  // ===== HORAIRES =====
+  let horaires = [
+    { jou: 'Dimanche', aktivite: 'Culte prensipal', lè_kòmanse: '06:00', lè_fini: '10:00' },
+    { jou: 'Mardi', aktivite: 'Réunion de prière', lè_kòmanse: '16:00', lè_fini: '18:00' },
+    { jou: 'Jeudi', aktivite: 'Étude biblique', lè_kòmanse: '14:00', lè_fini: '18:00' },
+  ];
+
+  function renderHoraires() {
+    const list = document.getElementById('horairesList');
+    list.innerHTML = horaires.map((h, i) => `
+      <div class="card" style="margin-bottom:10px;padding:14px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <strong style="color:var(--primary)">Culte ${i+1}</strong>
+          <button class="btn btn-danger btn-sm" onclick="removeHoraire(${i})"><i class="fas fa-trash"></i></button>
+        </div>
+        <div class="horaire-row">
+          <div>
+            <label>Jour</label>
+            <input type="text" value="${h.jou}" oninput="horaires[${i}].jou=this.value">
+          </div>
+          <div>
+            <label>Début</label>
+            <input type="time" value="${h.lè_kòmanse}" oninput="horaires[${i}]['lè_kòmanse']=this.value">
+          </div>
+          <div>
+            <label>Fin</label>
+            <input type="time" value="${h.lè_fini}" oninput="horaires[${i}]['lè_fini']=this.value">
+          </div>
+        </div>
+        <label>Activité</label>
+        <input type="text" value="${h.aktivite}" oninput="horaires[${i}].aktivite=this.value" style="margin-bottom:0">
+      </div>
+    `).join('');
+  }
+
+  async function loadHoraires() {
+    try {
+      const snap = await window._getDoc(window._doc(window._db, 'config', 'horaires'));
+      if (snap.exists() && snap.data().list) {
+        horaires = snap.data().list;
+      }
+    } catch (e) {}
+    renderHoraires();
+  }
+
+  function addHoraire() {
+    horaires.push({ jou: 'Dimanche', aktivite: 'Nouveau culte', lè_kòmanse: '06:00', lè_fini: '08:00' });
+    renderHoraires();
+  }
+
+  function removeHoraire(i) {
+    horaires.splice(i, 1);
+    renderHoraires();
+  }
+
+  async function saveHoraires() {
+    try {
+      await window._setDoc(window._doc(window._db, 'config', 'horaires'), { list: horaires });
+      showToast('Horaires enregistrés avec succès !');
+    } catch (err) {
       showToast('Erreur : ' + err.message, 'error');
     }
   }
@@ -2415,14 +1762,18 @@
   }
 
   // Upload zone drag & drop
-  const zoneFoto = document.getElementById('uploadZoneFoto');
-  if (zoneFoto) {
-    zoneFoto.addEventListener('dragover', e => { e.preventDefault(); zoneFoto.classList.add('drag'); });
-    zoneFoto.addEventListener('dragleave', () => zoneFoto.classList.remove('drag'));
-    zoneFoto.addEventListener('drop', e => {
-      e.preventDefault(); zoneFoto.classList.remove('drag');
+  const zone = document.getElementById('uploadZone');
+  if (zone) {
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('drag');
       const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
-      if (files.length) handleFotoSelect({ target: { files } });
+      if (files.length) {
+        selectedFiles = files;
+        handleFotoSelect({ target: { files } });
+      }
     });
   }
 </script>
@@ -2535,7 +1886,7 @@
     return data.access_token;
   }
 
-  // Fonction pour envoyer les notifications automatiquement
+  // Fonksyon pou voye notif otomatikman (rele pa lòt fonksyon)
   async function envoyerNotifAuto(title, body, link) {
     const snap = await db2.collection('fcm_tokens').get();
     if (snap.empty) return;
@@ -2635,6 +1986,169 @@
 
   loadNotifCount();
 })();
+
+  // ===== MEMBRES =====
+  async function chargerMembres() {
+    try {
+      const snap = await window._getDocs(window._query(window._collection(window._db, 'membres'), window._orderBy('timestamp', 'desc')));
+      const list = snap.docs.map(d => ({id:d.id,...d.data()}));
+      const el = document.getElementById('membresCount');
+      const listEl = document.getElementById('membresList');
+      if (el) el.textContent = list.length;
+      if (!list.length) { listEl.innerHTML = '<p style="color:#aaa;text-align:center;padding:30px;">Aucun membre inscrit.</p>'; return; }
+      listEl.innerHTML = list.map(m => `
+        <div style="display:flex;align-items:center;gap:14px;padding:14px;border-bottom:1px solid #f0f0f0;">
+          <div style="width:42px;height:42px;background:linear-gradient(135deg,#1c1c3c,#3a1c5c);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fas fa-user" style="color:#f1c40f;"></i>
+          </div>
+          <div style="flex:1;">
+            <div style="font-weight:700;color:#111;font-size:1rem;">${m.nom||'—'}</div>
+            <div style="font-size:0.85rem;color:#555;margin-top:2px;"><i class="fas fa-phone" style="color:#f1c40f;margin-right:4px;"></i>${m.telephone||'—'}${m.ville?'<span style="margin-left:10px;"><i class="fas fa-map-marker-alt" style="color:#f1c40f;margin-right:4px;"></i>'+m.ville+'</span>':''}</div>
+            <div style="font-size:0.75rem;color:#aaa;margin-top:2px;">${m.date||'—'}</div>
+          </div>
+        </div>`).join('');
+    } catch(e) { console.log('Membres:', e.message); }
+  }
+
+  // ===== ÉTUDE =====
+  async function chargerEtudeActive() {
+    try {
+      const snap = await window._getDoc(window._doc(window._db, 'config', 'etude'));
+      const wrap = document.getElementById('etude-active-wrap');
+      if (!snap.exists() || !snap.data().actif) { if(wrap) wrap.style.display='none'; return; }
+      const e = snap.data();
+      if(wrap) wrap.style.display='block';
+      const titreEl = document.getElementById('etude-active-titre');
+      if(titreEl) titreEl.textContent = e.titre;
+      const qSnap = await window._getDocs(window._query(window._collection(window._db,'etude_questions'),window._orderBy('timestamp','asc')));
+      afficherQuestions(qSnap.docs);
+    } catch(e) { console.log('Etude:', e.message); }
+  }
+
+  function afficherQuestions(docs) {
+    const list = document.getElementById('questionsList');
+    const countEl = document.getElementById('questionsCount');
+    if(countEl) countEl.textContent = docs.length;
+    if (!list) return;
+    if (!docs.length) { list.innerHTML = '<p style="color:rgba(255,255,255,0.35);text-align:center;padding:16px;">Aucune question...</p>'; return; }
+    list.innerHTML = docs.map(d => {
+      const q = d.data();
+      return `<div style="background:rgba(255,255,255,0.06);border-radius:12px;padding:14px;margin-bottom:10px;border-left:3px solid #f1c40f;">
+        <div style="color:white!important;font-size:0.95rem!important;font-weight:600!important;margin-bottom:4px;">${q.question||''}</div>
+        <div style="color:rgba(255,255,255,0.45);font-size:0.78rem;margin-bottom:8px;"><i class="fas fa-user" style="color:#f1c40f;margin-right:4px;"></i>${q.auteur||'Anonyme'} · ${q.heure||''}</div>
+        ${q.reponse?`<div style="background:rgba(46,213,115,0.1);border:1px solid rgba(46,213,115,0.2);border-radius:8px;padding:10px;margin-bottom:8px;"><div style="color:#2ed573!important;font-size:0.78rem!important;font-weight:700!important;margin-bottom:4px;"><i class="fas fa-reply"></i> Réponse du Pasteur</div><div style="color:rgba(255,255,255,0.85)!important;font-size:0.9rem!important;">${q.reponse}</div></div>`:''}
+        <div style="display:flex;gap:8px;">
+          <input type="text" placeholder="Répondre..." id="rep-${d.id}" style="flex:1;padding:8px 12px;border:1.5px solid rgba(241,196,15,0.25);border-radius:8px;background:rgba(255,255,255,0.07);color:white;font-size:0.88rem;">
+          <button onclick="repondreQuestion('${d.id}')" style="padding:8px 14px;background:linear-gradient(135deg,#f1c40f,#e67e22);border:none;border-radius:8px;color:#0d1f4a;font-weight:800;cursor:pointer;"><i class="fas fa-paper-plane"></i></button>
+          <button onclick="supprimerQuestion('${d.id}')" style="padding:8px 12px;background:rgba(231,76,60,0.2);border:none;color:#ff6b6b;border-radius:8px;cursor:pointer;"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  async function repondreQuestion(id) {
+    const input = document.getElementById('rep-'+id);
+    const rep = input ? input.value.trim() : '';
+    if (!rep) return;
+    try {
+      await window._updateDoc(window._doc(window._db,'etude_questions',id), { reponse: rep });
+      input.value = '';
+      showToast('Réponse envoyée !');
+      chargerEtudeActive();
+    } catch(e) { showToast('Erreur : '+e.message,'error'); }
+  }
+
+  async function supprimerQuestion(id) {
+    try { await window._deleteDoc(window._doc(window._db,'etude_questions',id)); chargerEtudeActive(); } catch(e) {}
+  }
+
+  async function toggleQuestions(ouvert) {
+    try { await window._updateDoc(window._doc(window._db,'config','etude'),{questionsOuvertes:ouvert}); showToast(ouvert?'Questions ouvertes !':'Questions fermées !'); } catch(e) {}
+  }
+
+  async function terminerEtude() {
+    if (!confirm('Terminer cette étude ? Toutes les questions seront supprimées.')) return;
+    try {
+      const qSnap = await window._getDocs(window._collection(window._db,'etude_questions'));
+      for (const d of qSnap.docs) await window._deleteDoc(window._doc(window._db,'etude_questions',d.id));
+      await window._updateDoc(window._doc(window._db,'config','etude'),{actif:false});
+      const wrap = document.getElementById('etude-active-wrap');
+      if(wrap) wrap.style.display='none';
+      showToast('Étude terminée !');
+    } catch(e) { showToast('Erreur : '+e.message,'error'); }
+  }
+
+  async function lancerEtude() {
+    const titre = document.getElementById('etudeTitre').value.trim();
+    const contenu = document.getElementById('etudeContenu').value.trim();
+    const verset = document.getElementById('etudeVerset').value.trim();
+    if (!titre || !contenu) { showToast('Titre et contenu requis !','error'); return; }
+    const status = document.getElementById('etudeStatus');
+    status.style.display='block'; status.style.background='#fff8e1'; status.style.color='#555'; status.textContent='⏳ Lancement...';
+    try {
+      const oldQ = await window._getDocs(window._collection(window._db,'etude_questions'));
+      for (const d of oldQ.docs) await window._deleteDoc(window._doc(window._db,'etude_questions',d.id));
+      await window._setDoc(window._doc(window._db,'config','etude'),{titre,contenu,verset,actif:true,questionsOuvertes:true,timestamp:window._serverTimestamp(),date:new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})});
+      envoyerNotif('📖 Étude Biblique — '+titre,'Nouvelle étude lancée ! Venez poser vos questions.','https://fabouloso1.github.io/eglise-carrefour/Etude.html');
+      status.style.background='#e8f5e9'; status.style.color='#2e7d32'; status.textContent='✅ Étude lancée !';
+      document.getElementById('etudeTitre').value=''; document.getElementById('etudeContenu').value=''; document.getElementById('etudeVerset').value='';
+      setTimeout(()=>{status.style.display='none';},3000);
+      chargerEtudeActive();
+    } catch(e) { status.style.background='#fee'; status.style.color='#c00'; status.textContent='❌ Erreur : '+e.message; }
+  }
+
+  // ===== ÉVÉNEMENTS =====
+  async function publierEvenement() {
+    const titre = document.getElementById('evTitre').value.trim();
+    const date  = document.getElementById('evDate').value;
+    if (!titre) { showToast('Titre requis !','error'); return; }
+    if (!date)  { showToast('Date requise !','error'); return; }
+    const jodi = new Date(); jodi.setHours(0,0,0,0);
+    if (new Date(date) < jodi) { showToast('Date déjà passée !','error'); return; }
+    const status = document.getElementById('evStatus');
+    status.style.display='block'; status.style.background='#fff8e1'; status.style.color='#555'; status.textContent='⏳ Publication...';
+    try {
+      await window._addDoc(window._collection(window._db,'evenements'),{titre,date,heure:document.getElementById('evHeure').value||'',description:document.getElementById('evDesc').value||'',prix:document.getElementById('evPrix').value||'',timestamp:window._serverTimestamp()});
+      status.style.background='#e8f5e9'; status.style.color='#2e7d32'; status.textContent='✅ Événement publié !';
+      ['evTitre','evDate','evHeure','evDesc','evPrix'].forEach(id=>document.getElementById(id).value='');
+      setTimeout(()=>{status.style.display='none';},3000);
+      chargerEvenements();
+      envoyerNotif('Église de Dieu de la Prophétie','📅 Nouvel événement : '+titre,'https://fabouloso1.github.io/eglise-carrefour/Horaires.html');
+    } catch(e) { status.style.background='#fee'; status.style.color='#c00'; status.textContent='❌ Erreur : '+e.message; }
+  }
+
+  async function chargerEvenements() {
+    try {
+      const jodi = new Date(); jodi.setHours(0,0,0,0);
+      const snap = await window._getDocs(window._query(window._collection(window._db,'evenements'),window._orderBy('date','asc')));
+      const items = []; const aEffacer = [];
+      snap.docs.forEach(d=>{const ev={id:d.id,...d.data()};if(new Date(ev.date)<jodi){aEffacer.push(d.id);}else{items.push(ev);}});
+      for (const id of aEffacer) { try{await window._deleteDoc(window._doc(window._db,'evenements',id));}catch(e){} }
+      const countEl=document.getElementById('evCount'); if(countEl) countEl.textContent=items.length;
+      const listEl=document.getElementById('evList'); if(!listEl) return;
+      if(!items.length){listEl.innerHTML='<p style="color:#aaa;text-align:center;padding:20px;">Aucun événement à venir.</p>';return;}
+      const colors={Urgent:'#e74c3c',Important:'#e67e22',Normal:'#1c1c3c'};
+      listEl.innerHTML=items.map(ev=>{
+        const df=new Date(ev.date).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+        return `<div style="border:1px solid #eee;border-radius:12px;padding:14px;margin-bottom:10px;border-left:4px solid #1c1c3c;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+            <div style="flex:1;">
+              <div style="font-weight:700;color:#111;font-size:1rem;margin-bottom:4px;">${ev.titre}</div>
+              <div style="font-size:0.85rem;color:#555;"><i class="fas fa-calendar" style="color:#f1c40f;margin-right:4px;"></i>${df}${ev.heure?'<span style="margin-left:8px;"><i class="fas fa-clock" style="color:#f1c40f;margin-right:4px;"></i>'+ev.heure+'</span>':''}</div>
+              ${ev.description?`<div style="font-size:0.82rem;color:#777;margin-top:4px;">${ev.description}</div>`:''}
+              ${ev.prix?`<div style="font-size:0.82rem;color:#f1c40f;font-weight:700;margin-top:4px;"><i class="fas fa-ticket" style="margin-right:4px;"></i>${ev.prix}</div>`:''}
+            </div>
+            <button onclick="effacerEvenement('${ev.id}')" style="background:#fee;border:none;color:#e74c3c;width:34px;height:34px;border-radius:8px;cursor:pointer;"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>`;
+      }).join('');
+    } catch(e) { console.log('Evenements:',e.message); }
+  }
+
+  async function effacerEvenement(id) {
+    if (!confirm('Supprimer ?')) return;
+    try { await window._deleteDoc(window._doc(window._db,'evenements',id)); showToast('Supprimé !'); chargerEvenements(); } catch(e) { showToast('Erreur : '+e.message,'error'); }
+  }
 </script>
 
 </body>
