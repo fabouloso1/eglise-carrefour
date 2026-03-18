@@ -3,91 +3,297 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Horaires — Église de Dieu de la Prophétie de Carrefour, waney 93</title>
+  <title>Horaires — Église de Dieu de la Prophétie de Carrefour</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1c1c3c">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Église Carrefour">
   <link rel="apple-touch-icon" href="logo.png">
 
   <style>
-    .page-hero { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 70px 24px 60px; text-align: center; position: relative; overflow: hidden; }
-    .page-hero::before { content: '\f017'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: -30px; top: -30px; font-size: 220px; opacity: 0.04; color: white; }
-    .page-hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(241,196,15,0.15); border: 1px solid rgba(241,196,15,0.35); color: var(--gold); padding: 6px 18px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
-    .page-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 14px; }
-    .page-hero p { font-size: 1.05rem; opacity: 0.82; max-width: 500px; margin: 0 auto; }
+    * { box-sizing: border-box; }
 
-    .breadcrumb { background: white; border-bottom: 1px solid var(--border); padding: 12px 24px; }
-    .breadcrumb-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #555; }
-    .breadcrumb a { color: #555; text-decoration: none; transition: color 0.2s; }
-    .breadcrumb a:hover { color: var(--primary); }
-    .breadcrumb span { color: var(--primary); font-weight: 700; }
+    /* ====== HERO ====== */
+    .h-hero {
+      background: linear-gradient(135deg, #1c1c3c 0%, #3a1c5c 100%);
+      color: white;
+      padding: 80px 24px 70px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .h-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0; right: 0;
+      height: 60px;
+      background: #f4f6fa;
+      clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .h-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(241,196,15,0.15);
+      border: 1px solid rgba(241,196,15,0.4);
+      color: #f1c40f;
+      padding: 7px 20px; border-radius: 30px;
+      font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+    .h-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 6vw, 3.2rem);
+      margin-bottom: 14px; line-height: 1.2;
+    }
+    .h-hero p { font-size: 1.05rem; opacity: 0.82; max-width: 480px; margin: 0 auto; }
 
-    .horaires-main { max-width: 1100px; margin: 0 auto; padding: 50px 24px 80px; }
+    /* ====== BREADCRUMB ====== */
+    .breadcrumb { background: white; border-bottom: 1px solid #eee; padding: 12px 24px; }
+    .breadcrumb-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 8px; font-size: 0.88rem; color: #666; }
+    .breadcrumb a { color: #666; text-decoration: none; }
+    .breadcrumb a:hover { color: #1c1c3c; }
+    .breadcrumb span { color: #1c1c3c; font-weight: 700; }
 
-    /* Titres sections */
-    .section-title { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--primary); text-align: center; margin-bottom: 8px; }
-    .section-subtitle { text-align: center; color: #555 !important; font-size: 0.95rem; margin-bottom: 36px; font-weight: 500; }
+    /* ====== MAIN ====== */
+    .h-main { max-width: 1100px; margin: 0 auto; padding: 60px 20px 80px; background: #f4f6fa; }
 
-    /* Grille horaires */
-    .schedule-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 60px; }
-    .schedule-card { background: white; border-radius: var(--radius); box-shadow: 0 2px 10px rgba(0,0,0,0.08); border: 1px solid var(--border); overflow: hidden; }
-    .day-header { background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 22px 24px; display: flex; align-items: center; justify-content: space-between; }
-    .day-header h2 { color: white !important; font-size: 1.2rem; font-family: 'Playfair Display', serif; }
-    .day-icon { width: 44px; height: 44px; background: rgba(241,196,15,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1.2rem; }
-    .schedule-list { list-style: none; padding: 0; margin: 0; }
-    .schedule-list li { padding: 16px 24px; border-bottom: 1px solid #f0f0f0; display: flex; flex-direction: column; gap: 4px; }
-    .schedule-list li:last-child { border-bottom: none; }
-    .s-time { display: inline-flex; align-items: center; gap: 6px; background: rgba(241,196,15,0.15); color: #1c1c3c !important; font-size: 0.85rem; font-weight: 700 !important; padding: 4px 12px; border-radius: 12px; width: fit-content; }
-    .s-event { color: #111111 !important; font-size: 0.95rem !important; font-weight: 700 !important; margin-top: 4px; }
-    .s-note { color: #444444 !important; font-size: 0.85rem !important; font-weight: 500 !important; }
+    /* ====== SECTION HEADERS ====== */
+    .sec-head { text-align: center; margin-bottom: 40px; }
+    .sec-head h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem; color: #1c1c3c !important;
+      margin-bottom: 8px;
+      display: inline-flex; align-items: center; gap: 12px;
+    }
+    .sec-head h2 .sec-icon {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, #1c1c3c, #3a1c5c);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      color: #f1c40f; font-size: 1rem;
+    }
+    .sec-head p { color: #555 !important; font-size: 1rem; font-weight: 500; }
 
-    /* Timeline événements */
-    .events-section { margin-bottom: 60px; }
-    .timeline { position: relative; padding-left: 30px; }
-    .timeline::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--gold), transparent); }
-    .timeline-item { position: relative; margin-bottom: 28px; }
-    .timeline-item::before { content: ''; position: absolute; left: -24px; top: 6px; width: 12px; height: 12px; background: var(--gold); border-radius: 50%; border: 2px solid white; box-shadow: 0 0 0 3px rgba(241,196,15,0.3); }
-    .timeline-card { background: white; border-radius: var(--radius); padding: 24px 28px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); border: 1px solid var(--border); }
-    .t-date { display: inline-flex; align-items: center; gap: 6px; background: var(--gold); color: var(--primary); font-size: 0.82rem; font-weight: 700; padding: 4px 12px; border-radius: 12px; margin-bottom: 10px; }
-    .timeline-card h3 { color: #111111 !important; font-size: 1.1rem !important; margin-bottom: 8px; font-weight: 700 !important; }
-    .timeline-card h4 { color: #1c1c3c !important; font-size: 1rem !important; margin: 8px 0 4px; font-weight: 700 !important; }
-    .timeline-card h5 { color: #333333 !important; font-size: 0.92rem !important; margin: 4px 0; font-weight: 600 !important; }
-    .timeline-card p { color: #333333 !important; font-size: 0.92rem !important; line-height: 1.7; font-weight: 500; }
+    /* ====== JOURS — TABS ====== */
+    .day-tabs {
+      display: flex; gap: 8px;
+      overflow-x: auto; padding-bottom: 4px;
+      margin-bottom: 24px;
+      scrollbar-width: none;
+    }
+    .day-tabs::-webkit-scrollbar { display: none; }
+    .day-tab {
+      display: flex; align-items: center; gap: 7px;
+      padding: 10px 20px; border-radius: 30px;
+      border: 2px solid #ddd; background: white;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.88rem; font-weight: 700;
+      color: #555; cursor: pointer;
+      white-space: nowrap; flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .day-tab.active {
+      background: linear-gradient(135deg, #1c1c3c, #3a1c5c);
+      color: white; border-color: transparent;
+      box-shadow: 0 4px 14px rgba(28,28,60,0.3);
+    }
+    .day-tab:not(.active):hover { border-color: #1c1c3c; color: #1c1c3c; }
 
-    /* Concert card spécial */
-    .concert-card { background: linear-gradient(135deg, #1c1c3c 0%, #2d1b4e 100%); border-radius: 16px; padding: 28px; color: white; margin-top: 12px; }
-    .concert-card h4 { color: #f1c40f !important; font-size: 1.1rem !important; font-weight: 700 !important; margin-bottom: 8px; }
-    .concert-detail { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.95rem; color: rgba(255,255,255,0.9) !important; font-weight: 500; }
-    .concert-detail:last-of-type { border-bottom: none; }
-    .concert-detail i { color: #f1c40f; width: 20px; text-align: center; }
-    .concert-artistes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-    .concert-tag { background: rgba(241,196,15,0.2); border: 1px solid rgba(241,196,15,0.4); color: #f1c40f !important; padding: 5px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
-    .concert-note { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 14px 16px; margin-top: 14px; font-size: 0.88rem; color: rgba(255,255,255,0.85) !important; line-height: 1.6; font-weight: 400; }
+    /* ====== PANNEAU JOUR ====== */
+    .day-panel { display: none; }
+    .day-panel.active { display: block; }
 
-    /* Annonces Firebase */
-    #firebase-annonces { display: none; margin-bottom: 50px; }
+    .day-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
 
-    /* CTA */
-    .cta-banner { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border-radius: var(--radius); padding: 40px; text-align: center; }
-    .cta-banner h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 12px; color: white !important; }
-    .cta-banner p { opacity: 0.88; font-size: 0.95rem; margin-bottom: 24px; max-width: 500px; margin-left: auto; margin-right: auto; }
-    .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-    .cta-btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; border-radius: 30px; font-weight: 700; font-size: 0.95rem; text-decoration: none; }
-    .cta-btn-primary { background: var(--gold); color: var(--primary) !important; }
-    .cta-btn-outline { background: transparent; color: white !important; border: 2px solid rgba(255,255,255,0.4); }
+    .day-card-header {
+      background: linear-gradient(135deg, #1c1c3c, #3a1c5c);
+      padding: 24px 28px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .day-card-icon {
+      width: 52px; height: 52px;
+      background: rgba(241,196,15,0.2);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      color: #f1c40f; font-size: 1.3rem; flex-shrink: 0;
+    }
+    .day-card-header h3 {
+      color: white !important;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; margin: 0;
+    }
+    .day-card-header p {
+      color: rgba(255,255,255,0.65) !important;
+      font-size: 0.85rem; margin: 4px 0 0;
+    }
 
-    @media (max-width: 900px) { .schedule-grid { grid-template-columns: 1fr; gap: 16px; } }
-    @media (max-width: 480px) {
-      .cta-buttons { flex-direction: column; align-items: center; }
-      .timeline-card { padding: 18px 16px; }
+    .events-list { padding: 8px 0; }
+
+    .event-row {
+      display: flex; align-items: flex-start; gap: 16px;
+      padding: 18px 28px;
+      border-bottom: 1px solid #f0f0f0;
+      transition: background 0.15s;
+    }
+    .event-row:last-child { border-bottom: none; }
+    .event-row:hover { background: #fafafa; }
+
+    .event-time-wrap { flex-shrink: 0; text-align: center; min-width: 80px; }
+    .event-time {
+      display: inline-block;
+      background: linear-gradient(135deg, #1c1c3c, #3a1c5c);
+      color: white !important;
+      font-size: 0.78rem; font-weight: 800;
+      padding: 5px 12px; border-radius: 20px;
+      white-space: nowrap; letter-spacing: 0.3px;
+    }
+
+    .event-dot {
+      width: 10px; height: 10px;
+      background: #f1c40f; border-radius: 50%;
+      margin: 6px auto 0; flex-shrink: 0;
+    }
+
+    .event-info { flex: 1; }
+    .event-name {
+      color: #111111 !important;
+      font-size: 1rem !important;
+      font-weight: 700 !important;
+      margin-bottom: 4px;
+    }
+    .event-note {
+      display: inline-flex; align-items: center; gap: 5px;
+      color: #555 !important;
+      font-size: 0.82rem !important;
+      font-weight: 500 !important;
+      background: #f5f5f5;
+      padding: 3px 10px; border-radius: 10px;
+    }
+
+    /* ====== ÉVÉNEMENTS SPÉCIAUX ====== */
+    .events-special { margin-top: 60px; }
+
+    .ev-cards { display: flex; flex-direction: column; gap: 20px; }
+
+    .ev-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+      display: flex;
+    }
+    .ev-card-stripe {
+      width: 6px; flex-shrink: 0;
+      background: linear-gradient(to bottom, #f1c40f, #e67e22);
+    }
+    .ev-card-body { padding: 24px 28px; flex: 1; }
+    .ev-date {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: #1c1c3c; color: white !important;
+      font-size: 0.8rem; font-weight: 700;
+      padding: 5px 14px; border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .ev-date i { color: #f1c40f; }
+    .ev-card-body h3 {
+      color: #111111 !important;
+      font-size: 1.15rem !important;
+      font-weight: 800 !important;
+      margin-bottom: 8px;
+    }
+    .ev-card-body p {
+      color: #444 !important;
+      font-size: 0.92rem !important;
+      line-height: 1.7; font-weight: 500;
+    }
+
+    /* Concert card */
+    .concert-wrap {
+      background: linear-gradient(135deg, #1c1c3c 0%, #2d1040 100%);
+      border-radius: 16px; padding: 24px;
+      margin-top: 16px;
+    }
+    .concert-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.9) !important;
+      font-size: 0.92rem; font-weight: 500;
+    }
+    .concert-row:last-of-type { border-bottom: none; }
+    .concert-row i { color: #f1c40f; width: 18px; text-align: center; }
+    .concert-sec {
+      color: #f1c40f !important;
+      font-size: 0.85rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px;
+      margin: 16px 0 10px;
+    }
+    .concert-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .concert-tag {
+      background: rgba(241,196,15,0.15);
+      border: 1px solid rgba(241,196,15,0.35);
+      color: #f1c40f !important;
+      padding: 6px 14px; border-radius: 20px;
+      font-size: 0.85rem; font-weight: 600;
+    }
+    .concert-note {
+      background: rgba(255,255,255,0.07);
+      border-radius: 12px; padding: 14px 16px;
+      margin-top: 16px;
+      color: rgba(255,255,255,0.8) !important;
+      font-size: 0.88rem; line-height: 1.7;
+    }
+
+    /* ====== ANNONCES FIREBASE ====== */
+    #firebase-annonces { display: none; margin-top: 60px; }
+    .annoncer-list { display: flex; flex-direction: column; gap: 16px; margin-top: 24px; }
+    .annonce-item {
+      background: white; border-radius: 16px;
+      padding: 20px 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      border-left: 4px solid #f1c40f;
+    }
+    .annonce-item h4 { color: #111 !important; font-size: 1rem !important; font-weight: 700 !important; margin-bottom: 6px; }
+    .annonce-item p { color: #444 !important; font-size: 0.9rem !important; font-weight: 500; line-height: 1.6; }
+
+    /* ====== CTA ====== */
+    .h-cta {
+      margin-top: 60px;
+      background: linear-gradient(135deg, #1c1c3c, #3a1c5c);
+      border-radius: 24px; padding: 48px 32px;
+      text-align: center; color: white;
+    }
+    .h-cta i { font-size: 2.8rem; color: #f1c40f; margin-bottom: 18px; display: block; }
+    .h-cta h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: white !important; margin-bottom: 14px; }
+    .h-cta p { opacity: 0.85; font-size: 1rem; max-width: 480px; margin: 0 auto 28px; }
+    .h-cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .h-cta-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: 30px;
+      font-weight: 700; font-size: 0.95rem;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .h-cta-btn-gold { background: #f1c40f; color: #1c1c3c !important; }
+    .h-cta-btn-outline { background: transparent; color: white !important; border: 2px solid rgba(255,255,255,0.35); }
+    .h-cta-btn:hover { transform: translateY(-2px); }
+
+    @media (max-width: 640px) {
+      .event-row { padding: 16px 18px; gap: 12px; }
+      .day-card-header { padding: 20px 18px; }
+      .ev-card-body { padding: 18px 16px; }
+      .h-cta { padding: 36px 20px; }
+      .h-cta-btns { flex-direction: column; align-items: center; }
     }
   </style>
 
@@ -96,8 +302,7 @@
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-G9Y14X29NZ');
+    gtag('js', new Date()); gtag('config', 'G-G9Y14X29NZ');
   </script>
 
   <!-- Firebase -->
@@ -106,81 +311,45 @@
     import { getFirestore, collection, getDocs, query, orderBy, doc, getDoc }
       from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-    const firebaseConfig = {
+    const app = initializeApp({
       apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
       authDomain: "eglise-carrefour.firebaseapp.com",
       projectId: "eglise-carrefour",
       storageBucket: "eglise-carrefour.firebasestorage.app",
       messagingSenderId: "421333694767",
       appId: "1:421333694767:web:30c18da36ae020821a49da"
-    };
+    });
+    const db = getFirestore(app);
 
-    const app = initializeApp(firebaseConfig);
-    const db  = getFirestore(app);
-
-    // ===== ANNONCES FIREBASE =====
     async function chargerAnnonces() {
       try {
-        const q    = query(collection(db, 'annonces'), orderBy('timestamp', 'desc'));
-        const snap = await getDocs(q);
-        const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        if (list.length > 0) afficherAnnonces(list);
-      } catch(e) { console.log('Firebase annonces:', e.message); }
-    }
-
-    function afficherAnnonces(annonces) {
-      const section = document.getElementById('firebase-annonces');
-      if (!section) return;
-      section.style.display = 'block';
-      const colors = { 'Urgent': '#e74c3c', 'Important': '#e67e22', 'Normal': 'var(--primary)' };
-      section.querySelector('.timeline').innerHTML = annonces.map(a => `
-        <div class="timeline-item">
-          <div class="timeline-card" style="border-left: 3px solid ${colors[a.importance] || 'var(--gold)'}">
-            <div class="t-date" style="background:${colors[a.importance] || 'var(--gold)'};color:white;">
-              <i class="fas fa-calendar-day"></i> ${a.date || ''}
-              ${a.importance && a.importance !== 'Normal' ? `<span style="margin-left:6px;background:rgba(255,255,255,0.2);padding:1px 7px;border-radius:8px;font-size:0.75rem;">${a.importance}</span>` : ''}
+        const snap = await getDocs(query(collection(db, 'annonces'), orderBy('timestamp', 'desc')));
+        const list = snap.docs.map(d => ({id: d.id, ...d.data()}));
+        if (!list.length) return;
+        const sec = document.getElementById('firebase-annonces');
+        sec.style.display = 'block';
+        const colors = { Urgent:'#e74c3c', Important:'#e67e22', Normal:'#1c1c3c' };
+        sec.querySelector('.annoncer-list').innerHTML = list.map(a => `
+          <div class="annonce-item" style="border-left-color:${colors[a.importance]||'#f1c40f'}">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <span style="background:${colors[a.importance]||'#1c1c3c'};color:white;font-size:0.78rem;font-weight:700;padding:3px 12px;border-radius:20px;">
+                <i class="fas fa-calendar-day" style="margin-right:5px;"></i>${a.date||''}
+              </span>
+              ${a.importance && a.importance!=='Normal' ? `<span style="background:#fff0f0;color:${colors[a.importance]};font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:20px;">${a.importance}</span>` : ''}
             </div>
-            <h3>${a.titre || ''}</h3>
-            <p>${a.detay || a.details || ''}</p>
-            ${a.lè || a.heure ? `<p style="margin-top:6px;"><i class="fas fa-clock" style="color:var(--gold);margin-right:6px;"></i><strong>${a.lè || a.heure}</strong></p>` : ''}
-          </div>
-        </div>`).join('');
+            <h4>${a.titre||''}</h4>
+            <p>${a.detay||a.details||''}</p>
+            ${a.lè||a.heure ? `<p style="margin-top:6px;color:#1c1c3c!important;font-weight:700!important;"><i class="fas fa-clock" style="color:#f1c40f;margin-right:6px;"></i>${a.lè||a.heure}</p>` : ''}
+          </div>`).join('');
+      } catch(e) { console.log('Annonces:', e.message); }
     }
 
-    // ===== HORAIRES FIREBASE (si pasteur mete ajou) =====
     async function chargerHoraires() {
       try {
         const snap = await getDoc(doc(db, 'config', 'horaires'));
         if (!snap.exists() || !snap.data().list?.length) return;
-        const list = snap.data().list;
-        const byDay = {};
-        list.forEach(h => {
-          const jou = h.jou || 'Autre';
-          if (!byDay[jou]) byDay[jou] = [];
-          byDay[jou].push(h);
-        });
-        const icons = {
-          'Dimanche':'fa-church','Lundi':'fa-briefcase','Mardi':'fa-hands-praying',
-          'Mercredi':'fa-bible','Jeudi':'fa-hands-praying','Vendredi':'fa-moon','Samedi':'fa-users'
-        };
-        const grid = document.getElementById('schedule-grid-firebase');
-        grid.innerHTML = Object.entries(byDay).map(([jou, items]) => `
-          <div class="schedule-card">
-            <div class="day-header">
-              <h2>${jou}</h2>
-              <div class="day-icon"><i class="fas ${icons[jou] || 'fa-calendar'}"></i></div>
-            </div>
-            <ul class="schedule-list">
-              ${items.map(h => `
-                <li>
-                  <span class="s-time"><i class="fas fa-clock"></i> ${h['lè_kòmanse']||''} – ${h['lè_fini']||''}</span>
-                  <span class="s-event">${h.aktivite||''}</span>
-                </li>`).join('')}
-            </ul>
-          </div>`).join('');
-        document.getElementById('schedule-grid-static').style.display = 'none';
-        grid.style.display = '';
-      } catch(e) { console.log('Firebase horaires:', e.message); }
+        // Si pasteur mete ajou — ka ajoute logik isit
+      } catch(e) { console.log('Horaires:', e.message); }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -189,206 +358,309 @@
     });
   </script>
 </head>
-<body>
+<body style="background:#f4f6fa;">
 
 <div id="nav-placeholder"></div>
 
 <!-- HERO -->
-<div class="page-hero">
-  <div class="page-hero-badge"><i class="fas fa-clock"></i> Horaires</div>
+<div class="h-hero">
+  <div class="h-badge"><i class="fas fa-clock"></i> Horaires</div>
   <h1>Horaires des Cultes</h1>
-  <p>Rejoignez-nous pour adorer Dieu ensemble. Tous sont les bienvenus dans notre famille !</p>
+  <p>Rejoignez-nous pour adorer Dieu ensemble. Tous sont les bienvenus !</p>
 </div>
 
 <!-- BREADCRUMB -->
 <div class="breadcrumb">
   <div class="breadcrumb-inner">
     <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
-    <i class="fas fa-chevron-right" style="font-size:0.65rem;color:#bbb;"></i>
+    <i class="fas fa-chevron-right" style="font-size:0.6rem;color:#ccc;"></i>
     <a href="Apropos.html">À propos</a>
-    <i class="fas fa-chevron-right" style="font-size:0.65rem;color:#bbb;"></i>
+    <i class="fas fa-chevron-right" style="font-size:0.6rem;color:#ccc;"></i>
     <span>Horaires</span>
   </div>
 </div>
 
-<div class="horaires-main">
+<div class="h-main">
 
-  <!-- ===== PROGRAMME HEBDOMADAIRE ===== -->
-  <h2 class="section-title">Programme Hebdomadaire</h2>
-  <p class="section-subtitle">Nos activités régulières tout au long de la semaine</p>
-
-  <!-- Grille statique (remplacée par Firebase si le pasteur met à jour) -->
-  <div class="schedule-grid" id="schedule-grid-static">
-
-    <!-- DIMANCHE -->
-    <div class="schedule-card">
-      <div class="day-header">
-        <h2>Dimanche</h2>
-        <div class="day-icon"><i class="fas fa-church"></i></div>
-      </div>
-      <ul class="schedule-list">
-        <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 6h30 – 7h30</span>
-          <span class="s-event">École du Dimanche</span>
-          <span class="s-note">Pour tous les âges</span>
-        </li>
-        <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 16h00 – 18h00</span>
-          <span class="s-event">Réunion de Jeunesse</span>
-          <span class="s-note">Chaque dimanche</span>
-        </li>
-        <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 15h00 – 17h00</span>
-          <span class="s-event">Club Pré-marital</span>
-          <span class="s-note">Chaque 1er dimanche</span>
-        </li>
-        <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 14h00 – 18h00</span>
-          <span class="s-event">Club des Mariés</span>
-          <span class="s-note">Chaque 4ème dimanche</span>
-        </li>
-      </ul>
-    </div>
-
-    <!-- MARDI & JEUDI -->
-    <div class="schedule-card">
-      <div class="day-header">
-        <h2>Mardi et Jeudi</h2>
-        <div class="day-icon"><i class="fas fa-hands-praying"></i></div>
-      </div>
-      <ul class="schedule-list">
-        <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 16h00 – 18h00</span>
-          <span class="s-event">Étude Biblique</span>
-          <span class="s-note">Chaque mardi — Intervenant : Murat Louis</span>
-        </li>
-        <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 16h00 – 18h00</span>
-          <span class="s-event">Kalme Tanpèt</span>
-          <span class="s-note">Chaque jeudi</span>
-        </li>
-        <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 8h00 – 12h00</span>
-          <span class="s-event">Jeûne des Dames</span>
-          <span class="s-note">Chaque jeudi</span>
-        </li>
-      </ul>
-    </div>
-
-    <!-- VENDREDI -->
-    <div class="schedule-card">
-      <div class="day-header">
-        <h2>Vendredi</h2>
-        <div class="day-icon"><i class="fas fa-moon"></i></div>
-      </div>
-      <ul class="schedule-list">
-        <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 8h00 – 12h00</span>
-          <span class="s-event">Jeûne du Vendredi</span>
-          <span class="s-note">Pour toute l'église</span>
-        </li>
-        <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 20h00 – Minuit</span>
-          <span class="s-event">Veille de Nuit</span>
-          <span class="s-note">Toute l'église</span>
-        </li>
-        <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 16h00 – 18h00</span>
-          <span class="s-event">Réunion des Membres</span>
-          <span class="s-note">Chaque dernier vendredi</span>
-        </li>
-      </ul>
-    </div>
-
-    <!-- SAMEDI -->
-    <div class="schedule-card">
-      <div class="day-header">
-        <h2>Samedi</h2>
-        <div class="day-icon"><i class="fas fa-users"></i></div>
-      </div>
-      <ul class="schedule-list">
-        <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 15h00 – 17h00</span>
-          <span class="s-event">Classe de Baptême</span>
-          <span class="s-note">Chaque samedi</span>
-        </li>
-        <li>
-          <span class="s-time"><i class="fas fa-clock"></i> 15h00 – 17h00</span>
-          <span class="s-event">Sainte Cène</span>
-          <span class="s-note">Chaque 1er samedi</span>
-        </li>
-      </ul>
-    </div>
-    </div>
-
-  <!-- Grille Firebase (remplacement dynamique) -->
-  <div class="schedule-grid" id="schedule-grid-firebase" style="display:none;"></div>
-
-  <!-- ===== ANNONCES FIREBASE ===== -->
-  <div id="firebase-annonces">
-    <h2 class="section-title">
-      <i class="fas fa-bullhorn" style="color:var(--gold);margin-right:10px;"></i>
-      Annonces du Pasteur
+  <!-- ====== PROGRAMME ====== -->
+  <div class="sec-head">
+    <h2>
+      <span class="sec-icon"><i class="fas fa-calendar-week"></i></span>
+      Programme Hebdomadaire
     </h2>
-    <p class="section-subtitle">Annonces et informations importantes de notre église</p>
-    <div class="timeline"></div>
+    <p>Nos activités régulières tout au long de la semaine</p>
   </div>
 
-  <!-- ===== ÉVÉNEMENTS SPÉCIAUX ===== -->
-  <div class="events-section">
-    <h2 class="section-title">Événements Spéciaux</h2>
-    <p class="section-subtitle">Ne manquez pas ces rendez-vous importants</p>
+  <!-- TABS JOURS -->
+  <div class="day-tabs">
+    <button class="day-tab active" onclick="showDay('dimanche', this)">
+      <i class="fas fa-church"></i> Dimanche
+    </button>
+    <button class="day-tab" onclick="showDay('mardij', this)">
+      <i class="fas fa-hands-praying"></i> Mardi & Jeudi
+    </button>
+    <button class="day-tab" onclick="showDay('vendredi', this)">
+      <i class="fas fa-moon"></i> Vendredi
+    </button>
+    <button class="day-tab" onclick="showDay('samedi', this)">
+      <i class="fas fa-users"></i> Samedi
+    </button>
+  </div>
 
-    <div class="timeline">
+  <!-- DIMANCHE -->
+  <div class="day-panel active" id="day-dimanche">
+    <div class="day-card">
+      <div class="day-card-header">
+        <div class="day-card-icon"><i class="fas fa-church"></i></div>
+        <div>
+          <h3>Dimanche</h3>
+          <p>Jour du Seigneur — Activités toute la journée</p>
+        </div>
+      </div>
+      <div class="events-list">
+        <div class="event-row">
+          <div class="event-time-wrap">
+            <span class="event-time">6h30–7h30</span>
+            <div class="event-dot"></div>
+          </div>
+          <div class="event-info">
+            <div class="event-name">École du Dimanche</div>
+            <span class="event-note"><i class="fas fa-users"></i> Pour tous les âges</span>
+          </div>
+        </div>
+        <div class="event-row">
+          <div class="event-time-wrap">
+            <span class="event-time">14h–18h</span>
+            <div class="event-dot"></div>
+          </div>
+          <div class="event-info">
+            <div class="event-name">Club des Mariés</div>
+            <span class="event-note"><i class="fas fa-heart"></i> Chaque 4ème dimanche</span>
+          </div>
+        </div>
+        <div class="event-row">
+          <div class="event-time-wrap">
+            <span class="event-time">15h–17h</span>
+            <div class="event-dot"></div>
+          </div>
+          <div class="event-info">
+            <div class="event-name">Club Pré-marital</div>
+            <span class="event-note"><i class="fas fa-ring"></i> Chaque 1er dimanche</span>
+          </div>
+        </div>
+        <div class="event-row">
+          <div class="event-time-wrap">
+            <span class="event-time">16h–18h</span>
+            <div class="event-dot"></div>
+          </div>
+          <div class="event-info">
+            <div class="event-name">Réunion de Jeunesse</div>
+            <span class="event-note"><i class="fas fa-bolt"></i> Chaque dimanche</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MARDI & JEUDI -->
+  <div class="day-panel" id="day-mardij">
+    <div class="day-card">
+      <div class="day-card-header">
+        <div class="day-card-icon"><i class="fas fa-hands-praying"></i></div>
+        <div>
+          <h3>Mardi & Jeudi</h3>
+          <p>Prière, étude et jeûne en milieu de semaine</p>
+        </div>
+      </div>
+      <div class="events-list">
+        <div class="event-row">
+          <div class="event-time-wrap">
+            <span class="event-time">8h–12h</span>
+            <div class="event-dot"></div>
+          </div>
+          <div class="event-info">
+            <div class="event-name">Jeûne des Dames</div>
+            <span class="event-note"><i class="fas fa-calendar"></i> Chaque jeudi</span>
+          </div>
+        </div>
+        <div class="event-row">
+          <div class="event-time-wrap">
+            <span class="event-time">16h–18h</span>
+            <div class="event-dot"></div>
+          </div>
+          <div class="event-info">
+            <div class="event-name">Étude Biblique</div>
+            <span class="event-note"><i class="fas fa-book-open"></i> Chaque mardi — Murat Louis</span>
+          </div>
+        </div>
+        <div class="event-row">
+          <div class="event-time-wrap">
+            <span class="event-time">16h–18h</span>
+            <div class="event-dot"></div>
+          </div>
+          <div class="event-info">
+            <div class="event-name">Kalme Tanpèt</div>
+            <span class="event-note"><i class="fas fa-wind"></i> Chaque jeudi</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VENDREDI -->
+  <div class="day-panel" id="day-vendredi">
+    <div class="day-card">
+      <div class="day-card-header">
+        <div class="day-card-icon"><i class="fas fa-moon"></i></div>
+        <div>
+          <h3>Vendredi</h3>
+          <p>Jeûne, veille et réunion des membres</p>
+        </div>
+      </div>
+      <div class="events-list">
+        <div class="event-row">
+          <div class="event-time-wrap">
+            <span class="event-time">8h–12h</span>
+            <div class="event-dot"></div>
+          </div>
+          <div class="event-info">
+            <div class="event-name">Jeûne du Vendredi</div>
+            <span class="event-note"><i class="fas fa-church"></i> Pour toute l'église</span>
+          </div>
+        </div>
+        <div class="event-row">
+          <div class="event-time-wrap">
+            <span class="event-time">16h–18h</span>
+            <div class="event-dot"></div>
+          </div>
+          <div class="event-info">
+            <div class="event-name">Réunion des Membres</div>
+            <span class="event-note"><i class="fas fa-users"></i> Chaque dernier vendredi</span>
+          </div>
+        </div>
+        <div class="event-row">
+          <div class="event-time-wrap">
+            <span class="event-time">20h–Minuit</span>
+            <div class="event-dot"></div>
+          </div>
+          <div class="event-info">
+            <div class="event-name">Veille de Nuit</div>
+            <span class="event-note"><i class="fas fa-star"></i> Toute l'église</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAMEDI -->
+  <div class="day-panel" id="day-samedi">
+    <div class="day-card">
+      <div class="day-card-header">
+        <div class="day-card-icon"><i class="fas fa-users"></i></div>
+        <div>
+          <h3>Samedi</h3>
+          <p>Formation et célébration</p>
+        </div>
+      </div>
+      <div class="events-list">
+        <div class="event-row">
+          <div class="event-time-wrap">
+            <span class="event-time">15h–17h</span>
+            <div class="event-dot"></div>
+          </div>
+          <div class="event-info">
+            <div class="event-name">Classe de Baptême</div>
+            <span class="event-note"><i class="fas fa-water"></i> Chaque samedi</span>
+          </div>
+        </div>
+        <div class="event-row">
+          <div class="event-time-wrap">
+            <span class="event-time">15h–17h</span>
+            <div class="event-dot"></div>
+          </div>
+          <div class="event-info">
+            <div class="event-name">Sainte Cène</div>
+            <span class="event-note"><i class="fas fa-bread-slice"></i> Chaque 1er samedi</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== ANNONCES FIREBASE ====== -->
+  <div id="firebase-annonces">
+    <div class="sec-head" style="margin-top:60px;">
+      <h2>
+        <span class="sec-icon"><i class="fas fa-bullhorn"></i></span>
+        Annonces du Pasteur
+      </h2>
+      <p>Informations importantes publiées par l'église</p>
+    </div>
+    <div class="annoncer-list"></div>
+  </div>
+
+  <!-- ====== ÉVÉNEMENTS SPÉCIAUX ====== -->
+  <div class="events-special">
+    <div class="sec-head" style="margin-top:60px;">
+      <h2>
+        <span class="sec-icon"><i class="fas fa-star"></i></span>
+        Événements Spéciaux
+      </h2>
+      <p>Ne manquez pas ces rendez-vous importants</p>
+    </div>
+
+    <div class="ev-cards">
 
       <!-- Réveil Hommes Mariés -->
-      <div class="timeline-item">
-        <div class="timeline-card">
-          <div class="t-date"><i class="fas fa-calendar-day"></i> 15 – 28 Mars 2025</div>
+      <div class="ev-card">
+        <div class="ev-card-stripe"></div>
+        <div class="ev-card-body">
+          <div class="ev-date"><i class="fas fa-calendar-day"></i> 15 – 28 Mars 2025</div>
           <h3>Réveil Annuel des Hommes Mariés</h3>
-          <p>Une semaine de réveil qui sera organisée avec les hommes mariés de l'église. Un moment de grâce à ne pas manquer !</p>
+          <p>Une semaine de réveil organisée avec les hommes mariés de l'église. Un moment de grâce à ne pas manquer !</p>
         </div>
       </div>
 
       <!-- Grand Concert JEM -->
-      <div class="timeline-item">
-        <div class="timeline-card">
-          <div class="t-date"><i class="fas fa-music"></i> 12 Avril 2026</div>
-          <h3>Grand Concert de Levée de Fonds — JEM</h3>
-          <p>L'Association de Jeunesse de l'Église de Dieu de la Prophétie de Waney 93 <strong>(JEM)</strong> vous invite à un grand concert de louange, d'adoration et de communion fraternelle.</p>
+      <div class="ev-card">
+        <div class="ev-card-stripe" style="background:linear-gradient(to bottom,#f1c40f,#f39c12);"></div>
+        <div class="ev-card-body">
+          <div class="ev-date" style="background:#b8860b;"><i class="fas fa-music"></i> 12 Avril 2026</div>
+          <h3>🎵 Grand Concert de Levée de Fonds — JEM</h3>
+          <p>L'Association de Jeunesse <strong>(JEM)</strong> vous invite à un grand concert de louange, d'adoration et de communion fraternelle.</p>
 
-          <div class="concert-card">
-            <h4><i class="fas fa-star" style="margin-right:6px;"></i> Détails de l'événement</h4>
-            <div class="concert-detail"><i class="fas fa-calendar-day"></i> Dimanche 12 Avril 2026</div>
-            <div class="concert-detail"><i class="fas fa-clock"></i> À partir de 16h00</div>
-            <div class="concert-detail"><i class="fas fa-ticket"></i> Contribution : 500 Gourdes</div>
+          <div class="concert-wrap">
+            <div class="concert-row"><i class="fas fa-calendar-day"></i> Dimanche 12 Avril 2026</div>
+            <div class="concert-row"><i class="fas fa-clock"></i> À partir de 16h00</div>
+            <div class="concert-row"><i class="fas fa-ticket"></i> Contribution : <strong>500 Gourdes</strong></div>
 
-            <h4 style="margin-top:18px;"><i class="fas fa-microphone" style="margin-right:6px;"></i> Chorales invitées</h4>
-            <div class="concert-artistes">
-              <span class="concert-tag">🎤 Gospel Vision (GV)</span>
-              <span class="concert-tag">🎤 Joshua</span>
+            <div class="concert-sec">🎤 Chorales invitées</div>
+            <div class="concert-tags">
+              <span class="concert-tag">Gospel Vision (GV)</span>
+              <span class="concert-tag">Joshua</span>
             </div>
 
-            <h4 style="margin-top:14px;"><i class="fas fa-music" style="margin-right:6px;"></i> Groupes invités</h4>
-            <div class="concert-artistes">
-              <span class="concert-tag">🎶 Les Sarments de Yahweh</span>
-              <span class="concert-tag">🎶 Worship Power</span>
-              <span class="concert-tag">🎶 Les Élus</span>
+            <div class="concert-sec">🎶 Groupes invités</div>
+            <div class="concert-tags">
+              <span class="concert-tag">Les Sarments de Yahweh</span>
+              <span class="concert-tag">Worship Power</span>
+              <span class="concert-tag">Les Élus</span>
             </div>
 
             <div class="concert-note">
               <i class="fas fa-info-circle" style="color:#f1c40f;margin-right:6px;"></i>
-              Les fonds recueillis serviront à aménager un espace spécial pour le <strong>Département des Enfants</strong>, afin d'offrir aux enfants un environnement approprié pour leur formation spirituelle. 🙏
+              Les fonds recueillis serviront à aménager un espace spécial pour le <strong>Département des Enfants</strong>. 🙏
             </div>
           </div>
         </div>
       </div>
 
       <!-- Culte de Noël -->
-      <div class="timeline-item">
-        <div class="timeline-card">
-          <div class="t-date"><i class="fas fa-calendar-day"></i> Décembre 2025</div>
-          <h3>Culte de Noël</h3>
+      <div class="ev-card">
+        <div class="ev-card-stripe" style="background:linear-gradient(to bottom,#3498db,#2ecc71);"></div>
+        <div class="ev-card-body">
+          <div class="ev-date" style="background:#2980b9;"><i class="fas fa-star"></i> Décembre 2025</div>
+          <h3>🎄 Culte de Noël</h3>
           <p>Célébrons ensemble la naissance de notre Seigneur Jésus-Christ avec un culte spécial, des cantiques et un programme pour les enfants.</p>
         </div>
       </div>
@@ -396,14 +668,14 @@
     </div>
   </div>
 
-  <!-- ===== CTA ===== -->
-  <div class="cta-banner">
-    <i class="fas fa-church" style="font-size:2.5rem;color:var(--gold);margin-bottom:16px;display:block;"></i>
+  <!-- ====== CTA ====== -->
+  <div class="h-cta">
+    <i class="fas fa-church"></i>
     <h2>Venez nous rejoindre !</h2>
-    <p>Que vous soyez nouveau dans la foi ou croyant de longue date, vous êtes les bienvenus dans notre famille. Nos portes sont ouvertes pour tous.</p>
-    <div class="cta-buttons">
-      <a href="Contact.html" class="cta-btn cta-btn-primary"><i class="fas fa-envelope"></i> Nous contacter</a>
-      <a href="priere.html" class="cta-btn cta-btn-outline"><i class="fas fa-hands-praying"></i> Demande de prière</a>
+    <p>Que vous soyez nouveau dans la foi ou croyant de longue date, nos portes sont ouvertes pour tous.</p>
+    <div class="h-cta-btns">
+      <a href="Contact.html" class="h-cta-btn h-cta-btn-gold"><i class="fas fa-envelope"></i> Nous contacter</a>
+      <a href="priere.html" class="h-cta-btn h-cta-btn-outline"><i class="fas fa-hands-praying"></i> Demande de prière</a>
     </div>
   </div>
 
@@ -411,10 +683,24 @@
 
 <div id="foot-placeholder"></div>
 
+<script>
+  // Tabs jours
+  function showDay(id, btn) {
+    document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('day-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+
 <script src="lang.js"></script>
 <script src="nav.js"></script>
 <script>
   NAV.init('Horaires.html');
+  (function(){
+    var lang = localStorage.getItem('site_lang') || 'fr';
+    if (window.applyLang) window.applyLang(lang);
+  })();
 </script>
 <script src="pwa.js"></script>
 </body>
