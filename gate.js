@@ -86,7 +86,7 @@
     style.textContent = `
       #gate-overlay {
         position: fixed; inset: 0;
-        background: rgba(5, 5, 20, 0.88);
+        background: rgba(10, 5, 40, 0.92);
         z-index: 99999;
         display: flex;
         align-items: flex-end;
@@ -100,151 +100,169 @@
       }
 
       #gate-card {
-        background: white;
+        background: linear-gradient(160deg, #0f0c2e 0%, #1a0a3c 50%, #0d1f4a 100%);
         border-radius: 28px 28px 0 0;
-        padding: 32px 24px 44px;
+        padding: 36px 26px 50px;
         width: 100%;
         max-width: 500px;
-        max-height: 92vh;
+        max-height: 94vh;
         overflow-y: auto;
         animation: gateSlideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        border-top: 3px solid #f1c40f;
       }
 
-      #gate-header { text-align: center; margin-bottom: 28px; }
+      /* HEADER */
+      #gate-header { text-align: center; margin-bottom: 30px; }
 
       #gate-logo-wrap {
-        width: 72px; height: 72px;
-        border-radius: 18px;
+        width: 80px; height: 80px;
+        border-radius: 20px;
         overflow: hidden;
-        margin: 0 auto 16px;
-        border: 2px solid #eee;
-        box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+        margin: 0 auto 18px;
+        border: 3px solid rgba(241,196,15,0.5);
+        box-shadow: 0 0 24px rgba(241,196,15,0.25);
         background: #1c1c3c;
       }
       #gate-logo-wrap img { width: 100%; height: 100%; object-fit: cover; }
 
       #gate-title {
         font-family: 'Playfair Display', serif !important;
-        font-size: 1.5rem !important;
-        color: #111111 !important;
-        margin-bottom: 8px !important;
+        font-size: 1.7rem !important;
+        color: #f1c40f !important;
+        margin-bottom: 10px !important;
         font-weight: 700 !important;
+        line-height: 1.3 !important;
       }
 
       #gate-subtitle {
-        color: #555555 !important;
-        font-size: 0.95rem !important;
-        line-height: 1.6;
+        color: rgba(255,255,255,0.75) !important;
+        font-size: 1rem !important;
+        line-height: 1.7 !important;
         font-weight: 500 !important;
       }
 
-      .gate-field { margin-bottom: 18px; }
+      /* CHAMPS */
+      .gate-field { margin-bottom: 20px; }
 
       .gate-field label {
         display: block;
-        margin-bottom: 7px;
-        font-size: 0.9rem !important;
+        margin-bottom: 8px;
+        font-size: 0.95rem !important;
         font-weight: 700 !important;
-        color: #111111 !important;
+        color: #f1c40f !important;
+        letter-spacing: 0.3px;
       }
       .gate-field label i {
-        color: #1c1c3c;
-        margin-right: 6px;
+        margin-right: 7px;
         width: 16px;
       }
 
       .gate-field input {
         width: 100%;
-        padding: 14px 16px !important;
-        border: 2px solid #cccccc !important;
-        border-radius: 12px !important;
-        font-size: 1rem !important;
-        color: #111111 !important;
-        background: #f8f8f8 !important;
+        padding: 16px 18px !important;
+        border: 2px solid rgba(241,196,15,0.3) !important;
+        border-radius: 14px !important;
+        font-size: 1.05rem !important;
+        color: white !important;
+        background: rgba(255,255,255,0.08) !important;
         font-family: 'Montserrat', sans-serif;
-        transition: border-color 0.2s;
+        font-weight: 600 !important;
         box-sizing: border-box;
+        caret-color: #f1c40f;
+      }
+      .gate-field input::placeholder {
+        color: rgba(255,255,255,0.35) !important;
+        font-weight: 400 !important;
       }
       .gate-field input:focus {
         outline: none !important;
-        border-color: #1c1c3c !important;
-        background: white !important;
+        border-color: #f1c40f !important;
+        background: rgba(255,255,255,0.12) !important;
+        box-shadow: 0 0 0 4px rgba(241,196,15,0.15);
       }
 
+      /* ERREUR */
       #gate-error {
-        background: #fee;
-        border: 1px solid #f5c6cb;
-        border-radius: 10px;
-        padding: 12px 16px;
-        color: #c00 !important;
-        font-size: 0.9rem !important;
-        font-weight: 600 !important;
-        margin-bottom: 16px;
+        background: rgba(231,76,60,0.2);
+        border: 1px solid rgba(231,76,60,0.5);
+        border-radius: 12px;
+        padding: 14px 18px;
+        color: #ff8a80 !important;
+        font-size: 0.95rem !important;
+        font-weight: 700 !important;
+        margin-bottom: 18px;
         text-align: center;
       }
 
+      /* BOUTON SOUMET */
       #gate-btn {
         width: 100%;
-        padding: 17px !important;
-        background: linear-gradient(135deg, #1c1c3c, #3a1c5c) !important;
-        color: white !important;
+        padding: 18px !important;
+        background: linear-gradient(135deg, #f1c40f, #e67e22) !important;
+        color: #0f0c2e !important;
         border: none;
         border-radius: 50px;
-        font-size: 1.1rem !important;
+        font-size: 1.15rem !important;
         font-weight: 800 !important;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 10px;
-        margin-bottom: 16px;
+        margin-bottom: 18px;
         font-family: 'Montserrat', sans-serif;
+        box-shadow: 0 6px 24px rgba(241,196,15,0.35);
+        letter-spacing: 0.3px;
       }
-      #gate-btn:disabled {
-        opacity: 0.7;
-        cursor: not-allowed;
-      }
+      #gate-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
+      /* NOTE */
       #gate-note {
         text-align: center;
-        color: #888 !important;
-        font-size: 0.8rem !important;
-        line-height: 1.5;
+        color: rgba(255,255,255,0.45) !important;
+        font-size: 0.82rem !important;
+        line-height: 1.6;
         font-weight: 500 !important;
       }
-      #gate-note i { margin-right: 5px; }
+      #gate-note i { margin-right: 5px; color: rgba(241,196,15,0.5); }
 
-      /* SUCCESS */
+      /* SUCCES */
       #gate-success { text-align: center; padding: 20px 0; }
-      #gate-success-icon { font-size: 3.5rem; margin-bottom: 16px; }
+      #gate-success-icon { font-size: 4rem; margin-bottom: 18px; }
       #gate-success h3 {
         font-family: 'Playfair Display', serif !important;
-        font-size: 1.4rem !important;
-        color: #111 !important;
-        margin-bottom: 10px !important;
+        font-size: 1.6rem !important;
+        color: #f1c40f !important;
+        margin-bottom: 12px !important;
         font-weight: 700 !important;
       }
       #gate-success p {
-        color: #444 !important;
-        font-size: 0.95rem !important;
-        line-height: 1.6;
-        margin-bottom: 24px !important;
+        color: rgba(255,255,255,0.75) !important;
+        font-size: 1rem !important;
+        line-height: 1.7 !important;
+        margin-bottom: 28px !important;
         font-weight: 500 !important;
       }
       #gate-continue-btn {
-        padding: 16px 40px !important;
+        padding: 17px 44px !important;
         background: linear-gradient(135deg, #f1c40f, #e67e22) !important;
-        color: #1c1c3c !important;
+        color: #0f0c2e !important;
         border: none;
         border-radius: 50px;
-        font-size: 1rem !important;
+        font-size: 1.05rem !important;
         font-weight: 800 !important;
         cursor: pointer;
         display: inline-flex;
         align-items: center;
         gap: 8px;
         font-family: 'Montserrat', sans-serif;
+        box-shadow: 0 6px 24px rgba(241,196,15,0.35);
       }
+
+      /* SCROLLBAR */
+      #gate-card::-webkit-scrollbar { width: 4px; }
+      #gate-card::-webkit-scrollbar-track { background: transparent; }
+      #gate-card::-webkit-scrollbar-thumb { background: rgba(241,196,15,0.3); border-radius: 4px; }
 
       @media (min-width: 500px) {
         #gate-overlay { align-items: center; }
