@@ -36,7 +36,7 @@
       position: absolute;
       bottom: -2px; left: 0; right: 0;
       height: 60px;
-      background: #f4f6fa;
+      background: white;
       clip-path: ellipse(55% 100% at 50% 100%);
     }
     .h-badge {
@@ -60,11 +60,11 @@
     .breadcrumb { background: white; border-bottom: 1px solid #eee; padding: 12px 24px; }
     .breadcrumb-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 8px; font-size: 0.88rem; color: #666; }
     .breadcrumb a { color: #666; text-decoration: none; }
-    .breadcrumb a:hover { color: #1c1c3c; }
+    .breadcrumb a { color: #666; }
     .breadcrumb span { color: #1c1c3c; font-weight: 700; }
 
     /* ====== MAIN ====== */
-    .h-main { max-width: 1100px; margin: 0 auto; padding: 60px 20px 80px; background: #f4f6fa; }
+    .h-main { max-width: 1100px; margin: 0 auto; padding: 60px 20px 80px; background: #f0f4ff; }
 
     /* ====== SECTION HEADERS ====== */
     .sec-head { text-align: center; margin-bottom: 40px; }
@@ -94,19 +94,19 @@
     .day-tab {
       display: flex; align-items: center; gap: 7px;
       padding: 10px 20px; border-radius: 30px;
-      border: 2px solid #ddd; background: white;
+      border: 2px solid transparent; background: white;
       font-family: 'Montserrat', sans-serif;
       font-size: 0.88rem; font-weight: 700;
-      color: #555; cursor: pointer;
+      color: #1c1c3c; cursor: pointer;
       white-space: nowrap; flex-shrink: 0;
-      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
     .day-tab.active {
       background: linear-gradient(135deg, #1c1c3c, #3a1c5c);
       color: white; border-color: transparent;
       box-shadow: 0 4px 14px rgba(28,28,60,0.3);
     }
-    .day-tab:not(.active):hover { border-color: #1c1c3c; color: #1c1c3c; }
+    
 
     /* ====== PANNEAU JOUR ====== */
     .day-panel { display: none; }
@@ -116,7 +116,8 @@
       background: white;
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 6px 24px rgba(28,28,60,0.12);
+      border: 1px solid #e0e6ff;
     }
 
     .day-card-header {
@@ -146,11 +147,11 @@
     .event-row {
       display: flex; align-items: flex-start; gap: 16px;
       padding: 18px 28px;
-      border-bottom: 1px solid #f0f0f0;
-      transition: background 0.15s;
+      border-bottom: 1px solid #eef0ff;
     }
+    .event-row:nth-child(even) { background: #f7f9ff; }
     .event-row:last-child { border-bottom: none; }
-    .event-row:hover { background: #fafafa; }
+    
 
     .event-time-wrap { flex-shrink: 0; text-align: center; min-width: 80px; }
     .event-time {
@@ -262,7 +263,7 @@
     #firebase-annonces { display: none; margin-top: 60px; }
     .annoncer-list { display: flex; flex-direction: column; gap: 16px; margin-top: 24px; }
     .annonce-item {
-      background: white; border-radius: 16px;
+      background: #fffbf0; border-radius: 16px;
       padding: 20px 24px;
       box-shadow: 0 2px 12px rgba(0,0,0,0.06);
       border-left: 4px solid #f1c40f;
@@ -289,7 +290,7 @@
     }
     .h-cta-btn-gold { background: #f1c40f; color: #1c1c3c !important; }
     .h-cta-btn-outline { background: transparent; color: white !important; border: 2px solid rgba(255,255,255,0.35); }
-    .h-cta-btn:hover { transform: translateY(-2px); }
+    
 
     @media (max-width: 640px) {
       .event-row { padding: 16px 18px; gap: 12px; }
@@ -361,7 +362,7 @@
     });
   </script>
 </head>
-<body style="background:#f4f6fa;">
+<body style="background:#f0f4ff;">
 
 <div id="nav-placeholder"></div>
 
@@ -394,6 +395,8 @@
     <p>Nos activités régulières tout au long de la semaine</p>
   </div>
 
+  <!-- Colored band behind tabs -->
+  <div style="background:linear-gradient(135deg,#eef1ff 0%,#f5eeff 100%);border-radius:20px;padding:24px 16px 16px;margin-bottom:0;">
   <!-- TABS JOURS -->
   <div class="day-tabs">
     <button class="day-tab active" onclick="showDay('dimanche', this)">
@@ -411,7 +414,8 @@
   </div>
 
   <!-- DIMANCHE -->
-  <div class="day-panel active" id="day-dimanche">
+  </div>
+  <div class="day-panel active" id="day-dimanche" style="background:linear-gradient(135deg,#eef1ff,#f5eeff);border-radius:0 0 20px 20px;padding:16px;">
     <div class="day-card">
       <div class="day-card-header">
         <div class="day-card-icon"><i class="fas fa-church"></i></div>
@@ -466,7 +470,7 @@
   </div>
 
   <!-- MARDI & JEUDI -->
-  <div class="day-panel" id="day-mardij">
+  <div class="day-panel" id="day-mardij" style="background:linear-gradient(135deg,#eef1ff,#f5eeff);border-radius:0 0 20px 20px;padding:16px;">
     <div class="day-card">
       <div class="day-card-header">
         <div class="day-card-icon"><i class="fas fa-hands-praying"></i></div>
@@ -511,7 +515,7 @@
   </div>
 
   <!-- VENDREDI -->
-  <div class="day-panel" id="day-vendredi">
+  <div class="day-panel" id="day-vendredi" style="background:linear-gradient(135deg,#eef1ff,#f5eeff);border-radius:0 0 20px 20px;padding:16px;">
     <div class="day-card">
       <div class="day-card-header">
         <div class="day-card-icon"><i class="fas fa-moon"></i></div>
@@ -556,7 +560,7 @@
   </div>
 
   <!-- SAMEDI -->
-  <div class="day-panel" id="day-samedi">
+  <div class="day-panel" id="day-samedi" style="background:linear-gradient(135deg,#eef1ff,#f5eeff);border-radius:0 0 20px 20px;padding:16px;">
     <div class="day-card">
       <div class="day-card-header">
         <div class="day-card-icon"><i class="fas fa-users"></i></div>
@@ -591,7 +595,7 @@
   </div>
 
   <!-- ====== ANNONCES FIREBASE ====== -->
-  <div id="firebase-annonces">
+  <div id="firebase-annonces" style="background:linear-gradient(135deg,#f0fff4,#e6fffa);border-radius:24px;padding:24px 20px;">
     <div class="sec-head" style="margin-top:60px;">
       <h2>
         <span class="sec-icon"><i class="fas fa-bullhorn"></i></span>
@@ -603,7 +607,7 @@
   </div>
 
   <!-- ====== ÉVÉNEMENTS SPÉCIAUX ====== -->
-  <div class="events-special">
+  <div class="events-special" style="background:linear-gradient(135deg,#fff8e6,#fff3f3);border-radius:24px;padding:24px 20px;margin-top:40px;">
     <div class="sec-head" style="margin-top:60px;">
       <h2>
         <span class="sec-icon"><i class="fas fa-star"></i></span>
