@@ -563,6 +563,9 @@
       <i class="fas fa-hands-praying"></i> Prières
       <span id="priereBadge" style="display:none;background:#e74c3c;color:white;font-size:0.7rem;padding:1px 6px;border-radius:10px;margin-left:4px;"></span>
     </button>
+    <button class="tab-btn" onclick="showTab('membres')">
+      <i class="fas fa-users"></i> Membres
+    </button>
     <button class="tab-btn" onclick="showTab('contacts')">
       <i class="fas fa-envelope"></i> Contacts
       <span id="contactBadge" style="display:none;background:#e74c3c;color:white;font-size:0.7rem;padding:1px 6px;border-radius:10px;margin-left:4px;"></span>
@@ -955,6 +958,27 @@
       </div>
     </div>
 
+    <!-- TAB MEMBRES -->
+    <div class="tab-panel" id="tab-membres">
+      <div style="background:linear-gradient(135deg,#1c1c3c,#3a1c5c);border-radius:20px;padding:24px 22px;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:44px;height:44px;background:rgba(241,196,15,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+            <i class="fas fa-users" style="color:#f1c40f;font-size:1.2rem;"></i>
+          </div>
+          <div>
+            <h3 style="color:white!important;font-size:1.1rem!important;margin:0!important;">Membres inscrits</h3>
+            <p style="color:rgba(255,255,255,0.6)!important;font-size:0.85rem!important;margin:0!important;">Personnes inscrites via le site</p>
+          </div>
+          <span id="membresCount" style="margin-left:auto;background:rgba(241,196,15,0.2);color:#f1c40f;font-weight:800;font-size:1rem;padding:4px 14px;border-radius:20px;">0</span>
+        </div>
+      </div>
+      <div style="background:white;border-radius:20px;padding:20px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div id="membresList">
+          <p style="color:#aaa;text-align:center;padding:30px;">Chargement...</p>
+        </div>
+      </div>
+    </div>
+
     <!-- TAB CONTACTS -->
     <div class="tab-panel" id="tab-contacts">
       <div class="card">
@@ -1139,6 +1163,78 @@
     t.innerHTML = (type === 'success' ? '✅ ' : '❌ ') + msg;
     t.className = 'toast show ' + type;
     setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // ===== MEMBRES =====
+  async function chargerMembres() {
+    try {
+      const snap = await window._getDocs(
+        window._query(window._collection(window._db, 'membres'),
+        window._orderBy('timestamp', 'desc'))
+      );
+      const list    = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const countEl = document.getElementById('membresCount');
+      const listEl  = document.getElementById('membresList');
+      if (countEl) countEl.textContent = list.length;
+      if (!list.length) {
+        listEl.innerHTML = '<p style="color:#aaa;text-align:center;padding:30px;">Aucun membre inscrit pour le moment.</p>';
+        return;
+      }
+      listEl.innerHTML = list.map((m, i) => `
+        <div style="display:flex;align-items:center;gap:14px;padding:14px;border-bottom:1px solid #f0f0f0;${i===list.length-1?'border-bottom:none;':''}">
+          <div style="width:42px;height:42px;background:linear-gradient(135deg,#1c1c3c,#3a1c5c);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fas fa-user" style="color:#f1c40f;font-size:1rem;"></i>
+          </div>
+          <div style="flex:1;">
+            <div style="font-weight:700;color:#111;font-size:0.95rem;">${m.nom||'—'}</div>
+            <div style="font-size:0.82rem;color:#555;margin-top:2px;">
+              <i class="fas fa-phone" style="color:var(--gold);margin-right:4px;"></i>${m.telephone||'—'}
+              ${m.ville ? `<span style="margin-left:10px;"><i class="fas fa-map-marker-alt" style="color:var(--gold);margin-right:4px;"></i>${m.ville}</span>` : ''}
+            </div>
+            <div style="font-size:0.75rem;color:#aaa;margin-top:2px;">
+              <i class="fas fa-calendar" style="margin-right:4px;"></i>${m.date||'—'}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    } catch(err) {
+      console.log('Membres:', err.message);
+    }
+  }
+
+  // ===== MEMBRES =====
+  async function chargerMembres() {
+    try {
+      const snap = await window._getDocs(
+        window._query(window._collection(window._db, 'membres'),
+        window._orderBy('timestamp', 'desc'))
+      );
+      const list    = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const countEl = document.getElementById('membresCount');
+      const listEl  = document.getElementById('membresList');
+      if (countEl) countEl.textContent = list.length;
+      if (!list.length) {
+        listEl.innerHTML = '<p style="color:#aaa;text-align:center;padding:30px;">Aucun membre inscrit pour le moment.</p>';
+        return;
+      }
+      listEl.innerHTML = list.map((m, i) => `
+        <div style="display:flex;align-items:center;gap:14px;padding:14px;border-bottom:1px solid #f0f0f0;">
+          <div style="width:44px;height:44px;background:linear-gradient(135deg,#1c1c3c,#3a1c5c);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fas fa-user" style="color:#f1c40f;"></i>
+          </div>
+          <div style="flex:1;">
+            <div style="font-weight:700;color:#111;font-size:1rem;">${m.nom||'—'}</div>
+            <div style="font-size:0.85rem;color:#555;margin-top:3px;">
+              <i class="fas fa-phone" style="color:#f1c40f;margin-right:4px;"></i>${m.telephone||'—'}
+              ${m.ville ? '<span style="margin-left:10px;"><i class="fas fa-map-marker-alt" style="color:#f1c40f;margin-right:4px;"></i>'+m.ville+'</span>' : ''}
+            </div>
+            <div style="font-size:0.78rem;color:#aaa;margin-top:2px;">
+              <i class="fas fa-calendar" style="margin-right:4px;"></i>${m.date||'—'}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    } catch(err) { console.log('Membres:', err.message); }
   }
 
   // ===== CONTACTS =====
@@ -1425,6 +1521,8 @@
     loadPrieres();
     loadActualites();
     chargerEvenements();
+    chargerMembres();
+    chargerMembres();
     loadAnnonces();
   }
 
@@ -1882,6 +1980,8 @@
       ['evTitre','evDate','evHeure','evDesc','evPrix'].forEach(id => document.getElementById(id).value = '');
       setTimeout(() => { status.style.display = 'none'; }, 3000);
       chargerEvenements();
+    chargerMembres();
+    chargerMembres();
       envoyerNotif('Église de Dieu de la Prophétie', '📅 Nouvel événement : ' + titre + ' — ' + new Date(date).toLocaleDateString('fr-FR'), 'https://fabouloso1.github.io/eglise-carrefour/Horaires.html');
     } catch(err) {
       status.style.background = '#fee';
@@ -1980,6 +2080,8 @@
       await window._deleteDoc(window._doc(window._db, 'evenements', id));
       showToast('Événement supprimé !');
       chargerEvenements();
+    chargerMembres();
+    chargerMembres();
     } catch(err) {
       showToast('Erreur : ' + err.message, 'error');
     }
