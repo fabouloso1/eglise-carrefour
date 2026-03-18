@@ -758,20 +758,45 @@
     </div>
 
     <!-- ===== HORAIRES ===== -->
-    <div class="tab-panel" id="tab-horaires">
+    <div class="tab-panel" id="tab-evenements">
       <div class="card">
-        <h3><i class="fas fa-clock"></i> Horaires des cultes</h3>
-        <p style="font-size:1rem;color:#888;margin-bottom:16px;">Modifiez les horaires — ils seront mis à jour immédiatement sur le site.</p>
+        <h3><i class="fas fa-calendar-star"></i> Ajouter un événement</h3>
+        <p style="font-size:0.9rem;color:#888;margin-bottom:16px;">Les événements dont la date est passée seront supprimés automatiquement.</p>
 
-        <div id="horairesList"></div>
+        <label>Titre de l'événement *</label>
+        <input type="text" id="evTitre" placeholder="Ex : Grand Concert JEM, Réveil annuel..." />
 
-        <button class="btn btn-primary" onclick="addHoraire()" style="margin-bottom:14px">
-          <i class="fas fa-plus"></i> Ajouter un culte
+        <label>Date de l'événement *</label>
+        <input type="date" id="evDate" />
+
+        <label>Heure (optionnel)</label>
+        <input type="time" id="evHeure" />
+
+        <label>Description</label>
+        <textarea id="evDesc" placeholder="Détails de l'événement..." style="min-height:80px;"></textarea>
+
+        <label>Contribution / Prix (optionnel)</label>
+        <input type="text" id="evPrix" placeholder="Ex : 500 Gourdes, Gratuit..." />
+
+        <label>Importance</label>
+        <select id="evImportance">
+          <option value="Normal">Normal</option>
+          <option value="Important">Important</option>
+          <option value="Urgent">Urgent</option>
+        </select>
+
+        <button class="btn btn-gold" onclick="publierEvenement()" style="width:100%">
+          <i class="fas fa-calendar-plus"></i> Publier l'événement
         </button>
+        <div id="evStatus" style="display:none;margin-top:10px;padding:12px;border-radius:8px;text-align:center;font-weight:600;"></div>
+      </div>
 
-        <button class="btn btn-gold" onclick="saveHoraires()" style="width:100%">
-          <i class="fas fa-save"></i> Enregistrer les modifications
-        </button>
+      <div class="card">
+        <h3><i class="fas fa-list"></i> Événements à venir (<span id="evCount">0</span>)</h3>
+        <p style="font-size:0.85rem;color:#888;margin-bottom:12px;">Les événements passés sont supprimés automatiquement chaque jour.</p>
+        <div class="item-list" id="evList">
+          <p style="color:#aaa;text-align:center;padding:20px;">Chargement...</p>
+        </div>
       </div>
     </div>
 
@@ -1342,7 +1367,7 @@
     loadTemoignages();
     loadPrieres();
     loadActualites();
-    loadHoraires();
+    chargerEvenements();
     loadAnnonces();
   }
 
@@ -1761,66 +1786,126 @@
     }
   }
 
-  // ===== HORAIRES =====
-  let horaires = [
-    { jou: 'Dimanche', aktivite: 'Culte prensipal', lè_kòmanse: '06:00', lè_fini: '10:00' },
-    { jou: 'Mardi', aktivite: 'Réunion de prière', lè_kòmanse: '16:00', lè_fini: '18:00' },
-    { jou: 'Jeudi', aktivite: 'Étude biblique', lè_kòmanse: '14:00', lè_fini: '18:00' },
-  ];
+  // ===== ÉVÉNEMENTS =====
+  async function publierEvenement() {
+    const titre = document.getElementById('evTitre').value.trim();
+    const date  = document.getElementById('evDate').value;
+    if (!titre) { showToast('Veuillez saisir un titre !', 'error'); return; }
+    if (!date)  { showToast('Veuillez choisir une date !', 'error'); return; }
 
-  function renderHoraires() {
-    const list = document.getElementById('horairesList');
-    list.innerHTML = horaires.map((h, i) => `
-      <div class="card" style="margin-bottom:10px;padding:14px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-          <strong style="color:var(--primary)">Culte ${i+1}</strong>
-          <button class="btn btn-danger btn-sm" onclick="removeHoraire(${i})"><i class="fas fa-trash"></i></button>
-        </div>
-        <div class="horaire-row">
-          <div>
-            <label>Jour</label>
-            <input type="text" value="${h.jou}" oninput="horaires[${i}].jou=this.value">
-          </div>
-          <div>
-            <label>Début</label>
-            <input type="time" value="${h.lè_kòmanse}" oninput="horaires[${i}]['lè_kòmanse']=this.value">
-          </div>
-          <div>
-            <label>Fin</label>
-            <input type="time" value="${h.lè_fini}" oninput="horaires[${i}]['lè_fini']=this.value">
-          </div>
-        </div>
-        <label>Activité</label>
-        <input type="text" value="${h.aktivite}" oninput="horaires[${i}].aktivite=this.value" style="margin-bottom:0">
-      </div>
-    `).join('');
+    // Verifye si dat la pa pase
+    const dateEv = new Date(date);
+    const jodi   = new Date();
+    jodi.setHours(0,0,0,0);
+    if (dateEv < jodi) {
+      showToast('La date est déjà passée !', 'error');
+      return;
+    }
+
+    const status = document.getElementById('evStatus');
+    status.style.display = 'block';
+    status.style.background = '#fff8e1';
+    status.style.color = '#555';
+    status.textContent = '⏳ Publication en cours...';
+
+    try {
+      await window._addDoc(window._collection(window._db, 'evenements'), {
+        titre,
+        date,
+        heure:       document.getElementById('evHeure').value || '',
+        description: document.getElementById('evDesc').value || '',
+        prix:        document.getElementById('evPrix').value || '',
+        importance:  document.getElementById('evImportance').value,
+        timestamp:   window._serverTimestamp()
+      });
+
+      status.style.background = '#e8f5e9';
+      status.style.color = '#2e7d32';
+      status.textContent = '✅ Événement publié !';
+      ['evTitre','evDate','evHeure','evDesc','evPrix'].forEach(id => document.getElementById(id).value = '');
+      setTimeout(() => { status.style.display = 'none'; }, 3000);
+      chargerEvenements();
+      envoyerNotif('Église de Dieu de la Prophétie', '📅 Nouvel événement : ' + titre + ' — ' + new Date(date).toLocaleDateString('fr-FR'), 'https://fabouloso1.github.io/eglise-carrefour/Horaires.html');
+    } catch(err) {
+      status.style.background = '#fee';
+      status.style.color = '#c00';
+      status.textContent = '❌ Erreur : ' + err.message;
+    }
   }
 
-  async function loadHoraires() {
+  async function chargerEvenements() {
     try {
-      const snap = await window._getDoc(window._doc(window._db, 'config', 'horaires'));
-      if (snap.exists() && snap.data().list) {
-        horaires = snap.data().list;
+      const snap = await window._getDocs(
+        window._query(window._collection(window._db, 'evenements'),
+        window._orderBy('date', 'asc'))
+      );
+      const jodi = new Date();
+      jodi.setHours(0,0,0,0);
+
+      const list     = document.getElementById('evList');
+      const countEl  = document.getElementById('evCount');
+      let   count    = 0;
+      const items    = [];
+      const aEffacer = [];
+
+      snap.docs.forEach(d => {
+        const ev    = { id: d.id, ...d.data() };
+        const dateEv = new Date(ev.date);
+        // Efase otomatikman si dat pase
+        if (dateEv < jodi) {
+          aEffacer.push(d.id);
+        } else {
+          items.push(ev);
+          count++;
+        }
+      });
+
+      // Efase vye evenement yo silansyezman
+      for (const id of aEffacer) {
+        try { await window._deleteDoc(window._doc(window._db, 'evenements', id)); } catch(e) {}
       }
-    } catch (e) {}
-    renderHoraires();
+
+      countEl.textContent = count;
+
+      if (!items.length) {
+        list.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px;">Aucun événement à venir.</p>';
+        return;
+      }
+
+      const colors = { Urgent:'#e74c3c', Important:'#e67e22', Normal:'#1c1c3c' };
+
+      list.innerHTML = items.map(ev => {
+        const dateFormate = new Date(ev.date).toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+        return `
+        <div style="border:1px solid #eee;border-radius:12px;padding:14px;margin-bottom:10px;border-left:4px solid ${colors[ev.importance]||'#1c1c3c'};">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+            <div style="flex:1;">
+              <div style="font-weight:700;color:#111;font-size:0.95rem;margin-bottom:4px;">${ev.titre}</div>
+              <div style="font-size:0.82rem;color:#555;">
+                <i class="fas fa-calendar" style="color:var(--gold);margin-right:4px;"></i>${dateFormate}
+                ${ev.heure ? `<span style="margin-left:10px;"><i class="fas fa-clock" style="color:var(--gold);margin-right:4px;"></i>${ev.heure}</span>` : ''}
+                ${ev.prix ? `<span style="margin-left:10px;"><i class="fas fa-ticket" style="color:var(--gold);margin-right:4px;"></i>${ev.prix}</span>` : ''}
+              </div>
+              ${ev.description ? `<div style="font-size:0.82rem;color:#777;margin-top:6px;">${ev.description}</div>` : ''}
+            </div>
+            <button class="btn btn-danger btn-sm" onclick="effacerEvenement('${ev.id}')">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>`;
+      }).join('');
+    } catch(err) {
+      console.log('Erreur événements:', err.message);
+    }
   }
 
-  function addHoraire() {
-    horaires.push({ jou: 'Dimanche', aktivite: 'Nouveau culte', lè_kòmanse: '06:00', lè_fini: '08:00' });
-    renderHoraires();
-  }
-
-  function removeHoraire(i) {
-    horaires.splice(i, 1);
-    renderHoraires();
-  }
-
-  async function saveHoraires() {
+  async function effacerEvenement(id) {
+    if (!confirm('Supprimer cet événement ?')) return;
     try {
-      await window._setDoc(window._doc(window._db, 'config', 'horaires'), { list: horaires });
-      showToast('Horaires enregistrés avec succès !');
-    } catch (err) {
+      await window._deleteDoc(window._doc(window._db, 'evenements', id));
+      showToast('Événement supprimé !');
+      chargerEvenements();
+    } catch(err) {
       showToast('Erreur : ' + err.message, 'error');
     }
   }

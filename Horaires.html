@@ -326,6 +326,46 @@
     });
     const db = getFirestore(app);
 
+    async function chargerEvenements() {
+      try {
+        const jodi = new Date();
+        jodi.setHours(0,0,0,0);
+
+        const snap = await getDocs(query(collection(db, 'evenements'), orderBy('date', 'asc')));
+        const items = [];
+
+        snap.docs.forEach(d => {
+          const ev = { id: d.id, ...d.data() };
+          const dateEv = new Date(ev.date);
+          if (dateEv >= jodi) items.push(ev);
+        });
+
+        const sec = document.getElementById('firebase-evenements');
+        if (!items.length) { sec.style.display = 'none'; return; }
+        sec.style.display = 'block';
+
+        const colors = { Urgent:'#e74c3c', Important:'#e67e22', Normal:'#1c1c3c' };
+        sec.querySelector('.ev-firebase-list').innerHTML = items.map(ev => {
+          const dateFormate = new Date(ev.date).toLocaleDateString('fr-FR', {
+            weekday:'long', day:'numeric', month:'long', year:'numeric'
+          });
+          return `
+          <div class="ev-card">
+            <div class="ev-card-stripe" style="background:${colors[ev.importance]||'#f1c40f'};"></div>
+            <div class="ev-card-body">
+              <div class="ev-date" style="background:${colors[ev.importance]||'#1c1c3c'};">
+                <i class="fas fa-calendar-day"></i> ${dateFormate}
+                ${ev.heure ? `<span style="margin-left:8px;"><i class="fas fa-clock"></i> ${ev.heure}</span>` : ''}
+              </div>
+              <h3>${ev.titre||''}</h3>
+              ${ev.description ? `<p>${ev.description}</p>` : ''}
+              ${ev.prix ? `<p style="margin-top:8px;"><i class="fas fa-ticket" style="color:#f1c40f;margin-right:6px;"></i><strong>${ev.prix}</strong></p>` : ''}
+            </div>
+          </div>`;
+        }).join('');
+      } catch(e) { console.log('Événements:', e.message); }
+    }
+
     async function chargerAnnonces() {
       try {
         const snap = await getDocs(query(collection(db, 'annonces'), orderBy('timestamp', 'desc')));
@@ -340,26 +380,16 @@
               <span style="background:${colors[a.importance]||'#1c1c3c'};color:white;font-size:0.78rem;font-weight:700;padding:3px 12px;border-radius:20px;">
                 <i class="fas fa-calendar-day" style="margin-right:5px;"></i>${a.date||''}
               </span>
-              ${a.importance && a.importance!=='Normal' ? `<span style="background:#fff0f0;color:${colors[a.importance]};font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:20px;">${a.importance}</span>` : ''}
             </div>
             <h4>${a.titre||''}</h4>
             <p>${a.detay||a.details||''}</p>
-            ${a.lè||a.heure ? `<p style="margin-top:6px;color:#1c1c3c!important;font-weight:700!important;"><i class="fas fa-clock" style="color:#f1c40f;margin-right:6px;"></i>${a.lè||a.heure}</p>` : ''}
           </div>`).join('');
       } catch(e) { console.log('Annonces:', e.message); }
     }
 
-    async function chargerHoraires() {
-      try {
-        const snap = await getDoc(doc(db, 'config', 'horaires'));
-        if (!snap.exists() || !snap.data().list?.length) return;
-        // Si pasteur mete ajou — ka ajoute logik isit
-      } catch(e) { console.log('Horaires:', e.message); }
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
+      chargerEvenements();
       chargerAnnonces();
-      chargerHoraires();
     });
   </script>
 </head>
@@ -605,6 +635,18 @@
       <p>Informations importantes publiées par l'église</p>
     </div>
     <div class="annoncer-list"></div>
+  </div>
+
+  <!-- ====== ÉVÉNEMENTS FIREBASE (dynamik) ====== -->
+  <div id="firebase-evenements" style="display:none;">
+    <div class="sec-head" style="margin-top:60px;">
+      <h2>
+        <span class="sec-icon"><i class="fas fa-calendar-day"></i></span>
+        Prochains Événements
+      </h2>
+      <p>Événements publiés par le pasteur</p>
+    </div>
+    <div class="ev-firebase-list ev-cards"></div>
   </div>
 
   <!-- ====== ÉVÉNEMENTS SPÉCIAUX ====== -->
