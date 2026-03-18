@@ -687,7 +687,7 @@
 
     <!-- ===== ÉTUDE ===== -->
     <div class="tab-panel" id="tab-etude">
-      <div class="card" style="background:linear-gradient(135deg,#0d1f4a,#1a0a3c);border:none;">
+      <div class="card" style="background:linear-gradient(135deg,#054a29,#0a3d1a);border:none;">
         <div id="etude-active-wrap" style="display:none;margin-bottom:20px;">
           <h3 style="color:#f1c40f!important;margin-bottom:8px;"><i class="fas fa-broadcast-tower"></i> Étude en cours</h3>
           <p id="etude-active-titre" style="color:white!important;font-size:1rem!important;font-weight:600!important;margin-bottom:14px;"></p>
@@ -708,7 +708,8 @@
           </div>
         </div>
         <!-- Separasyon -->
-        <div style="height:1px;background:rgba(255,255,255,0.08);margin-bottom:20px;"></div>
+        <div id="etudeFormWrap">
+        <div style="height:1px;background:rgba(255,255,255,0.08);margin:20px 0;"></div>
         <h3 style="color:#2ed573!important;margin-bottom:20px;font-size:1.1rem!important;"><i class="fas fa-plus-circle" style="margin-right:8px;"></i>Lancer une nouvelle étude</h3>
 
         <!-- TITRE -->
@@ -745,6 +746,7 @@
         <button onclick="lancerEtude()" style="width:100%;padding:16px;background:linear-gradient(135deg,#2ed573,#1abc9c);border:none;border-radius:30px;color:#0d1f4a!important;font-size:1.05rem!important;font-weight:800!important;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px;">
           <i class="fas fa-broadcast-tower"></i> Lancer l'étude & notifier
         </button>
+        </div><!-- fin etudeFormWrap -->
 
         <div id="etudeStatus" style="display:none;margin-top:10px;padding:14px;border-radius:12px;text-align:center;font-weight:700;font-size:0.95rem;"></div>
       </div>
@@ -2043,10 +2045,16 @@
   async function chargerEtudeActive() {
     try {
       const snap = await window._getDoc(window._doc(window._db, 'config', 'etude'));
-      const wrap = document.getElementById('etude-active-wrap');
-      if (!snap.exists() || !snap.data().actif) { if(wrap) wrap.style.display='none'; return; }
+      const wrap     = document.getElementById('etude-active-wrap');
+      const formWrap = document.getElementById('etudeFormWrap');
+      if (!snap.exists() || !snap.data().actif) {
+        if(wrap) wrap.style.display='none';
+        if(formWrap) formWrap.style.display='block'; // Montre fòm si pa gen etude
+        return;
+      }
       const e = snap.data();
       if(wrap) wrap.style.display='block';
+      if(formWrap) formWrap.style.display='none'; // Kache fòm si etude aktif
       const titreEl = document.getElementById('etude-active-titre');
       if(titreEl) titreEl.textContent = e.titre;
       const qSnap = await window._getDocs(window._query(window._collection(window._db,'etude_questions'),window._orderBy('timestamp','asc')));
