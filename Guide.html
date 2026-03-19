@@ -593,6 +593,100 @@
   }
 
   init();
+
+  // ===== VERIFIKASYON ENSKRIPSYON =====
+  function verifierAccesGuide() {
+    try {
+      const data = localStorage.getItem('eglise_membre');
+      if (data) {
+        const m = JSON.parse(data);
+        if (m.nom && m.telephone) return; // Aksè OK
+      }
+    } catch(e) {}
+    // Pa enskri — montre modal
+    montreModalGuide();
+  }
+
+  function montreModalGuide() {
+    // Kache tout kontni
+    document.querySelector('.g-hero').style.filter = 'blur(4px)';
+    document.querySelector('.g-main').style.filter = 'blur(4px)';
+    document.querySelector('.g-main').style.pointerEvents = 'none';
+
+    const modal = document.createElement('div');
+    modal.id = 'guide-gate';
+    modal.innerHTML = `
+      <div style="position:fixed;inset:0;background:rgba(7,0,30,0.88);z-index:9999;display:flex;align-items:flex-end;justify-content:center;">
+        <div style="background:linear-gradient(160deg,#0f0c2e,#1a0a3c);border-radius:28px 28px 0 0;padding:36px 26px 50px;width:100%;max-width:500px;border-top:4px solid #f1c40f;">
+          <div style="text-align:center;margin-bottom:26px;">
+            <div style="font-size:3rem;margin-bottom:14px;">📖</div>
+            <h2 style="color:#f1c40f;font-size:1.4rem;font-weight:800;margin-bottom:10px;">Guide de Lecture Biblique</h2>
+            <p style="color:rgba(255,255,255,0.7);font-size:0.95rem;line-height:1.65;">Pour accéder au guide de lecture quotidienne, veuillez vous inscrire. C'est gratuit et rapide!</p>
+          </div>
+          <div style="margin-bottom:14px;">
+            <label style="display:block;color:#f1c40f;font-weight:700;font-size:0.9rem;margin-bottom:7px;"><i class="fas fa-user" style="margin-right:6px;"></i>Votre nom *</label>
+            <input type="text" id="gg-nom" placeholder="Ex: Marie Joseph..."
+              style="width:100%;padding:14px 16px;border:2px solid rgba(241,196,15,0.3);border-radius:12px;background:rgba(255,255,255,0.08);color:white;font-size:1rem;font-weight:600;box-sizing:border-box;">
+          </div>
+          <div style="margin-bottom:22px;">
+            <label style="display:block;color:#f1c40f;font-weight:700;font-size:0.9rem;margin-bottom:7px;"><i class="fas fa-phone" style="margin-right:6px;"></i>Téléphone *</label>
+            <input type="tel" id="gg-tel" placeholder="Ex: +509 3700 0000..."
+              style="width:100%;padding:14px 16px;border:2px solid rgba(241,196,15,0.3);border-radius:12px;background:rgba(255,255,255,0.08);color:white;font-size:1rem;font-weight:600;box-sizing:border-box;">
+          </div>
+          <div id="gg-err" style="display:none;background:rgba(231,76,60,0.15);border-radius:10px;padding:10px 14px;color:#ff8a80;font-weight:700;font-size:0.9rem;margin-bottom:14px;text-align:center;"></div>
+          <button onclick="soumettreGuideGate()"
+            style="width:100%;padding:17px;background:linear-gradient(135deg,#f1c40f,#e67e22);color:#0f0c2e;border:none;border-radius:50px;font-size:1.05rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+            <i class="fas fa-book-open"></i> Accéder au guide
+          </button>
+        </div>
+      </div>`;
+    document.body.appendChild(modal);
+  }
+
+  window.soumettreGuideGate = async function() {
+    const nom = document.getElementById('gg-nom').value.trim();
+    const tel = document.getElementById('gg-tel').value.trim();
+    const err = document.getElementById('gg-err');
+
+    if (!nom) { err.style.display='block'; err.textContent='⚠️ Veuillez saisir votre nom.'; return; }
+    if (!tel || tel.replace(/\D/g,'').length < 8) { err.style.display='block'; err.textContent='⚠️ Numéro invalide.'; return; }
+
+    err.style.display = 'none';
+    localStorage.setItem('eglise_membre', JSON.stringify({ nom, telephone: tel, date: new Date().toLocaleDateString('fr-FR') }));
+
+    // Sove nan Firebase
+    try {
+      if (typeof firebase !== 'undefined' && firebase.apps.length) {
+        await firebase.firestore().collection('membres').add({
+          nom, telephone: tel,
+          date: new Date().toLocaleDateString('fr-FR'),
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      }
+    } catch(e) {}
+
+    // Retire modal, retire blur
+    document.getElementById('guide-gate').remove();
+    document.querySelector('.g-hero').style.filter = '';
+    document.querySelector('.g-main').style.filter = '';
+    document.querySelector('.g-main').style.pointerEvents = '';
+
+    // Mande notif
+    if ('Notification' in window && Notification.permission === 'default') {
+      setTimeout(async () => {
+        const perm = await Notification.requestPermission();
+        if (perm === 'granted') {
+          new Notification('📖 Guide de Lecture Biblique 2026', {
+            body: 'Rappel activé! Chaque matin à 9h, votre chapitre vous attend.',
+            icon: 'logo.png'
+          });
+          programmerNotifQuotidienne();
+        }
+      }, 1000);
+    }
+  };
+
+  verifierAccesGuide();
 </script>
 <script src="pwa.js"></script>
 </body>
