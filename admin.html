@@ -857,12 +857,19 @@
 
     <!-- ===== TAB TÉMOIGNAGES ===== -->
     <div class="tab-panel" id="tab-temoignages">
-      <div class="card">
-        <h3><i class="fas fa-star" style="color:var(--gold)"></i> Témoignages à valider</h3>
-        <p style="font-size:1rem;color:#888;margin-bottom:20px;">Les témoignages soumis par les membres. Approuvez ceux que vous voulez afficher sur le site.</p>
+      <div style="background:linear-gradient(135deg,#1a0a3c,#0d1f4a);border-radius:20px;padding:26px 22px;">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+          <div style="width:48px;height:48px;background:rgba(241,196,15,0.2);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fas fa-star" style="color:#f1c40f;font-size:1.3rem;"></i>
+          </div>
+          <div>
+            <h3 style="color:#f1c40f!important;font-size:1.1rem!important;font-weight:800!important;margin:0!important;">Témoignages à valider</h3>
+            <p style="color:rgba(255,255,255,0.55)!important;font-size:0.85rem!important;margin:0!important;">Approuvez pour afficher sur le site</p>
+          </div>
+        </div>
         <div id="temoignages-admin-list">
-          <div style="text-align:center;padding:30px;color:#aaa;">
-            <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--gold);display:block;margin-bottom:12px;"></i>
+          <div style="text-align:center;padding:30px;color:rgba(255,255,255,0.3);">
+            <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:#f1c40f;display:block;margin-bottom:12px;"></i>
             Chargement...
           </div>
         </div>
@@ -1284,16 +1291,26 @@
           ? `<audio controls src="${t.audioUrl}" style="width:100%;margin:8px 0;border-radius:8px;height:40px;"></audio>`
           : '';
         return `
-          <div class="item-card" style="border-left: 3px solid ${approuve ? '#27ae60' : 'var(--gold)'};">
-            <div class="item-card-info" style="flex:1;">
-              <h4 style="font-size:1rem;color:#111;margin-bottom:6px;">${t.nom||'Anonyme'} <span style="font-size:0.78rem;font-weight:400;color:#888;">— ${t.categorie||''}</span></h4>
-              ${audioHTML}
-              <p style="font-style:italic;color:#555;font-size:0.92rem;line-height:1.6;margin-bottom:6px;">${(t.temoignage||'').substring(0,140)}${(t.temoignage||'').length>140?'...':''}</p>
-              <p style="font-size:0.78rem;color:#aaa;">${t.dateEvenement||t.date||''} · ${approuve ? '<span style="color:#27ae60;font-weight:700;">✓ Approuvé</span>' : '<span style="color:orange;font-weight:700;">⏳ En attente</span>'}</p>
+          <div style="background:rgba(255,255,255,0.06);border-radius:14px;padding:16px;margin-bottom:12px;border-left:4px solid ${approuve ? '#2ed573' : '#f1c40f'};">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">
+              <div style="flex:1;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+                  <div style="width:36px;height:36px;background:linear-gradient(135deg,#f1c40f,#e67e22);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#1c1c3c;font-size:0.9rem;flex-shrink:0;">${(t.nom||'A')[0].toUpperCase()}</div>
+                  <div>
+                    <div style="color:white!important;font-weight:800!important;font-size:1rem!important;">${t.nom||'Anonyme'}</div>
+                    <div style="color:rgba(255,255,255,0.45);font-size:0.75rem;">${t.categorie||''} · ${t.dateEvenement||t.date||''}</div>
+                  </div>
+                  <span style="margin-left:auto;padding:3px 12px;border-radius:20px;font-size:0.78rem;font-weight:700;background:${approuve?'rgba(46,213,115,0.2)':'rgba(241,196,15,0.15)'};color:${approuve?'#2ed573':'#f1c40f'};">
+                    ${approuve ? '✓ Approuvé' : '⏳ En attente'}
+                  </span>
+                </div>
+                ${audioHTML}
+                <p style="color:rgba(255,255,255,0.8)!important;font-size:0.92rem!important;font-style:italic;line-height:1.6;margin-bottom:0;">${(t.temoignage||'').substring(0,160)}${(t.temoignage||'').length>160?'...':''}</p>
+              </div>
             </div>
-            <div class="item-card-actions" style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex-shrink:0;">
-              ${!approuve ? `<button class="btn btn-sm btn-primary" onclick="approuverTemoignage('${d.id}')"><i class="fas fa-check"></i> Approuver</button>` : ''}
-              <button class="btn btn-sm" style="background:#fee;color:#e74c3c;" onclick="effacerTemoignage('${d.id}')"><i class="fas fa-trash"></i></button>
+            <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end;">
+              ${!approuve ? `<button class="btn btn-sm" onclick="approuverTemoignage('${d.id}')" style="background:linear-gradient(135deg,#2ed573,#1abc9c);color:#0d1f4a;border:none;padding:8px 16px;border-radius:20px;font-weight:800;cursor:pointer;font-size:0.85rem;"><i class="fas fa-check"></i> Approuver</button>` : ''}
+              <button class="btn btn-sm" onclick="effacerTemoignage('${d.id}')" style="background:rgba(231,76,60,0.2);color:#ff6b6b;border:1px solid rgba(231,76,60,0.3);padding:8px 14px;border-radius:20px;font-weight:700;cursor:pointer;font-size:0.85rem;"><i class="fas fa-trash"></i></button>
             </div>
           </div>`;
       }).join('');
