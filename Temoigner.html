@@ -415,16 +415,20 @@
   function stopRecTemo() {
     if (!mrTemo) return;
     clearInterval(intTemo);
-    mrTemo.stop();
-    mrTemo.stream.getTracks().forEach(t => t.stop());
+
+    // Mete onstop ANVAN stop()
     mrTemo.onstop = () => {
       audioBlobTemo = new Blob(chunksTemo, { type: 'audio/webm' });
       const url = URL.createObjectURL(audioBlobTemo);
-      document.getElementById('audioPreview').src = url;
+      const audioEl = document.getElementById('audioPreview');
+      if (audioEl) audioEl.src = url;
       document.getElementById('audioPreviewWrap').style.display = 'block';
       document.getElementById('recActive').style.display = 'none';
       document.getElementById('recNormal').style.display = 'flex';
     };
+
+    mrTemo.stop();
+    mrTemo.stream.getTracks().forEach(t => t.stop());
   }
 
   function annulerRecTemo() {
