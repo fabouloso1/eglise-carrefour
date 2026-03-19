@@ -677,11 +677,20 @@
 
     <!-- ===== ACTUALITES ===== -->
     <div class="tab-panel" id="tab-membres">
-      <div class="card">
-        <h3><i class="fas fa-users"></i> Membres inscrits (<span id="membresCount">0</span>)</h3>
-        <p style="color:#888;font-size:0.9rem;margin-bottom:16px;">Personnes inscrites via le site</p>
-        <div class="item-list" id="membresList">
-          <p style="color:#aaa;text-align:center;padding:20px;">Chargement...</p>
+      <div style="background:linear-gradient(135deg,#1c1c3c,#2d1b4e);border-radius:20px;padding:22px 18px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:44px;height:44px;background:rgba(241,196,15,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+              <i class="fas fa-users" style="color:#f1c40f;font-size:1.1rem;"></i>
+            </div>
+            <div>
+              <h3 style="color:#f1c40f!important;font-size:1.05rem!important;font-weight:800!important;margin:0!important;">Membres inscrits (<span id="membresCount">0</span>)</h3>
+              <p style="color:rgba(255,255,255,0.5)!important;font-size:0.82rem!important;margin:0!important;">Gérez les accès au site</p>
+            </div>
+          </div>
+        </div>
+        <div id="membresList">
+          <p style="color:rgba(255,255,255,0.3);text-align:center;padding:20px;">Chargement...</p>
         </div>
       </div>
     </div>
@@ -2103,22 +2112,92 @@
     try {
       const snap = await window._getDocs(window._query(window._collection(window._db, 'membres'), window._orderBy('timestamp', 'desc')));
       const list = snap.docs.map(d => ({id:d.id,...d.data()}));
-      const el = document.getElementById('membresCount');
+      const el    = document.getElementById('membresCount');
       const listEl = document.getElementById('membresList');
       if (el) el.textContent = list.length;
-      if (!list.length) { listEl.innerHTML = '<p style="color:#aaa;text-align:center;padding:30px;">Aucun membre inscrit.</p>'; return; }
-      listEl.innerHTML = list.map(m => `
-        <div style="display:flex;align-items:center;gap:14px;padding:14px;border-bottom:1px solid #f0f0f0;">
-          <div style="width:42px;height:42px;background:linear-gradient(135deg,#1c1c3c,#3a1c5c);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <i class="fas fa-user" style="color:#f1c40f;"></i>
+      if (!list.length) {
+        listEl.innerHTML = '<p style="color:rgba(255,255,255,0.3);text-align:center;padding:30px;">Aucun membre inscrit.</p>';
+        return;
+      }
+      listEl.innerHTML = list.map(m => {
+        const bloque = m.bloque === true;
+        return `
+        <div style="background:${bloque?'rgba(231,76,60,0.12)':'rgba(255,255,255,0.06)'};border-radius:14px;padding:14px 16px;margin-bottom:10px;border-left:4px solid ${bloque?'#ff6b6b':'#f1c40f'};">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+            <div style="width:42px;height:42px;background:${bloque?'rgba(231,76,60,0.2)':'rgba(241,196,15,0.15)'};border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fas fa-${bloque?'ban':'user'}" style="color:${bloque?'#ff6b6b':'#f1c40f'};"></i>
+            </div>
+            <div style="flex:1;">
+              <div style="color:white!important;font-weight:800!important;font-size:1rem!important;">
+                ${m.nom||'—'}
+                ${bloque?'<span style="background:rgba(231,76,60,0.25);color:#ff6b6b;font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px;">BLOQUÉ</span>':''}
+              </div>
+              <div style="font-size:0.82rem;color:rgba(255,255,255,0.55);margin-top:2px;">
+                <i class="fas fa-phone" style="color:#f1c40f;margin-right:4px;"></i>${m.telephone||'—'}
+                ${m.ville?'<span style="margin-left:8px;"><i class="fas fa-map-marker-alt" style="color:#f1c40f;margin-right:4px;"></i>'+m.ville+'</span>':''}
+              </div>
+              <div style="font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:2px;">${m.date||'—'}</div>
+            </div>
           </div>
-          <div style="flex:1;">
-            <div style="font-weight:700;color:#111;font-size:1rem;">${m.nom||'—'}</div>
-            <div style="font-size:0.85rem;color:#555;margin-top:2px;"><i class="fas fa-phone" style="color:#f1c40f;margin-right:4px;"></i>${m.telephone||'—'}${m.ville?'<span style="margin-left:10px;"><i class="fas fa-map-marker-alt" style="color:#f1c40f;margin-right:4px;"></i>'+m.ville+'</span>':''}</div>
-            <div style="font-size:0.75rem;color:#aaa;margin-top:2px;">${m.date||'—'}</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            ${bloque
+              ? `<button onclick="debloquerMembre('${m.id}')"
+                  style="flex:1;padding:9px 12px;background:rgba(46,213,115,0.2);border:1.5px solid #2ed573;border-radius:20px;color:#2ed573;font-size:0.85rem;font-weight:700;cursor:pointer;">
+                  <i class="fas fa-unlock"></i> Débloquer
+                </button>`
+              : `<button onclick="bloquerMembre('${m.id}','${(m.nom||'').replace(/'/g,'')}')"
+                  style="flex:1;padding:9px 12px;background:rgba(231,76,60,0.15);border:1.5px solid rgba(231,76,60,0.4);border-radius:20px;color:#ff6b6b;font-size:0.85rem;font-weight:700;cursor:pointer;">
+                  <i class="fas fa-ban"></i> Bloquer
+                </button>`
+            }
+            <button onclick="reinitialiserMembre('${m.id}','${(m.nom||'').replace(/'/g,'')}')"
+              style="padding:9px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:20px;color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:700;cursor:pointer;"
+              title="Supprimer l'inscription (la personne devra se réinscrire)">
+              <i class="fas fa-redo"></i> Réinitialiser
+            </button>
+            <button onclick="supprimerMembre('${m.id}')"
+              style="padding:9px 12px;background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.25);border-radius:20px;color:#ff6b6b;font-size:0.85rem;cursor:pointer;">
+              <i class="fas fa-trash"></i>
+            </button>
           </div>
-        </div>`).join('');
+        </div>`;
+      }).join('');
     } catch(e) { console.log('Membres:', e.message); }
+  }
+
+  async function bloquerMembre(id, nom) {
+    if (!confirm('Bloquer ' + nom + ' ? Il ne pourra plus accéder au site.')) return;
+    try {
+      await window._updateDoc(window._doc(window._db, 'membres', id), { bloque: true });
+      showToast(nom + ' bloqué !');
+      chargerMembres();
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+
+  async function debloquerMembre(id) {
+    try {
+      await window._updateDoc(window._doc(window._db, 'membres', id), { bloque: false });
+      showToast('Membre débloqué !');
+      chargerMembres();
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+
+  async function reinitialiserMembre(id, nom) {
+    if (!confirm('Réinitialiser ' + nom + ' ? Il devra se réinscrire pour accéder au site.')) return;
+    try {
+      await window._deleteDoc(window._doc(window._db, 'membres', id));
+      showToast(nom + ' réinitialisé !');
+      chargerMembres();
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+
+  async function supprimerMembre(id) {
+    if (!confirm('Supprimer définitivement ce membre ?')) return;
+    try {
+      await window._deleteDoc(window._doc(window._db, 'membres', id));
+      showToast('Membre supprimé !');
+      chargerMembres();
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
   }
 
   // ===== ÉTUDE =====
