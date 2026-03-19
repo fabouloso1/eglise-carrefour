@@ -21,6 +21,7 @@
   <meta name="apple-mobile-web-app-title" content="Église Carrefour">
   <link rel="apple-touch-icon" href="logo.png">
   <style>
+    body { background: #f0f4ff; }
     .page-hero { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 70px 24px 60px; text-align: center; position: relative; overflow: hidden; }
     .page-hero::before { content: '\f005'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: -30px; top: -30px; font-size: 220px; opacity: 0.04; color: white; }
     .page-hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(241,196,15,0.15); border: 1px solid rgba(241,196,15,0.35); color: var(--gold); padding: 6px 18px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
@@ -43,28 +44,28 @@
 
     /* Grille témoignages */
     .temoignages-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-bottom: 60px; }
-    .temoignage-card { background: white; border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); transition: var(--transition); display: flex; flex-direction: column; position: relative; }
-    .temoignage-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
-    .temoignage-card::before { content: '\201C'; font-family: 'Playfair Display', serif; position: absolute; top: 16px; right: 20px; font-size: 80px; color: rgba(241,196,15,0.12); line-height: 1; }
+    .temoignage-card { background: linear-gradient(135deg, #1c1c3c, #2d1b4e); border-radius: var(--radius); padding: 28px; box-shadow: 0 4px 20px rgba(28,28,60,0.25); border: none; transition: var(--transition); display: flex; flex-direction: column; position: relative; }
+    .temoignage-card:hover { box-shadow: 0 8px 28px rgba(28,28,60,0.35); }
+    .temoignage-card::before { content: '\201C'; font-family: 'Playfair Display', serif; position: absolute; top: 16px; right: 20px; font-size: 80px; color: rgba(241,196,15,0.18); line-height: 1; }
     .t-header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
     .t-avatar { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--gold); font-size: 1.3rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .t-name { font-weight: 700; color: var(--primary); font-size: 0.95rem; margin-bottom: 2px; }
-    .t-date { font-size: 0.78rem; color: var(--text-muted); }
-    .t-content { font-size: 0.88rem; line-height: 1.8; color: #555; flex: 1; margin-bottom: 16px; font-style: italic; }
-    .t-category { display: inline-flex; align-items: center; gap: 5px; background: rgba(28,28,60,0.08); color: var(--primary); padding: 4px 12px; border-radius: 15px; font-size: 0.78rem; font-weight: 600; }
+    .t-name { font-weight: 700; color: #f1c40f !important; font-size: 1rem; margin-bottom: 2px; }
+    .t-date { font-size: 0.82rem; color: rgba(255,255,255,0.5) !important; }
+    .t-content { font-size: 0.95rem !important; line-height: 1.85; color: rgba(255,255,255,0.88) !important; flex: 1; margin-bottom: 16px; font-style: italic; font-weight: 500 !important; }
+    .t-category { display: inline-flex; align-items: center; gap: 5px; background: rgba(241,196,15,0.2); border: 1px solid rgba(241,196,15,0.4); color: #f1c40f !important; padding: 5px 14px; border-radius: 15px; font-size: 0.82rem; font-weight: 700; }
     .t-category i { color: var(--gold); font-size: 0.7rem; }
 
     /* Formulaire */
-    .form-section { background: white; border-radius: var(--radius); padding: 40px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); border-top: 5px solid var(--gold); }
-    .form-title { font-family: 'Playfair Display', serif; font-size: 1.7rem; color: var(--primary); margin-bottom: 8px; }
-    .form-subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 30px; line-height: 1.6; }
+    .form-section { background: linear-gradient(135deg, #0d1f4a, #1a0a3c); border-radius: var(--radius); padding: 40px; box-shadow: 0 4px 24px rgba(28,28,60,0.3); border: none; border-top: 5px solid var(--gold); }
+    .form-title { font-family: 'Playfair Display', serif; font-size: 1.7rem; color: #f1c40f !important; margin-bottom: 8px; }
+    .form-subtitle { color: rgba(255,255,255,0.7) !important; font-size: 0.95rem; margin-bottom: 30px; line-height: 1.6; font-weight: 500; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .form-group { margin-bottom: 22px; }
-    .form-group label { display: block; margin-bottom: 7px; font-weight: 600; color: var(--primary); font-size: 0.88rem; }
-    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px 16px; border: 1.5px solid #e0e0e0; border-radius: var(--radius-sm); font-family: 'Montserrat', sans-serif; font-size: 0.92rem; color: var(--text); transition: var(--transition); background: #fafafa; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 700 !important; color: #f1c40f !important; font-size: 0.95rem !important; }
+    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 14px 16px !important; border: 2px solid rgba(241,196,15,0.25) !important; border-radius: var(--radius-sm); font-family: 'Montserrat', sans-serif; font-size: 1rem !important; color: white !important; background: rgba(255,255,255,0.08) !important; }
     .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--gold); background: white; box-shadow: 0 0 0 3px rgba(241,196,15,0.12); }
     .form-group textarea { min-height: 150px; resize: vertical; }
-    .note { font-size: 0.8rem; color: var(--text-muted); margin-top: 6px; font-style: italic; }
+    .note { font-size: 0.82rem; color: rgba(255,255,255,0.5) !important; margin-top: 6px; font-style: italic; }
     .submit-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 30px; font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: var(--transition); }
     .submit-btn:hover { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--primary); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(241,196,15,0.35); }
     .success-msg { display: none; background: #e8f5e9; border-left: 4px solid #4caf50; border-radius: var(--radius-sm); padding: 30px; text-align: center; }
@@ -110,7 +111,7 @@
   </div>
 
   <!-- Grille -->
-  <div class="temoignages-grid">
+  <div class="temoignages-grid" id="temoignages-grid-static">
 
     <div class="temoignage-card">
       <div class="t-header">
@@ -168,6 +169,9 @@
 
   </div>
 
+  <!-- Témoignages approuvés Firebase (remplacement dynamique) -->
+  <div class="temoignages-grid" id="temoignages-grid-dynamic" style="display:none;"></div>
+
   <!-- Formulaire partage -->
   <div class="form-section">
     <h2 class="form-title">✨ Partagez votre témoignage</h2>
@@ -220,20 +224,109 @@
 
 <div id="foot-placeholder"></div>
 
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
 <script src="lang.js"></script>
 <script src="nav.js"></script>
 <script>
   NAV.init('Temoigner.html');
-  // Applique la traduction après que le nav soit injecté
   (function() {
     var lang = localStorage.getItem('site_lang') || 'fr';
     if (window.applyLang) window.applyLang(lang);
   })();
-  document.getElementById('testimonyForm').addEventListener('submit', function(e) {
+
+  // Firebase init
+  if (!firebase.apps.length) {
+    firebase.initializeApp({
+      apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
+      authDomain: "eglise-carrefour.firebaseapp.com",
+      projectId: "eglise-carrefour",
+      storageBucket: "eglise-carrefour.appspot.com",
+      messagingSenderId: "421333694767",
+      appId: "1:421333694767:web:30c18da36ae020821a49da"
+    });
+  }
+  const db = firebase.firestore();
+
+  // ===== CHARGER TÉMOIGNAGES APPROUVÉS =====
+  async function chargerTemoignages() {
+    try {
+      const snap = await db.collection('temoignages')
+        .where('approuve', '==', true)
+        .orderBy('timestamp', 'desc')
+        .get();
+
+      const grid = document.getElementById('temoignages-grid-dynamic');
+      if (!snap.empty) {
+        // Kache kat statik yo
+        document.getElementById('temoignages-grid-static').style.display = 'none';
+        grid.style.display = 'grid';
+
+        const cats = {
+          guerison:'Guérison miraculeuse', provision:'Provision divine',
+          restauration:'Restauration', protection:'Protection divine',
+          conversion:'Conversion', delivrance:'Délivrance', autre:'Bénédiction'
+        };
+
+        grid.innerHTML = snap.docs.map(d => {
+          const t = d.data();
+          const initiale = (t.nom || 'A')[0].toUpperCase();
+          const date = t.dateEvenement
+            ? new Date(t.dateEvenement).toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'})
+            : new Date(t.timestamp?.toDate?.() || new Date()).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+          return `
+          <div class="temoignage-card">
+            <div class="t-header" style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+              <div class="t-avatar">${initiale}</div>
+              <div>
+                <div class="t-name">${esc(t.nom || 'Anonyme')}</div>
+                <div class="t-date">${date}</div>
+              </div>
+            </div>
+            <p class="t-content">${esc(t.temoignage || '')}</p>
+            <span class="t-category"><i class="fas fa-circle"></i> ${cats[t.categorie]||t.categorie||'Témoignage'}</span>
+          </div>`;
+        }).join('');
+      }
+    } catch(e) {
+      console.log('Temoignages:', e.message);
+    }
+  }
+
+  // ===== SOUMETTRE TÉMOIGNAGE =====
+  document.getElementById('testimonyForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    this.style.display = 'none';
-    document.getElementById('successMsg').style.display = 'block';
+    const btn = this.querySelector('.submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi...';
+
+    try {
+      await db.collection('temoignages').add({
+        nom:          document.getElementById('tname').value.trim() || 'Anonyme',
+        dateEvenement:document.getElementById('tdate').value || '',
+        categorie:    document.getElementById('tcategorie').value,
+        temoignage:   document.getElementById('ttemoignage').value.trim(),
+        approuve:     false, // Pastè dwe apwouve anvan afichaj
+        timestamp:    firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      this.style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+    } catch(err) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-paper-plane"></i> Publier mon témoignage';
+      alert('Erreur : ' + err.message);
+    }
   });
+
+  function esc(s) {
+    if (!s) return '';
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  chargerTemoignages();
 </script>
 <script src="gate.js"></script>
 <script>window.addEventListener("load", function(){ gateInit(); });</script>
