@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>Guide de Lecture Biblique 2026 — Église de Dieu de la Prophétie</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1c1c3c">
+  <link rel="apple-touch-icon" href="logo.png">
+
+  <style>
+    body { background: #f0f4ff; }
+
+    /* HERO */
+    .g-hero {
+      background: linear-gradient(135deg, #1c1c3c 0%, #2d1b4e 100%);
+      padding: 70px 24px 50px;
+      text-align: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .g-hero::before {
+      content: '\f518';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      right: -20px; top: -10px;
+      font-size: 220px;
+      opacity: 0.04;
+      color: #f1c40f;
+    }
+    .g-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(241,196,15,0.15);
+      border: 1px solid rgba(241,196,15,0.4);
+      color: #f1c40f;
+      padding: 6px 18px; border-radius: 30px;
+      font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .g-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      margin-bottom: 10px;
+    }
+    .g-hero p { font-size: 1rem; opacity: 0.72; max-width: 480px; margin: 0 auto; }
+
+    /* MAIN */
+    .g-main { max-width: 700px; margin: 0 auto; padding: 28px 16px 90px; }
+
+    /* CARTE DU JOUR */
+    .g-today {
+      background: linear-gradient(135deg, #1c1c3c, #2d1b4e);
+      border-radius: 24px;
+      padding: 28px 24px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(28,28,60,0.25);
+    }
+    .g-today::before {
+      content: '\f518';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      right: -10px; bottom: -20px;
+      font-size: 140px;
+      opacity: 0.05;
+      color: #f1c40f;
+    }
+
+    .g-today-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(241,196,15,0.15);
+      border: 1px solid rgba(241,196,15,0.35);
+      color: #f1c40f;
+      padding: 5px 14px; border-radius: 20px;
+      font-size: 0.8rem; font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .g-today-date {
+      color: rgba(255,255,255,0.55);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .g-ref {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      color: white;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .g-intro {
+      color: rgba(255,255,255,0.75);
+      font-size: 1rem;
+      line-height: 1.75;
+      font-weight: 500;
+      margin-bottom: 22px;
+      font-style: italic;
+    }
+
+    .g-read-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #f1c40f, #e67e22);
+      color: #1c1c3c;
+      padding: 13px 26px;
+      border-radius: 30px;
+      font-weight: 800;
+      font-size: 0.98rem;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* PROGRESSION */
+    .g-progress {
+      background: white;
+      border-radius: 18px;
+      padding: 20px 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(28,28,60,0.08);
+    }
+    .g-progress h3 {
+      color: #1c1c3c;
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .g-progress-bar-wrap {
+      background: #f0f4ff;
+      border-radius: 10px;
+      height: 10px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .g-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #1c1c3c, #f1c40f);
+      border-radius: 10px;
+      transition: width 0.6s ease;
+    }
+    .g-progress-text {
+      color: #888;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    /* NOTIF ZONE */
+    .g-notif {
+      background: white;
+      border-radius: 18px;
+      padding: 20px 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(28,28,60,0.08);
+      border-left: 4px solid #f1c40f;
+    }
+    .g-notif h3 {
+      color: #1c1c3c;
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .g-notif p {
+      color: #666;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+    .g-notif-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #1c1c3c, #2d1b4e);
+      color: white;
+      padding: 11px 22px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
+    }
+    .g-notif-btn.active {
+      background: linear-gradient(135deg, #2ed573, #1abc9c);
+      color: #0d1f4a;
+    }
+
+    /* PLANNING - Semaine */
+    .g-week {
+      background: white;
+      border-radius: 18px;
+      padding: 20px 22px;
+      box-shadow: 0 2px 12px rgba(28,28,60,0.08);
+    }
+    .g-week h3 {
+      color: #1c1c3c;
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+    .g-day-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f4ff;
+    }
+    .g-day-item:last-child { border-bottom: none; }
+
+    .g-day-dot {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; font-weight: 800;
+      flex-shrink: 0;
+    }
+    .g-day-dot.today { background: #1c1c3c; color: #f1c40f; }
+    .g-day-dot.past { background: #e8f5e9; color: #2e7d32; }
+    .g-day-dot.future { background: #f0f4ff; color: #888; }
+
+    .g-day-ref { font-size: 0.88rem; font-weight: 700; color: #1c1c3c; }
+    .g-day-intro { font-size: 0.78rem; color: #888; }
+
+    /* Aucun plan */
+    .g-empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: #aaa;
+    }
+  </style>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="plan2026.js"></script>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<!-- HERO -->
+<div class="g-hero">
+  <div class="g-badge"><i class="fas fa-bible"></i> 2026</div>
+  <h1>Guide de Lecture Biblique</h1>
+  <p>Un chapitre par jour pour lire la Bible en entier en 2026. Chaque matin à 9h, vous recevrez un rappel.</p>
+</div>
+
+<div class="g-main">
+
+  <!-- LECTURE DU JOUR -->
+  <div class="g-today" id="gToday">
+    <div class="g-today-badge"><i class="fas fa-sun"></i> Lecture du jour</div>
+    <div class="g-today-date" id="gDate">—</div>
+    <div class="g-ref" id="gRef">Chargement...</div>
+    <div class="g-intro" id="gIntro"></div>
+    <a id="gReadBtn" class="g-read-btn" href="#" target="_blank">
+      <i class="fas fa-book-open"></i> Lire maintenant
+    </a>
+  </div>
+
+  <!-- PROGRESSION -->
+  <div class="g-progress">
+    <h3><i class="fas fa-chart-line" style="color:#f1c40f;"></i> Progression 2026</h3>
+    <div class="g-progress-bar-wrap">
+      <div class="g-progress-bar" id="gProgressBar" style="width:0%;"></div>
+    </div>
+    <div class="g-progress-text" id="gProgressText">Calcul...</div>
+  </div>
+
+  <!-- NOTIFICATIONS -->
+  <div class="g-notif">
+    <h3><i class="fas fa-bell" style="color:#f1c40f;margin-right:8px;"></i>Rappel quotidien à 9h</h3>
+    <p>Activez les notifications pour recevoir chaque matin à 9h un rappel avec le chapitre du jour.</p>
+    <button class="g-notif-btn" id="gNotifBtn" onclick="activerNotif()">
+      <i class="fas fa-bell"></i> Activer les notifications
+    </button>
+    <p id="gNotifStatus" style="margin-top:10px;font-size:0.82rem;color:#2e7d32;font-weight:600;display:none;"></p>
+  </div>
+
+  <!-- PLANNING SEMAINE -->
+  <div class="g-week">
+    <h3><i class="fas fa-calendar-week" style="color:#f1c40f;margin-right:8px;"></i>Cette semaine</h3>
+    <div id="gWeek"></div>
+  </div>
+
+</div>
+
+<div id="foot-placeholder"></div>
+
+<script src="lang.js"></script>
+<script src="nav.js"></script>
+<script>
+  NAV.init('Guide.html');
+
+  // Firebase
+  if (!firebase.apps.length) {
+    firebase.initializeApp({
+      apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
+      authDomain: "eglise-carrefour.firebaseapp.com",
+      projectId: "eglise-carrefour",
+      storageBucket: "eglise-carrefour.appspot.com",
+      messagingSenderId: "421333694767",
+      appId: "1:421333694767:web:30c18da36ae020821a49da"
+    });
+  }
+
+  // ===== DATE JOUNEN AN =====
+  function dateKey(d) {
+    return d.toISOString().split('T')[0];
+  }
+
+  function formatDate(d) {
+    return d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  }
+
+  function init() {
+    const today = new Date();
+    const key   = dateKey(today);
+    const plan  = PLAN_2026[key];
+
+    if (!plan) {
+      document.getElementById('gRef').textContent   = 'Pas de lecture prévue';
+      document.getElementById('gIntro').textContent = '';
+      return;
+    }
+
+    // Carte du jour
+    document.getElementById('gDate').textContent  = formatDate(today);
+    document.getElementById('gRef').textContent   = plan.reference;
+    document.getElementById('gIntro').textContent = plan.intro;
+
+    // Lyen Bible - YouVersion
+    const ref = encodeURIComponent(plan.reference);
+    document.getElementById('gReadBtn').href =
+      `https://www.bible.com/bible/152/${ref.replace(/%20/g,'+')}.CRB`;
+
+    // Progression
+    const start    = new Date('2026-01-01');
+    const dayNum   = Math.floor((today - start) / 86400000) + 1;
+    const total    = 365;
+    const pct      = Math.min(Math.round((dayNum / total) * 100), 100);
+    document.getElementById('gProgressBar').style.width = pct + '%';
+    document.getElementById('gProgressText').textContent =
+      `Jour ${dayNum} sur ${total} — ${pct}% de l'année accompli`;
+
+    // Semaine
+    afficherSemaine(today);
+
+    // Statut notif
+    verifierNotif();
+  }
+
+  // ===== SEMAINE =====
+  function afficherSemaine(today) {
+    const jours = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+    const wrap  = document.getElementById('gWeek');
+    let html    = '';
+
+    // Lundi de la semaine courante
+    const lundi = new Date(today);
+    lundi.setDate(today.getDate() - today.getDay() + 1);
+
+    for (let i = 0; i < 7; i++) {
+      const d   = new Date(lundi);
+      d.setDate(lundi.getDate() + i);
+      const key = dateKey(d);
+      const p   = PLAN_2026[key];
+      if (!p) continue;
+
+      const isToday = key === dateKey(today);
+      const isPast  = d < today && !isToday;
+      const cls     = isToday ? 'today' : isPast ? 'past' : 'future';
+      const icon    = isPast ? '<i class="fas fa-check" style="font-size:0.8rem;"></i>' : (isToday ? '<i class="fas fa-star" style="font-size:0.7rem;"></i>' : (i+1));
+
+      html += `
+      <div class="g-day-item">
+        <div class="g-day-dot ${cls}">${icon}</div>
+        <div>
+          <div class="g-day-ref">${jours[d.getDay()]} ${d.getDate()} — ${p.reference}</div>
+          <div class="g-day-intro">${p.intro.substring(0,60)}...</div>
+        </div>
+      </div>`;
+    }
+
+    wrap.innerHTML = html;
+  }
+
+  // ===== NOTIFICATIONS =====
+  function verifierNotif() {
+    if (!('Notification' in window)) return;
+    const btn = document.getElementById('gNotifBtn');
+    if (Notification.permission === 'granted') {
+      btn.innerHTML  = '<i class="fas fa-check"></i> Notifications activées';
+      btn.classList.add('active');
+      btn.disabled   = true;
+    }
+  }
+
+  async function activerNotif() {
+    if (!('Notification' in window)) {
+      alert('Votre navigateur ne supporte pas les notifications.');
+      return;
+    }
+
+    const permission = await Notification.requestPermission();
+    const btn    = document.getElementById('gNotifBtn');
+    const status = document.getElementById('gNotifStatus');
+
+    if (permission === 'granted') {
+      btn.innerHTML = '<i class="fas fa-check"></i> Notifications activées';
+      btn.classList.add('active');
+      btn.disabled  = true;
+      status.style.display = 'block';
+      status.textContent   = '✅ Vous recevrez un rappel chaque matin à 9h !';
+
+      // Planifye notifikasyon 9h via Service Worker
+      if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+        const today = new Date();
+        const key   = today.toISOString().split('T')[0];
+        const plan  = PLAN_2026[key];
+        if (plan) {
+          // Voye mesaj bay SW pou schedule
+          navigator.serviceWorker.controller.postMessage({
+            type: 'SCHEDULE_DAILY',
+            hour: 9,
+            title: '📖 Lecture du jour — ' + plan.reference,
+            body:  plan.intro,
+            url:   '/eglise-carrefour/Guide.html'
+          });
+        }
+      } else {
+        // Fallback - montre yon notif tou suite kòm demo
+        new Notification('📖 Guide de Lecture Biblique 2026', {
+          body: 'Chaque matin à 9h, vous recevrez votre rappel de lecture !',
+          icon: 'logo.png'
+        });
+      }
+
+      // Sove token si disponib
+      try {
+        const db = firebase.firestore();
+        await db.collection('fcm_tokens').add({
+          type: 'guide_lecture',
+          date: new Date().toISOString(),
+          permission: 'granted'
+        });
+      } catch(e) {}
+
+    } else {
+      status.style.display = 'block';
+      status.style.color   = '#e74c3c';
+      status.textContent   = '❌ Notifications refusées. Vérifiez les paramètres de votre navigateur.';
+    }
+  }
+
+  init();
+</script>
+<script src="pwa.js"></script>
+</body>
+</html>

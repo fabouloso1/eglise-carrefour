@@ -439,6 +439,21 @@
   <!-- ÉTUDE ACTIVE -->
   <div id="eContenu" style="display:none;">
 
+    <!-- Bouton Guide Lecture -->
+    <div style="margin:8px 12px 0;">
+      <a href="Guide.html"
+        style="display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#1c1c3c,#2d1b4e);border-radius:14px;padding:14px 18px;text-decoration:none;box-shadow:0 2px 10px rgba(28,28,60,0.2);">
+        <div style="width:44px;height:44px;background:rgba(241,196,15,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <i class="fas fa-bible" style="color:#f1c40f;font-size:1.2rem;"></i>
+        </div>
+        <div style="flex:1;">
+          <div style="color:#f1c40f;font-size:0.92rem;font-weight:800;">Guide de Lecture Biblique 2026</div>
+          <div style="color:rgba(255,255,255,0.6);font-size:0.78rem;font-weight:500;">Lecture du jour + rappel 9h chaque matin</div>
+        </div>
+        <i class="fas fa-chevron-right" style="color:rgba(255,255,255,0.3);font-size:0.9rem;"></i>
+      </a>
+    </div>
+
     <!-- Sujet de l'étude -->
     <div class="wa-sujet" id="waSupjet">
       <div class="wa-sujet-badge"><i class="fas fa-book-open"></i> Étude du jour</div>
@@ -615,30 +630,35 @@
     const monNom = nomAuto || '';
 
     liste.innerHTML = docs.map(d => {
-      const q    = d.data();
+      const q      = d.data();
       const estMoi = monNom && q.auteur && q.auteur.startsWith(monNom.split(' ')[0]);
+      const estPasteur = q.isPasteur === true;
 
       let contenu = '';
+      if (q.imageUrl) contenu += `<img src="${q.imageUrl}" class="msg-img" onclick="window.open('${q.imageUrl}','_blank')">`;
+      if (q.audioUrl) contenu += `<audio class="msg-audio" controls src="${q.audioUrl}"></audio>`;
+      if (q.question && !estPasteur) contenu += `<div class="msg-text">${esc(q.question)}</div>`;
+      if (q.question && estPasteur && !q.audioUrl) contenu += `<div class="msg-text">${esc(q.question)}</div>`;
 
-      // Image
-      if (q.imageUrl) {
-        contenu += `<img src="${q.imageUrl}" class="msg-img" onclick="window.open('${q.imageUrl}','_blank')">`;
-      }
-      // Audio
-      if (q.audioUrl) {
-        contenu += `<audio class="msg-audio" controls src="${q.audioUrl}"></audio>`;
-      }
-      // Texte
-      if (q.question) {
-        contenu += `<div class="msg-text">${esc(q.question)}</div>`;
-      }
-
-      // Réponse pasteur
       const reponse = q.reponse ? `
         <div class="msg-reponse">
           <div class="msg-reponse-label"><i class="fas fa-reply"></i> Pasteur Anouis Jean</div>
           <div class="msg-reponse-text">${esc(q.reponse)}</div>
         </div>` : '';
+
+      // Bubl espesyal Pastè
+      if (estPasteur) {
+        return `
+        <div style="display:flex;justify-content:center;margin:8px 0;">
+          <div style="background:linear-gradient(135deg,#075E54,#128C7E);border-radius:16px;padding:12px 16px;max-width:85%;box-shadow:0 2px 8px rgba(7,94,84,0.35);">
+            <div style="color:#DCF8C6;font-size:0.78rem;font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:6px;">
+              <i class="fas fa-star" style="color:#f1c40f;"></i> Message du Pasteur
+            </div>
+            ${contenu}
+            <div style="color:rgba(255,255,255,0.5);font-size:0.65rem;text-align:right;margin-top:4px;">${q.heure||''}</div>
+          </div>
+        </div>`;
+      }
 
       return `
       <div class="msg-wrap ${estMoi ? 'moi' : 'autre'}">

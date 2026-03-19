@@ -39,3 +39,29 @@ self.addEventListener('fetch', e => {
       .catch(() => caches.match(e.request))
   );
 });
+
+// ===== NOTIFIKASYON 9H CHAK JOU =====
+self.addEventListener('message', e => {
+  if (e.data && e.data.type === 'SCHEDULE_DAILY') {
+    const { title, body, url } = e.data;
+    // Kalkile konbyen milisegond rete jiska 9h demen
+    const now   = new Date();
+    const next9 = new Date();
+    next9.setHours(9, 0, 0, 0);
+    if (now.getHours() >= 9) next9.setDate(next9.getDate() + 1);
+    const ms = next9 - now;
+    setTimeout(() => {
+      self.registration.showNotification(title, {
+        body, icon: '/eglise-carrefour/logo.png',
+        badge: '/eglise-carrefour/logo.png',
+        data: { url }
+      });
+    }, ms);
+  }
+});
+
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  const url = e.notification.data?.url || '/eglise-carrefour/Guide.html';
+  e.waitUntil(clients.openWindow(url));
+});
