@@ -447,6 +447,7 @@
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes recPulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
 
     /* Stats dashboard */
     .stats-grid {
@@ -687,71 +688,129 @@
 
     <!-- ===== ÉTUDE ===== -->
     <div class="tab-panel" id="tab-etude">
-      <div class="card" style="background:linear-gradient(135deg,#054a29,#0a3d1a);border:none;">
-        <div id="etude-active-wrap" style="display:none;margin-bottom:20px;">
-          <h3 style="color:#f1c40f!important;margin-bottom:8px;"><i class="fas fa-broadcast-tower"></i> Étude en cours</h3>
-          <p id="etude-active-titre" style="color:white!important;font-size:1rem!important;font-weight:600!important;margin-bottom:14px;"></p>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
-            <button onclick="toggleQuestions(true)" style="padding:10px 16px;background:rgba(46,213,115,0.2);border:1.5px solid #2ed573;border-radius:20px;color:#2ed573;font-weight:700;cursor:pointer;font-size:0.9rem;">
-              <i class="fas fa-unlock"></i> Ouvrir questions
-            </button>
-            <button onclick="toggleQuestions(false)" style="padding:10px 16px;background:rgba(231,76,60,0.2);border:1.5px solid #ff6b6b;border-radius:20px;color:#ff6b6b;font-weight:700;cursor:pointer;font-size:0.9rem;">
-              <i class="fas fa-lock"></i> Fermer questions
-            </button>
-            <button onclick="terminerEtude()" style="padding:10px 16px;background:rgba(231,76,60,0.1);border:1.5px solid rgba(231,76,60,0.4);border-radius:20px;color:#ff6b6b;font-weight:700;cursor:pointer;font-size:0.9rem;">
-              <i class="fas fa-stop-circle"></i> Terminer
-            </button>
+
+      <!-- ETUDE EN COURS -->
+      <div id="etude-active-wrap" style="display:none;background:linear-gradient(135deg,#1e3a5f,#2d5986);border-radius:20px;padding:22px 18px;margin-bottom:16px;border-top:4px solid #f1c40f;">
+
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:44px;height:44px;background:rgba(241,196,15,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+            <i class="fas fa-broadcast-tower" style="color:#f1c40f;font-size:1.1rem;"></i>
           </div>
-          <h4 style="color:#f1c40f!important;margin-bottom:10px;">Questions reçues (<span id="questionsCount">0</span>)</h4>
-          <div id="questionsList" style="background:rgba(255,255,255,0.05);border-radius:12px;padding:14px;max-height:400px;overflow-y:auto;">
-            <p style="color:rgba(255,255,255,0.35);text-align:center;padding:16px;">Aucune question pour le moment...</p>
+          <div>
+            <h3 style="color:#f1c40f!important;font-size:1.05rem!important;font-weight:800!important;margin:0!important;">Étude en cours</h3>
+            <p id="etude-active-titre" style="color:rgba(255,255,255,0.75)!important;font-size:0.9rem!important;font-weight:600!important;margin:0!important;"></p>
           </div>
         </div>
-        <!-- Separasyon -->
-        <div id="etudeFormWrap">
-        <div style="height:1px;background:rgba(255,255,255,0.08);margin:20px 0;"></div>
-        <h3 style="color:#2ed573!important;margin-bottom:20px;font-size:1.1rem!important;"><i class="fas fa-plus-circle" style="margin-right:8px;"></i>Lancer une nouvelle étude</h3>
 
-        <!-- TITRE -->
-        <div style="margin-bottom:16px;">
-          <label style="color:#2ed573!important;font-weight:700!important;display:block;margin-bottom:6px;font-size:0.95rem!important;"><i class="fas fa-heading" style="margin-right:6px;"></i>Titre *</label>
-          <input type="text" id="etudeTitre" placeholder="Ex: La Foi qui déplace les montagnes..." style="border-color:rgba(46,213,115,0.3)!important;background:rgba(255,255,255,0.07)!important;color:white!important;font-size:1rem!important;font-weight:600!important;width:100%;" />
+        <!-- Boutons contrôle -->
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+          <button onclick="toggleQuestions(true)" style="flex:1;min-width:130px;padding:10px 12px;background:rgba(46,213,115,0.15);border:1.5px solid #2ed573;border-radius:20px;color:#2ed573;font-weight:700;cursor:pointer;font-size:0.85rem;">
+            <i class="fas fa-unlock"></i> Ouvrir questions
+          </button>
+          <button onclick="toggleQuestions(false)" style="flex:1;min-width:130px;padding:10px 12px;background:rgba(231,76,60,0.15);border:1.5px solid #ff6b6b;border-radius:20px;color:#ff6b6b;font-weight:700;cursor:pointer;font-size:0.85rem;">
+            <i class="fas fa-lock"></i> Fermer questions
+          </button>
+          <button onclick="terminerEtude()" style="width:100%;padding:10px 12px;background:rgba(231,76,60,0.1);border:1.5px solid rgba(231,76,60,0.35);border-radius:20px;color:#ff6b6b;font-weight:700;cursor:pointer;font-size:0.85rem;">
+            <i class="fas fa-stop-circle"></i> Terminer l'étude
+          </button>
         </div>
 
-        <!-- THÈME -->
-        <div style="margin-bottom:16px;">
-          <label style="color:#2ed573!important;font-weight:700!important;display:block;margin-bottom:6px;font-size:0.95rem!important;"><i class="fas fa-tag" style="margin-right:6px;"></i>Thème *</label>
-          <input type="text" id="etudeTheme" placeholder="Ex: La Foi, La Prière, Le Pardon..." style="border-color:rgba(46,213,115,0.3)!important;background:rgba(255,255,255,0.07)!important;color:white!important;font-size:1rem!important;font-weight:600!important;width:100%;" />
+        <!-- AUDIO PASTEUR -->
+        <div style="background:rgba(241,196,15,0.07);border:1px solid rgba(241,196,15,0.2);border-radius:14px;padding:14px;margin-bottom:16px;">
+          <p style="color:#f1c40f!important;font-size:0.88rem!important;font-weight:800!important;margin-bottom:10px!important;">
+            <i class="fas fa-microphone" style="margin-right:6px;"></i>Envoyer un audio aux participants
+          </p>
+
+          <!-- Normal state -->
+          <div id="pasteurRecNormal">
+            <button type="button" onclick="demarrerPasteurRec()"
+              style="width:100%;padding:12px;background:linear-gradient(135deg,#e74c3c,#c0392b);border:none;border-radius:20px;color:white;font-size:0.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+              <i class="fas fa-microphone"></i> Enregistrer un message vocal
+            </button>
+          </div>
+
+          <!-- Recording state -->
+          <div id="pasteurRecActive" style="display:none;">
+            <div style="display:flex;align-items:center;gap:10px;background:rgba(231,76,60,0.12);border-radius:10px;padding:12px;margin-bottom:8px;">
+              <div style="width:12px;height:12px;background:#e74c3c;border-radius:50%;animation:recPulse 1s infinite;flex-shrink:0;"></div>
+              <span style="color:#e74c3c;font-weight:800;font-size:1rem;" id="pasteurRecTimer">0:00</span>
+              <span style="color:rgba(255,255,255,0.55);font-size:0.85rem;flex:1;">Enregistrement en cours...</span>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button type="button" onclick="annulerPasteurRec()" style="flex:1;padding:10px;background:rgba(255,255,255,0.1);border:none;border-radius:20px;color:white;cursor:pointer;font-weight:600;font-size:0.88rem;">
+                <i class="fas fa-times"></i> Annuler
+              </button>
+              <button type="button" onclick="stopPasteurRec()" style="flex:2;padding:10px;background:linear-gradient(135deg,#2ed573,#1abc9c);border:none;border-radius:20px;color:#0d1f4a;font-weight:800;cursor:pointer;font-size:0.9rem;">
+                <i class="fas fa-stop-circle"></i> Arrêter
+              </button>
+            </div>
+          </div>
+
+          <!-- Preview audio -->
+          <div id="pasteurAudioPreview" style="display:none;margin-top:10px;">
+            <audio id="pasteurAudioEl" controls style="width:100%;border-radius:8px;margin-bottom:8px;"></audio>
+            <div style="display:flex;gap:8px;">
+              <button type="button" onclick="envoyerAudioPasteur()"
+                style="flex:1;padding:12px;background:linear-gradient(135deg,#f1c40f,#e67e22);border:none;border-radius:20px;color:#1c1c3c;font-weight:800;cursor:pointer;font-size:0.9rem;">
+                <i class="fas fa-paper-plane"></i> Envoyer aux participants
+              </button>
+              <button type="button" onclick="annulerAudioPasteur()" style="padding:12px 14px;background:rgba(231,76,60,0.2);border:1px solid rgba(231,76,60,0.3);color:#ff6b6b;border-radius:20px;cursor:pointer;">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+            <div id="pasteurAudioStatus" style="display:none;margin-top:8px;padding:10px;border-radius:10px;text-align:center;font-weight:700;font-size:0.88rem;"></div>
+          </div>
         </div>
 
-        <!-- OBJECTIF -->
-        <div style="margin-bottom:16px;">
-          <label style="color:#2ed573!important;font-weight:700!important;display:block;margin-bottom:6px;font-size:0.95rem!important;"><i class="fas fa-bullseye" style="margin-right:6px;"></i>Objectif *</label>
-          <textarea id="etudeObjectif" placeholder="Quel est l'objectif de cette étude ? Qu'est-ce que les participants vont apprendre ?" style="border-color:rgba(46,213,115,0.3)!important;background:rgba(255,255,255,0.07)!important;color:white!important;font-size:1rem!important;font-weight:600!important;width:100%;min-height:80px;resize:vertical;"></textarea>
+        <!-- Questions -->
+        <h4 style="color:#f1c40f!important;font-size:0.92rem!important;font-weight:800!important;margin-bottom:10px!important;">
+          <i class="fas fa-comments" style="margin-right:6px;"></i>Questions (<span id="questionsCount">0</span>)
+        </h4>
+        <div id="questionsList" style="background:rgba(255,255,255,0.04);border-radius:12px;padding:12px;max-height:420px;overflow-y:auto;">
+          <p style="color:rgba(255,255,255,0.3);text-align:center;padding:16px;">Aucune question...</p>
+        </div>
+      </div>
+
+      <!-- LANCER NOUVELLE ETUDE -->
+      <div id="etudeFormWrap" style="background:linear-gradient(135deg,#1a4a3a,#2d7a5c);border-radius:20px;padding:22px 18px;border-top:4px solid #2ed573;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+          <div style="width:44px;height:44px;background:rgba(124,58,237,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+            <i class="fas fa-plus-circle" style="color:#a78bfa;font-size:1.1rem;"></i>
+          </div>
+          <div>
+            <h3 style="color:#a78bfa!important;font-size:1.05rem!important;font-weight:800!important;margin:0!important;">Lancer une nouvelle étude</h3>
+            <p style="color:rgba(255,255,255,0.4)!important;font-size:0.82rem!important;margin:0!important;">Notification envoyée automatiquement</p>
+          </div>
         </div>
 
-        <!-- DÉVELOPPEMENT -->
-        <div style="margin-bottom:16px;">
-          <label style="color:#2ed573!important;font-weight:700!important;display:block;margin-bottom:6px;font-size:0.95rem!important;"><i class="fas fa-align-left" style="margin-right:6px;"></i>Développement du sujet *</label>
-          <textarea id="etudeContenu" placeholder="Développez le sujet en détail, incluez les points importants, les explications..." style="border-color:rgba(46,213,115,0.3)!important;background:rgba(255,255,255,0.07)!important;color:white!important;font-size:1rem!important;font-weight:600!important;width:100%;min-height:140px;resize:vertical;"></textarea>
+        <div style="margin-bottom:14px;">
+          <label style="color:#2ed573!important;font-weight:700!important;display:block;margin-bottom:6px;font-size:0.9rem!important;"><i class="fas fa-heading" style="margin-right:5px;"></i>Titre *</label>
+          <input type="text" id="etudeTitre" placeholder="Ex: La Foi qui déplace les montagnes..." style="width:100%;padding:13px 15px;border:2px solid rgba(46,213,115,0.3)!important;border-radius:12px;background:rgba(255,255,255,0.1)!important;color:white!important;font-size:1rem!important;font-weight:600!important;" />
         </div>
-
-        <!-- RÉFÉRENCE -->
+        <div style="margin-bottom:14px;">
+          <label style="color:#2ed573!important;font-weight:700!important;display:block;margin-bottom:6px;font-size:0.9rem!important;"><i class="fas fa-tag" style="margin-right:5px;"></i>Thème *</label>
+          <input type="text" id="etudeTheme" placeholder="Ex: La Foi, La Prière, Le Pardon..." style="width:100%;padding:13px 15px;border:2px solid rgba(46,213,115,0.3)!important;border-radius:12px;background:rgba(255,255,255,0.1)!important;color:white!important;font-size:1rem!important;font-weight:600!important;" />
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="color:#2ed573!important;font-weight:700!important;display:block;margin-bottom:6px;font-size:0.9rem!important;"><i class="fas fa-bullseye" style="margin-right:5px;"></i>Objectif *</label>
+          <textarea id="etudeObjectif" placeholder="Quel est l'objectif de cette étude ?" style="width:100%;padding:13px 15px;border:2px solid rgba(46,213,115,0.3)!important;border-radius:12px;background:rgba(255,255,255,0.1)!important;color:white!important;font-size:1rem!important;font-weight:600!important;min-height:80px;resize:vertical;"></textarea>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="color:#2ed573!important;font-weight:700!important;display:block;margin-bottom:6px;font-size:0.9rem!important;"><i class="fas fa-align-left" style="margin-right:5px;"></i>Développement *</label>
+          <textarea id="etudeContenu" placeholder="Développez le sujet en détail..." style="width:100%;padding:13px 15px;border:2px solid rgba(46,213,115,0.3)!important;border-radius:12px;background:rgba(255,255,255,0.1)!important;color:white!important;font-size:1rem!important;font-weight:600!important;min-height:130px;resize:vertical;"></textarea>
+        </div>
         <div style="margin-bottom:20px;">
-          <label style="color:#2ed573!important;font-weight:700!important;display:block;margin-bottom:6px;font-size:0.95rem!important;"><i class="fas fa-bible" style="margin-right:6px;"></i>Référence biblique *</label>
-          <input type="text" id="etudeVerset" placeholder="Ex: Jean 3:16, Hébreux 11:1, Philippiens 4:13..." style="border-color:rgba(46,213,115,0.3)!important;background:rgba(255,255,255,0.07)!important;color:white!important;font-size:1rem!important;font-weight:600!important;width:100%;" />
+          <label style="color:#2ed573!important;font-weight:700!important;display:block;margin-bottom:6px;font-size:0.9rem!important;"><i class="fas fa-bible" style="margin-right:5px;"></i>Référence biblique *</label>
+          <input type="text" id="etudeVerset" placeholder="Ex: Jean 3:16, Hébreux 11:1..." style="width:100%;padding:13px 15px;border:2px solid rgba(46,213,115,0.3)!important;border-radius:12px;background:rgba(255,255,255,0.1)!important;color:white!important;font-size:1rem!important;font-weight:600!important;" />
         </div>
 
-        <!-- BOUTONS -->
-        <button onclick="lancerEtude()" style="width:100%;padding:16px;background:linear-gradient(135deg,#2ed573,#1abc9c);border:none;border-radius:30px;color:#0d1f4a!important;font-size:1.05rem!important;font-weight:800!important;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px;">
+        <button onclick="lancerEtude()" style="width:100%;padding:16px;background:linear-gradient(135deg,#2ed573,#1abc9c);border:none;border-radius:30px;color:#0d1f4a!important;font-size:1.05rem!important;font-weight:800!important;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;">
           <i class="fas fa-broadcast-tower"></i> Lancer l'étude & notifier
         </button>
-        </div><!-- fin etudeFormWrap -->
-
-        <div id="etudeStatus" style="display:none;margin-top:10px;padding:14px;border-radius:12px;text-align:center;font-weight:700;font-size:0.95rem;"></div>
       </div>
-    </div>
 
+      <div id="etudeStatus" style="display:none;margin-top:12px;padding:14px;border-radius:12px;text-align:center;font-weight:700;font-size:0.95rem;"></div>
+    </div>
     <!-- ===== ÉVÉNEMENTS ===== -->
     <div class="tab-panel" id="tab-evenements">
       <div class="card" style="background:linear-gradient(135deg,#1c1c3c,#3a1c5c);border:none;">
@@ -2118,6 +2177,98 @@
 
   async function supprimerQuestion(id) {
     try { await window._deleteDoc(window._doc(window._db,'etude_questions',id)); chargerEtudeActive(); } catch(e) {}
+  }
+
+  // ===== AUDIO PASTEUR =====
+  let mpPasteur = null, chunksPasteur = [], intPasteur = null, secPasteur = 0, blobPasteur = null;
+
+  async function demarrerPasteurRec() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mpPasteur = new MediaRecorder(stream);
+      chunksPasteur = []; secPasteur = 0; blobPasteur = null;
+      mpPasteur.ondataavailable = e => chunksPasteur.push(e.data);
+      mpPasteur.start();
+      document.getElementById('pasteurRecNormal').style.display = 'none';
+      document.getElementById('pasteurRecActive').style.display = 'block';
+      document.getElementById('pasteurAudioPreview').style.display = 'none';
+      intPasteur = setInterval(() => {
+        secPasteur++;
+        const m = Math.floor(secPasteur/60), s = secPasteur%60;
+        document.getElementById('pasteurRecTimer').textContent = m+':'+(s<10?'0':'')+s;
+      }, 1000);
+    } catch(e) { showToast('Microphone inaccessible : ' + e.message, 'error'); }
+  }
+
+  function stopPasteurRec() {
+    if (!mpPasteur) return;
+    clearInterval(intPasteur);
+    mpPasteur.onstop = () => {
+      blobPasteur = new Blob(chunksPasteur, { type: 'audio/webm' });
+      const url = URL.createObjectURL(blobPasteur);
+      document.getElementById('pasteurAudioEl').src = url;
+      document.getElementById('pasteurAudioPreview').style.display = 'block';
+      document.getElementById('pasteurRecActive').style.display = 'none';
+      document.getElementById('pasteurRecNormal').style.display = 'block';
+    };
+    mpPasteur.stop();
+    mpPasteur.stream.getTracks().forEach(t => t.stop());
+  }
+
+  function annulerPasteurRec() {
+    if (mpPasteur) { try { mpPasteur.stop(); mpPasteur.stream.getTracks().forEach(t=>t.stop()); } catch(e){} }
+    clearInterval(intPasteur);
+    blobPasteur = null;
+    document.getElementById('pasteurRecActive').style.display = 'none';
+    document.getElementById('pasteurRecNormal').style.display = 'block';
+  }
+
+  function annulerAudioPasteur() {
+    blobPasteur = null;
+    document.getElementById('pasteurAudioPreview').style.display = 'none';
+    document.getElementById('pasteurAudioEl').src = '';
+  }
+
+  async function envoyerAudioPasteur() {
+    if (!blobPasteur) return;
+    const st = document.getElementById('pasteurAudioStatus');
+    st.style.display = 'block';
+    st.style.background = 'rgba(255,255,255,0.05)';
+    st.style.color = 'rgba(255,255,255,0.6)';
+    st.textContent = '⏳ Upload en cours...';
+    try {
+      const fd = new FormData();
+      fd.append('file', new File([blobPasteur], 'pasteur.webm', { type:'audio/webm' }));
+      fd.append('upload_preset', 'eglise_upload');
+      fd.append('folder', 'etude/pasteur');
+      const res  = await fetch('https://api.cloudinary.com/v1_1/dvcxhpibq/video/upload', { method:'POST', body:fd });
+      const data = await res.json();
+      if (!data.secure_url) throw new Error('Upload échoué');
+
+      // Sove nan etude_questions kòm mesaj Pastè spesyal
+      await window._addDoc(window._collection(window._db, 'etude_questions'), {
+        auteur:    'Pasteur Anouis Jean',
+        question:  '🎤 Message vocal du Pasteur',
+        audioUrl:  data.secure_url,
+        isPasteur: true,
+        heure:     new Date().toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' }),
+        timestamp: window._serverTimestamp()
+      });
+
+      st.style.background = 'rgba(46,213,115,0.15)';
+      st.style.color = '#2ed573';
+      st.textContent = '✅ Audio envoyé aux participants !';
+      blobPasteur = null;
+      document.getElementById('pasteurAudioEl').src = '';
+      setTimeout(() => {
+        document.getElementById('pasteurAudioPreview').style.display = 'none';
+        st.style.display = 'none';
+      }, 3000);
+    } catch(e) {
+      st.style.background = 'rgba(231,76,60,0.15)';
+      st.style.color = '#ff6b6b';
+      st.textContent = '❌ Erreur : ' + e.message;
+    }
   }
 
   async function toggleQuestions(ouvert) {
