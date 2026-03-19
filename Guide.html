@@ -167,6 +167,8 @@
     .g-day-intro { font-size: 0.78rem; color: #888; line-height: 1.4; }
   </style>
 
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="plan2026.js"></script>
   <script src="bible_fr.js"></script>
 </head>
@@ -236,6 +238,18 @@
 <script src="nav.js"></script>
 <script>
   NAV.init('Guide.html');
+
+  // Firebase init
+  if (!firebase.apps.length) {
+    firebase.initializeApp({
+      apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
+      authDomain: "eglise-carrefour.firebaseapp.com",
+      projectId: "eglise-carrefour",
+      storageBucket: "eglise-carrefour.appspot.com",
+      messagingSenderId: "421333694767",
+      appId: "1:421333694767:web:30c18da36ae020821a49da"
+    });
+  }
 
   // ===== PLAN2026 deja chaje via plan2026.js =====
 
@@ -592,20 +606,20 @@
     }
   }
 
-  init();
-
-  // ===== VERIFIKASYON ENSKRIPSYON =====
+  // Verifye aksè ANVAN init
   function verifierAccesGuide() {
     try {
       const data = localStorage.getItem('eglise_membre');
       if (data) {
         const m = JSON.parse(data);
-        if (m.nom && m.telephone) return; // Aksè OK
+        if (m.nom && m.telephone) return; // Aksè OK — pa fè anyen
       }
     } catch(e) {}
-    // Pa enskri — montre modal
-    montreModalGuide();
+    // Pa enskri — montre modal APRE kontni chaje
+    setTimeout(montreModalGuide, 300);
   }
+  verifierAccesGuide();
+  init();
 
   function montreModalGuide() {
     // Kache tout kontni
@@ -686,7 +700,6 @@
     }
   };
 
-  verifierAccesGuide();
 </script>
 <script src="pwa.js"></script>
 </body>
