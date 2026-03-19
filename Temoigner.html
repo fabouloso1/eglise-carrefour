@@ -336,6 +336,7 @@
                 <div class="t-date">${date}</div>
               </div>
             </div>
+            ${t.audioUrl ? `<audio controls src="${t.audioUrl}" style="width:100%;margin:10px 0;border-radius:10px;"></audio>` : ''}
             <p class="t-content">${esc(t.temoignage || '')}</p>
             <span class="t-category"><i class="fas fa-circle"></i> ${cats[t.categorie]||t.categorie||'Témoignage'}</span>
           </div>`;
