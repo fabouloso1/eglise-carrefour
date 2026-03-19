@@ -220,12 +220,24 @@
             <span style="color:rgba(255,255,255,0.5);font-size:0.85rem;">Max 2 minutes</span>
           </div>
 
-          <div id="recActive" style="display:none;align-items:center;gap:12px;background:rgba(231,76,60,0.1);border-radius:10px;padding:12px;">
-            <div style="width:12px;height:12px;background:#e74c3c;border-radius:50%;animation:recPulse 1s infinite;flex-shrink:0;"></div>
-            <span style="color:#e74c3c;font-weight:700;" id="recTimerTemo">0:00</span>
-            <span style="color:rgba(255,255,255,0.6);font-size:0.85rem;flex:1;">Enregistrement en cours...</span>
-            <button type="button" onclick="annulerRecTemo()" style="padding:6px 14px;background:rgba(255,255,255,0.1);border:none;border-radius:20px;color:white;cursor:pointer;font-size:0.82rem;">Annuler</button>
-            <button type="button" onclick="stopRecTemo()" style="padding:6px 14px;background:#2ed573;border:none;border-radius:20px;color:#0d1f4a;font-weight:700;cursor:pointer;font-size:0.82rem;"><i class="fas fa-stop"></i> Arrêter</button>
+          <div id="recActive" style="display:none;flex-direction:column;gap:10px;background:rgba(231,76,60,0.1);border-radius:14px;padding:16px;">
+            <!-- Timer -->
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:14px;height:14px;background:#e74c3c;border-radius:50%;animation:recPulse 1s infinite;flex-shrink:0;"></div>
+              <span style="color:#e74c3c;font-weight:800;font-size:1.1rem;" id="recTimerTemo">0:00</span>
+              <span style="color:rgba(255,255,255,0.65);font-size:0.9rem;">Enregistrement en cours...</span>
+            </div>
+            <!-- Boutons sur ligne séparée -->
+            <div style="display:flex;gap:10px;">
+              <button type="button" onclick="annulerRecTemo()"
+                style="flex:1;padding:12px;background:rgba(255,255,255,0.1);border:none;border-radius:20px;color:white;cursor:pointer;font-size:0.9rem;font-weight:600;">
+                <i class="fas fa-times"></i> Annuler
+              </button>
+              <button type="button" onclick="stopRecTemo()"
+                style="flex:2;padding:12px;background:linear-gradient(135deg,#2ed573,#1abc9c);border:none;border-radius:20px;color:#0d1f4a;font-weight:800;cursor:pointer;font-size:0.95rem;">
+                <i class="fas fa-stop-circle"></i> Arrêter l'enregistrement
+              </button>
+            </div>
           </div>
 
           <!-- Aperçu audio -->
