@@ -327,6 +327,37 @@
     // Montre siksè
     document.getElementById('gate-form').style.display    = 'none';
     document.getElementById('gate-success').style.display = 'block';
+
+    // Mande pèmisyon notifikasyon APRE enskripsyon
+    setTimeout(async () => {
+      if ('Notification' in window && Notification.permission === 'default') {
+        try {
+          const perm = await Notification.requestPermission();
+          if (perm === 'granted') {
+            // Notif byenveni imedyatman
+            new Notification('🙏 Bienvenue — Église de Dieu de la Prophétie', {
+              body: 'Vous recevrez désormais toutes les notifications: études, événements et rappels bibliques à 9h!',
+              icon: 'logo.png',
+              tag:  'bienvenue'
+            });
+            // Programme notif 9h si plan2026 disponib
+            if (typeof PLAN_2026 !== 'undefined') {
+              const today = new Date();
+              const key   = today.toISOString().split('T')[0];
+              const plan  = PLAN_2026[key];
+              if (plan && 'serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({
+                  type:  'SCHEDULE_DAILY',
+                  title: '📖 Lecture du jour — ' + plan.reference,
+                  body:  plan.intro,
+                  url:   '/eglise-carrefour/Guide.html'
+                });
+              }
+            }
+          }
+        } catch(e) { console.log('Notif:', e.message); }
+      }
+    }, 1500); // Tann 1.5s apre siksè
   };
 
   // ===== FÈMEN GATE =====

@@ -150,16 +150,6 @@
     .g-progress-text { color: #888; font-size: 0.85rem; font-weight: 600; }
 
     /* NOTIF */
-    .g-notif-wrap { border-left: 4px solid #f1c40f; }
-    .g-notif-wrap p { color: #666; font-size: 0.9rem; line-height: 1.6; margin-bottom: 14px; }
-    .g-notif-btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: linear-gradient(135deg, #1c1c3c, #2d1b4e);
-      color: white; padding: 12px 22px; border-radius: 30px;
-      font-weight: 700; font-size: 0.92rem; border: none; cursor: pointer;
-    }
-    .g-notif-btn.active { background: linear-gradient(135deg, #2ed573, #1abc9c); color: #0d1f4a; }
-    .g-notif-status { margin-top: 10px; font-size: 0.85rem; font-weight: 700; }
 
     /* SEMAINE */
     .g-day-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f0f4ff; cursor: pointer; }
@@ -178,6 +168,7 @@
   </style>
 
   <script src="plan2026.js"></script>
+  <script src="bible_fr.js"></script>
 </head>
 <body>
 
@@ -218,16 +209,6 @@
       <div class="g-progress-bar" id="gProgressBar" style="width:0%;"></div>
     </div>
     <div class="g-progress-text" id="gProgressText">Calcul...</div>
-  </div>
-
-  <!-- NOTIFICATIONS -->
-  <div class="g-card g-notif-wrap">
-    <h3><i class="fas fa-bell" style="color:#f1c40f;"></i> Rappel quotidien à 9h</h3>
-    <p>Recevez chaque matin à 9h le chapitre du jour directement sur votre téléphone.</p>
-    <button class="g-notif-btn" id="gNotifBtn" onclick="activerNotif()">
-      <i class="fas fa-bell"></i> Activer les notifications
-    </button>
-    <div id="gNotifStatus" class="g-notif-status" style="display:none;"></div>
   </div>
 
   <!-- PLANNING SEMAINE -->
@@ -486,14 +467,36 @@
   // ===== LECTEUR INTÉGRÉ =====
   function ouvrirLecteur() {
     if (!planJour) return;
-    document.getElementById('readerTitle').textContent = planJour.reference;
-    const versets = getComplet(planJour.reference);
-    document.getElementById('readerContent').innerHTML = versets.map(v =>
-      `<p><span class="verset-num">${v.v}</span>${v.t}</p>`
-    ).join('') +
-    `<p style="color:#888;font-size:0.82rem;margin-top:20px;font-style:italic;">
-      — Louis Segond (LSG) · Pour lire le chapitre complet, cliquez "Bible.com"
-    </p>`;
+    const ref = planJour.reference;
+    document.getElementById('readerTitle').textContent = ref;
+
+    let html = '';
+
+    // Essaye bible_fr.js d'abord (offline)
+    if (typeof getBibleRef !== 'undefined') {
+      const data = getBibleRef(ref);
+      const versets = data.versets;
+      const keys = Object.keys(versets);
+      if (keys.length > 0) {
+        html = keys.map(v =>
+          `<p><span class="verset-num">${v}</span>${versets[v]}</p>`
+        ).join('');
+        html += `<p style="color:#888;font-size:0.82rem;margin-top:20px;font-style:italic;">
+          Bible en français — Louis Segond (LSG) — Domaine public
+        </p>`;
+      } else if (data.manque) {
+        // Livre pas encore dans bible_fr.js — fallback extraits BIBLE_FR
+        const versets2 = getComplet(ref);
+        html = versets2.map(v => `<p><span class="verset-num">${v.v}</span>${v.t}</p>`).join('');
+        html += `<p style="color:#aaa;font-size:0.8rem;margin-top:16px;">Pour lire ce chapitre en entier, utilisez le bouton Bible.com ci-dessus.</p>`;
+      }
+    } else {
+      // Fallback BIBLE_FR intégré
+      const versets = getComplet(ref);
+      html = versets.map(v => `<p><span class="verset-num">${v.v}</span>${v.t}</p>`).join('');
+    }
+
+    document.getElementById('readerContent').innerHTML = html;
     document.getElementById('readerOverlay').classList.add('open');
   }
 
@@ -536,55 +539,10 @@
     document.getElementById('gWeek').innerHTML = html;
   }
 
-  // ===== NOTIFICATIONS — auto si déjà accordées =====
-  async function verifierEtActiverNotif() {
-    if (!('Notification' in window)) return;
-    const btn    = document.getElementById('gNotifBtn');
-    const status = document.getElementById('gNotifStatus');
-
-    if (Notification.permission === 'granted') {
-      // Déjà accordé — activer directement sans demander
-      btn.innerHTML = '<i class="fas fa-check"></i> Notifications activées';
-      btn.classList.add('active');
-      btn.disabled = true;
-      status.style.display = 'block';
-      status.style.color   = '#2e7d32';
-      status.textContent   = '✅ Vous recevrez votre rappel chaque matin à 9h.';
-      // Programmer rappel
+  // Notifikasyon jere pa gate.js — jis programme rappel si déjà accordé
+  function verifierEtActiverNotif() {
+    if ('Notification' in window && Notification.permission === 'granted') {
       programmerNotifQuotidienne();
-    }
-  }
-
-  async function activerNotif() {
-    if (!('Notification' in window)) {
-      alert('Votre navigateur ne supporte pas les notifications.');
-      return;
-    }
-
-    const btn    = document.getElementById('gNotifBtn');
-    const status = document.getElementById('gNotifStatus');
-
-    const perm = await Notification.requestPermission();
-
-    if (perm === 'granted') {
-      btn.innerHTML = '<i class="fas fa-check"></i> Notifications activées';
-      btn.classList.add('active');
-      btn.disabled = true;
-      status.style.display = 'block';
-      status.style.color   = '#2e7d32';
-      status.textContent   = '✅ Parfait ! Vous recevrez votre rappel chaque matin à 9h.';
-
-      // Montrer notif de confirmation
-      new Notification('📖 Guide de Lecture Biblique 2026', {
-        body: 'Rappel activé ! Chaque matin à 9h, votre chapitre du jour vous attend.',
-        icon: 'logo.png'
-      });
-
-      programmerNotifQuotidienne();
-    } else {
-      status.style.display = 'block';
-      status.style.color   = '#e74c3c';
-      status.textContent   = '❌ Notifications refusées. Modifiez les paramètres de votre navigateur.';
     }
   }
 
