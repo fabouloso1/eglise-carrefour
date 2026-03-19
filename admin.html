@@ -690,15 +690,15 @@
     <div class="tab-panel" id="tab-etude">
 
       <!-- ETUDE EN COURS -->
-      <div id="etude-active-wrap" style="display:none;background:linear-gradient(135deg,#1e3a5f,#2d5986);border-radius:20px;padding:22px 18px;margin-bottom:16px;border-top:4px solid #f1c40f;">
+      <div id="etude-active-wrap" style="display:none;background:linear-gradient(135deg,#1565c0,#1976d2);border-radius:20px;padding:22px 18px;margin-bottom:16px;border-top:4px solid white;">
 
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
           <div style="width:44px;height:44px;background:rgba(241,196,15,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
             <i class="fas fa-broadcast-tower" style="color:#f1c40f;font-size:1.1rem;"></i>
           </div>
           <div>
-            <h3 style="color:#f1c40f!important;font-size:1.05rem!important;font-weight:800!important;margin:0!important;">Étude en cours</h3>
-            <p id="etude-active-titre" style="color:rgba(255,255,255,0.75)!important;font-size:0.9rem!important;font-weight:600!important;margin:0!important;"></p>
+            <h3 style="color:white!important;font-size:1.05rem!important;font-weight:800!important;margin:0!important;">Étude en cours</h3>
+            <p id="etude-active-titre" style="color:rgba(255,255,255,0.9)!important;font-size:0.95rem!important;font-weight:600!important;margin:0!important;"></p>
           </div>
         </div>
 
@@ -716,7 +716,7 @@
         </div>
 
         <!-- AUDIO PASTEUR -->
-        <div style="background:rgba(241,196,15,0.07);border:1px solid rgba(241,196,15,0.2);border-radius:14px;padding:14px;margin-bottom:16px;">
+        <div style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:14px;padding:14px;margin-bottom:16px;">
           <p style="color:#f1c40f!important;font-size:0.88rem!important;font-weight:800!important;margin-bottom:10px!important;">
             <i class="fas fa-microphone" style="margin-right:6px;"></i>Envoyer un audio aux participants
           </p>
@@ -766,45 +766,45 @@
         <h4 style="color:#f1c40f!important;font-size:0.92rem!important;font-weight:800!important;margin-bottom:10px!important;">
           <i class="fas fa-comments" style="margin-right:6px;"></i>Questions (<span id="questionsCount">0</span>)
         </h4>
-        <div id="questionsList" style="background:rgba(255,255,255,0.04);border-radius:12px;padding:12px;max-height:420px;overflow-y:auto;">
-          <p style="color:rgba(255,255,255,0.3);text-align:center;padding:16px;">Aucune question...</p>
+        <div id="questionsList" style="background:rgba(255,255,255,0.1);border-radius:12px;padding:12px;max-height:420px;overflow-y:auto;">
+          <p style="color:rgba(255,255,255,0.6);text-align:center;padding:16px;">Aucune question...</p>
         </div>
       </div>
 
       <!-- LANCER NOUVELLE ETUDE -->
-      <div id="etudeFormWrap" style="background:linear-gradient(135deg,#1a4a3a,#2d7a5c);border-radius:20px;padding:22px 18px;border-top:4px solid #2ed573;">
+      <div id="etudeFormWrap" style="background:white;border-radius:20px;padding:22px 18px;border-top:4px solid #1565c0;box-shadow:0 4px 16px rgba(0,0,0,0.1);">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
           <div style="width:44px;height:44px;background:rgba(124,58,237,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
             <i class="fas fa-plus-circle" style="color:#a78bfa;font-size:1.1rem;"></i>
           </div>
           <div>
             <h3 style="color:#a78bfa!important;font-size:1.05rem!important;font-weight:800!important;margin:0!important;">Lancer une nouvelle étude</h3>
-            <p style="color:rgba(255,255,255,0.4)!important;font-size:0.82rem!important;margin:0!important;">Notification envoyée automatiquement</p>
+            <p style="color:#666!important;font-size:0.82rem!important;margin:0!important;">Notification envoyée automatiquement</p>
           </div>
         </div>
 
         <div style="margin-bottom:14px;">
-          <label style="color:#2ed573!important;font-weight:700!important;display:block;margin-bottom:6px;font-size:0.9rem!important;"><i class="fas fa-heading" style="margin-right:5px;"></i>Titre *</label>
-          <input type="text" id="etudeTitre" placeholder="Ex: La Foi qui déplace les montagnes..." style="width:100%;padding:13px 15px;border:2px solid rgba(46,213,115,0.3)!important;border-radius:12px;background:rgba(255,255,255,0.1)!important;color:white!important;font-size:1rem!important;font-weight:600!important;" />
+          <label style="color:#1565c0!important;font-weight:700!important;display:block;margin-bottom:6px;font-size:0.9rem!important;"><i class="fas fa-heading" style="margin-right:5px;"></i>Titre *</label>
+          <input type="text" id="etudeTitre" placeholder="Ex: La Foi qui déplace les montagnes..." style="width:100%;padding:13px 15px;border:2px solid #bbdefb!important;border-radius:12px;background:#f8fbff!important;color:#111!important;font-size:1rem!important;font-weight:600!important;" />
         </div>
         <div style="margin-bottom:14px;">
-          <label style="color:#2ed573!important;font-weight:700!important;display:block;margin-bottom:6px;font-size:0.9rem!important;"><i class="fas fa-tag" style="margin-right:5px;"></i>Thème *</label>
-          <input type="text" id="etudeTheme" placeholder="Ex: La Foi, La Prière, Le Pardon..." style="width:100%;padding:13px 15px;border:2px solid rgba(46,213,115,0.3)!important;border-radius:12px;background:rgba(255,255,255,0.1)!important;color:white!important;font-size:1rem!important;font-weight:600!important;" />
+          <label style="color:#1565c0!important;font-weight:700!important;display:block;margin-bottom:6px;font-size:0.9rem!important;"><i class="fas fa-tag" style="margin-right:5px;"></i>Thème *</label>
+          <input type="text" id="etudeTheme" placeholder="Ex: La Foi, La Prière, Le Pardon..." style="width:100%;padding:13px 15px;border:2px solid #bbdefb!important;border-radius:12px;background:#f8fbff!important;color:#111!important;font-size:1rem!important;font-weight:600!important;" />
         </div>
         <div style="margin-bottom:14px;">
-          <label style="color:#2ed573!important;font-weight:700!important;display:block;margin-bottom:6px;font-size:0.9rem!important;"><i class="fas fa-bullseye" style="margin-right:5px;"></i>Objectif *</label>
-          <textarea id="etudeObjectif" placeholder="Quel est l'objectif de cette étude ?" style="width:100%;padding:13px 15px;border:2px solid rgba(46,213,115,0.3)!important;border-radius:12px;background:rgba(255,255,255,0.1)!important;color:white!important;font-size:1rem!important;font-weight:600!important;min-height:80px;resize:vertical;"></textarea>
+          <label style="color:#1565c0!important;font-weight:700!important;display:block;margin-bottom:6px;font-size:0.9rem!important;"><i class="fas fa-bullseye" style="margin-right:5px;"></i>Objectif *</label>
+          <textarea id="etudeObjectif" placeholder="Quel est l'objectif de cette étude ?" style="width:100%;padding:13px 15px;border:2px solid #bbdefb!important;border-radius:12px;background:#f8fbff!important;color:#111!important;font-size:1rem!important;font-weight:600!important;min-height:80px;resize:vertical;"></textarea>
         </div>
         <div style="margin-bottom:14px;">
-          <label style="color:#2ed573!important;font-weight:700!important;display:block;margin-bottom:6px;font-size:0.9rem!important;"><i class="fas fa-align-left" style="margin-right:5px;"></i>Développement *</label>
-          <textarea id="etudeContenu" placeholder="Développez le sujet en détail..." style="width:100%;padding:13px 15px;border:2px solid rgba(46,213,115,0.3)!important;border-radius:12px;background:rgba(255,255,255,0.1)!important;color:white!important;font-size:1rem!important;font-weight:600!important;min-height:130px;resize:vertical;"></textarea>
+          <label style="color:#1565c0!important;font-weight:700!important;display:block;margin-bottom:6px;font-size:0.9rem!important;"><i class="fas fa-align-left" style="margin-right:5px;"></i>Développement *</label>
+          <textarea id="etudeContenu" placeholder="Développez le sujet en détail..." style="width:100%;padding:13px 15px;border:2px solid #bbdefb!important;border-radius:12px;background:#f8fbff!important;color:#111!important;font-size:1rem!important;font-weight:600!important;min-height:130px;resize:vertical;"></textarea>
         </div>
         <div style="margin-bottom:20px;">
-          <label style="color:#2ed573!important;font-weight:700!important;display:block;margin-bottom:6px;font-size:0.9rem!important;"><i class="fas fa-bible" style="margin-right:5px;"></i>Référence biblique *</label>
-          <input type="text" id="etudeVerset" placeholder="Ex: Jean 3:16, Hébreux 11:1..." style="width:100%;padding:13px 15px;border:2px solid rgba(46,213,115,0.3)!important;border-radius:12px;background:rgba(255,255,255,0.1)!important;color:white!important;font-size:1rem!important;font-weight:600!important;" />
+          <label style="color:#1565c0!important;font-weight:700!important;display:block;margin-bottom:6px;font-size:0.9rem!important;"><i class="fas fa-bible" style="margin-right:5px;"></i>Référence biblique *</label>
+          <input type="text" id="etudeVerset" placeholder="Ex: Jean 3:16, Hébreux 11:1..." style="width:100%;padding:13px 15px;border:2px solid #bbdefb!important;border-radius:12px;background:#f8fbff!important;color:#111!important;font-size:1rem!important;font-weight:600!important;" />
         </div>
 
-        <button onclick="lancerEtude()" style="width:100%;padding:16px;background:linear-gradient(135deg,#2ed573,#1abc9c);border:none;border-radius:30px;color:#0d1f4a!important;font-size:1.05rem!important;font-weight:800!important;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;">
+        <button onclick="lancerEtude()" style="width:100%;padding:16px;background:linear-gradient(135deg,#1565c0,#1976d2);border:none;border-radius:30px;color:white!important;font-size:1.05rem!important;font-weight:800!important;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;">
           <i class="fas fa-broadcast-tower"></i> Lancer l'étude & notifier
         </button>
       </div>
