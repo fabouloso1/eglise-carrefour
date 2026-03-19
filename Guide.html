@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Guide de Lecture Biblique 2026 — Église de Dieu de la Prophétie</title>
+  <title>Guide de Lecture Biblique 2026</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
@@ -15,7 +15,6 @@
   <style>
     body { background: #f0f4ff; }
 
-    /* HERO */
     .g-hero {
       background: linear-gradient(135deg, #1c1c3c 0%, #2d1b4e 100%);
       padding: 70px 24px 50px;
@@ -26,225 +25,158 @@
     }
     .g-hero::before {
       content: '\f518';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      position: absolute;
-      right: -20px; top: -10px;
-      font-size: 220px;
-      opacity: 0.04;
-      color: #f1c40f;
+      font-family: 'Font Awesome 6 Free'; font-weight: 900;
+      position: absolute; right: -20px; top: -10px;
+      font-size: 220px; opacity: 0.04; color: #f1c40f;
     }
     .g-badge {
       display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(241,196,15,0.15);
-      border: 1px solid rgba(241,196,15,0.4);
-      color: #f1c40f;
-      padding: 6px 18px; border-radius: 30px;
-      font-size: 0.82rem; font-weight: 700;
-      letter-spacing: 1px; text-transform: uppercase;
-      margin-bottom: 18px;
+      background: rgba(241,196,15,0.15); border: 1px solid rgba(241,196,15,0.4);
+      color: #f1c40f; padding: 6px 18px; border-radius: 30px;
+      font-size: 0.82rem; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 18px;
     }
-    .g-hero h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.8rem, 5vw, 2.8rem);
-      margin-bottom: 10px;
-    }
+    .g-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem,5vw,2.8rem); margin-bottom: 10px; }
     .g-hero p { font-size: 1rem; opacity: 0.72; max-width: 480px; margin: 0 auto; }
 
-    /* MAIN */
     .g-main { max-width: 700px; margin: 0 auto; padding: 28px 16px 90px; }
 
-    /* CARTE DU JOUR */
+    /* CARTE JOUR */
     .g-today {
       background: linear-gradient(135deg, #1c1c3c, #2d1b4e);
-      border-radius: 24px;
-      padding: 28px 24px;
-      margin-bottom: 24px;
-      position: relative;
-      overflow: hidden;
+      border-radius: 24px; padding: 28px 24px; margin-bottom: 20px;
+      position: relative; overflow: hidden;
       box-shadow: 0 8px 32px rgba(28,28,60,0.25);
     }
     .g-today::before {
-      content: '\f518';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      position: absolute;
-      right: -10px; bottom: -20px;
-      font-size: 140px;
-      opacity: 0.05;
-      color: #f1c40f;
+      content: '\f518'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+      position: absolute; right: -10px; bottom: -20px;
+      font-size: 140px; opacity: 0.05; color: #f1c40f;
     }
-
     .g-today-badge {
       display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(241,196,15,0.15);
-      border: 1px solid rgba(241,196,15,0.35);
-      color: #f1c40f;
-      padding: 5px 14px; border-radius: 20px;
-      font-size: 0.8rem; font-weight: 700;
-      margin-bottom: 16px;
+      background: rgba(241,196,15,0.15); border: 1px solid rgba(241,196,15,0.35);
+      color: #f1c40f; padding: 5px 14px; border-radius: 20px;
+      font-size: 0.8rem; font-weight: 700; margin-bottom: 14px;
     }
-
-    .g-today-date {
-      color: rgba(255,255,255,0.55);
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 14px;
-    }
-
+    .g-today-date { color: rgba(255,255,255,0.55); font-size: 0.85rem; font-weight: 600; margin-bottom: 12px; }
     .g-ref {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(1.5rem, 4vw, 2rem);
-      color: white;
-      margin-bottom: 10px;
-      line-height: 1.3;
+      font-size: clamp(1.4rem,4vw,1.9rem);
+      color: #f1c40f; margin-bottom: 8px; line-height: 1.3;
     }
 
-    .g-intro {
-      color: rgba(255,255,255,0.75);
-      font-size: 1rem;
-      line-height: 1.75;
-      font-weight: 500;
-      margin-bottom: 22px;
+    /* TEXTE BIBLE INTÉGRÉ */
+    .g-bible-text {
+      background: rgba(255,255,255,0.07);
+      border-left: 3px solid rgba(241,196,15,0.5);
+      border-radius: 0 12px 12px 0;
+      padding: 16px 18px;
+      margin: 14px 0 20px;
+      color: rgba(255,255,255,0.88) !important;
+      font-size: 1.02rem !important;
+      font-weight: 500 !important;
+      line-height: 1.85 !important;
       font-style: italic;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .g-bible-text::-webkit-scrollbar { width: 3px; }
+    .g-bible-text::-webkit-scrollbar-thumb { background: rgba(241,196,15,0.3); border-radius: 3px; }
+
+    .g-btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .g-read-btn {
+      flex: 1; min-width: 140px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: linear-gradient(135deg, #f1c40f, #e67e22);
+      color: #1c1c3c; padding: 13px 18px; border-radius: 30px;
+      font-weight: 800; font-size: 0.95rem; text-decoration: none;
+      border: none; cursor: pointer;
+    }
+    .g-full-btn {
+      flex: 1; min-width: 140px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+      color: white; padding: 13px 18px; border-radius: 30px;
+      font-weight: 700; font-size: 0.95rem; text-decoration: none;
+      border: none; cursor: pointer;
     }
 
-    .g-read-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: linear-gradient(135deg, #f1c40f, #e67e22);
-      color: #1c1c3c;
-      padding: 13px 26px;
-      border-radius: 30px;
-      font-weight: 800;
-      font-size: 0.98rem;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
+    /* READER MODAL */
+    .g-reader-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.88); z-index: 9999;
+      align-items: flex-end; justify-content: center;
+    }
+    .g-reader-overlay.open { display: flex; }
+    .g-reader-box {
+      background: #fafaf5; border-radius: 28px 28px 0 0;
+      padding: 24px 22px 40px; width: 100%; max-width: 700px;
+      max-height: 85vh; overflow-y: auto;
+    }
+    .g-reader-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 18px; padding-bottom: 14px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+    .g-reader-title { font-family: 'Playfair Display', serif; color: #1c1c3c; font-size: 1.3rem; }
+    .g-reader-close {
+      width: 36px; height: 36px; background: #f0f0f0; border: none;
+      border-radius: 50%; cursor: pointer; font-size: 1rem; color: #555;
+    }
+    .g-reader-content {
+      color: #1a1a1a !important;
+      font-size: 1.05rem !important;
+      line-height: 2 !important;
+      font-weight: 500 !important;
+    }
+    .g-reader-content p { margin-bottom: 14px; }
+    .g-reader-content .verset-num {
+      color: #1c1c3c; font-weight: 800; font-size: 0.75rem;
+      vertical-align: super; margin-right: 3px;
     }
 
     /* PROGRESSION */
-    .g-progress {
-      background: white;
-      border-radius: 18px;
-      padding: 20px 22px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 12px rgba(28,28,60,0.08);
+    .g-card {
+      background: white; border-radius: 18px; padding: 20px 22px;
+      margin-bottom: 16px; box-shadow: 0 2px 12px rgba(28,28,60,0.07);
     }
-    .g-progress h3 {
-      color: #1c1c3c;
-      font-size: 0.95rem;
-      font-weight: 800;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .g-card h3 {
+      color: #1c1c3c; font-size: 1rem; font-weight: 800;
+      margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
     }
-    .g-progress-bar-wrap {
-      background: #f0f4ff;
-      border-radius: 10px;
-      height: 10px;
-      overflow: hidden;
-      margin-bottom: 8px;
-    }
-    .g-progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, #1c1c3c, #f1c40f);
-      border-radius: 10px;
-      transition: width 0.6s ease;
-    }
-    .g-progress-text {
-      color: #888;
-      font-size: 0.82rem;
-      font-weight: 600;
-    }
+    .g-progress-bar-wrap { background: #f0f4ff; border-radius: 10px; height: 10px; overflow: hidden; margin-bottom: 8px; }
+    .g-progress-bar { height: 100%; background: linear-gradient(90deg, #1c1c3c, #f1c40f); border-radius: 10px; transition: width 0.6s ease; }
+    .g-progress-text { color: #888; font-size: 0.85rem; font-weight: 600; }
 
-    /* NOTIF ZONE */
-    .g-notif {
-      background: white;
-      border-radius: 18px;
-      padding: 20px 22px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 12px rgba(28,28,60,0.08);
-      border-left: 4px solid #f1c40f;
-    }
-    .g-notif h3 {
-      color: #1c1c3c;
-      font-size: 0.95rem;
-      font-weight: 800;
-      margin-bottom: 6px;
-    }
-    .g-notif p {
-      color: #666;
-      font-size: 0.88rem;
-      line-height: 1.6;
-      margin-bottom: 14px;
-    }
+    /* NOTIF */
+    .g-notif-wrap { border-left: 4px solid #f1c40f; }
+    .g-notif-wrap p { color: #666; font-size: 0.9rem; line-height: 1.6; margin-bottom: 14px; }
     .g-notif-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+      display: inline-flex; align-items: center; gap: 8px;
       background: linear-gradient(135deg, #1c1c3c, #2d1b4e);
-      color: white;
-      padding: 11px 22px;
-      border-radius: 30px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      border: none;
-      cursor: pointer;
+      color: white; padding: 12px 22px; border-radius: 30px;
+      font-weight: 700; font-size: 0.92rem; border: none; cursor: pointer;
     }
-    .g-notif-btn.active {
-      background: linear-gradient(135deg, #2ed573, #1abc9c);
-      color: #0d1f4a;
-    }
+    .g-notif-btn.active { background: linear-gradient(135deg, #2ed573, #1abc9c); color: #0d1f4a; }
+    .g-notif-status { margin-top: 10px; font-size: 0.85rem; font-weight: 700; }
 
-    /* PLANNING - Semaine */
-    .g-week {
-      background: white;
-      border-radius: 18px;
-      padding: 20px 22px;
-      box-shadow: 0 2px 12px rgba(28,28,60,0.08);
-    }
-    .g-week h3 {
-      color: #1c1c3c;
-      font-size: 0.95rem;
-      font-weight: 800;
-      margin-bottom: 16px;
-    }
-    .g-day-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 0;
-      border-bottom: 1px solid #f0f4ff;
-    }
+    /* SEMAINE */
+    .g-day-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f0f4ff; cursor: pointer; }
     .g-day-item:last-child { border-bottom: none; }
-
+    .g-day-item:hover { background: #f8f9ff; border-radius: 10px; padding-left: 8px; }
     .g-day-dot {
-      width: 36px; height: 36px;
-      border-radius: 50%;
+      width: 38px; height: 38px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 0.72rem; font-weight: 800;
-      flex-shrink: 0;
+      font-size: 0.75rem; font-weight: 800; flex-shrink: 0;
     }
     .g-day-dot.today { background: #1c1c3c; color: #f1c40f; }
     .g-day-dot.past { background: #e8f5e9; color: #2e7d32; }
     .g-day-dot.future { background: #f0f4ff; color: #888; }
-
-    .g-day-ref { font-size: 0.88rem; font-weight: 700; color: #1c1c3c; }
-    .g-day-intro { font-size: 0.78rem; color: #888; }
-
-    /* Aucun plan */
-    .g-empty {
-      text-align: center;
-      padding: 40px 20px;
-      color: #aaa;
-    }
+    .g-day-ref { font-size: 0.92rem; font-weight: 700; color: #1c1c3c; margin-bottom: 2px; }
+    .g-day-intro { font-size: 0.78rem; color: #888; line-height: 1.4; }
   </style>
 
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="plan2026.js"></script>
 </head>
 <body>
@@ -255,24 +187,32 @@
 <div class="g-hero">
   <div class="g-badge"><i class="fas fa-bible"></i> 2026</div>
   <h1>Guide de Lecture Biblique</h1>
-  <p>Un chapitre par jour pour lire la Bible en entier en 2026. Chaque matin à 9h, vous recevrez un rappel.</p>
+  <p>Un chapitre par jour pour grandir dans la Parole de Dieu. Rappel chaque matin à 9h.</p>
 </div>
 
 <div class="g-main">
 
   <!-- LECTURE DU JOUR -->
-  <div class="g-today" id="gToday">
+  <div class="g-today">
     <div class="g-today-badge"><i class="fas fa-sun"></i> Lecture du jour</div>
     <div class="g-today-date" id="gDate">—</div>
     <div class="g-ref" id="gRef">Chargement...</div>
-    <div class="g-intro" id="gIntro"></div>
-    <a id="gReadBtn" class="g-read-btn" href="#" target="_blank">
-      <i class="fas fa-book-open"></i> Lire maintenant
-    </a>
+
+    <!-- Texte Bible intégré -->
+    <div class="g-bible-text" id="gBibleText"></div>
+
+    <div class="g-btn-row">
+      <button class="g-read-btn" onclick="ouvrirLecteur()">
+        <i class="fas fa-book-open"></i> Lire le chapitre complet
+      </button>
+      <a id="gExtBtn" class="g-full-btn" href="#" target="_blank">
+        <i class="fas fa-external-link-alt"></i> Bible.com
+      </a>
+    </div>
   </div>
 
   <!-- PROGRESSION -->
-  <div class="g-progress">
+  <div class="g-card">
     <h3><i class="fas fa-chart-line" style="color:#f1c40f;"></i> Progression 2026</h3>
     <div class="g-progress-bar-wrap">
       <div class="g-progress-bar" id="gProgressBar" style="width:0%;"></div>
@@ -281,21 +221,32 @@
   </div>
 
   <!-- NOTIFICATIONS -->
-  <div class="g-notif">
-    <h3><i class="fas fa-bell" style="color:#f1c40f;margin-right:8px;"></i>Rappel quotidien à 9h</h3>
-    <p>Activez les notifications pour recevoir chaque matin à 9h un rappel avec le chapitre du jour.</p>
+  <div class="g-card g-notif-wrap">
+    <h3><i class="fas fa-bell" style="color:#f1c40f;"></i> Rappel quotidien à 9h</h3>
+    <p>Recevez chaque matin à 9h le chapitre du jour directement sur votre téléphone.</p>
     <button class="g-notif-btn" id="gNotifBtn" onclick="activerNotif()">
       <i class="fas fa-bell"></i> Activer les notifications
     </button>
-    <p id="gNotifStatus" style="margin-top:10px;font-size:0.82rem;color:#2e7d32;font-weight:600;display:none;"></p>
+    <div id="gNotifStatus" class="g-notif-status" style="display:none;"></div>
   </div>
 
   <!-- PLANNING SEMAINE -->
-  <div class="g-week">
-    <h3><i class="fas fa-calendar-week" style="color:#f1c40f;margin-right:8px;"></i>Cette semaine</h3>
+  <div class="g-card">
+    <h3><i class="fas fa-calendar-week" style="color:#f1c40f;"></i> Cette semaine</h3>
     <div id="gWeek"></div>
   </div>
 
+</div>
+
+<!-- LECTEUR BIBLE INTÉGRÉ -->
+<div class="g-reader-overlay" id="readerOverlay" onclick="fermerLecteur(event)">
+  <div class="g-reader-box">
+    <div class="g-reader-header">
+      <div class="g-reader-title" id="readerTitle">—</div>
+      <button class="g-reader-close" onclick="fermerLecteur()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="g-reader-content" id="readerContent">Chargement...</div>
+  </div>
 </div>
 
 <div id="foot-placeholder"></div>
@@ -305,73 +256,259 @@
 <script>
   NAV.init('Guide.html');
 
-  // Firebase
-  if (!firebase.apps.length) {
-    firebase.initializeApp({
-      apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
-      authDomain: "eglise-carrefour.firebaseapp.com",
-      projectId: "eglise-carrefour",
-      storageBucket: "eglise-carrefour.appspot.com",
-      messagingSenderId: "421333694767",
-      appId: "1:421333694767:web:30c18da36ae020821a49da"
-    });
+  // ===== PLAN2026 deja chaje via plan2026.js =====
+
+  // ===== TEXTES BIBLE FRANÇAIS (Louis Segond) =====
+  // Chak referans gen 3 vèsè cle + tèks konplè pou lecteur
+  const BIBLE_FR = {
+    "Jen 1:1-31": {
+      extrait: "Au commencement, Dieu créa les cieux et la terre. La terre était informe et vide; les ténèbres couvraient l'abîme, et l'esprit de Dieu se mouvait au-dessus des eaux. Dieu dit: Que la lumière soit! Et la lumière fut. Dieu vit que la lumière était bonne; et Dieu sépara la lumière d'avec les ténèbres.",
+      complet: [
+        { v:1, t:"Au commencement, Dieu créa les cieux et la terre." },
+        { v:2, t:"La terre était informe et vide; les ténèbres couvraient l'abîme, et l'esprit de Dieu se mouvait au-dessus des eaux." },
+        { v:3, t:"Dieu dit: Que la lumière soit! Et la lumière fut." },
+        { v:4, t:"Dieu vit que la lumière était bonne; et Dieu sépara la lumière d'avec les ténèbres." },
+        { v:5, t:"Dieu appela la lumière jour, et il appela les ténèbres nuit. Ainsi, il y eut un soir, et il y eut un matin: ce fut le premier jour." },
+        { v:26, t:"Puis Dieu dit: Faisons l'homme à notre image, selon notre ressemblance, et qu'il domine sur les poissons de la mer, sur les oiseaux du ciel, sur le bétail, sur toute la terre." },
+        { v:27, t:"Dieu créa l'homme à son image, il le créa à l'image de Dieu, il créa l'homme et la femme." },
+        { v:28, t:"Dieu les bénit, et Dieu leur dit: Soyez féconds, multipliez, remplissez la terre, et l'assujettissez." },
+        { v:31, t:"Dieu vit tout ce qu'il avait fait et voilà, c'était très bon. Ainsi, il y eut un soir, et il y eut un matin: ce fut le sixième jour." }
+      ]
+    },
+    "Jen 2:1-25": {
+      extrait: "Ainsi furent achevés les cieux et la terre, et toute leur armée. Dieu bénit le septième jour, et il le sanctifia, parce qu'en ce jour il se reposa de toute son œuvre qu'il avait créée en la faisant.",
+      complet: [
+        { v:1, t:"Ainsi furent achevés les cieux et la terre, et toute leur armée." },
+        { v:2, t:"Dieu acheva au septième jour son œuvre, qu'il avait faite: et il se reposa au septième jour de toute son œuvre, qu'il avait faite." },
+        { v:3, t:"Dieu bénit le septième jour, et il le sanctifia, parce qu'en ce jour il se reposa de toute son œuvre qu'il avait créée en la faisant." },
+        { v:18, t:"L'Éternel Dieu dit: Il n'est pas bon que l'homme soit seul; je lui ferai une aide semblable à lui." },
+        { v:24, t:"C'est pourquoi l'homme quittera son père et sa mère, et s'attachera à sa femme, et ils deviendront une seule chair." }
+      ]
+    },
+    "Egz 20:1-26": {
+      extrait: "Alors Dieu prononça toutes ces paroles: Je suis l'Éternel, ton Dieu. Tu n'auras pas d'autres dieux devant ma face. Tu ne te feras point d'idole. Honore ton père et ta mère. Tu ne commettras point de meurtre. Tu ne commettras point d'adultère.",
+      complet: [
+        { v:1, t:"Alors Dieu prononça toutes ces paroles, en disant:" },
+        { v:2, t:"Je suis l'Éternel, ton Dieu, qui t'ai fait sortir du pays d'Égypte, de la maison de servitude." },
+        { v:3, t:"Tu n'auras pas d'autres dieux devant ma face." },
+        { v:7, t:"Tu ne prendras point le nom de l'Éternel, ton Dieu, en vain; car l'Éternel ne laissera point impuni celui qui prendra son nom en vain." },
+        { v:8, t:"Souviens-toi du jour du repos, pour le sanctifier." },
+        { v:12, t:"Honore ton père et ta mère, afin que tes jours se prolongent dans le pays que l'Éternel, ton Dieu, te donne." },
+        { v:13, t:"Tu ne commettras point de meurtre." },
+        { v:14, t:"Tu ne commettras point d'adultère." },
+        { v:15, t:"Tu ne déroberas point." },
+        { v:16, t:"Tu ne porteras point de faux témoignage contre ton prochain." },
+        { v:17, t:"Tu ne convoiteras point la maison de ton prochain; tu ne convoiteras point la femme de ton prochain, ni son serviteur, ni sa servante, ni son bœuf, ni son âne, ni aucune chose qui appartienne à ton prochain." }
+      ]
+    },
+    "Dèt 6:1-25": {
+      extrait: "Tu aimeras l'Éternel, ton Dieu, de tout ton cœur, de toute ton âme et de toute ta force. Ces commandements que je te donne aujourd'hui seront dans ton cœur. Tu les inculqueras à tes enfants.",
+      complet: [
+        { v:4, t:"Écoute, Israël! L'Éternel, notre Dieu, est le seul Éternel." },
+        { v:5, t:"Tu aimeras l'Éternel, ton Dieu, de tout ton cœur, de toute ton âme et de toute ta force." },
+        { v:6, t:"Et ces commandements que je te donne aujourd'hui seront dans ton cœur." },
+        { v:7, t:"Tu les inculqueras à tes enfants, et tu en parleras quand tu seras dans ta maison, quand tu iras en voyage, quand tu te coucheras et quand tu te lèveras." },
+        { v:12, t:"Garde-toi d'oublier l'Éternel, qui t'a fait sortir du pays d'Égypte, de la maison de servitude." }
+      ]
+    },
+    "Sòm 23:1-6": {
+      extrait: "L'Éternel est mon berger: je ne manquerai de rien. Il me fait reposer dans de verts pâturages, il me dirige près des eaux paisibles. Il restaure mon âme. Certainement la bonté et la grâce m'accompagneront tous les jours de ma vie.",
+      complet: [
+        { v:1, t:"L'Éternel est mon berger: je ne manquerai de rien." },
+        { v:2, t:"Il me fait reposer dans de verts pâturages, il me dirige près des eaux paisibles." },
+        { v:3, t:"Il restaure mon âme, il me conduit dans les sentiers de la justice, à cause de son nom." },
+        { v:4, t:"Quand je marche dans la vallée de l'ombre de la mort, je ne crains aucun mal, car tu es avec moi: ta houlette et ton bâton me rassurent." },
+        { v:5, t:"Tu dresses devant moi une table, en face de mes adversaires; tu oins d'huile ma tête, et ma coupe déborde." },
+        { v:6, t:"Certainement la bonté et la grâce m'accompagneront tous les jours de ma vie, et j'habiterai dans la maison de l'Éternel jusqu'à la fin de mes jours." }
+      ]
+    },
+    "Sòm 91:1-16": {
+      extrait: "Celui qui demeure sous l'abri du Très-Haut repose à l'ombre du Tout-Puissant. Je dis à l'Éternel: Mon refuge et ma forteresse, mon Dieu en qui je me confie! Car il te délivrera du filet de l'oiseleur, de la peste et de ses ravages.",
+      complet: [
+        { v:1, t:"Celui qui demeure sous l'abri du Très-Haut repose à l'ombre du Tout-Puissant." },
+        { v:2, t:"Je dis à l'Éternel: Mon refuge et ma forteresse, mon Dieu en qui je me confie!" },
+        { v:4, t:"Il te couvrira de ses plumes, et tu trouveras un refuge sous ses ailes; sa fidélité est un bouclier et une cuirasse." },
+        { v:10, t:"Il ne t'arrivera aucun malheur, et aucun fléau n'approchera de ta tente." },
+        { v:11, t:"Car il ordonnera à ses anges de te garder dans toutes tes voies." },
+        { v:15, t:"Il m'invoquera, et je lui répondrai; je serai avec lui dans la détresse, je le délivrerai et je le glorifierai." },
+        { v:16, t:"Je le rassasierai de longs jours, et je lui ferai voir mon salut." }
+      ]
+    },
+    "Jan 1:1-51": {
+      extrait: "Au commencement était la Parole, et la Parole était avec Dieu, et la Parole était Dieu. En lui était la vie, et la vie était la lumière des hommes. La lumière luit dans les ténèbres, et les ténèbres ne l'ont point reçue.",
+      complet: [
+        { v:1, t:"Au commencement était la Parole, et la Parole était avec Dieu, et la Parole était Dieu." },
+        { v:2, t:"Elle était au commencement avec Dieu." },
+        { v:3, t:"Toutes choses ont été faites par elle, et rien de ce qui a été fait n'a été fait sans elle." },
+        { v:4, t:"En elle était la vie, et la vie était la lumière des hommes." },
+        { v:5, t:"La lumière luit dans les ténèbres, et les ténèbres ne l'ont point reçue." },
+        { v:12, t:"Mais à tous ceux qui l'ont reçue, à ceux qui croient en son nom, elle a donné le pouvoir de devenir enfants de Dieu." },
+        { v:14, t:"Et la Parole a été faite chair, et elle a habité parmi nous, pleine de grâce et de vérité; et nous avons contemplé sa gloire, une gloire comme la gloire du Fils unique venu du Père." }
+      ]
+    },
+    "Jan 3:1-21": {
+      extrait: "Jésus lui répondit: En vérité, en vérité, je te le dis, si un homme ne naît de nouveau, il ne peut voir le royaume de Dieu. Car Dieu a tant aimé le monde qu'il a donné son Fils unique, afin que quiconque croit en lui ne périsse point, mais qu'il ait la vie éternelle.",
+      complet: [
+        { v:3, t:"Jésus lui répondit: En vérité, en vérité, je te le dis, si un homme ne naît de nouveau, il ne peut voir le royaume de Dieu." },
+        { v:5, t:"Jésus répondit: En vérité, en vérité, je te le dis, si un homme ne naît d'eau et d'Esprit, il ne peut entrer dans le royaume de Dieu." },
+        { v:16, t:"Car Dieu a tant aimé le monde qu'il a donné son Fils unique, afin que quiconque croit en lui ne périsse point, mais qu'il ait la vie éternelle." },
+        { v:17, t:"Dieu, en effet, n'a pas envoyé son Fils dans le monde pour qu'il juge le monde, mais pour que le monde soit sauvé par lui." }
+      ]
+    },
+    "Jan 14:1-31": {
+      extrait: "Que votre cœur ne se trouble point. Croyez en Dieu, et croyez en moi. Je suis le chemin, la vérité, et la vie. Nul ne vient au Père que par moi. Je vous laisse la paix, je vous donne ma paix.",
+      complet: [
+        { v:1, t:"Que votre cœur ne se trouble point. Croyez en Dieu, et croyez en moi." },
+        { v:2, t:"Il y a plusieurs demeures dans la maison de mon Père. Si cela n'était pas, je vous l'aurais dit. Je vais vous préparer une place." },
+        { v:6, t:"Jésus lui dit: Je suis le chemin, la vérité, et la vie. Nul ne vient au Père que par moi." },
+        { v:14, t:"Si vous demandez quelque chose en mon nom, je le ferai." },
+        { v:27, t:"Je vous laisse la paix, je vous donne ma paix. Je ne vous donne pas comme le monde donne. Que votre cœur ne se trouble point, et ne se laisse point effrayer." }
+      ]
+    },
+    "Jan 15:1-27": {
+      extrait: "Je suis le vrai cep, et mon Père est le vigneron. Demeurez en moi, et je demeurerai en vous. Comme le sarment ne peut de lui-même porter du fruit, s'il ne demeure attaché au cep, ainsi vous ne le pouvez pas non plus, si vous ne demeurez en moi.",
+      complet: [
+        { v:1, t:"Je suis le vrai cep, et mon Père est le vigneron." },
+        { v:4, t:"Demeurez en moi, et je demeurerai en vous. Comme le sarment ne peut de lui-même porter du fruit, s'il ne demeure attaché au cep, ainsi vous ne le pouvez pas non plus, si vous ne demeurez en moi." },
+        { v:5, t:"Je suis le cep, vous êtes les sarments. Celui qui demeure en moi et en qui je demeure porte beaucoup de fruit, car sans moi vous ne pouvez rien faire." },
+        { v:7, t:"Si vous demeurez en moi, et que mes paroles demeurent en vous, demandez ce que vous voudrez, et cela vous sera accordé." },
+        { v:13, t:"Il n'y a pas de plus grand amour que de donner sa vie pour ses amis." }
+      ]
+    },
+    "Efe 2:1-22": {
+      extrait: "Car c'est par la grâce que vous êtes sauvés, par le moyen de la foi. Et cela ne vient pas de vous, c'est le don de Dieu. Ce n'est point par les œuvres, afin que personne ne se glorifie.",
+      complet: [
+        { v:4, t:"Mais Dieu, qui est riche en miséricorde, à cause du grand amour dont il nous a aimés." },
+        { v:5, t:"Alors que nous étions morts par nos fautes, nous a rendus à la vie avec Christ (c'est par grâce que vous êtes sauvés)." },
+        { v:8, t:"Car c'est par la grâce que vous êtes sauvés, par le moyen de la foi. Et cela ne vient pas de vous, c'est le don de Dieu." },
+        { v:9, t:"Ce n'est point par les œuvres, afin que personne ne se glorifie." },
+        { v:10, t:"Car nous sommes son ouvrage, ayant été créés en Jésus-Christ pour de bonnes œuvres, que Dieu a préparées d'avance, afin que nous les pratiquions." }
+      ]
+    },
+    "Fil 4:1-23": {
+      extrait: "Réjouissez-vous toujours dans le Seigneur; je le répète, réjouissez-vous. La paix de Dieu, qui surpasse toute intelligence, gardera vos cœurs et vos pensées en Jésus-Christ. Je puis tout par celui qui me fortifie.",
+      complet: [
+        { v:4, t:"Réjouissez-vous toujours dans le Seigneur; je le répète, réjouissez-vous." },
+        { v:6, t:"Ne vous inquiétez de rien; mais en toute chose faites connaître vos besoins à Dieu par des prières et des supplications, avec des actions de grâces." },
+        { v:7, t:"Et la paix de Dieu, qui surpasse toute intelligence, gardera vos cœurs et vos pensées en Jésus-Christ." },
+        { v:8, t:"Au reste, frères, que tout ce qui est vrai, tout ce qui est honnête, tout ce qui est juste, tout ce qui est pur, tout ce qui est aimable, soit l'objet de vos pensées." },
+        { v:13, t:"Je puis tout par celui qui me fortifie." }
+      ]
+    },
+    "Ebre 11:1-40": {
+      extrait: "Or la foi est une ferme assurance des choses qu'on espère, une démonstration de celles qu'on ne voit pas. C'est par la foi qu'Abel offrit à Dieu un sacrifice plus excellent que celui de Caïn. C'est par la foi qu'Enoch fut enlevé.",
+      complet: [
+        { v:1, t:"Or la foi est une ferme assurance des choses qu'on espère, une démonstration de celles qu'on ne voit pas." },
+        { v:3, t:"C'est par la foi que nous reconnaissons que le monde a été formé par la parole de Dieu, en sorte que ce qu'on voit n'a pas été fait de choses visibles." },
+        { v:6, t:"Or sans la foi il est impossible de lui être agréable; car il faut que celui qui s'approche de Dieu croie que Dieu existe, et qu'il est le rémunérateur de ceux qui le cherchent." },
+        { v:33, t:"qui, par la foi, ont triomphé de royaumes, exercé la justice, obtenu des promesses, fermé la gueule des lions." }
+      ]
+    },
+    "Apo 21:1-27": {
+      extrait: "Je vis un nouveau ciel et une nouvelle terre; car le premier ciel et la première terre avaient disparu. Et il essuiera toute larme de leurs yeux, et la mort ne sera plus, et il n'y aura plus ni deuil, ni cri, ni douleur, car les premières choses ont disparu.",
+      complet: [
+        { v:1, t:"Puis je vis un nouveau ciel et une nouvelle terre; car le premier ciel et la première terre avaient disparu, et la mer n'était plus." },
+        { v:3, t:"Et j'entendis du trône une forte voix qui disait: Voici le tabernacle de Dieu avec les hommes! Il habitera avec eux, et ils seront son peuple." },
+        { v:4, t:"Il essuiera toute larme de leurs yeux, et la mort ne sera plus, et il n'y aura plus ni deuil, ni cri, ni douleur, car les premières choses ont disparu." },
+        { v:5, t:"Et celui qui était assis sur le trône dit: Voici, je fais toutes choses nouvelles. Et il me dit: Écris; car ces paroles sont certaines et véritables." }
+      ]
+    },
+    "Apo 22:1-21": {
+      extrait: "Il me montra un fleuve d'eau de la vie, limpide comme du cristal, qui sortait du trône de Dieu et de l'agneau. Moi, Jésus, j'ai envoyé mon ange pour vous attester ces choses. Je suis le rejeton et la postérité de David, l'étoile brillante du matin.",
+      complet: [
+        { v:1, t:"Il me montra un fleuve d'eau de la vie, limpide comme du cristal, qui sortait du trône de Dieu et de l'agneau." },
+        { v:2, t:"Au milieu de la place de la ville et sur les deux bords du fleuve, il y avait un arbre de vie, produisant douze fois des fruits, rendant son fruit chaque mois, et dont les feuilles servaient à la guérison des nations." },
+        { v:12, t:"Voici, je viens bientôt, et ma rétribution est avec moi, pour rendre à chacun selon ce qu'est son œuvre." },
+        { v:13, t:"Je suis l'alpha et l'oméga, le premier et le dernier, le commencement et la fin." },
+        { v:20, t:"Celui qui atteste ces choses dit: Oui, je viens bientôt. Amen! Viens, Seigneur Jésus!" }
+      ]
+    }
+  };
+
+  // Texte pou referans ki pa nan BIBLE_FR
+  function getExtrait(ref) {
+    if (BIBLE_FR[ref]) return BIBLE_FR[ref].extrait;
+    // Jwenn premye match
+    const key = Object.keys(BIBLE_FR).find(k => ref.startsWith(k.split(':')[0]));
+    if (key) return BIBLE_FR[key].extrait;
+    return "« Ta parole est une lampe à mes pieds, et une lumière sur mon sentier. » — Psaume 119:105";
   }
 
-  // ===== DATE JOUNEN AN =====
-  function dateKey(d) {
-    return d.toISOString().split('T')[0];
+  function getComplet(ref) {
+    if (BIBLE_FR[ref]) return BIBLE_FR[ref].complet;
+    const key = Object.keys(BIBLE_FR).find(k => ref.startsWith(k.split(':')[0]));
+    if (key) return BIBLE_FR[key].complet;
+    return [{ v: '—', t: "Lisez ce passage dans votre Bible (version LSG ou Colombe)." }];
   }
 
+  // ===== DATE =====
+  function dateKey(d) { return d.toISOString().split('T')[0]; }
   function formatDate(d) {
     return d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
   }
 
+  let planJour = null;
+
   function init() {
     const today = new Date();
     const key   = dateKey(today);
-    const plan  = PLAN_2026[key];
+    planJour    = PLAN_2026[key];
 
-    if (!plan) {
-      document.getElementById('gRef').textContent   = 'Pas de lecture prévue';
-      document.getElementById('gIntro').textContent = '';
+    if (!planJour) {
+      document.getElementById('gRef').textContent      = 'Pas de lecture prévue';
+      document.getElementById('gBibleText').textContent = '';
       return;
     }
 
-    // Carte du jour
-    document.getElementById('gDate').textContent  = formatDate(today);
-    document.getElementById('gRef').textContent   = plan.reference;
-    document.getElementById('gIntro').textContent = plan.intro;
+    document.getElementById('gDate').textContent      = formatDate(today);
+    document.getElementById('gRef').textContent       = planJour.reference;
+    document.getElementById('gBibleText').textContent = getExtrait(planJour.reference);
 
-    // Lyen Bible - YouVersion
-    const ref = encodeURIComponent(plan.reference);
-    document.getElementById('gReadBtn').href =
-      `https://www.bible.com/bible/152/${ref.replace(/%20/g,'+')}.CRB`;
+    // Lyen Bible.com français
+    const refEnc = encodeURIComponent(planJour.reference.replace(/\s/g, '+'));
+    document.getElementById('gExtBtn').href =
+      `https://www.bible.com/fr/bible/93/${refEnc}.LSG`;
 
     // Progression
-    const start    = new Date('2026-01-01');
-    const dayNum   = Math.floor((today - start) / 86400000) + 1;
-    const total    = 365;
-    const pct      = Math.min(Math.round((dayNum / total) * 100), 100);
+    const start  = new Date('2026-01-01');
+    const dayNum = Math.floor((today - start) / 86400000) + 1;
+    const pct    = Math.min(Math.round((dayNum / 365) * 100), 100);
     document.getElementById('gProgressBar').style.width = pct + '%';
     document.getElementById('gProgressText').textContent =
-      `Jour ${dayNum} sur ${total} — ${pct}% de l'année accompli`;
+      `Jour ${dayNum} sur 365 — ${pct}% de l'année accompli`;
 
-    // Semaine
     afficherSemaine(today);
 
-    // Statut notif
-    verifierNotif();
+    // Notif — si déjà accordée, activer automatiquement
+    verifierEtActiverNotif();
+  }
+
+  // ===== LECTEUR INTÉGRÉ =====
+  function ouvrirLecteur() {
+    if (!planJour) return;
+    document.getElementById('readerTitle').textContent = planJour.reference;
+    const versets = getComplet(planJour.reference);
+    document.getElementById('readerContent').innerHTML = versets.map(v =>
+      `<p><span class="verset-num">${v.v}</span>${v.t}</p>`
+    ).join('') +
+    `<p style="color:#888;font-size:0.82rem;margin-top:20px;font-style:italic;">
+      — Louis Segond (LSG) · Pour lire le chapitre complet, cliquez "Bible.com"
+    </p>`;
+    document.getElementById('readerOverlay').classList.add('open');
+  }
+
+  function fermerLecteur(e) {
+    if (!e || e.target === document.getElementById('readerOverlay') || e.type === 'click') {
+      document.getElementById('readerOverlay').classList.remove('open');
+    }
   }
 
   // ===== SEMAINE =====
   function afficherSemaine(today) {
     const jours = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
-    const wrap  = document.getElementById('gWeek');
-    let html    = '';
-
-    // Lundi de la semaine courante
     const lundi = new Date(today);
-    lundi.setDate(today.getDate() - today.getDay() + 1);
+    lundi.setDate(today.getDate() - (today.getDay() || 7) + 1);
+    let html = '';
 
     for (let i = 0; i < 7; i++) {
       const d   = new Date(lundi);
@@ -383,29 +520,38 @@
       const isToday = key === dateKey(today);
       const isPast  = d < today && !isToday;
       const cls     = isToday ? 'today' : isPast ? 'past' : 'future';
-      const icon    = isPast ? '<i class="fas fa-check" style="font-size:0.8rem;"></i>' : (isToday ? '<i class="fas fa-star" style="font-size:0.7rem;"></i>' : (i+1));
+      const icon    = isPast
+        ? '<i class="fas fa-check" style="font-size:0.8rem;"></i>'
+        : (isToday ? '<i class="fas fa-star" style="font-size:0.72rem;"></i>' : (i + 1));
 
       html += `
       <div class="g-day-item">
         <div class="g-day-dot ${cls}">${icon}</div>
         <div>
           <div class="g-day-ref">${jours[d.getDay()]} ${d.getDate()} — ${p.reference}</div>
-          <div class="g-day-intro">${p.intro.substring(0,60)}...</div>
+          <div class="g-day-intro">${p.intro.substring(0,65)}...</div>
         </div>
       </div>`;
     }
-
-    wrap.innerHTML = html;
+    document.getElementById('gWeek').innerHTML = html;
   }
 
-  // ===== NOTIFICATIONS =====
-  function verifierNotif() {
+  // ===== NOTIFICATIONS — auto si déjà accordées =====
+  async function verifierEtActiverNotif() {
     if (!('Notification' in window)) return;
-    const btn = document.getElementById('gNotifBtn');
+    const btn    = document.getElementById('gNotifBtn');
+    const status = document.getElementById('gNotifStatus');
+
     if (Notification.permission === 'granted') {
-      btn.innerHTML  = '<i class="fas fa-check"></i> Notifications activées';
+      // Déjà accordé — activer directement sans demander
+      btn.innerHTML = '<i class="fas fa-check"></i> Notifications activées';
       btn.classList.add('active');
-      btn.disabled   = true;
+      btn.disabled = true;
+      status.style.display = 'block';
+      status.style.color   = '#2e7d32';
+      status.textContent   = '✅ Vous recevrez votre rappel chaque matin à 9h.';
+      // Programmer rappel
+      programmerNotifQuotidienne();
     }
   }
 
@@ -415,54 +561,76 @@
       return;
     }
 
-    const permission = await Notification.requestPermission();
     const btn    = document.getElementById('gNotifBtn');
     const status = document.getElementById('gNotifStatus');
 
-    if (permission === 'granted') {
+    const perm = await Notification.requestPermission();
+
+    if (perm === 'granted') {
       btn.innerHTML = '<i class="fas fa-check"></i> Notifications activées';
       btn.classList.add('active');
-      btn.disabled  = true;
+      btn.disabled = true;
       status.style.display = 'block';
-      status.textContent   = '✅ Vous recevrez un rappel chaque matin à 9h !';
+      status.style.color   = '#2e7d32';
+      status.textContent   = '✅ Parfait ! Vous recevrez votre rappel chaque matin à 9h.';
 
-      // Planifye notifikasyon 9h via Service Worker
-      if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-        const today = new Date();
-        const key   = today.toISOString().split('T')[0];
-        const plan  = PLAN_2026[key];
-        if (plan) {
-          // Voye mesaj bay SW pou schedule
-          navigator.serviceWorker.controller.postMessage({
-            type: 'SCHEDULE_DAILY',
-            hour: 9,
-            title: '📖 Lecture du jour — ' + plan.reference,
-            body:  plan.intro,
-            url:   '/eglise-carrefour/Guide.html'
-          });
-        }
-      } else {
-        // Fallback - montre yon notif tou suite kòm demo
-        new Notification('📖 Guide de Lecture Biblique 2026', {
-          body: 'Chaque matin à 9h, vous recevrez votre rappel de lecture !',
-          icon: 'logo.png'
-        });
-      }
+      // Montrer notif de confirmation
+      new Notification('📖 Guide de Lecture Biblique 2026', {
+        body: 'Rappel activé ! Chaque matin à 9h, votre chapitre du jour vous attend.',
+        icon: 'logo.png'
+      });
 
-      // Sove token si disponib
-      try {
-        const db = firebase.firestore();
-        await db.collection('fcm_tokens').add({
-          type: 'guide_lecture',
-          date: new Date().toISOString(),
-          permission: 'granted'
-        });
-      } catch(e) {}
-
+      programmerNotifQuotidienne();
     } else {
       status.style.display = 'block';
       status.style.color   = '#e74c3c';
-      status.textContent   = '❌ Notifications refusées. Vérifiez les paramètres de votre navigateur.';
+      status.textContent   = '❌ Notifications refusées. Modifiez les paramètres de votre navigateur.';
+    }
+  }
+
+  function programmerNotifQuotidienne() {
+    if (!planJour) return;
+
+    // Calcul ms jusqu'à 9h
+    const now   = new Date();
+    const next9 = new Date();
+    next9.setHours(9, 0, 0, 0);
+    if (now.getHours() >= 9) next9.setDate(next9.getDate() + 1);
+    const ms = next9 - now;
+
+    setTimeout(() => {
+      const demain    = new Date();
+      const keyDemain = dateKey(demain);
+      const p         = PLAN_2026[keyDemain];
+      if (p && Notification.permission === 'granted') {
+        new Notification('📖 Lecture du jour — ' + p.reference, {
+          body: p.intro + ' · Ouvrez le Guide pour lire.',
+          icon: 'logo.png',
+          tag:  'lecture-quotidienne'
+        });
+      }
+      // Reprogrammer pour le lendemain (24h)
+      setInterval(() => {
+        const k = dateKey(new Date());
+        const pl = PLAN_2026[k];
+        if (pl && Notification.permission === 'granted') {
+          new Notification('📖 Lecture du jour — ' + pl.reference, {
+            body: pl.intro + ' · Ouvrez le Guide pour lire.',
+            icon: 'logo.png',
+            tag:  'lecture-quotidienne'
+          });
+        }
+      }, 24 * 60 * 60 * 1000);
+    }, ms);
+
+    // Voye bay Service Worker tou
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({
+        type:  'SCHEDULE_DAILY',
+        title: '📖 Lecture du jour — ' + planJour.reference,
+        body:  planJour.intro,
+        url:   '/eglise-carrefour/Guide.html'
+      });
     }
   }
 
