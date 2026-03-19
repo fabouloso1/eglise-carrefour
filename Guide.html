@@ -86,13 +86,16 @@
     <div class="g-today-badge"><i class="fas fa-sun"></i> Lecture du jour</div>
     <div class="g-date" id="gDate">—</div>
     <div class="g-ref" id="gRef">Chargement...</div>
-    <div class="g-extrait" id="gExtrait"></div>
+    <!-- Bib dirèkteman vizib -->
+    <div style="background:rgba(255,255,255,0.07);border-left:3px solid rgba(241,196,15,0.5);border-radius:0 12px 12px 0;padding:16px 18px;margin-bottom:16px;">
+      <div style="color:rgba(241,196,15,0.8);font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">
+        <i class="fas fa-bible" style="margin-right:6px;"></i>Bible — Louis Segond
+      </div>
+      <div id="gBibleInline" style="color:rgba(255,255,255,0.88)!important;font-size:1rem!important;font-weight:500!important;line-height:1.9!important;font-style:italic;max-height:240px;overflow-y:auto;"></div>
+    </div>
     <div class="g-btn-row">
-      <button class="g-btn-primary" onclick="ouvrirLecteur()">
-        <i class="fas fa-book-open"></i> Lire le chapitre
-      </button>
-      <a id="gBibleCom" class="g-btn-secondary" href="#" target="_blank">
-        <i class="fas fa-external-link-alt"></i> Bible.com
+      <a id="gBibleCom" class="g-btn-primary" href="#" target="_blank">
+        <i class="fas fa-book-open"></i> Lire le chapitre complet
       </a>
     </div>
   </div>
@@ -185,6 +188,35 @@
     return null;
   }
 
+
+  // ===== API BIBLE (getbible.net — Louis Segond 1910) =====
+  const MAP_API = {"Jen": "genesis", "Egz": "exodus", "Lev": "leviticus", "Nom": "numbers", "Dèt": "deuteronomy", "Joz": "joshua", "Jij": "judges", "Rout": "ruth", "1Sm": "1-samuel", "2Sm": "2-samuel", "1Wa": "1-kings", "2Wa": "2-kings", "1Ch": "1-chronicles", "2Ch": "2-chronicles", "Ezra": "ezra", "Neh": "nehemiah", "Est": "esther", "Job": "job", "Sòm": "psalms", "Pwov": "proverbs", "Ekl": "ecclesiastes", "Kant": "song-of-solomon", "Eza": "isaiah", "Jer": "jeremiah", "Lam": "lamentations", "Ezk": "ezekiel", "Dan": "daniel", "Oze": "hosea", "Joel": "joel", "Amos": "amos", "Abd": "obadiah", "Jon": "jonah", "Mik": "micah", "Nao": "nahum", "Ab": "habakkuk", "Sof": "zephaniah", "Ag": "haggai", "Zak": "zechariah", "Mal": "malachi", "Mat": "matthew", "Mak": "mark", "Lik": "luke", "Jan": "john", "Ak": "acts", "Wom": "romans", "1Ko": "1-corinthians", "2Ko": "2-corinthians", "Gal": "galatians", "Efe": "ephesians", "Fil": "philippians", "Kol": "colossians", "1Tes": "1-thessalonians", "2Tes": "2-thessalonians", "1Tim": "1-timothy", "2Tim": "2-timothy", "Tit": "titus", "Filem": "philemon", "Ebre": "hebrews", "Jak": "james", "1Pye": "1-peter", "2Pye": "2-peter", "1Jan": "1-john", "2Jan": "2-john", "3Jan": "3-john", "Jid": "jude", "Apo": "revelation"};
+
+  async function chargerChapitrAPI(ref) {
+    const parts = ref.split(' ');
+    const slug  = MAP_API[parts[0]];
+    if (!slug || !parts[1]) return null;
+    const chap = parseInt(parts[1].split(':')[0]);
+    if (!chap) return null;
+    try {
+      const url  = 'https://cdn.getbible.net/v2/Segond1910/' + slug + '/' + chap + '.json';
+      const resp = await fetch(url);
+      if (!resp.ok) return null;
+      const data = await resp.json();
+      if (!data.verses) return null;
+      const result = {};
+      data.verses.forEach(v => { result[v.verse] = v.text; });
+      return result;
+    } catch(e) { return null; }
+  }
+
+  function afficherVersets(vs, elId) {
+    const el = document.getElementById(elId || 'gBibleInline');
+    if (!el) return;
+    el.innerHTML = Object.keys(vs).map(k =>
+      '<p style="margin-bottom:8px;"><sup style=\"color:#f1c40f;font-weight:800;font-size:0.75rem;margin-right:5px;\">' + k + '</sup>' + vs[k] + '</p>'
+    ).join('');
+  }
   // ===== INIT =====
   let planJour = null;
 
@@ -201,7 +233,19 @@
 
     document.getElementById('gDate').textContent    = formatDate(today);
     document.getElementById('gRef').textContent     = planJour.reference;
-    document.getElementById('gExtrait').textContent = getExtrait(planJour.reference);
+    // Afiche vèsè dirèkteman (pa defò)
+    const vs = getVersets(planJour.reference);
+    const inlineEl = document.getElementById('gBibleInline');
+    inlineEl.innerHTML = '<p style=\"color:rgba(255,255,255,0.4);font-style:italic;\"><i class=\"fas fa-spinner fa-spin\" style=\"margin-right:6px;\"></i>Chargement...</p>';
+    if (vs && Object.keys(vs).length > 0) {
+      afficherVersets(vs, 'gBibleInline');
+    } else {
+      // Chaje depi API getbible.net
+      chargerChapitrAPI(planJour.reference).then(vsApi => {
+        if (vsApi) { afficherVersets(vsApi, 'gBibleInline'); }
+        else { inlineEl.innerHTML = '<p style=\"color:rgba(255,255,255,0.5);font-style:italic;\">« Ta parole est une lampe à mes pieds. » — Psaume 119:105</p>'; }
+      });
+    }
     document.getElementById('gBibleCom').href       =
       'https://www.bible.com/fr/bible/93/' + encodeURIComponent(planJour.reference.replace(/\s/g,'+')).replace(/%3A/g,'.').replace(/%2D/g,'-') + '.LSG';
 
@@ -255,14 +299,20 @@
     if (!planJour) return;
     document.getElementById('readerTitle').textContent = planJour.reference;
     const vs = getVersets(planJour.reference);
-    let html = '';
-    if (vs) {
-      html = Object.keys(vs).map(k => `<p><span class="vnum">${k}</span>${vs[k]}</p>`).join('');
-    } else {
-      html = '<p style="color:#888">Lisez ce chapitre dans votre Bible (version LSG ou Colombe).</p>';
+    document.getElementById('readerContent').innerHTML = '<p style="text-align:center;padding:30px;color:#888;"><i class="fas fa-spinner fa-spin" style="font-size:1.5rem;color:#1c1c3c;"></i><br>Chargement...</p>';
+    async function chargerEtAfficher() {
+      let vsR = vs;
+      if (!vsR) vsR = await chargerChapitrAPI(planJour.reference);
+      let html = '';
+      if (vsR) {
+        html = Object.keys(vsR).map(k => '<p><span class="vnum">'+k+'</span>'+vsR[k]+'</p>').join('');
+      } else {
+        html = '<p style="color:#888">Ce chapitre n\'est pas disponible hors ligne. Utilisez Bible.com.</p>';
+      }
+      html += '<p style="color:#aaa;font-size:.8rem;margin-top:16px;font-style:italic;">Bible Louis Segond 1910 — Domaine public</p>';
+      document.getElementById('readerContent').innerHTML = html;
     }
-    html += '<p style="color:#aaa;font-size:.8rem;margin-top:16px;font-style:italic;">Bible Louis Segond — Domaine public</p>';
-    document.getElementById('readerContent').innerHTML = html;
+    chargerEtAfficher();
     document.getElementById('readerOverlay').classList.add('open');
   }
 
