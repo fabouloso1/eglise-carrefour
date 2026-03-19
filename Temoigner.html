@@ -231,7 +231,17 @@
           <!-- Aperçu audio -->
           <div id="audioPreviewWrap" style="display:none;margin-top:10px;">
             <audio id="audioPreview" controls style="width:100%;border-radius:8px;"></audio>
-            <button type="button" onclick="supprimerAudio()" style="margin-top:6px;background:rgba(231,76,60,0.15);border:1px solid rgba(231,76,60,0.3);color:#ff6b6b;padding:5px 14px;border-radius:20px;font-size:0.82rem;cursor:pointer;font-weight:600;"><i class="fas fa-trash" style="margin-right:4px;"></i>Supprimer</button>
+            <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+              <button type="button" onclick="envoyerVoixTemoignage()"
+                style="flex:1;padding:12px 16px;background:linear-gradient(135deg,#2ed573,#1abc9c);border:none;border-radius:30px;color:#0d1f4a;font-size:1rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+                <i class="fas fa-paper-plane"></i> Envoyer ce témoignage vocal
+              </button>
+              <button type="button" onclick="supprimerAudio()"
+                style="padding:12px 16px;background:rgba(231,76,60,0.15);border:1px solid rgba(231,76,60,0.3);color:#ff6b6b;border-radius:30px;font-size:0.9rem;cursor:pointer;font-weight:600;">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+            <div id="voixStatus" style="display:none;margin-top:10px;padding:12px;border-radius:10px;text-align:center;font-weight:700;font-size:0.92rem;"></div>
           </div>
         </div>
 
@@ -430,6 +440,55 @@
     document.getElementById('audioPreviewWrap').style.display = 'none';
     document.getElementById('audioPreview').src = '';
   }
+
+  // Voye vwa dirèkteman san ranpli fòm
+  window.envoyerVoixTemoignage = async function() {
+    if (!audioBlobTemo) return;
+    const st = document.getElementById('voixStatus');
+    st.style.display = 'block';
+    st.style.background = 'rgba(255,255,255,0.05)';
+    st.style.color = 'rgba(255,255,255,0.7)';
+    st.textContent = '⏳ Envoi en cours...';
+
+    try {
+      // Upload Cloudinary
+      const formData = new FormData();
+      formData.append('file', new File([audioBlobTemo], 'temoignage.webm', { type: 'audio/webm' }));
+      formData.append('upload_preset', 'eglise_upload');
+      formData.append('folder', 'temoignages/audio');
+      const res  = await fetch('https://api.cloudinary.com/v1_1/dvcxhpibq/video/upload', { method:'POST', body:formData });
+      const data = await res.json();
+      if (!data.secure_url) throw new Error('Upload échoué');
+
+      // Sove nan Firebase
+      const nom = document.getElementById('tname').value.trim() || 'Anonyme';
+      await db.collection('temoignages').add({
+        nom,
+        categorie:  document.getElementById('tcategorie').value,
+        temoignage: '🎤 Témoignage vocal',
+        audioUrl:   data.secure_url,
+        approuve:   false,
+        timestamp:  firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      st.style.background = 'rgba(46,213,115,0.15)';
+      st.style.color = '#2ed573';
+      st.textContent = '✅ Témoignage vocal envoyé ! Il sera publié après validation.';
+      audioBlobTemo = null;
+      document.getElementById('audioPreview').src = '';
+
+      // Kache fòm, montre mesaj siksè
+      setTimeout(() => {
+        document.getElementById('testimonyForm').style.display = 'none';
+        document.getElementById('successMsg').style.display = 'block';
+      }, 2000);
+
+    } catch(e) {
+      st.style.background = 'rgba(231,76,60,0.15)';
+      st.style.color = '#ff6b6b';
+      st.textContent = '❌ Erreur : ' + e.message;
+    }
+  };
 </script>
 <script src="gate.js"></script>
 <script>window.addEventListener("load", function(){ gateInit(); });</script>
