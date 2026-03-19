@@ -817,10 +817,81 @@
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
-  chargerEtude();
+  // Verifye enskripsyon AVANT chaje (pa depann sou gate.js)
+  function verifierAcces() {
+    try {
+      const data = localStorage.getItem('eglise_membre');
+      if (data) {
+        const m = JSON.parse(data);
+        if (m.nom && m.telephone) {
+          chargerEtude(); // Aksè ok
+          return;
+        }
+      }
+    } catch(e) {}
+    // Pa enskri — montre modal enskripsyon
+    montreModalEnskri();
+  }
+
+  function montreModalEnskri() {
+    // Kache kontni
+    document.getElementById('eLoading').style.display = 'none';
+
+    const modal = document.createElement('div');
+    modal.id = 'enskri-modal';
+    modal.innerHTML = `
+      <div style="position:fixed;inset:0;background:rgba(7,94,84,0.92);z-index:9999;display:flex;align-items:flex-end;justify-content:center;">
+        <div style="background:white;border-radius:28px 28px 0 0;padding:32px 24px 44px;width:100%;max-width:500px;border-top:4px solid #128C7E;">
+          <div style="text-align:center;margin-bottom:24px;">
+            <div style="width:72px;height:72px;background:#075E54;border-radius:18px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:2rem;">📖</div>
+            <h2 style="color:#075E54;font-size:1.4rem;font-weight:800;margin-bottom:8px;">Rejoindre l'étude</h2>
+            <p style="color:#555;font-size:0.95rem;line-height:1.6;">Inscrivez-vous pour participer à l'étude biblique et poser vos questions.</p>
+          </div>
+          <div style="margin-bottom:14px;">
+            <label style="display:block;color:#075E54;font-weight:700;font-size:0.9rem;margin-bottom:6px;"><i class="fas fa-user" style="margin-right:6px;"></i>Votre nom complet *</label>
+            <input type="text" id="enskri-nom" placeholder="Ex: Marie Joseph..."
+              style="width:100%;padding:14px 16px;border:2px solid #ccc;border-radius:12px;font-size:1rem;color:#111;background:#f8f8f8;box-sizing:border-box;">
+          </div>
+          <div style="margin-bottom:22px;">
+            <label style="display:block;color:#075E54;font-weight:700;font-size:0.9rem;margin-bottom:6px;"><i class="fas fa-phone" style="margin-right:6px;"></i>Numéro de téléphone *</label>
+            <input type="tel" id="enskri-tel" placeholder="Ex: +509 3700 0000..."
+              style="width:100%;padding:14px 16px;border:2px solid #ccc;border-radius:12px;font-size:1rem;color:#111;background:#f8f8f8;box-sizing:border-box;">
+          </div>
+          <div id="enskri-err" style="display:none;background:#fee;border-radius:10px;padding:10px 14px;color:#c00;font-weight:600;font-size:0.9rem;margin-bottom:14px;text-align:center;"></div>
+          <button onclick="soumettreEnskri()"
+            style="width:100%;padding:17px;background:linear-gradient(135deg,#075E54,#128C7E);color:white;border:none;border-radius:50px;font-size:1.05rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+            <i class="fas fa-check-circle"></i> S'inscrire et participer
+          </button>
+        </div>
+      </div>`;
+    document.body.appendChild(modal);
+  }
+
+  window.soumettreEnskri = async function() {
+    const nom = document.getElementById('enskri-nom').value.trim();
+    const tel = document.getElementById('enskri-tel').value.trim();
+    const err = document.getElementById('enskri-err');
+
+    if (!nom) { err.style.display='block'; err.textContent='⚠️ Veuillez saisir votre nom.'; return; }
+    if (!tel || tel.replace(/\D/g,'').length < 8) { err.style.display='block'; err.textContent='⚠️ Numéro invalide.'; return; }
+
+    err.style.display = 'none';
+    // Sove nan localStorage
+    localStorage.setItem('eglise_membre', JSON.stringify({ nom, telephone: tel, date: new Date().toLocaleDateString('fr-FR') }));
+
+    // Sove nan Firebase si disponib
+    try {
+      await db.collection('membres').add({ nom, telephone: tel, date: new Date().toLocaleDateString('fr-FR'), timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+    } catch(e) {}
+
+    // Retire modal ak chaje etude
+    const modal = document.getElementById('enskri-modal');
+    if (modal) modal.remove();
+    chargerEtude();
+  };
+
+  verifierAcces();
 </script>
-<script src="gate.js"></script>
-<script>window.addEventListener('load', function(){ gateInit(); });</script>
 <script src="pwa.js"></script>
 </body>
 </html>
