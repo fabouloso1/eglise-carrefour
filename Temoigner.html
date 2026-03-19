@@ -285,7 +285,6 @@
     try {
       const snap = await db.collection('temoignages')
         .where('approuve', '==', true)
-        .orderBy('timestamp', 'desc')
         .get();
 
       const grid = document.getElementById('temoignages-grid-dynamic');
