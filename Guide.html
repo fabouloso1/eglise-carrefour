@@ -246,8 +246,15 @@
         else { inlineEl.innerHTML = '<p style=\"color:rgba(255,255,255,0.5);font-style:italic;\">« Ta parole est une lampe à mes pieds. » — Psaume 119:105</p>'; }
       });
     }
-    document.getElementById('gBibleCom').href       =
-      'https://www.bible.com/fr/bible/93/' + encodeURIComponent(planJour.reference.replace(/\s/g,'+')).replace(/%3A/g,'.').replace(/%2D/g,'-') + '.LSG';
+    // Kalkile lyen biblestudytools.com/lsg/
+    const MAP_BST = {"Jen": "genesis", "Egz": "exodus", "Lev": "leviticus", "Nom": "numbers", "Dèt": "deuteronomy", "Joz": "joshua", "Jij": "judges", "Rout": "ruth", "1Sm": "1-samuel", "2Sm": "2-samuel", "1Wa": "1-kings", "2Wa": "2-kings", "1Ch": "1-chronicles", "2Ch": "2-chronicles", "Ezra": "ezra", "Neh": "nehemiah", "Est": "esther", "Job": "job", "Sòm": "psalms", "Pwov": "proverbs", "Ekl": "ecclesiastes", "Kant": "song-of-solomon", "Eza": "isaiah", "Jer": "jeremiah", "Lam": "lamentations", "Ezk": "ezekiel", "Dan": "daniel", "Oze": "hosea", "Joel": "joel", "Amos": "amos", "Abd": "obadiah", "Jon": "jonah", "Mik": "micah", "Nao": "nahum", "Ab": "habakkuk", "Sof": "zephaniah", "Ag": "haggai", "Zak": "zechariah", "Mal": "malachi", "Mat": "matthew", "Mak": "mark", "Lik": "luke", "Jan": "john", "Ak": "acts", "Wom": "romans", "1Ko": "1-corinthians", "2Ko": "2-corinthians", "Gal": "galatians", "Efe": "ephesians", "Fil": "philippians", "Kol": "colossians", "1Tes": "1-thessalonians", "2Tes": "2-thessalonians", "1Tim": "1-timothy", "2Tim": "2-timothy", "Tit": "titus", "Filem": "philemon", "Ebre": "hebrews", "Jak": "james", "1Pye": "1-peter", "2Pye": "2-peter", "1Jan": "1-john", "2Jan": "2-john", "3Jan": "3-john", "Jid": "jude", "Apo": "revelation"};
+    (function() {
+      const parts = planJour.reference.split(' ');
+      const slug  = MAP_BST[parts[0]] || parts[0].toLowerCase();
+      const chap  = parts[1] ? parts[1].split(':')[0] : '1';
+      document.getElementById('gBibleCom').href =
+        'https://www.biblestudytools.com/lsg/' + slug + '/' + chap + '.html';
+    })();
 
     // Progression
     const start  = new Date('2026-01-01');
