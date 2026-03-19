@@ -1280,6 +1280,7 @@
       list.innerHTML = snap.docs.map(d => {
         const t = d.data();
         const approuve = t.approuve === true;
+        const audioHTML = t.audioUrl ? `<audio controls src="${t.audioUrl}" style="width:100%;margin:8px 0;border-radius:8px;"></audio>` : '';
         return `
           <div class="item-card" style="border-left: 3px solid ${approuve ? '#27ae60' : 'var(--gold)'};">
             <div class="item-card-info">
