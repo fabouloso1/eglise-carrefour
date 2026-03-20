@@ -199,7 +199,7 @@
     const chap = parseInt(parts[1].split(':')[0]);
     if (!chap) return null;
     try {
-      const url  = 'https://cdn.getbible.net/v2/Segond1910/' + slug + '/' + chap + '.json';
+      const url  = 'https://api.getbible.net/v2/Segond1910/' + slug + '/' + chap + '.json';
       const resp = await fetch(url);
       if (!resp.ok) return null;
       const data = await resp.json();
