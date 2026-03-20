@@ -863,7 +863,7 @@
             <i class="fas fa-bullhorn" style="color:#f1c40f;font-size:1.2rem;"></i>
           </div>
           <div>
-            <h3 style="color:#1a1a1a!important;font-size:1.1rem!important;font-weight:800!important;margin:0!important;">Publier une annonce</h3>
+            <h3 style="color:#1a1a1a!important;font-size:1.2rem!important;font-weight:800!important;margin:0!important;">Publier une annonce</h3>
             <p style="color:#666!important;font-size:0.85rem!important;margin:0!important;">Visible instantanément sur le site</p>
           </div>
         </div>
@@ -893,14 +893,31 @@
             style="width:100%;padding:13px 16px;border:2px solid #ffe082;border-radius:12px;background:white;color:#111;font-size:1rem;min-height:80px;resize:vertical;"></textarea>
         </div>
 
-        <div style="margin-bottom:20px;">
+        <div style="margin-bottom:14px;">
           <label style="display:block;color:#1a1a1a!important;font-weight:700!important;font-size:0.9rem!important;margin-bottom:7px;"><i class="fas fa-flag" style="margin-right:5px;"></i>Importance</label>
           <select id="anonsImportance"
             style="width:100%;padding:13px 16px;border:2px solid #ffe082;border-radius:12px;background:white;color:#111;font-size:1rem;font-weight:600;">
-            <option value="normal" style="background:#1565c0;">Normal</option>
-            <option value="important" style="background:#1565c0;">Important</option>
-            <option value="urgent" style="background:#1565c0;">Urgent</option>
+            <option value="normal">Normal</option>
+            <option value="important">Important</option>
+            <option value="urgent">Urgent</option>
           </select>
+        </div>
+
+        <div style="margin-bottom:20px;">
+          <label style="display:block;color:#1a1a1a!important;font-weight:700!important;font-size:0.9rem!important;margin-bottom:7px;"><i class="fas fa-image" style="margin-right:5px;"></i>Photo (optionnel)</label>
+          <div class="upload-zone" id="anonsFotoZone" onclick="document.getElementById('anonsFotoInput').click()"
+            style="border:2px dashed #ffe082;border-radius:12px;background:#fffde7;padding:20px;text-align:center;cursor:pointer;">
+            <input type="file" id="anonsFotoInput" accept="image/*" style="display:none;" onchange="previewAnonsFoto(event)">
+            <i class="fas fa-image" style="font-size:1.8rem;color:#f1c40f;display:block;margin-bottom:8px;"></i>
+            <p style="color:#888;font-size:0.9rem;margin:0;">Cliquer pour ajouter une photo</p>
+          </div>
+          <div id="anonsFotoPreview" style="display:none;margin-top:10px;position:relative;">
+            <img id="anonsFotoImg" style="width:100%;max-height:160px;object-fit:cover;border-radius:10px;">
+            <button type="button" onclick="supprimerAnonsFoto()"
+              style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.6);color:white;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:0.8rem;">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
         </div>
 
         <button onclick="publishAnnonces()"
@@ -1847,14 +1864,48 @@
   }
 
   // ===== ANNONCES =====
+  // ===== FOTO POU ANONS =====
+  let anonsFotoBlob = null;
+
+  function previewAnonsFoto(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    anonsFotoBlob = file;
+    const url = URL.createObjectURL(file);
+    document.getElementById('anonsFotoImg').src = url;
+    document.getElementById('anonsFotoPreview').style.display = 'block';
+    document.getElementById('anonsFotoZone').style.display = 'none';
+  }
+
+  function supprimerAnonsFoto() {
+    anonsFotoBlob = null;
+    document.getElementById('anonsFotoPreview').style.display = 'none';
+    document.getElementById('anonsFotoZone').style.display = 'block';
+    document.getElementById('anonsFotoInput').value = '';
+  }
+
+  async function uploadAnonsFoto() {
+    if (!anonsFotoBlob) return null;
+    const fd = new FormData();
+    fd.append('file', anonsFotoBlob);
+    fd.append('upload_preset', 'eglise_upload');
+    fd.append('folder', 'annonces');
+    const res  = await fetch('https://api.cloudinary.com/v1_1/dvcxhpibq/image/upload', { method:'POST', body:fd });
+    const data = await res.json();
+    return data.secure_url || null;
+  }
+
   async function publishAnnonces() {
     const titre = document.getElementById('anonsTitre').value.trim();
     if (!titre) { showToast('Veuillez saisir un titre !', 'error'); return; }
+    let fotoUrl = null;
+    if (anonsFotoBlob) { try { fotoUrl = await uploadAnonsFoto(); } catch(e) {} }
 
     try {
       await window._addDoc(window._collection(window._db, 'annonces'), {
         titre,
         date: document.getElementById('anonsDate').value,
+        fotoUrl: fotoUrl,
         lè: document.getElementById('anonsLe').value,
         detay: document.getElementById('anonsDetails').value,
         importance: document.getElementById('anonsImportance').value,
@@ -1862,6 +1913,7 @@
       });
 
       showToast('Annonce publiée !');
+      supprimerAnonsFoto();
       ['anonsTitre','anonsDate','anonsLe','anonsDetails'].forEach(id => document.getElementById(id).value = '');
       loadAnnonces();
     } catch (err) {

@@ -601,25 +601,27 @@ main {
 }
 
 .quick-card i {
-  font-size: 2rem;
+  font-size: 2.2rem;
   color: #f1c40f;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   display: block;
   position: relative;
 }
 
 .quick-card h3 {
   color: white !important;
-  font-size: 0.95rem;
+  font-size: 1.05rem !important;
   font-weight: 800;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   position: relative;
 }
 
 .quick-card p {
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  line-height: 1.4;
+  font-size: 0.9rem !important;
+  color: rgba(255,255,255,0.92) !important;
+  line-height: 1.5;
+  font-weight: 600 !important;
+  position: relative;
 }
 
 
@@ -671,8 +673,8 @@ main {
   gap: 16px;
   padding: 14px 0;
   border-bottom: 1px solid rgba(241,196,15,0.25);
-  color: #1a1a1a !important;
-  font-size: 1rem;
+  color: #111111 !important;
+  font-size: 1.05rem !important;
 }
 
 .annonces li:last-child {
@@ -700,13 +702,14 @@ main {
 
 .annonces li strong {
   color: #111111 !important;
-  font-weight: 700;
-  font-size: 1rem;
+  font-weight: 800 !important;
+  font-size: 1.08rem !important;
 }
 
 .annonce-date {
-  font-size: 0.82rem;
-  color: #555555 !important;
+  font-size: 0.88rem !important;
+  color: #333333 !important;
+  font-weight: 600 !important;
 }
 
 .see-all-link {
