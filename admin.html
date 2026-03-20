@@ -1456,7 +1456,7 @@
               </div>
             </div>
             <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end;">
-              ${!approuve ? `<button class="btn btn-sm" onclick="approuverTemoignage('${d.id}')" style="background:linear-gradient(135deg,#2ed573,#1abc9c);color:#0d1f4a;border:none;padding:8px 16px;border-radius:20px;font-weight:800;cursor:pointer;font-size:0.85rem;"><i class="fas fa-check"></i> Approuver</button>` : ''}
+              ${!approuve ? '<button class="btn btn-sm" onclick="approuverTemoignage(&apos;'+d.id+'&apos;)" style="background:linear-gradient(135deg,#2ed573,#1abc9c);color:#0d1f4a;border:none;padding:8px 16px;border-radius:20px;font-weight:800;cursor:pointer;font-size:0.85rem;"><i class="fas fa-check"></i> Approuver</button>' : ''}
               <button class="btn btn-sm" onclick="effacerTemoignage('${d.id}')" style="background:rgba(231,76,60,0.2);color:#ff6b6b;border:1px solid rgba(231,76,60,0.3);padding:8px 14px;border-radius:20px;font-weight:700;cursor:pointer;font-size:0.85rem;"><i class="fas fa-trash"></i></button>
             </div>
           </div>`;
@@ -2288,12 +2288,12 @@
                   style="flex:1;padding:9px 12px;background:rgba(46,213,115,0.2);border:1.5px solid #2ed573;border-radius:20px;color:#2ed573;font-size:0.85rem;font-weight:700;cursor:pointer;">
                   <i class="fas fa-unlock"></i> Débloquer
                 </button>`
-              : `<button onclick="bloquerMembre('${m.id}','${(m.nom||'').replace(/'/g,'')}')"
+              : `<button onclick="bloquerMembre('${m.id}','${(m.nom||"").replace(/[^a-zA-Z0-9 ]/g,"")}')"`
                   style="flex:1;padding:9px 12px;background:rgba(231,76,60,0.15);border:1.5px solid rgba(231,76,60,0.4);border-radius:20px;color:#ff6b6b;font-size:0.85rem;font-weight:700;cursor:pointer;">
                   <i class="fas fa-ban"></i> Bloquer
                 </button>`
             }
-            <button onclick="reinitialiserMembre('${m.id}','${(m.nom||'').replace(/'/g,'')}')"
+            <button onclick="reinitialiserMembre('${m.id}','${(m.nom||"").replace(/[^a-zA-Z0-9 ]/g,"")}')"`
               style="padding:9px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:20px;color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:700;cursor:pointer;"
               title="Supprimer l'inscription (la personne devra se réinscrire)">
               <i class="fas fa-redo"></i> Réinitialiser
