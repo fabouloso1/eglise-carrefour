@@ -39,11 +39,12 @@
 
     /* Infos côté gauche */
     .contact-info { display: flex; flex-direction: column; gap: 20px; }
-    .info-card { background: white; border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); display: flex; align-items: flex-start; gap: 18px; transition: var(--transition); }
+    .info-card { background: white; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); display: flex; align-items: flex-start; gap: 14px; transition: var(--transition); overflow: hidden; }
     .info-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: rgba(241,196,15,0.4); }
-    .info-icon { width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1.1rem; flex-shrink: 0; }
-    .info-card h3 { color: #111 !important; font-size: 1.1rem !important; font-weight: 800 !important; margin-bottom: 8px; }
-    .info-card p, .info-card a { color: #222 !important; font-size: 1rem !important; font-weight: 600 !important; line-height: 1.8; text-decoration: none; transition: var(--transition); }
+    .info-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1rem; flex-shrink: 0; }
+    .info-card h3 { color: #111 !important; font-size: 1.05rem !important; font-weight: 800 !important; margin-bottom: 8px; }
+    .info-card > div { flex: 1; min-width: 0; overflow: hidden; }
+    .info-card p, .info-card a { color: #222 !important; font-size: 0.95rem !important; font-weight: 600 !important; line-height: 1.7; text-decoration: none; transition: var(--transition); word-break: break-word; overflow-wrap: anywhere; display: block; }
     .info-card a:hover { color: var(--primary); }
 
     .horaires-card { background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: var(--radius); padding: 28px; color: white; }
