@@ -130,29 +130,30 @@
     </a>
   </section>
 
-  <!-- Annonces -->
+  <!-- Annonces dynamiques Firebase -->
   <section class="annonces">
     <h2><i class="fas fa-bullhorn"></i> <span data-i18n="annonces_title">Annonces</span></h2>
-    <ul>
+    <ul id="annonces-list">
+      <!-- Anons statik pa defò si Firebase pa chaje -->
       <li>
         <span class="annonce-icon"><i class="fas fa-calendar-day"></i></span>
         <div>
-          <strong data-i18n="annonce1_title">Veillée de prière</strong>
-          <span class="annonce-date" data-i18n="annonce1_date">Vendredi — 19h00</span>
+          <strong>Veillée de prière</strong>
+          <span class="annonce-date">Vendredi — 19h00</span>
         </div>
       </li>
       <li>
         <span class="annonce-icon"><i class="fas fa-users"></i></span>
         <div>
-          <strong data-i18n="annonce2_title">Réunion des jeunes</strong>
-          <span class="annonce-date" data-i18n="annonce2_date">Samedi — 16h00</span>
+          <strong>Réunion des jeunes</strong>
+          <span class="annonce-date">Samedi — 16h00</span>
         </div>
       </li>
       <li>
         <span class="annonce-icon"><i class="fas fa-church"></i></span>
         <div>
-          <strong data-i18n="annonce3_title">Culte principal</strong>
-          <span class="annonce-date" data-i18n="annonce3_date">Dimanche — 6h00 à 8h30</span>
+          <strong>Culte principal</strong>
+          <span class="annonce-date">Dimanche — 6h00 à 8h30</span>
         </div>
       </li>
     </ul>
@@ -253,5 +254,80 @@
   afficherVerset();
 </script>
 <script src="pwa.js"></script>
+
+<!-- Firebase pou Anons dinamik -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+(function() {
+  if (!firebase.apps.length) {
+    firebase.initializeApp({
+      apiKey:"AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
+      authDomain:"eglise-carrefour.firebaseapp.com",
+      projectId:"eglise-carrefour",
+      storageBucket:"eglise-carrefour.appspot.com",
+      messagingSenderId:"421333694767",
+      appId:"1:421333694767:web:30c18da36ae020821a49da"
+    });
+  }
+  const db = firebase.firestore();
+
+  async function chargerAnnonces() {
+    try {
+      const snap = await db.collection('annonces')
+        .orderBy('timestamp','desc')
+        .get();
+      if (snap.empty) return;
+
+      // Efase anons ki depase dat yo
+      const jodi = new Date(); jodi.setHours(0,0,0,0);
+      const valid = [];
+      for (const d of snap.docs) {
+        const a = d.data();
+        if (a.date && new Date(a.date) < jodi) {
+          try { await db.collection('annonces').doc(d.id).delete(); } catch(e) {}
+        } else {
+          valid.push({ id: d.id, ...a });
+        }
+      }
+      if (valid.length === 0) return;
+
+      const icons = {
+        urgent: 'fa-exclamation-circle',
+        important: 'fa-star',
+        normal: 'fa-bullhorn'
+      };
+      const colors = {
+        urgent: '#e74c3c',
+        important: '#f1c40f',
+        normal: '#1c1c3c'
+      };
+
+      const list = document.getElementById('annonces-list');
+      if (!list) return;
+      list.innerHTML = valid.map(a => {
+        const ico = icons[a.importance] || 'fa-bullhorn';
+        const col = colors[a.importance] || '#1c1c3c';
+        const date = a.date
+          ? new Date(a.date).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})
+          : '';
+        const heure = a.heure || '';
+        return \`<li>
+          <span class="annonce-icon"><i class="fas \${ico}" style="color:\${col}"></i></span>
+          <div>
+            <strong>\${a.titre||''}</strong>
+            \${a.details ? \`<span class="annonce-desc" style="display:block;font-size:0.82rem;color:rgba(255,255,255,0.65);margin-top:2px;">\${a.details}</span>\` : ''}
+            <span class="annonce-date">\${date}\${heure?' — '+heure:''}</span>
+          </div>
+        </li>\`;
+      }).join('');
+    } catch(e) {
+      console.log('Annonces:', e.message);
+    }
+  }
+
+  chargerAnnonces();
+})();
+</script>
 </body>
 </html>

@@ -625,17 +625,27 @@ main {
 
 /* ===== ANNONCES ===== */
 .annonces {
-  background: white;
+  background: linear-gradient(135deg, #1565c0, #1976d2);
   padding: 32px 36px;
   border-radius: var(--radius);
   margin-bottom: 32px;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border);
-  border-left: 5px solid var(--gold);
+  box-shadow: 0 6px 24px rgba(21,101,192,0.3);
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.annonces::before {
+  content: '';
+  position: absolute;
+  right: -30px; top: -30px;
+  width: 150px; height: 150px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
 }
 
 .annonces h2 {
-  color: var(--primary);
+  color: white !important;
   margin-bottom: 24px;
   font-size: 1.5rem;
   display: flex;
@@ -644,7 +654,7 @@ main {
 }
 
 .annonces h2 i {
-  color: var(--gold);
+  color: #f1c40f;
   font-size: 1.2rem;
 }
 
@@ -660,8 +670,8 @@ main {
   align-items: center;
   gap: 16px;
   padding: 14px 0;
-  border-bottom: 1px solid var(--border);
-  color: #555;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  color: white !important;
   font-size: 1rem;
 }
 
@@ -670,14 +680,14 @@ main {
 }
 
 .annonce-icon {
-  width: 40px;
-  height: 40px;
-  background: rgba(241,196,15,0.12);
+  width: 42px;
+  height: 42px;
+  background: rgba(255,255,255,0.15);
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--gold);
+  color: #f1c40f;
   flex-shrink: 0;
   font-size: 0.95rem;
 }
@@ -689,13 +699,14 @@ main {
 }
 
 .annonces li strong {
-  color: var(--primary);
+  color: white !important;
   font-weight: 700;
+  font-size: 1rem;
 }
 
 .annonce-date {
   font-size: 0.82rem;
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.7) !important;
 }
 
 .see-all-link {

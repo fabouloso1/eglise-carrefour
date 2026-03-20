@@ -594,7 +594,7 @@
         <div class="stat-card">
           <i class="fas fa-bullhorn"></i>
           <div class="stat-num" id="statAnnonces">—</div>
-          <div class="stat-label">Annonces aktif</div>
+          <div class="stat-label">Annonces actives</div>
         </div>
         <div class="stat-card">
           <i class="fas fa-clock"></i>
@@ -856,39 +856,72 @@
     <!-- ===== ANNONCES ===== -->
     <div class="tab-panel" id="tab-annonces">
 
-      <!-- Nouvo anons -->
-      <div class="card">
-        <h3><i class="fas fa-bullhorn"></i> Ajouter une annonce</h3>
+      <!-- Formulaire nouvelle annonce -->
+      <div style="background:linear-gradient(135deg,#1565c0,#1976d2);border-radius:20px;padding:26px 22px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:22px;">
+          <div style="width:46px;height:46px;background:rgba(255,255,255,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+            <i class="fas fa-bullhorn" style="color:#f1c40f;font-size:1.2rem;"></i>
+          </div>
+          <div>
+            <h3 style="color:white!important;font-size:1.1rem!important;font-weight:800!important;margin:0!important;">Publier une annonce</h3>
+            <p style="color:rgba(255,255,255,0.6)!important;font-size:0.85rem!important;margin:0!important;">Visible instantanément sur le site</p>
+          </div>
+        </div>
 
-        <label>Titre de l'annonce *</label>
-        <input type="text" id="anonsTitre" placeholder="Ex : Réunion des Leaders — 20 Juin..." />
+        <div style="margin-bottom:14px;">
+          <label style="display:block;color:#f1c40f!important;font-weight:700!important;font-size:0.9rem!important;margin-bottom:7px;"><i class="fas fa-pen" style="margin-right:5px;"></i>Titre de l'annonce *</label>
+          <input type="text" id="anonsTitre" placeholder="Ex: Réunion des Leaders — 20 Juin..."
+            style="width:100%;padding:13px 16px;border:2px solid rgba(255,255,255,0.2);border-radius:12px;background:rgba(255,255,255,0.12);color:white;font-size:1rem;font-weight:600;" />
+        </div>
 
-        <label>Date</label>
-        <input type="date" id="anonsDate" />
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+          <div>
+            <label style="display:block;color:#f1c40f!important;font-weight:700!important;font-size:0.9rem!important;margin-bottom:7px;"><i class="fas fa-calendar" style="margin-right:5px;"></i>Date</label>
+            <input type="date" id="anonsDate"
+              style="width:100%;padding:13px 16px;border:2px solid rgba(255,255,255,0.2);border-radius:12px;background:rgba(255,255,255,0.12);color:white;font-size:1rem;" />
+          </div>
+          <div>
+            <label style="display:block;color:#f1c40f!important;font-weight:700!important;font-size:0.9rem!important;margin-bottom:7px;"><i class="fas fa-clock" style="margin-right:5px;"></i>Heure</label>
+            <input type="time" id="anonsLe"
+              style="width:100%;padding:13px 16px;border:2px solid rgba(255,255,255,0.2);border-radius:12px;background:rgba(255,255,255,0.12);color:white;font-size:1rem;" />
+          </div>
+        </div>
 
-        <label>Heure</label>
-        <input type="time" id="anonsLe" />
+        <div style="margin-bottom:14px;">
+          <label style="display:block;color:#f1c40f!important;font-weight:700!important;font-size:0.9rem!important;margin-bottom:7px;"><i class="fas fa-align-left" style="margin-right:5px;"></i>Détails</label>
+          <textarea id="anonsDetails" placeholder="Informations complémentaires sur l'annonce..."
+            style="width:100%;padding:13px 16px;border:2px solid rgba(255,255,255,0.2);border-radius:12px;background:rgba(255,255,255,0.12);color:white;font-size:1rem;min-height:80px;resize:vertical;"></textarea>
+        </div>
 
-        <label>Détails</label>
-        <textarea id="anonsDetails" placeholder="Informations sur l'annonce..." style="min-height:70px;"></textarea>
+        <div style="margin-bottom:20px;">
+          <label style="display:block;color:#f1c40f!important;font-weight:700!important;font-size:0.9rem!important;margin-bottom:7px;"><i class="fas fa-flag" style="margin-right:5px;"></i>Importance</label>
+          <select id="anonsImportance"
+            style="width:100%;padding:13px 16px;border:2px solid rgba(255,255,255,0.2);border-radius:12px;background:rgba(255,255,255,0.12);color:white;font-size:1rem;font-weight:600;">
+            <option value="normal" style="background:#1565c0;">Normal</option>
+            <option value="important" style="background:#1565c0;">Important</option>
+            <option value="urgent" style="background:#1565c0;">Urgent</option>
+          </select>
+        </div>
 
-        <label>Importance</label>
-        <select id="anonsImportance">
-          <option value="normal">Normal</option>
-          <option value="important">Important</option>
-          <option value="urgent">Urgent</option>
-        </select>
-
-        <button class="btn btn-gold" onclick="publishAnnonces()" style="width:100%">
+        <button onclick="publishAnnonces()"
+          style="width:100%;padding:16px;background:linear-gradient(135deg,#f1c40f,#e67e22);border:none;border-radius:30px;color:#1c1c3c!important;font-size:1.05rem!important;font-weight:800!important;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;">
           <i class="fas fa-paper-plane"></i> Publier l'annonce
         </button>
       </div>
 
-      <!-- Annonces existant -->
-      <div class="card">
-        <h3><i class="fas fa-list"></i> Annonces aktif yo (<span id="anonsCount">0</span>)</h3>
+      <!-- Liste annonces actives -->
+      <div style="background:white;border-radius:20px;padding:22px 20px;box-shadow:0 4px 16px rgba(0,0,0,0.08);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:42px;height:42px;background:linear-gradient(135deg,#1565c0,#1976d2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+            <i class="fas fa-list" style="color:white;"></i>
+          </div>
+          <div>
+            <h3 style="color:#111!important;font-size:1rem!important;font-weight:800!important;margin:0!important;">Annonces actives (<span id="anonsCount">0</span>)</h3>
+            <p style="color:#888!important;font-size:0.82rem!important;margin:0!important;">Visibles sur la page d'accueil</p>
+          </div>
+        </div>
         <div class="item-list" id="anonsList">
-          <p style="color:#aaa;text-align:center;padding:20px;font-size:0.85rem;">Chargement des annonces...</p>
+          <p style="color:#aaa;text-align:center;padding:20px;">Chargement...</p>
         </div>
       </div>
     </div>
@@ -1840,7 +1873,25 @@
     try {
       const q = window._query(window._collection(window._db, 'annonces'), window._orderBy('timestamp', 'desc'));
       const snap = await window._getDocs(q);
-      const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      // Efase otomatikman anons ki depase dat yo
+      const jodi = new Date(); jodi.setHours(0,0,0,0);
+      const aEffacer = [];
+      const items = [];
+
+      snap.docs.forEach(d => {
+        const a = { id: d.id, ...d.data() };
+        if (a.date && new Date(a.date) < jodi) {
+          aEffacer.push(d.id); // Dat pase — efase
+        } else {
+          items.push(a);
+        }
+      });
+
+      // Efase silansyezman
+      for (const id of aEffacer) {
+        try { await window._deleteDoc(window._doc(window._db, 'annonces', id)); } catch(e) {}
+      }
 
       document.getElementById('anonsCount').textContent = items.length;
       document.getElementById('statAnnonces').textContent = items.length;
