@@ -263,7 +263,7 @@
       const valid = [];
       for (const d of snap.docs) {
         const a = d.data();
-        if (a.date && new Date(a.date) < jodi) {
+        if (a.date && a.date.trim() !== '' && new Date(a.date + 'T00:00:00') < jodi) {
           try { await db.collection('annonces').doc(d.id).delete(); } catch(e) {}
         } else {
           valid.push({ id: d.id, ...a });
