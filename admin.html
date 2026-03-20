@@ -857,46 +857,46 @@
     <div class="tab-panel" id="tab-annonces">
 
       <!-- Formulaire nouvelle annonce -->
-      <div style="background:linear-gradient(135deg,#1565c0,#1976d2);border-radius:20px;padding:26px 22px;margin-bottom:16px;">
+      <div style="background:linear-gradient(135deg,#fffde7,#fff8e1);border-radius:20px;padding:26px 22px;margin-bottom:16px;border:2px solid #ffe082;">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:22px;">
-          <div style="width:46px;height:46px;background:rgba(255,255,255,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+          <div style="width:46px;height:46px;background:rgba(241,196,15,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
             <i class="fas fa-bullhorn" style="color:#f1c40f;font-size:1.2rem;"></i>
           </div>
           <div>
-            <h3 style="color:white!important;font-size:1.1rem!important;font-weight:800!important;margin:0!important;">Publier une annonce</h3>
-            <p style="color:rgba(255,255,255,0.6)!important;font-size:0.85rem!important;margin:0!important;">Visible instantanément sur le site</p>
+            <h3 style="color:#1a1a1a!important;font-size:1.1rem!important;font-weight:800!important;margin:0!important;">Publier une annonce</h3>
+            <p style="color:#666!important;font-size:0.85rem!important;margin:0!important;">Visible instantanément sur le site</p>
           </div>
         </div>
 
         <div style="margin-bottom:14px;">
-          <label style="display:block;color:#f1c40f!important;font-weight:700!important;font-size:0.9rem!important;margin-bottom:7px;"><i class="fas fa-pen" style="margin-right:5px;"></i>Titre de l'annonce *</label>
+          <label style="display:block;color:#1a1a1a!important;font-weight:700!important;font-size:0.9rem!important;margin-bottom:7px;"><i class="fas fa-pen" style="margin-right:5px;"></i>Titre de l'annonce *</label>
           <input type="text" id="anonsTitre" placeholder="Ex: Réunion des Leaders — 20 Juin..."
-            style="width:100%;padding:13px 16px;border:2px solid rgba(255,255,255,0.2);border-radius:12px;background:rgba(255,255,255,0.12);color:white;font-size:1rem;font-weight:600;" />
+            style="width:100%;padding:13px 16px;border:2px solid #ffe082;border-radius:12px;background:white;color:#111;font-size:1rem;font-weight:600;" />
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
           <div>
-            <label style="display:block;color:#f1c40f!important;font-weight:700!important;font-size:0.9rem!important;margin-bottom:7px;"><i class="fas fa-calendar" style="margin-right:5px;"></i>Date</label>
+            <label style="display:block;color:#1a1a1a!important;font-weight:700!important;font-size:0.9rem!important;margin-bottom:7px;"><i class="fas fa-calendar" style="margin-right:5px;"></i>Date</label>
             <input type="date" id="anonsDate"
-              style="width:100%;padding:13px 16px;border:2px solid rgba(255,255,255,0.2);border-radius:12px;background:rgba(255,255,255,0.12);color:white;font-size:1rem;" />
+              style="width:100%;padding:13px 16px;border:2px solid #ffe082;border-radius:12px;background:white;color:#111;font-size:1rem;" />
           </div>
           <div>
-            <label style="display:block;color:#f1c40f!important;font-weight:700!important;font-size:0.9rem!important;margin-bottom:7px;"><i class="fas fa-clock" style="margin-right:5px;"></i>Heure</label>
+            <label style="display:block;color:#1a1a1a!important;font-weight:700!important;font-size:0.9rem!important;margin-bottom:7px;"><i class="fas fa-clock" style="margin-right:5px;"></i>Heure</label>
             <input type="time" id="anonsLe"
-              style="width:100%;padding:13px 16px;border:2px solid rgba(255,255,255,0.2);border-radius:12px;background:rgba(255,255,255,0.12);color:white;font-size:1rem;" />
+              style="width:100%;padding:13px 16px;border:2px solid #ffe082;border-radius:12px;background:white;color:#111;font-size:1rem;" />
           </div>
         </div>
 
         <div style="margin-bottom:14px;">
-          <label style="display:block;color:#f1c40f!important;font-weight:700!important;font-size:0.9rem!important;margin-bottom:7px;"><i class="fas fa-align-left" style="margin-right:5px;"></i>Détails</label>
+          <label style="display:block;color:#1a1a1a!important;font-weight:700!important;font-size:0.9rem!important;margin-bottom:7px;"><i class="fas fa-align-left" style="margin-right:5px;"></i>Détails</label>
           <textarea id="anonsDetails" placeholder="Informations complémentaires sur l'annonce..."
-            style="width:100%;padding:13px 16px;border:2px solid rgba(255,255,255,0.2);border-radius:12px;background:rgba(255,255,255,0.12);color:white;font-size:1rem;min-height:80px;resize:vertical;"></textarea>
+            style="width:100%;padding:13px 16px;border:2px solid #ffe082;border-radius:12px;background:white;color:#111;font-size:1rem;min-height:80px;resize:vertical;"></textarea>
         </div>
 
         <div style="margin-bottom:20px;">
-          <label style="display:block;color:#f1c40f!important;font-weight:700!important;font-size:0.9rem!important;margin-bottom:7px;"><i class="fas fa-flag" style="margin-right:5px;"></i>Importance</label>
+          <label style="display:block;color:#1a1a1a!important;font-weight:700!important;font-size:0.9rem!important;margin-bottom:7px;"><i class="fas fa-flag" style="margin-right:5px;"></i>Importance</label>
           <select id="anonsImportance"
-            style="width:100%;padding:13px 16px;border:2px solid rgba(255,255,255,0.2);border-radius:12px;background:rgba(255,255,255,0.12);color:white;font-size:1rem;font-weight:600;">
+            style="width:100%;padding:13px 16px;border:2px solid #ffe082;border-radius:12px;background:white;color:#111;font-size:1rem;font-weight:600;">
             <option value="normal" style="background:#1565c0;">Normal</option>
             <option value="important" style="background:#1565c0;">Important</option>
             <option value="urgent" style="background:#1565c0;">Urgent</option>

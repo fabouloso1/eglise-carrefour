@@ -625,12 +625,12 @@ main {
 
 /* ===== ANNONCES ===== */
 .annonces {
-  background: linear-gradient(135deg, #1565c0, #1976d2);
+  background: linear-gradient(135deg, #fffde7, #fff8e1);
   padding: 32px 36px;
   border-radius: var(--radius);
   margin-bottom: 32px;
-  box-shadow: 0 6px 24px rgba(21,101,192,0.3);
-  border: none;
+  box-shadow: 0 4px 16px rgba(241,196,15,0.15);
+  border: 2px solid #ffe082;
   position: relative;
   overflow: hidden;
 }
@@ -645,7 +645,7 @@ main {
 }
 
 .annonces h2 {
-  color: white !important;
+  color: #1a1a1a !important;
   margin-bottom: 24px;
   font-size: 1.5rem;
   display: flex;
@@ -670,8 +670,8 @@ main {
   align-items: center;
   gap: 16px;
   padding: 14px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.15);
-  color: white !important;
+  border-bottom: 1px solid rgba(241,196,15,0.25);
+  color: #1a1a1a !important;
   font-size: 1rem;
 }
 
@@ -682,7 +682,7 @@ main {
 .annonce-icon {
   width: 42px;
   height: 42px;
-  background: rgba(255,255,255,0.15);
+  background: rgba(241,196,15,0.2);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -699,14 +699,14 @@ main {
 }
 
 .annonces li strong {
-  color: white !important;
+  color: #111111 !important;
   font-weight: 700;
   font-size: 1rem;
 }
 
 .annonce-date {
   font-size: 0.82rem;
-  color: rgba(255,255,255,0.7) !important;
+  color: #555555 !important;
 }
 
 .see-all-link {
