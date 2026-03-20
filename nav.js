@@ -102,9 +102,9 @@ const NAV = (() => {
           <p><i class="fas fa-phone"></i> +509 1234 5678</p>
           <p><i class="fas fa-envelope"></i> eglise@carrefour.ht</p>
           <div class="social-icons">
-            <a href="#" title="Facebook"><i class="fab fa-facebook"></i></a>
-            <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
-            <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.facebook.com/share/17GzWqGZpx/?mibextid=wwXIfr" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://youtube.com/@laprophetiewaney93?si=ZwV75dVFLHlHh0J6" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="https://wa.me/50931573591" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
           </div>
         </div>
       </div>
