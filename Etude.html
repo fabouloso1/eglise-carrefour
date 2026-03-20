@@ -518,12 +518,8 @@
   </div>
 </div>
 
-<div id="foot-placeholder"></div>
-
-<script src="lang.js"></script>
-<script src="nav.js"></script>
 <script>
-  NAV.init('Etude.html');
+(function(){
 
   // Firebase
   if (!firebase.apps.length) {
@@ -911,6 +907,12 @@
   };
 
   verifierAcces();
+</script>
+<script src="lang.js"></script>
+<script src="nav.js"></script>
+<script>
+  NAV.init('Etude.html');
+  if(window.initLang) initLang();
 </script>
 <script src="pwa.js"></script>
 </body>
