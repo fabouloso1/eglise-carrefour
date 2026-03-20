@@ -144,10 +144,11 @@
 
 <div id="foot-placeholder"></div>
 
-<script src="lang.js"></script>
-<script src="nav.js"></script>
+<script src="lang.js?v=2"></script>
+<script src="nav.js?v=2"></script>
 <script>
-  NAV.init('Guide.html');
+  if (typeof NAV === 'undefined') { console.error('nav.js failed to load'); }
+  else { NAV.init('Guide.html'); }
 
   // Firebase init
   if (!firebase.apps.length) {
@@ -247,13 +248,15 @@
       });
     }
     // Kalkile lyen biblestudytools.com/lsg/
-    const MAP_BST = {"Jen": "genesis", "Egz": "exodus", "Lev": "leviticus", "Nom": "numbers", "Dèt": "deuteronomy", "Joz": "joshua", "Jij": "judges", "Rout": "ruth", "1Sm": "1-samuel", "2Sm": "2-samuel", "1Wa": "1-kings", "2Wa": "2-kings", "1Ch": "1-chronicles", "2Ch": "2-chronicles", "Ezra": "ezra", "Neh": "nehemiah", "Est": "esther", "Job": "job", "Sòm": "psalms", "Pwov": "proverbs", "Ekl": "ecclesiastes", "Kant": "song-of-solomon", "Eza": "isaiah", "Jer": "jeremiah", "Lam": "lamentations", "Ezk": "ezekiel", "Dan": "daniel", "Oze": "hosea", "Joel": "joel", "Amos": "amos", "Abd": "obadiah", "Jon": "jonah", "Mik": "micah", "Nao": "nahum", "Ab": "habakkuk", "Sof": "zephaniah", "Ag": "haggai", "Zak": "zechariah", "Mal": "malachi", "Mat": "matthew", "Mak": "mark", "Lik": "luke", "Jan": "john", "Ak": "acts", "Wom": "romans", "1Ko": "1-corinthians", "2Ko": "2-corinthians", "Gal": "galatians", "Efe": "ephesians", "Fil": "philippians", "Kol": "colossians", "1Tes": "1-thessalonians", "2Tes": "2-thessalonians", "1Tim": "1-timothy", "2Tim": "2-timothy", "Tit": "titus", "Filem": "philemon", "Ebre": "hebrews", "Jak": "james", "1Pye": "1-peter", "2Pye": "2-peter", "1Jan": "1-john", "2Jan": "2-john", "3Jan": "3-john", "Jid": "jude", "Apo": "revelation"};
+    const MAP_WORD = {"Jen": "01", "Egz": "02", "Lev": "03", "Nom": "04", "Dèt": "05", "Joz": "06", "Jij": "07", "Rout": "08", "1Sm": "09", "2Sm": "10", "1Wa": "11", "2Wa": "12", "1Ch": "13", "2Ch": "14", "Ezra": "15", "Neh": "16", "Est": "17", "Job": "18", "Sòm": "19", "Pwov": "20", "Ekl": "21", "Kant": "22", "Eza": "23", "Jer": "24", "Lam": "25", "Ezk": "26", "Dan": "27", "Oze": "28", "Joel": "29", "Amos": "30", "Abd": "31", "Jon": "32", "Mik": "33", "Nao": "34", "Ab": "35", "Sof": "36", "Ag": "37", "Zak": "38", "Mal": "39", "Mat": "40", "Mak": "41", "Lik": "42", "Jan": "43", "Ak": "44", "Wom": "45", "1Ko": "46", "2Ko": "47", "Gal": "48", "Efe": "49", "Fil": "50", "Kol": "51", "1Tes": "52", "2Tes": "53", "1Tim": "54", "2Tim": "55", "Tit": "56", "Filem": "57", "Ebre": "58", "Jak": "59", "1Pye": "60", "2Pye": "61", "1Jan": "62", "2Jan": "63", "3Jan": "64", "Jid": "65", "Apo": "66"};
     (function() {
       const parts = planJour.reference.split(' ');
-      const slug  = MAP_BST[parts[0]] || parts[0].toLowerCase();
+      const num   = MAP_WORD[parts[0]];
       const chap  = parts[1] ? parts[1].split(':')[0] : '1';
-      document.getElementById('gBibleCom').href =
-        'https://www.biblestudytools.com/lsg/' + slug + '/' + chap + '.html';
+      if (num) {
+        document.getElementById('gBibleCom').href =
+          'https://www.wordproject.org/bibles/fr/' + num + '/' + chap + '.htm';
+      }
     })();
 
     // Progression
