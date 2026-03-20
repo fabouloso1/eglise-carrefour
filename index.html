@@ -253,57 +253,49 @@
 
   async function chargerAnnonces() {
     try {
-      const snap = await db.collection('annonces')
-        .orderBy('timestamp','desc')
-        .get();
+      const snap = await db.collection('annonces').orderBy('timestamp','desc').get();
       if (snap.empty) return;
 
-      // Efase anons ki depase dat yo
       const jodi = new Date(); jodi.setHours(0,0,0,0);
       const valid = [];
+
       for (const d of snap.docs) {
-        const a = d.data();
-        if (a.date && a.date.trim() !== '' && new Date(a.date + 'T00:00:00') < jodi) {
-          try { await db.collection('annonces').doc(d.id).delete(); } catch(e) {}
+        const a = { id: d.id, ...d.data() };
+        const hasDate = a.date && typeof a.date === 'string' && a.date.trim() !== '';
+        if (hasDate && new Date(a.date + 'T00:00:00') < jodi) {
+          try { await db.collection('annonces').doc(d.id).delete(); } catch(ex) {}
         } else {
-          valid.push({ id: d.id, ...a });
+          valid.push(a);
         }
       }
+
       if (valid.length === 0) return;
 
-      const icons = {
-        urgent: 'fa-exclamation-circle',
-        important: 'fa-star',
-        normal: 'fa-bullhorn'
-      };
-      const colors = {
-        urgent: '#e74c3c',
-        important: '#f1c40f',
-        normal: '#1c1c3c'
-      };
-
-      const list = document.getElementById('annonces-list');
+      const icons  = { urgent:'fa-exclamation-circle', important:'fa-star', normal:'fa-bullhorn' };
+      const colors = { urgent:'#e74c3c', important:'#f1c40f', normal:'#1c1c3c' };
+      const list   = document.getElementById('annonces-list');
       if (!list) return;
-      list.innerHTML = valid.map(a => {
-        const ico = icons[a.importance] || 'fa-bullhorn';
-        const col = colors[a.importance] || '#1c1c3c';
-        const date = a.date
-          ? new Date(a.date).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})
-          : '';
-        const heure = a.heure || '';
-        return \`<li>
-          <span class="annonce-icon"><i class="fas \${ico}" style="color:\${col}"></i></span>
-          <div>
-            <strong>\${a.titre||''}</strong>
-            \${a.details ? \`<span class="annonce-desc" style="display:block;font-size:0.82rem;color:rgba(255,255,255,0.65);margin-top:2px;">\${a.details}</span>\` : ''}
-            <span class="annonce-date">\${date}\${heure?' — '+heure:''}</span>
-          </div>
-        </li>\`;
+
+      list.innerHTML = valid.map(function(a) {
+        var ico  = icons[a.importance]  || 'fa-bullhorn';
+        var col  = colors[a.importance] || '#1c1c3c';
+        var date = a.date ? new Date(a.date + 'T00:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}) : '';
+        var heure = a.heure || '';
+        var desc  = a.details ? '<span style="display:block;font-size:0.9rem;color:#333;margin-top:3px;font-weight:500;">'+a.details+'</span>' : '';
+        var foto  = a.fotoUrl ? '<img src="'+a.fotoUrl+'" style="width:100%;max-height:180px;object-fit:cover;border-radius:10px;margin-top:10px;">' : '';
+        return '<li style="flex-direction:column;align-items:flex-start;">'
+          + '<div style="display:flex;align-items:center;gap:14px;width:100%;">'
+          + '<span class="annonce-icon"><i class="fas '+ico+'" style="color:'+col+'"></i></span>'
+          + '<div style="flex:1;"><strong>'+(a.titre||'')+'</strong>'+desc
+          + '<span class="annonce-date">'+date+(heure?' — '+heure:'')+'</span></div></div>'
+          + foto + '</li>';
       }).join('');
+
     } catch(e) {
-      console.log('Annonces:', e.message);
+      console.log('Annonces erreur:', e.message);
     }
   }
+
 
   chargerAnnonces();
 })();
