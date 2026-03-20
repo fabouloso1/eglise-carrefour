@@ -39,12 +39,12 @@
 
     /* Infos côté gauche */
     .contact-info { display: flex; flex-direction: column; gap: 20px; }
-    .info-card { background: white; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); display: flex; align-items: flex-start; gap: 14px; transition: var(--transition); overflow: hidden; }
+    .info-card { background: white; border-radius: var(--radius); padding: 24px 22px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: flex-start; gap: 14px; transition: var(--transition); }
     .info-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: rgba(241,196,15,0.4); }
     .info-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1rem; flex-shrink: 0; }
     .info-card h3 { color: #111 !important; font-size: 1.05rem !important; font-weight: 800 !important; margin-bottom: 8px; }
     .info-card > div { flex: 1; min-width: 0; overflow: hidden; }
-    .info-card p, .info-card a { color: #222 !important; font-size: 0.95rem !important; font-weight: 600 !important; line-height: 1.7; text-decoration: none; transition: var(--transition); word-break: break-word; overflow-wrap: anywhere; display: block; }
+    .info-card p, .info-card a { color: #111 !important; font-size: 1rem !important; font-weight: 600 !important; line-height: 1.6; text-decoration: none; display: block; margin-bottom: 6px; word-break: break-word; }
     .info-card a:hover { color: var(--primary); }
 
     .horaires-card { background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: var(--radius); padding: 28px; color: white; }
@@ -116,41 +116,50 @@
 
     <!-- GAUCHE : Infos -->
     <div class="contact-info">
-      <div class="info-card">
+
+      <!-- Adresse -->
+      <div class="info-card" style="flex-direction:column;align-items:flex-start;gap:12px;">
         <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
         <div>
           <h3 data-i18n="contact_address_title">Notre adresse</h3>
-          <p>Carrefour, Haïti<br>Disponible chaque dimanche dès 6h00</p>
+          <p>Carrefour, Haïti</p>
+          <p>Disponible chaque dimanche dès 6h00</p>
         </div>
       </div>
 
-      <div class="info-card">
+      <!-- Téléphone -->
+      <div class="info-card" style="flex-direction:column;align-items:flex-start;gap:12px;">
         <div class="info-icon"><i class="fas fa-phone"></i></div>
-        <div>
+        <div style="width:100%;">
           <h3 data-i18n="contact_phone_title">Téléphone</h3>
-          <a href="tel:+50931573591">+509 31 57 3591</a><br>
-          <a href="tel:+50937319017">+509 37 31 9017</a><br>
+          <a href="tel:+50931573591">+509 31 57 3591</a>
+          <a href="tel:+50937319017">+509 37 31 9017</a>
           <a href="tel:+50940739184">+509 40 73 9184</a>
         </div>
       </div>
 
-      <div class="info-card">
+      <!-- Email -->
+      <div class="info-card" style="flex-direction:column;align-items:flex-start;gap:12px;">
         <div class="info-icon"><i class="fas fa-envelope"></i></div>
-        <div>
+        <div style="width:100%;">
           <h3 data-i18n="contact_email_title">Email</h3>
           <a href="mailto:prophetiewaney93@gmail.com">prophetiewaney93@gmail.com</a>
         </div>
       </div>
 
-      <div class="info-card">
+      <!-- Réseaux sociaux -->
+      <div class="info-card" style="flex-direction:column;align-items:flex-start;gap:12px;">
         <div class="info-icon"><i class="fab fa-facebook"></i></div>
-        <div>
+        <div style="width:100%;">
           <h3 data-i18n="contact_social_title">Réseaux sociaux</h3>
-          <a href="https://www.facebook.com/share/17GzWqGZpx/?mibextid=wwXIfr" target="_blank">Facebook — Église de Carrefour</a><br>
-          <a href="https://youtube.com/@laprophetiewaney93?si=ZwV75dVFLHlHh0J6" target="_blank">YouTube — Cultes en direct</a>
+          <a href="https://www.facebook.com/share/17GzWqGZpx/?mibextid=wwXIfr" target="_blank">
+            <i class="fab fa-facebook" style="margin-right:6px;color:#1877f2;"></i>Facebook — Église de Carrefour
+          </a>
+          <a href="https://youtube.com/@laprophetiewaney93?si=ZwV75dVFLHlHh0J6" target="_blank">
+            <i class="fab fa-youtube" style="margin-right:6px;color:#ff0000;"></i>YouTube — Cultes en direct
+          </a>
         </div>
       </div>
-
 
     </div>
 
@@ -226,12 +235,4 @@
 
 <div id="foot-placeholder"></div>
 
-<script src="lang.js"></script>
-<script src="nav.js"></script>
-<script>
-  NAV.init('C
-<script src="gate.js"></script>
-<script>window.addEventListener("load", function(){ gateInit(); });</script>
-<script src="pwa.js"></script>
-</body>
-</html>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.mi
