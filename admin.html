@@ -809,7 +809,7 @@
       </div>
 
       <!-- LANCER NOUVELLE ETUDE -->
-      <div id="etudeFormWrap" style="background:#ffffff;border-radius:20px;padding:22px 18px;border-top:4px solid #f1c40f;border:1px solid #ffe082;">
+      <div id="etudeFormWrap" style="background:#ffffff;border-radius:20px;padding:22px 18px;border-top:4px solid #f1c40f;border:1px solid #ffe082;display:block;">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
           <div style="width:44px;height:44px;background:rgba(241,196,15,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
             <i class="fas fa-plus-circle" style="color:#f0c040;font-size:1.1rem;"></i>
@@ -2347,13 +2347,19 @@
   var _etudeQListener = null;
 
   async function chargerEtudeActive() {
+    console.log('chargerEtudeActive kòmanse');
     try {
+      // Asire fòm lan vizib pandan chajman
+      var formWrap = document.getElementById('etudeFormWrap');
+      var wrap = document.getElementById('etude-active-wrap');
+      if(formWrap) formWrap.style.display='block';
+
       const snap = await window._getDoc(window._doc(window._db, 'config', 'etude'));
-      const wrap     = document.getElementById('etude-active-wrap');
-      const formWrap = document.getElementById('etudeFormWrap');
+      console.log('snap exists:', snap.exists());
       if (!snap.exists() || !snap.data().actif) {
         if(wrap) wrap.style.display='none';
-        if(formWrap) formWrap.style.display='block';
+        if(formWrap) { formWrap.style.display='block'; formWrap.style.visibility='visible'; }
+        console.log('Pa gen etude aktif — fòm lan afiche');
         return;
       }
       const e = snap.data();
