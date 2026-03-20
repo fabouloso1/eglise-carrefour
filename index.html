@@ -300,5 +300,39 @@
   chargerAnnonces();
 })();
 </script>
+<script>
+// ===== NOTIFIKASYON 9H LEKTI BIBLIK =====
+(function() {
+  function verifyierHeure9h() {
+    var now = new Date();
+    var h = now.getHours();
+    var m = now.getMinutes();
+    var key = 'notif_9h_' + now.toDateString();
+
+    // Si se 9h00-9h01 epi pa voye ankò jodi a
+    if (h === 9 && m === 0 && !localStorage.getItem(key)) {
+      localStorage.setItem(key, '1');
+      // Voye notif si Notification disponib
+      if ('Notification' in window && Notification.permission === 'granted') {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.ready.then(function(reg) {
+            reg.showNotification('📖 Lecture Biblique du jour', {
+              body: "Il est 9h ! C'est l'heure de lire votre Bible. Que Dieu vous bénisse ! 🙏",
+              icon: '/eglise-carrefour/logo.png',
+              badge: '/eglise-carrefour/logo.png',
+              tag: 'lecture-9h',
+              data: { url: 'https://fabouloso1.github.io/eglise-carrefour/Guide.html' }
+            });
+          });
+        }
+      }
+    }
+  }
+
+  // Verifye chak 30 segonn
+  setInterval(verifyierHeure9h, 30000);
+  verifyierHeure9h();
+})();
+</script>
 </body>
 </html>

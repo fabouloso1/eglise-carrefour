@@ -13,25 +13,63 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage(function(payload) {
-  const title = (payload.notification && payload.notification.title) || 'Eglise de Dieu de la Prophetie';
-  const body  = (payload.notification && payload.notification.body)  || '';
-  const link  = (payload.fcmOptions && payload.fcmOptions.link)
-                || (payload.data && payload.data.link)
-                || 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html#pasteur';
+  var title = (payload.notification && payload.notification.title) || 'Eglise de Dieu de la Prophetie';
+  var body  = (payload.notification && payload.notification.body)  || '';
+  var link  = (payload.fcmOptions && payload.fcmOptions.link)
+              || (payload.data && payload.data.link)
+              || 'https://fabouloso1.github.io/eglise-carrefour/index.html';
+  var type  = (payload.data && payload.data.type) || 'default';
 
-  self.registration.showNotification(title, {
+  // Options notifikasyon selon tip
+  var options = {
     body: body,
     icon: '/eglise-carrefour/logo.png',
     badge: '/eglise-carrefour/logo.png',
-    data: { url: link }
-  });
+    data: { url: link },
+    requireInteraction: false
+  };
+
+  // Sonnerie espesyal pou etude a
+  if (type === 'etude') {
+    options.vibrate = [200, 100, 200, 100, 400];
+    options.tag = 'etude-biblique';
+    options.requireInteraction = true;
+    options.actions = [
+      { action: 'ouvrir', title: 'Rejoindre l\'étude' },
+      { action: 'fermer', title: 'Plus tard' }
+    ];
+  }
+  // Notif 9h lekti
+  else if (type === 'lecture') {
+    options.vibrate = [300, 100, 300];
+    options.tag = 'lecture-9h';
+    options.actions = [
+      { action: 'ouvrir', title: 'Lire maintenant' }
+    ];
+  }
+  // Annonce
+  else if (type === 'annonce') {
+    options.vibrate = [100, 50, 100];
+    options.tag = 'annonce';
+  }
+  // Foto
+  else if (type === 'foto') {
+    options.vibrate = [100];
+    options.tag = 'nouvelle-photo';
+  }
+
+  self.registration.showNotification(title, options);
 });
 
 // Ouvri lyen lè moun klike sou notifikasyon an
 self.addEventListener('notificationclick', function(event) {
   event.notification.close();
   var url = (event.notification.data && event.notification.data.url)
-            || 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html#pasteur';
+            || 'https://fabouloso1.github.io/eglise-carrefour/index.html';
+
+  // Si klike sou aksyon "fermer"
+  if (event.action === 'fermer') return;
+
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
       for (var i = 0; i < clientList.length; i++) {

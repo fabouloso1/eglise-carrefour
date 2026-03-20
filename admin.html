@@ -1583,7 +1583,7 @@
           ? 'Le pasteur a publié ' + uploaded + ' nouvelles photos !'
           : 'Le pasteur a publié une nouvelle photo !';
         const notifLink  = 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html#pasteur';
-        await envoyerNotifAuto(notifTitle, notifBody, notifLink);
+        await envoyerNotifAuto(notifTitle, notifBody, notifLink, 'foto');
       } catch(e) { console.log('Notif auto error:', e); }
     } catch (err) {
       showToast('Erreur publication : ' + err.message, 'error');
@@ -1913,6 +1913,15 @@
       });
 
       showToast('✅ Annonce publiée !');
+      // Notifikasyon otomatik
+      try {
+        await envoyerNotifAuto(
+          'Église de Dieu de la Prophétie',
+          '📢 Nouvelle annonce : ' + titre + ' — Consultez-la sur le site !',
+          'https://fabouloso1.github.io/eglise-carrefour/index.html',
+          'annonce'
+        );
+      } catch(e) { console.log('Notif annonce:', e); }
       supprimerAnonsFoto();
       ['anonsTitre','anonsDate','anonsLe','anonsDetails'].forEach(id => {
         const el = document.getElementById(id);
@@ -2121,7 +2130,7 @@
   }
 
   // Fonksyon pou voye notif otomatikman (rele pa lòt fonksyon)
-  async function envoyerNotifAuto(title, body, link) {
+  async function envoyerNotifAuto(title, body, link, type) {
     const snap = await db2.collection('fcm_tokens').get();
     if (snap.empty) return;
     const accessToken = await getAccessToken();
@@ -2135,7 +2144,8 @@
             message: {
               token: token,
               notification: { title: title, body: body },
-              webpush: { fcm_options: { link: link } }
+              webpush: { fcm_options: { link: link } },
+              data: { link: link, type: type || 'default' }
             }
           })
         });
@@ -2506,7 +2516,7 @@
       const oldQ = await window._getDocs(window._collection(window._db,'etude_questions'));
       for (const d of oldQ.docs) await window._deleteDoc(window._doc(window._db,'etude_questions',d.id));
       await window._setDoc(window._doc(window._db,'config','etude'),{titre,theme,objectif,contenu,verset,actif:true,questionsOuvertes:true,timestamp:window._serverTimestamp(),date:new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})});
-      envoyerNotif('📖 Étude Biblique — '+titre,'Nouvelle étude lancée ! Venez poser vos questions.','https://fabouloso1.github.io/eglise-carrefour/Etude.html');
+      await envoyerNotifAuto('📖 Étude Biblique — '+titre,'🔔 Nouvelle étude lancée ! Venez poser vos questions en direct.','https://fabouloso1.github.io/eglise-carrefour/Etude.html','etude');
       status.style.background='#e8f5e9'; status.style.color='#2e7d32'; status.textContent='✅ Étude lancée !';
       ['etudeTitre','etudeTheme','etudeObjectif','etudeContenu','etudeVerset'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';}); 
       setTimeout(()=>{status.style.display='none';},3000);
@@ -2530,7 +2540,7 @@
       ['evTitre','evDate','evHeure','evDesc','evPrix'].forEach(id=>document.getElementById(id).value='');
       setTimeout(()=>{status.style.display='none';},3000);
       chargerEvenements();
-      envoyerNotif('Église de Dieu de la Prophétie','📅 Nouvel événement : '+titre,'https://fabouloso1.github.io/eglise-carrefour/Horaires.html');
+      await envoyerNotifAuto('Église de Dieu de la Prophétie','📅 Nouvel événement spécial : '+titre+' — Consultez les horaires !','https://fabouloso1.github.io/eglise-carrefour/Horaires.html','annonce');
     } catch(e) { status.style.background='#fee'; status.style.color='#c00'; status.textContent='❌ Erreur : '+e.message; }
   }
 
