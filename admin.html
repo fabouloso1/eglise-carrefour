@@ -1904,20 +1904,23 @@
     try {
       await window._addDoc(window._collection(window._db, 'annonces'), {
         titre,
-        date: document.getElementById('anonsDate').value,
-        fotoUrl: fotoUrl,
-        lè: document.getElementById('anonsLe').value,
-        detay: document.getElementById('anonsDetails').value,
+        date:       document.getElementById('anonsDate').value,
+        heure:      document.getElementById('anonsLe').value,
+        details:    document.getElementById('anonsDetails').value,
         importance: document.getElementById('anonsImportance').value,
-        timestamp: window._serverTimestamp()
+        fotoUrl:    fotoUrl,
+        timestamp:  window._serverTimestamp()
       });
 
-      showToast('Annonce publiée !');
+      showToast('✅ Annonce publiée !');
       supprimerAnonsFoto();
-      ['anonsTitre','anonsDate','anonsLe','anonsDetails'].forEach(id => document.getElementById(id).value = '');
+      ['anonsTitre','anonsDate','anonsLe','anonsDetails'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
       loadAnnonces();
     } catch (err) {
-      showToast('Erreur : ' + err.message, 'error');
+      showToast('❌ Erreur : ' + err.message, 'error');
     }
   }
 
@@ -1959,7 +1962,7 @@
         <div class="item-card">
           <div class="item-card-info">
             <h4>${a.titre} <span style="font-size:0.75rem;background:${impColor[a.importance]||'#3498db'};color:white;padding:2px 7px;border-radius:10px;">${a.importance}</span></h4>
-            <p>${a.date || ''} ${a.lè ? '· ' + a.lè : ''}</p>
+            <p>${a.date || ''} ${a.heure ? '· ' + a.heure : ''}</p>
           </div>
           <div class="item-card-actions">
             <button class="btn btn-danger btn-sm" onclick="deleteAnnonces('${a.id}')">
