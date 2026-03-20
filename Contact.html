@@ -35,16 +35,16 @@
     .breadcrumb span { color: var(--primary); font-weight: 600; }
 
     .contact-main { max-width: 1100px; margin: 0 auto; padding: 50px 24px 80px; }
-    .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 32px; }
+    .contact-grid { display: flex; flex-direction: column; gap: 28px; max-width: 700px; margin: 0 auto; }
 
     /* Infos côté gauche */
-    .contact-info { display: flex; flex-direction: column; gap: 20px; }
+    .contact-info { display: flex; flex-direction: column; gap: 16px; }
     .info-card { background: white; border-radius: var(--radius); padding: 24px 22px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: flex-start; gap: 14px; transition: var(--transition); }
     .info-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: rgba(241,196,15,0.4); }
     .info-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1rem; flex-shrink: 0; }
     .info-card h3 { color: #111 !important; font-size: 1.05rem !important; font-weight: 800 !important; margin-bottom: 8px; }
     .info-card > div { flex: 1; min-width: 0; overflow: hidden; }
-    .info-card p, .info-card a { color: #111 !important; font-size: 1rem !important; font-weight: 600 !important; line-height: 1.6; text-decoration: none; display: block; margin-bottom: 6px; word-break: break-word; }
+    .info-card p, .info-card a { color: #111 !important; font-size: 1rem !important; font-weight: 600 !important; line-height: 1.7; text-decoration: none; display: block; margin-bottom: 6px; white-space: nowrap; }
     .info-card a:hover { color: var(--primary); }
 
     .horaires-card { background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: var(--radius); padding: 28px; color: white; }
@@ -82,7 +82,7 @@
     .map-placeholder p { font-size: 0.9rem; opacity: 0.7; }
 
     @media (max-width: 900px) {
-      .contact-grid { grid-template-columns: 1fr; }
+      
       .form-row { grid-template-columns: 1fr; }
     }
     @media (max-width: 480px) {
@@ -122,8 +122,8 @@
         <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
         <div>
           <h3 data-i18n="contact_address_title">Notre adresse</h3>
-          <p>Carrefour, Haïti</p>
-          <p>Disponible chaque dimanche dès 6h00</p>
+          <p>#9, Carrefour Waney 93, rue Apollon</p>
+          <p>Port-au-Prince, Haïti (W. I)</p>
         </div>
       </div>
 
@@ -143,7 +143,7 @@
         <div class="info-icon"><i class="fas fa-envelope"></i></div>
         <div style="width:100%;">
           <h3 data-i18n="contact_email_title">Email</h3>
-          <a href="mailto:prophetiewaney93@gmail.com">prophetiewaney93@gmail.com</a>
+          <a href="/cdn-cgi/l/email-protection#ccbcbea3bca4a9b8a5a9bbada2a9b5f5ff8caba1ada5a0e2afa3a1"><span class="__cf_email__" data-cfemail="19696b7669717c6d707c6e78777c60202a597e74787075377a7674">[email&#160;protected]</span></a>
         </div>
       </div>
 
@@ -229,10 +229,4 @@
     <div class="map-placeholder">
       <i class="fas fa-map-marked-alt"></i>
       <p>Carte Google Maps — Remplacez avec votre iframe Maps</p>
-    </div>
-  </div>
-</div>
-
-<div id="foot-placeholder"></div>
-
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.mi
+    </d
