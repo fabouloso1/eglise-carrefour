@@ -700,8 +700,6 @@
 
       <!-- ETUDE EN COURS -->
       <div id="etude-active-wrap" style="display:none;border-radius:20px;overflow:hidden;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,0,0,0.15);">
-
-        <!-- Header style WhatsApp -->
         <div style="background:#075E54;padding:14px 16px;display:flex;align-items:center;gap:12px;">
           <div style="width:42px;height:42px;background:#128C7E;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:white;">📖</div>
           <div style="flex:1;">
@@ -710,8 +708,6 @@
           </div>
           <span style="background:rgba(255,255,255,0.2);color:white;font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:20px;">🔴 Live</span>
         </div>
-
-        <!-- Corps panel -->
         <div style="background:#ECE5DD;padding:16px;">
 
         <!-- Boutons contrôle -->
@@ -727,35 +723,35 @@
           </button>
         </div>
 
-        <!-- ENVOYER MSG PASTEUR (Audio + Image + Texte) -->
+        <!-- MSG PASTEUR: Texte + Image + Audio -->
         <div style="background:white;border-radius:14px;margin-bottom:16px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.1);">
-          <!-- Header -->
           <div style="background:#075E54;padding:10px 14px;">
-            <span style="color:white;font-size:0.88rem;font-weight:800;"><i class="fas fa-paper-plane" style="margin-right:6px;"></i>Envoyer un message aux participants</span>
+            <span style="color:white;font-size:0.88rem;font-weight:800;"><i class="fas fa-paper-plane" style="margin-right:6px;"></i>Envoyer un message</span>
           </div>
-          <!-- Zone texte + boutons -->
           <div style="padding:12px;background:#F0F0F0;">
-            <!-- Preview image pasteur -->
             <div id="pasteurImgPreview" style="display:none;margin-bottom:8px;position:relative;background:white;border-radius:10px;padding:8px;">
               <img id="pasteurImgEl" src="" style="max-height:120px;border-radius:8px;display:block;">
-              <button onclick="annulerImgPasteur()" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.5);color:white;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:0.75rem;"><i class="fas fa-times"></i></button>
+              <button onclick="annulerImgPasteur()" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.5);color:white;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;"><i class="fas fa-times"></i></button>
             </div>
-            <!-- Input texte -->
             <div style="display:flex;align-items:flex-end;gap:8px;">
               <div style="flex:1;background:white;border-radius:24px;display:flex;align-items:flex-end;padding:8px 14px;gap:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-                <button onclick="document.getElementById('pasteurImgInput').click()" style="background:none;border:none;color:#888;font-size:1.2rem;cursor:pointer;padding:4px;"><i class="fas fa-image"></i></button>
-                <textarea id="pasteurTexte" placeholder="Écrire un message..." rows="1" oninput="autoResizePasteur(this)"
-                  style="flex:1;border:none;outline:none;resize:none;font-family:inherit;font-size:0.95rem;line-height:1.4;max-height:100px;min-height:24px;background:transparent;color:#1a1a1a;"></textarea>
+                <button onclick="document.getElementById('pasteurImgInput').click()" style="background:none;border:none;color:#888;font-size:1.2rem;cursor:pointer;"><i class="fas fa-image"></i></button>
+                <textarea id="pasteurTexte" placeholder="Écrire un message..." rows="1" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px'"
+                  style="flex:1;border:none;outline:none;resize:none;font-family:inherit;font-size:0.95rem;max-height:100px;min-height:24px;background:transparent;color:#1a1a1a;"></textarea>
               </div>
-              <button onclick="envoyerMsgPasteur()" style="width:46px;height:46px;background:#128C7E;border:none;border-radius:50%;color:white;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(18,140,126,0.4);">
+              <button onclick="envoyerMsgPasteur()" style="width:46px;height:46px;background:#128C7E;border:none;border-radius:50%;color:white;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">
                 <i class="fas fa-paper-plane"></i>
               </button>
               <input type="file" id="pasteurImgInput" accept="image/*" style="display:none;" onchange="previewImgPasteur(event)">
             </div>
           </div>
-          <!-- Section audio séparée -->
-          <div style="background:#fffde7;border-top:1px solid #ffe082;padding:10px 14px;">
-            <p style="color:#795548;font-size:0.82rem;font-weight:700;margin-bottom:8px;"><i class="fas fa-microphone" style="margin-right:5px;color:#f1c40f;"></i>Message vocal</p>
+        </div>
+
+        <!-- AUDIO PASTEUR -->
+        <div style="background:rgba(255,193,7,0.12);border:1px solid #ffe082;border-radius:14px;padding:14px;margin-bottom:16px;">
+          <p style="color:#795548!important;font-size:0.88rem!important;font-weight:800!important;margin-bottom:10px!important;">
+            <i class="fas fa-microphone" style="margin-right:6px;color:#f1c40f;"></i>Message vocal
+          </p>
 
           <!-- Normal state -->
           <div id="pasteurRecNormal">
@@ -783,21 +779,20 @@
           </div>
 
           <!-- Preview audio -->
-          <div id="pasteurAudioPreview" style="display:none;margin-top:8px;">
+          <div id="pasteurAudioPreview" style="display:none;margin-top:10px;">
             <audio id="pasteurAudioEl" controls style="width:100%;border-radius:8px;margin-bottom:8px;"></audio>
             <div style="display:flex;gap:8px;">
               <button type="button" onclick="envoyerAudioPasteur()"
-                style="flex:1;padding:10px;background:linear-gradient(135deg,#f1c40f,#e67e22);border:none;border-radius:20px;color:#1c1c3c;font-weight:800;cursor:pointer;font-size:0.88rem;">
-                <i class="fas fa-paper-plane"></i> Envoyer
+                style="flex:1;padding:12px;background:linear-gradient(135deg,#f1c40f,#e67e22);border:none;border-radius:20px;color:#1c1c3c;font-weight:800;cursor:pointer;font-size:0.9rem;">
+                <i class="fas fa-paper-plane"></i> Envoyer aux participants
               </button>
-              <button type="button" onclick="annulerAudioPasteur()" style="padding:10px 14px;background:rgba(231,76,60,0.2);border:none;color:#ff6b6b;border-radius:20px;cursor:pointer;">
+              <button type="button" onclick="annulerAudioPasteur()" style="padding:12px 14px;background:rgba(231,76,60,0.2);border:1px solid rgba(231,76,60,0.3);color:#ff6b6b;border-radius:20px;cursor:pointer;">
                 <i class="fas fa-trash"></i>
               </button>
             </div>
             <div id="pasteurAudioStatus" style="display:none;margin-top:8px;padding:10px;border-radius:10px;text-align:center;font-weight:700;font-size:0.88rem;"></div>
           </div>
-          </div><!-- fin section audio -->
-        </div><!-- fin card msg -->
+        </div>
 
         <!-- Questions -->
         <h4 style="color:#f1c40f!important;font-size:0.92rem!important;font-weight:800!important;margin-bottom:10px!important;">
@@ -809,13 +804,13 @@
       </div>
 
       <!-- LANCER NOUVELLE ETUDE -->
-      <div id="etudeFormWrap" style="background:#ffffff;border-radius:20px;padding:22px 18px;border-top:4px solid #f1c40f;border:1px solid #ffe082;display:block;">
+      <div id="etudeFormWrap" style="background:#fff8e1;border-radius:20px;padding:22px 18px;border-top:4px solid #f1c40f;border:1px solid #ffe082;">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
-          <div style="width:44px;height:44px;background:rgba(241,196,15,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
-            <i class="fas fa-plus-circle" style="color:#f0c040;font-size:1.1rem;"></i>
+          <div style="width:44px;height:44px;background:rgba(124,58,237,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+            <i class="fas fa-plus-circle" style="color:#a78bfa;font-size:1.1rem;"></i>
           </div>
           <div>
-            <h3 style="color:#1c1c3c!important;font-size:1.05rem!important;font-weight:800!important;margin:0!important;">Lancer une nouvelle étude</h3>
+            <h3 style="color:#a78bfa!important;font-size:1.05rem!important;font-weight:800!important;margin:0!important;">Lancer une nouvelle étude</h3>
             <p style="color:#555!important;font-size:0.88rem!important;margin:0!important;font-weight:600!important;">Notification envoyée automatiquement</p>
           </div>
         </div>
@@ -848,7 +843,7 @@
 
       <div id="etudeStatus" style="display:none;margin-top:12px;padding:14px;border-radius:12px;text-align:center;font-weight:700;font-size:0.95rem;"></div>
     </div>
-    </div><!-- fen tab-etude -->
+    </div>
     <!-- ===== ÉVÉNEMENTS ===== -->
     <div class="tab-panel" id="tab-evenements">
       <div class="card" style="background:linear-gradient(135deg,#1c1c3c,#3a1c5c);border:none;">
@@ -1456,7 +1451,7 @@
               </div>
             </div>
             <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end;">
-              ${!approuve ? '<button class="btn btn-sm" onclick="approuverTemoignage(&apos;'+d.id+'&apos;)" style="background:linear-gradient(135deg,#2ed573,#1abc9c);color:#0d1f4a;border:none;padding:8px 16px;border-radius:20px;font-weight:800;cursor:pointer;font-size:0.85rem;"><i class="fas fa-check"></i> Approuver</button>' : ''}
+              ${!approuve ? `<button class="btn btn-sm" onclick="approuverTemoignage('${d.id}')" style="background:linear-gradient(135deg,#2ed573,#1abc9c);color:#0d1f4a;border:none;padding:8px 16px;border-radius:20px;font-weight:800;cursor:pointer;font-size:0.85rem;"><i class="fas fa-check"></i> Approuver</button>` : ''}
               <button class="btn btn-sm" onclick="effacerTemoignage('${d.id}')" style="background:rgba(231,76,60,0.2);color:#ff6b6b;border:1px solid rgba(231,76,60,0.3);padding:8px 14px;border-radius:20px;font-weight:700;cursor:pointer;font-size:0.85rem;"><i class="fas fa-trash"></i></button>
             </div>
           </div>`;
@@ -2288,11 +2283,12 @@
                   style="flex:1;padding:9px 12px;background:rgba(46,213,115,0.2);border:1.5px solid #2ed573;border-radius:20px;color:#2ed573;font-size:0.85rem;font-weight:700;cursor:pointer;">
                   <i class="fas fa-unlock"></i> Débloquer
                 </button>`
-              : `<button onclick="bloquerMembre('${m.id}','${(m.nom||"").replace(/[^a-zA-Z0-9 ]/g,"")}')" style="flex:1;padding:9px 12px;background:rgba(231,76,60,0.15);border:1.5px solid rgba(231,76,60,0.4);border-radius:20px;color:#ff6b6b;font-size:0.85rem;font-weight:700;cursor:pointer;">
+              : `<button onclick="bloquerMembre('${m.id}','${(m.nom||'').replace(/'/g,'')}')"
+                  style="flex:1;padding:9px 12px;background:rgba(231,76,60,0.15);border:1.5px solid rgba(231,76,60,0.4);border-radius:20px;color:#ff6b6b;font-size:0.85rem;font-weight:700;cursor:pointer;">
                   <i class="fas fa-ban"></i> Bloquer
                 </button>`
             }
-            <button onclick="reinitialiserMembre('${m.id}','${(m.nom||"").replace(/[^a-zA-Z0-9 ]/g,"")}')"
+            <button onclick="reinitialiserMembre('${m.id}','${(m.nom||'').replace(/'/g,'')}')"
               style="padding:9px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:20px;color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:700;cursor:pointer;"
               title="Supprimer l'inscription (la personne devra se réinscrire)">
               <i class="fas fa-redo"></i> Réinitialiser
@@ -2344,30 +2340,21 @@
 
   // ===== ÉTUDE =====
   var _etudeQListener = null;
-
   window.chargerEtudeActive = async function chargerEtudeActive() {
-    console.log('chargerEtudeActive kòmanse');
     try {
-      // Asire fòm lan vizib pandan chajman
-      var formWrap = document.getElementById('etudeFormWrap');
-      var wrap = document.getElementById('etude-active-wrap');
-      if(formWrap) formWrap.style.display='block';
-
       const snap = await window._getDoc(window._doc(window._db, 'config', 'etude'));
-      console.log('snap exists:', snap.exists());
+      const wrap     = document.getElementById('etude-active-wrap');
+      const formWrap = document.getElementById('etudeFormWrap');
       if (!snap.exists() || !snap.data().actif) {
         if(wrap) wrap.style.display='none';
-        if(formWrap) { formWrap.style.display='block'; formWrap.style.visibility='visible'; }
-        console.log('Pa gen etude aktif — fòm lan afiche');
+        if(formWrap) formWrap.style.display='block'; // Montre fòm si pa gen etude
         return;
       }
       const e = snap.data();
       if(wrap) wrap.style.display='block';
-      if(formWrap) formWrap.style.display='none';
+      if(formWrap) formWrap.style.display='none'; // Kache fòm si etude aktif
       const titreEl = document.getElementById('etude-active-titre');
       if(titreEl) titreEl.textContent = e.titre;
-
-      // onSnapshot pou tan reyèl
       if (_etudeQListener) _etudeQListener();
       _etudeQListener = window._onSnapshot(
         window._query(window._collection(window._db,'etude_questions'), window._orderBy('timestamp','asc')),
@@ -2375,58 +2362,6 @@
       );
     } catch(e) { console.log('Etude:', e.message); }
   }
-
-  // Imaj pasteur
-  var _pasteurImgFile = null;
-  window.previewImgPasteur = function(e) {
-    var file = e.target.files[0];
-    if (!file) return;
-    _pasteurImgFile = file;
-    document.getElementById('pasteurImgEl').src = URL.createObjectURL(file);
-    document.getElementById('pasteurImgPreview').style.display = 'block';
-  };
-  window.annulerImgPasteur = function() {
-    _pasteurImgFile = null;
-    document.getElementById('pasteurImgPreview').style.display = 'none';
-    document.getElementById('pasteurImgInput').value = '';
-  };
-
-  window.autoResizePasteur = function(el) {
-    el.style.height = 'auto';
-    el.style.height = Math.min(el.scrollHeight, 100) + 'px';
-  };
-
-  // Envoye msg texte/imaj pasteur
-  window.envoyerMsgPasteur = async function() {
-    var texte = document.getElementById('pasteurTexte').value.trim();
-    if (!texte && !_pasteurImgFile) return;
-    try {
-      var doc = {
-        auteur: 'Pasteur Anouis Jean',
-        question: texte || '📷 Image',
-        isPasteur: true,
-        heure: new Date().toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' }),
-        timestamp: window._serverTimestamp()
-      };
-      if (_pasteurImgFile) {
-        // Upload Cloudinary
-        var fd = new FormData();
-        fd.append('file', _pasteurImgFile);
-        fd.append('upload_preset', 'eglise_upload');
-        fd.append('folder', 'etude/pasteur');
-        var res = await fetch('https://api.cloudinary.com/v1_1/dvcxhpibq/image/upload', { method:'POST', body:fd });
-        var data = await res.json();
-        if (data.secure_url) doc.imageUrl = data.secure_url;
-        _pasteurImgFile = null;
-        document.getElementById('pasteurImgPreview').style.display = 'none';
-        document.getElementById('pasteurImgInput').value = '';
-      }
-      await window._addDoc(window._collection(window._db,'etude_questions'), doc);
-      document.getElementById('pasteurTexte').value = '';
-      document.getElementById('pasteurTexte').style.height = 'auto';
-      showToast('✅ Message envoyé !');
-    } catch(e) { showToast('❌ Erreur : '+e.message,'error'); }
-  };
 
   function afficherQuestions(docs) {
     var list = document.getElementById('questionsList');
@@ -2438,15 +2373,13 @@
     docs.forEach(function(d) {
       var q = d.data();
       var estPasteur = q.isPasteur === true;
-      var bgColor = estPasteur ? '#DCF8C6' : 'white';
-      var borderColor = estPasteur ? '#128C7E' : '#e0e0e0';
       var contenu = '';
       if (q.imageUrl) contenu += '<img src="' + q.imageUrl + '" style="max-width:100%;border-radius:8px;display:block;margin-bottom:6px;cursor:pointer;" onclick="window.open('' + q.imageUrl + '','_blank')">';
       if (q.audioUrl) contenu += '<audio controls src="' + q.audioUrl + '" style="width:100%;height:36px;margin-bottom:6px;"></audio>';
       if (q.question) contenu += '<div style="color:#111;font-size:0.92rem;line-height:1.5;">' + q.question + '</div>';
-      var reponse = q.reponse
-        ? '<div style="background:#E8F5E9;border-left:3px solid #128C7E;border-radius:8px;padding:8px 10px;margin-top:8px;"><div style="color:#128C7E;font-size:0.72rem;font-weight:800;margin-bottom:3px;"><i class="fas fa-reply"></i> Réponse du Pasteur</div><div style="color:#1a1a1a;font-size:0.88rem;">' + q.reponse + '</div></div>'
-        : '';
+      var reponse = q.reponse ? '<div style="background:#E8F5E9;border-left:3px solid #128C7E;border-radius:8px;padding:8px 10px;margin-top:8px;"><div style="color:#128C7E;font-size:0.72rem;font-weight:800;margin-bottom:3px;">Réponse Pasteur</div><div style="color:#1a1a1a;font-size:0.88rem;">' + q.reponse + '</div></div>' : '';
+      var bgColor = estPasteur ? '#DCF8C6' : 'white';
+      var borderColor = estPasteur ? '#128C7E' : '#e0e0e0';
       html += '<div style="background:' + bgColor + ';border:1px solid ' + borderColor + ';border-radius:12px;padding:12px;margin-bottom:10px;">' +
         '<div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">' +
         (estPasteur ? '<i class="fas fa-star" style="color:#128C7E;font-size:0.75rem;"></i>' : '<i class="fas fa-user" style="color:#888;font-size:0.75rem;"></i>') +
@@ -2457,8 +2390,7 @@
         '<input type="text" placeholder="Répondre..." id="rep-' + d.id + '" style="flex:1;padding:8px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:0.88rem;color:#111;">' +
         '<button onclick="repondreQuestion(&apos;' + d.id + '&apos;)" style="padding:8px 14px;background:#128C7E;border:none;border-radius:8px;color:white;font-weight:800;cursor:pointer;"><i class="fas fa-paper-plane"></i></button>' +
         '<button onclick="supprimerQuestion(&apos;' + d.id + '&apos;)" style="padding:8px 12px;background:#fee;border:none;color:#e74c3c;border-radius:8px;cursor:pointer;"><i class="fas fa-trash"></i></button>' +
-        '</div>' : '') +
-        '</div>';
+        '</div>' : '') + '</div>';
     });
     list.innerHTML = html;
   }
@@ -2470,12 +2402,48 @@
       await window._updateDoc(window._doc(window._db,'etude_questions',id), { reponse: rep });
       input.value = '';
       showToast('Réponse envoyée !');
+      chargerEtudeActive();
     } catch(e) { showToast('Erreur : '+e.message,'error'); }
   }
 
   async function supprimerQuestion(id) {
-    try { await window._deleteDoc(window._doc(window._db,'etude_questions',id)); showToast('Supprimé !'); } catch(e) {}
+    try { await window._deleteDoc(window._doc(window._db,'etude_questions',id)); chargerEtudeActive(); } catch(e) {}
   }
+
+  // Imaj pasteur
+  var _pasteurImgFile = null;
+  window.previewImgPasteur = function(e) {
+    var file = e.target.files[0]; if (!file) return;
+    _pasteurImgFile = file;
+    document.getElementById('pasteurImgEl').src = URL.createObjectURL(file);
+    document.getElementById('pasteurImgPreview').style.display = 'block';
+  };
+  window.annulerImgPasteur = function() {
+    _pasteurImgFile = null;
+    document.getElementById('pasteurImgPreview').style.display = 'none';
+    document.getElementById('pasteurImgInput').value = '';
+  };
+  window.envoyerMsgPasteur = async function() {
+    var texte = document.getElementById('pasteurTexte').value.trim();
+    if (!texte && !_pasteurImgFile) return;
+    try {
+      var doc = { auteur:'Pasteur Anouis Jean', question: texte||'📷 Image', isPasteur:true,
+        heure: new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),
+        timestamp: window._serverTimestamp() };
+      if (_pasteurImgFile) {
+        var fd = new FormData(); fd.append('file',_pasteurImgFile); fd.append('upload_preset','eglise_upload'); fd.append('folder','etude/pasteur');
+        var res = await fetch('https://api.cloudinary.com/v1_1/dvcxhpibq/image/upload',{method:'POST',body:fd});
+        var data = await res.json();
+        if (data.secure_url) doc.imageUrl = data.secure_url;
+        _pasteurImgFile = null;
+        document.getElementById('pasteurImgPreview').style.display = 'none';
+        document.getElementById('pasteurImgInput').value = '';
+      }
+      await window._addDoc(window._collection(window._db,'etude_questions'), doc);
+      document.getElementById('pasteurTexte').value = '';
+      showToast('✅ Message envoyé !');
+    } catch(e) { showToast('❌ Erreur : '+e.message,'error'); }
+  };
 
   // ===== AUDIO PASTEUR =====
   let mpPasteur = null, chunksPasteur = [], intPasteur = null, secPasteur = 0, blobPasteur = null;
@@ -2639,7 +2607,7 @@
     } catch(e) { status.style.background='#fee'; status.style.color='#c00'; status.textContent='❌ Erreur : '+e.message; }
   }
 
-  window.chargerEvenements = async function chargerEvenements() {
+  async function chargerEvenements() {
     try {
       const jodi = new Date(); jodi.setHours(0,0,0,0);
       const snap = await window._getDocs(window._query(window._collection(window._db,'evenements'),window._orderBy('date','asc')));
