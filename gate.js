@@ -426,7 +426,14 @@
 
   window.gateInit = async function() {
     if (!estInscrit()) {
-      setTimeout(montreGate, 400);
+      // Kache kontni paj la imedyatman
+      document.body.style.visibility = 'hidden';
+      document.body.style.overflow = 'hidden';
+      // Montre gate
+      setTimeout(function() {
+        document.body.style.visibility = 'visible';
+        montreGate();
+      }, 100);
       return;
     }
 

@@ -63,9 +63,6 @@
     .gate-btn { width:100%;padding:17px;background:linear-gradient(135deg,#f1c40f,#e67e22);color:#0f0c2e;border:none;border-radius:50px;font-size:1.05rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px; }
   </style>
 
-  <!-- Firebase + Plan -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="plan2026.js"></script>
   <script src="bible_fr.js"></script>
 </head>
@@ -144,11 +141,12 @@
 
 <div id="foot-placeholder"></div>
 
-<script src="lang.js?v=2"></script>
-<script src="nav.js?v=2"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="lang.js"></script>
+<script src="nav.js"></script>
 <script>
-  if (typeof NAV === 'undefined') { console.error('nav.js failed to load'); }
-  else { NAV.init('Guide.html'); }
+  NAV.init('Guide.html');
 
   // Firebase init
   if (!firebase.apps.length) {
@@ -404,5 +402,8 @@
   verifierAcces();
 </script>
 <script src="pwa.js"></script>
+
+<script src="gate.js"></script>
+<script>window.addEventListener("load", function(){ if(window.gateInit) gateInit(); });</script>
 </body>
 </html>
