@@ -262,11 +262,16 @@
       for (const d of snap.docs) {
         const a = { id: d.id, ...d.data() };
         const hasDate = a.date && typeof a.date === 'string' && a.date.trim() !== '';
-        if (hasDate && new Date(a.date + 'T00:00:00') < jodi) {
-          try { await db.collection('annonces').doc(d.id).delete(); } catch(ex) {}
-        } else {
-          valid.push(a);
+        // Efase sèlman si gen dat epi dat la depase 7 jou
+        if (hasDate) {
+          const dateAnons = new Date(a.date + 'T00:00:00');
+          const limit = new Date(jodi); limit.setDate(limit.getDate() - 7);
+          if (dateAnons < limit) {
+            try { await db.collection('annonces').doc(d.id).delete(); } catch(ex) {}
+            continue;
+          }
         }
+        valid.push(a);
       }
 
       if (valid.length === 0) return;
@@ -298,40 +303,6 @@
 
 
   chargerAnnonces();
-})();
-</script>
-<script>
-// ===== NOTIFIKASYON 9H LEKTI BIBLIK =====
-(function() {
-  function verifyierHeure9h() {
-    var now = new Date();
-    var h = now.getHours();
-    var m = now.getMinutes();
-    var key = 'notif_9h_' + now.toDateString();
-
-    // Si se 9h00-9h01 epi pa voye ankò jodi a
-    if (h === 9 && m === 0 && !localStorage.getItem(key)) {
-      localStorage.setItem(key, '1');
-      // Voye notif si Notification disponib
-      if ('Notification' in window && Notification.permission === 'granted') {
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.ready.then(function(reg) {
-            reg.showNotification('📖 Lecture Biblique du jour', {
-              body: "Il est 9h ! C'est l'heure de lire votre Bible. Que Dieu vous bénisse ! 🙏",
-              icon: '/eglise-carrefour/logo.png',
-              badge: '/eglise-carrefour/logo.png',
-              tag: 'lecture-9h',
-              data: { url: 'https://fabouloso1.github.io/eglise-carrefour/Guide.html' }
-            });
-          });
-        }
-      }
-    }
-  }
-
-  // Verifye chak 30 segonn
-  setInterval(verifyierHeure9h, 30000);
-  verifyierHeure9h();
 })();
 </script>
 </body>
