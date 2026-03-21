@@ -699,16 +699,17 @@
     <div class="tab-panel" id="tab-etude">
 
       <!-- ETUDE EN COURS -->
-      <div id="etude-active-wrap" style="display:none;border-radius:20px;overflow:hidden;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,0,0,0.15);">
-        <div style="background:#075E54;padding:14px 16px;display:flex;align-items:center;gap:12px;">
-          <div style="width:42px;height:42px;background:#128C7E;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:white;">📖</div>
-          <div style="flex:1;">
-            <div style="color:white;font-weight:800;font-size:1rem;">Étude en cours</div>
-            <div id="etude-active-titre" style="color:rgba(255,255,255,0.7);font-size:0.82rem;font-weight:600;"></div>
+      <div id="etude-active-wrap" style="display:none;background:#fffde7;border-radius:20px;padding:22px 18px;margin-bottom:16px;border-top:4px solid #f1c40f;border:1px solid #ffe082;">
+
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:44px;height:44px;background:rgba(241,196,15,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+            <i class="fas fa-broadcast-tower" style="color:#f1c40f;font-size:1.1rem;"></i>
           </div>
-          <span style="background:rgba(255,255,255,0.2);color:white;font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:20px;">🔴 Live</span>
+          <div>
+            <h3 style="color:#1a1a1a!important;font-size:1.2rem!important;font-weight:800!important;margin:0!important;">Étude en cours</h3>
+            <p id="etude-active-titre" style="color:#333!important;font-size:1rem!important;font-weight:700!important;margin:0!important;"></p>
+          </div>
         </div>
-        <div style="background:#ECE5DD;padding:16px;">
 
         <!-- Boutons contrôle -->
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
@@ -723,23 +724,22 @@
           </button>
         </div>
 
-        <!-- MSG PASTEUR: Texte + Image + Audio -->
-        <div style="background:white;border-radius:14px;margin-bottom:16px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.1);">
+        <!-- MSG PASTEUR: Texte + Image -->
+        <div style="background:white;border-radius:14px;margin-bottom:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.1);">
           <div style="background:#075E54;padding:10px 14px;">
-            <span style="color:white;font-size:0.88rem;font-weight:800;"><i class="fas fa-paper-plane" style="margin-right:6px;"></i>Envoyer un message</span>
+            <span style="color:white;font-size:0.85rem;font-weight:800;"><i class="fas fa-paper-plane" style="margin-right:6px;"></i>Envoyer texte ou image</span>
           </div>
-          <div style="padding:12px;background:#F0F0F0;">
-            <div id="pasteurImgPreview" style="display:none;margin-bottom:8px;position:relative;background:white;border-radius:10px;padding:8px;">
-              <img id="pasteurImgEl" src="" style="max-height:120px;border-radius:8px;display:block;">
-              <button onclick="annulerImgPasteur()" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.5);color:white;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;"><i class="fas fa-times"></i></button>
+          <div style="padding:10px;background:#F0F0F0;">
+            <div id="pasteurImgPreview" style="display:none;margin-bottom:8px;position:relative;background:white;border-radius:8px;padding:6px;">
+              <img id="pasteurImgEl" src="" style="max-height:100px;border-radius:6px;display:block;">
+              <button onclick="annulerImgPasteur()" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.5);color:white;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:0.7rem;"><i class="fas fa-times"></i></button>
             </div>
             <div style="display:flex;align-items:flex-end;gap:8px;">
-              <div style="flex:1;background:white;border-radius:24px;display:flex;align-items:flex-end;padding:8px 14px;gap:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-                <button onclick="document.getElementById('pasteurImgInput').click()" style="background:none;border:none;color:#888;font-size:1.2rem;cursor:pointer;"><i class="fas fa-image"></i></button>
-                <textarea id="pasteurTexte" placeholder="Écrire un message..." rows="1" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px'"
-                  style="flex:1;border:none;outline:none;resize:none;font-family:inherit;font-size:0.95rem;max-height:100px;min-height:24px;background:transparent;color:#1a1a1a;"></textarea>
+              <div style="flex:1;background:white;border-radius:20px;display:flex;align-items:center;padding:8px 12px;gap:8px;box-shadow:0 1px 2px rgba(0,0,0,0.1);">
+                <button onclick="document.getElementById('pasteurImgInput').click()" style="background:none;border:none;color:#888;font-size:1.1rem;cursor:pointer;"><i class="fas fa-image"></i></button>
+                <input type="text" id="pasteurTexte" placeholder="Écrire un message..." style="flex:1;border:none;outline:none;font-size:0.92rem;color:#1a1a1a;background:transparent;">
               </div>
-              <button onclick="envoyerMsgPasteur()" style="width:46px;height:46px;background:#128C7E;border:none;border-radius:50%;color:white;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+              <button onclick="envoyerMsgPasteur()" style="width:42px;height:42px;background:#128C7E;border:none;border-radius:50%;color:white;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">
                 <i class="fas fa-paper-plane"></i>
               </button>
               <input type="file" id="pasteurImgInput" accept="image/*" style="display:none;" onchange="previewImgPasteur(event)">
@@ -749,8 +749,8 @@
 
         <!-- AUDIO PASTEUR -->
         <div style="background:rgba(255,193,7,0.12);border:1px solid #ffe082;border-radius:14px;padding:14px;margin-bottom:16px;">
-          <p style="color:#795548!important;font-size:0.88rem!important;font-weight:800!important;margin-bottom:10px!important;">
-            <i class="fas fa-microphone" style="margin-right:6px;color:#f1c40f;"></i>Message vocal
+          <p style="color:#f1c40f!important;font-size:0.88rem!important;font-weight:800!important;margin-bottom:10px!important;">
+            <i class="fas fa-microphone" style="margin-right:6px;"></i>Envoyer un audio aux participants
           </p>
 
           <!-- Normal state -->
@@ -842,7 +842,6 @@
       </div>
 
       <div id="etudeStatus" style="display:none;margin-top:12px;padding:14px;border-radius:12px;text-align:center;font-weight:700;font-size:0.95rem;"></div>
-    </div>
     </div>
     <!-- ===== ÉVÉNEMENTS ===== -->
     <div class="tab-panel" id="tab-evenements">
@@ -1607,7 +1606,7 @@
           ? 'Le pasteur a publié ' + uploaded + ' nouvelles photos !'
           : 'Le pasteur a publié une nouvelle photo !';
         const notifLink  = 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html#pasteur';
-        await envoyerNotifAuto(notifTitle, notifBody, notifLink);
+        await envoyerNotifAuto(notifTitle, notifBody, notifLink, 'foto');
       } catch(e) { console.log('Notif auto error:', e); }
     } catch (err) {
       showToast('Erreur publication : ' + err.message, 'error');
@@ -1937,6 +1936,15 @@
       });
 
       showToast('✅ Annonce publiée !');
+      // Notifikasyon otomatik
+      try {
+        await envoyerNotifAuto(
+          'Église de Dieu de la Prophétie',
+          '📢 Nouvelle annonce : ' + titre + ' — Consultez-la sur le site !',
+          'https://fabouloso1.github.io/eglise-carrefour/index.html',
+          'annonce'
+        );
+      } catch(e) { console.log('Notif annonce:', e); }
       supprimerAnonsFoto();
       ['anonsTitre','anonsDate','anonsLe','anonsDetails'].forEach(id => {
         const el = document.getElementById(id);
@@ -2145,7 +2153,7 @@
   }
 
   // Fonksyon pou voye notif otomatikman (rele pa lòt fonksyon)
-  async function envoyerNotifAuto(title, body, link) {
+  async function envoyerNotifAuto(title, body, link, type) {
     const snap = await db2.collection('fcm_tokens').get();
     if (snap.empty) return;
     const accessToken = await getAccessToken();
@@ -2159,7 +2167,8 @@
             message: {
               token: token,
               notification: { title: title, body: body },
-              webpush: { fcm_options: { link: link } }
+              webpush: { fcm_options: { link: link } },
+              data: { link: link, type: type || 'default' }
             }
           })
         });
@@ -2283,12 +2292,12 @@
                   style="flex:1;padding:9px 12px;background:rgba(46,213,115,0.2);border:1.5px solid #2ed573;border-radius:20px;color:#2ed573;font-size:0.85rem;font-weight:700;cursor:pointer;">
                   <i class="fas fa-unlock"></i> Débloquer
                 </button>`
-              : `<button onclick="bloquerMembre('${m.id}','${(m.nom||"").replace(/[^\w ]/g,"")}')"
+              : `<button onclick="bloquerMembre('${m.id}','${(m.nom||'').replace(/'/g,'')}')"
                   style="flex:1;padding:9px 12px;background:rgba(231,76,60,0.15);border:1.5px solid rgba(231,76,60,0.4);border-radius:20px;color:#ff6b6b;font-size:0.85rem;font-weight:700;cursor:pointer;">
                   <i class="fas fa-ban"></i> Bloquer
                 </button>`
             }
-            <button onclick="reinitialiserMembre('${m.id}','${(m.nom||"").replace(/[^\w ]/g,"")}')"
+            <button onclick="reinitialiserMembre('${m.id}','${(m.nom||'').replace(/'/g,'')}')"
               style="padding:9px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:20px;color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:700;cursor:pointer;"
               title="Supprimer l'inscription (la personne devra se réinscrire)">
               <i class="fas fa-redo"></i> Réinitialiser
@@ -2340,21 +2349,24 @@
 
   // ===== ÉTUDE =====
   var _etudeQListener = null;
-  window.chargerEtudeActive = async function chargerEtudeActive() {
+
+  async function chargerEtudeActive() {
     try {
       const snap = await window._getDoc(window._doc(window._db, 'config', 'etude'));
       const wrap     = document.getElementById('etude-active-wrap');
       const formWrap = document.getElementById('etudeFormWrap');
       if (!snap.exists() || !snap.data().actif) {
         if(wrap) wrap.style.display='none';
-        if(formWrap) formWrap.style.display='block'; // Montre fòm si pa gen etude
+        if(formWrap) formWrap.style.display='block';
+        if (_etudeQListener) { _etudeQListener(); _etudeQListener = null; }
         return;
       }
       const e = snap.data();
       if(wrap) wrap.style.display='block';
-      if(formWrap) formWrap.style.display='none'; // Kache fòm si etude aktif
+      if(formWrap) formWrap.style.display='none';
       const titreEl = document.getElementById('etude-active-titre');
       if(titreEl) titreEl.textContent = e.titre;
+      // onSnapshot pou tan reyèl
       if (_etudeQListener) _etudeQListener();
       _etudeQListener = window._onSnapshot(
         window._query(window._collection(window._db,'etude_questions'), window._orderBy('timestamp','asc')),
@@ -2362,37 +2374,34 @@
       );
     } catch(e) { console.log('Etude:', e.message); }
   }
+  window.chargerEtudeActive = chargerEtudeActive;
 
   function afficherQuestions(docs) {
-    var list = document.getElementById('questionsList');
-    var countEl = document.getElementById('questionsCount');
+    const list = document.getElementById('questionsList');
+    const countEl = document.getElementById('questionsCount');
     if(countEl) countEl.textContent = docs.length;
     if (!list) return;
-    if (!docs.length) { list.innerHTML = '<p style="color:#888;text-align:center;padding:16px;">Aucune question...</p>'; return; }
-    var html = '';
-    docs.forEach(function(d) {
-      var q = d.data();
-      var estPasteur = q.isPasteur === true;
-      var contenu = '';
-      if (q.imageUrl) contenu += '<img src="' + q.imageUrl + '" style="max-width:100%;border-radius:8px;display:block;margin-bottom:6px;cursor:pointer;" onclick="window.open('' + q.imageUrl + '','_blank')">';
-      if (q.audioUrl) contenu += '<audio controls src="' + q.audioUrl + '" style="width:100%;height:36px;margin-bottom:6px;"></audio>';
-      if (q.question) contenu += '<div style="color:#111;font-size:0.92rem;line-height:1.5;">' + q.question + '</div>';
-      var reponse = q.reponse ? '<div style="background:#E8F5E9;border-left:3px solid #128C7E;border-radius:8px;padding:8px 10px;margin-top:8px;"><div style="color:#128C7E;font-size:0.72rem;font-weight:800;margin-bottom:3px;">Réponse Pasteur</div><div style="color:#1a1a1a;font-size:0.88rem;">' + q.reponse + '</div></div>' : '';
-      var bgColor = estPasteur ? '#DCF8C6' : 'white';
-      var borderColor = estPasteur ? '#128C7E' : '#e0e0e0';
-      html += '<div style="background:' + bgColor + ';border:1px solid ' + borderColor + ';border-radius:12px;padding:12px;margin-bottom:10px;">' +
-        '<div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">' +
-        (estPasteur ? '<i class="fas fa-star" style="color:#128C7E;font-size:0.75rem;"></i>' : '<i class="fas fa-user" style="color:#888;font-size:0.75rem;"></i>') +
-        '<span style="color:' + (estPasteur ? '#075E54' : '#555') + ';font-size:0.78rem;font-weight:700;">' + (q.auteur||'Anonyme') + '</span>' +
-        '<span style="color:#aaa;font-size:0.72rem;margin-left:auto;">' + (q.heure||'') + '</span>' +
-        '</div>' + contenu + reponse +
-        (!estPasteur ? '<div style="display:flex;gap:8px;margin-top:10px;">' +
-        '<input type="text" placeholder="Répondre..." id="rep-' + d.id + '" style="flex:1;padding:8px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:0.88rem;color:#111;">' +
-        '<button onclick="repondreQuestion(&apos;' + d.id + '&apos;)" style="padding:8px 14px;background:#128C7E;border:none;border-radius:8px;color:white;font-weight:800;cursor:pointer;"><i class="fas fa-paper-plane"></i></button>' +
-        '<button onclick="supprimerQuestion(&apos;' + d.id + '&apos;)" style="padding:8px 12px;background:#fee;border:none;color:#e74c3c;border-radius:8px;cursor:pointer;"><i class="fas fa-trash"></i></button>' +
-        '</div>' : '') + '</div>';
-    });
-    list.innerHTML = html;
+    if (!docs.length) { list.innerHTML = '<p style="color:rgba(255,255,255,0.35);text-align:center;padding:16px;">Aucune question...</p>'; return; }
+    list.innerHTML = docs.map(d => {
+      const q = d.data();
+      const estPasteur = q.isPasteur === true;
+      const imgHtml = q.imageUrl ? `<img src="${q.imageUrl}" style="max-width:100%;border-radius:8px;display:block;margin-bottom:6px;cursor:pointer;" onclick="window.open('${q.imageUrl}','_blank')">` : '';
+      const audioHtml = q.audioUrl ? `<audio controls src="${q.audioUrl}" style="width:100%;height:36px;margin-bottom:6px;"></audio>` : '';
+      const bgColor = estPasteur ? 'rgba(18,140,126,0.15)' : 'rgba(255,255,255,0.06)';
+      const borderColor = estPasteur ? '#128C7E' : '#f1c40f';
+      return `<div style="background:${bgColor};border-radius:12px;padding:14px;margin-bottom:10px;border-left:3px solid ${borderColor};">
+        <div style="color:${estPasteur?'#DCF8C6':'rgba(255,255,255,0.45)'};font-size:0.78rem;margin-bottom:6px;">
+          ${estPasteur?'⭐ ':''}<i class="fas fa-user" style="color:#f1c40f;margin-right:4px;"></i>${q.auteur||'Anonyme'} · ${q.heure||''}
+        </div>
+        ${imgHtml}${audioHtml}
+        <div style="color:white!important;font-size:0.95rem!important;font-weight:600!important;margin-bottom:4px;">${q.question||''}</div>
+        ${q.reponse?`<div style="background:rgba(46,213,115,0.1);border:1px solid rgba(46,213,115,0.2);border-radius:8px;padding:10px;margin-bottom:8px;"><div style="color:#2ed573!important;font-size:0.78rem!important;font-weight:700!important;margin-bottom:4px;"><i class="fas fa-reply"></i> Réponse du Pasteur</div><div style="color:rgba(255,255,255,0.85)!important;font-size:0.9rem!important;">${q.reponse}</div></div>`:''}        ${!estPasteur ? `<div style="display:flex;gap:8px;">
+          <input type="text" placeholder="Répondre..." id="rep-${d.id}" style="flex:1;padding:8px 12px;border:1.5px solid rgba(241,196,15,0.25);border-radius:8px;background:rgba(255,255,255,0.07);color:white;font-size:0.88rem;">
+          <button onclick="repondreQuestion('${d.id}')" style="padding:8px 14px;background:linear-gradient(135deg,#f1c40f,#e67e22);border:none;border-radius:8px;color:#0d1f4a;font-weight:800;cursor:pointer;"><i class="fas fa-paper-plane"></i></button>
+          <button onclick="supprimerQuestion('${d.id}')" style="padding:8px 12px;background:rgba(231,76,60,0.2);border:none;color:#ff6b6b;border-radius:8px;cursor:pointer;"><i class="fas fa-trash"></i></button>
+        </div>` : ''}
+      </div>`;
+    }).join('');
   }
   async function repondreQuestion(id) {
     const input = document.getElementById('rep-'+id);
@@ -2410,7 +2419,7 @@
     try { await window._deleteDoc(window._doc(window._db,'etude_questions',id)); chargerEtudeActive(); } catch(e) {}
   }
 
-  // Imaj pasteur
+  // ===== IMG PASTEUR =====
   var _pasteurImgFile = null;
   window.previewImgPasteur = function(e) {
     var file = e.target.files[0]; if (!file) return;
@@ -2431,7 +2440,8 @@
         heure: new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),
         timestamp: window._serverTimestamp() };
       if (_pasteurImgFile) {
-        var fd = new FormData(); fd.append('file',_pasteurImgFile); fd.append('upload_preset','eglise_upload'); fd.append('folder','etude/pasteur');
+        var fd = new FormData(); fd.append('file',_pasteurImgFile);
+        fd.append('upload_preset','eglise_upload'); fd.append('folder','etude/pasteur');
         var res = await fetch('https://api.cloudinary.com/v1_1/dvcxhpibq/image/upload',{method:'POST',body:fd});
         var data = await res.json();
         if (data.secure_url) doc.imageUrl = data.secure_url;
@@ -2579,7 +2589,7 @@
       const oldQ = await window._getDocs(window._collection(window._db,'etude_questions'));
       for (const d of oldQ.docs) await window._deleteDoc(window._doc(window._db,'etude_questions',d.id));
       await window._setDoc(window._doc(window._db,'config','etude'),{titre,theme,objectif,contenu,verset,actif:true,questionsOuvertes:true,timestamp:window._serverTimestamp(),date:new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})});
-      envoyerNotif('📖 Étude Biblique — '+titre,'Nouvelle étude lancée ! Venez poser vos questions.','https://fabouloso1.github.io/eglise-carrefour/Etude.html');
+      await envoyerNotifAuto('📖 Étude Biblique — '+titre,'🔔 Nouvelle étude lancée ! Venez poser vos questions en direct.','https://fabouloso1.github.io/eglise-carrefour/Etude.html','etude');
       status.style.background='#e8f5e9'; status.style.color='#2e7d32'; status.textContent='✅ Étude lancée !';
       ['etudeTitre','etudeTheme','etudeObjectif','etudeContenu','etudeVerset'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';}); 
       setTimeout(()=>{status.style.display='none';},3000);
@@ -2603,7 +2613,7 @@
       ['evTitre','evDate','evHeure','evDesc','evPrix'].forEach(id=>document.getElementById(id).value='');
       setTimeout(()=>{status.style.display='none';},3000);
       chargerEvenements();
-      envoyerNotif('Église de Dieu de la Prophétie','📅 Nouvel événement : '+titre,'https://fabouloso1.github.io/eglise-carrefour/Horaires.html');
+      await envoyerNotifAuto('Église de Dieu de la Prophétie','📅 Nouvel événement spécial : '+titre+' — Consultez les horaires !','https://fabouloso1.github.io/eglise-carrefour/Horaires.html','annonce');
     } catch(e) { status.style.background='#fee'; status.style.color='#c00'; status.textContent='❌ Erreur : '+e.message; }
   }
 
