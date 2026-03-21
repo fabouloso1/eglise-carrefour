@@ -712,18 +712,18 @@
         </div>
 
         <!-- Zone messages style WhatsApp -->
-        <div id="questionsList" style="background:#0C1317;padding:12px;min-height:200px;max-height:380px;overflow-y:auto;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22><circle cx=%2230%22 cy=%2230%22 r=%221%22 fill=%22rgba(255,255,255,0.03)%22/></svg>');"></div>
+        <div id="questionsList" style="background:#0C1317;padding:12px;height:calc(100vh - 320px);min-height:250px;max-height:500px;overflow-y:auto;"></div>
 
-        <!-- Boutons contrôle -->
-        <div style="background:#1F2C34;padding:10px 12px;display:flex;gap:8px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,0.08);">
-          <button onclick="toggleQuestions(true)" style="flex:1;min-width:120px;padding:8px;background:rgba(37,211,102,0.15);border:1px solid #25D366;border-radius:20px;color:#25D366;font-size:0.8rem;font-weight:700;cursor:pointer;">
-            <i class="fas fa-unlock"></i> Ouvrir questions
+        <!-- Boutons contrôle compacts -->
+        <div style="background:#1F2C34;padding:8px 12px;display:flex;gap:8px;border-top:1px solid rgba(255,255,255,0.08);">
+          <button onclick="toggleQuestions(true)" title="Ouvrir questions" style="flex:1;padding:7px;background:rgba(37,211,102,0.15);border:1px solid #25D366;border-radius:20px;color:#25D366;font-size:0.8rem;font-weight:700;cursor:pointer;">
+            <i class="fas fa-unlock"></i> Ouvrir
           </button>
-          <button onclick="toggleQuestions(false)" style="flex:1;min-width:120px;padding:8px;background:rgba(231,76,60,0.15);border:1px solid #ff6b6b;border-radius:20px;color:#ff6b6b;font-size:0.8rem;font-weight:700;cursor:pointer;">
-            <i class="fas fa-lock"></i> Fermer questions
+          <button onclick="toggleQuestions(false)" title="Fermer questions" style="flex:1;padding:7px;background:rgba(231,76,60,0.15);border:1px solid #ff6b6b;border-radius:20px;color:#ff6b6b;font-size:0.8rem;font-weight:700;cursor:pointer;">
+            <i class="fas fa-lock"></i> Fermer
           </button>
-          <button onclick="terminerEtude()" style="width:100%;padding:8px;background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);border-radius:20px;color:#ff6b6b;font-size:0.8rem;font-weight:700;cursor:pointer;">
-            <i class="fas fa-stop-circle"></i> Terminer l'étude
+          <button onclick="terminerEtude()" title="Terminer l'étude" style="padding:7px 12px;background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);border-radius:20px;color:#ff6b6b;font-size:0.8rem;cursor:pointer;">
+            <i class="fas fa-stop-circle"></i>
           </button>
         </div>
 
@@ -763,12 +763,15 @@
 
           <!-- Input normal -->
           <div id="pasteurRecNormal" style="display:flex;align-items:center;gap:8px;">
-            <div style="flex:1;background:#2A3942;border-radius:24px;display:flex;align-items:center;padding:8px 14px;gap:10px;">
-              <button onclick="document.getElementById('pasteurImgInput').click()" style="background:none;border:none;color:#8696A0;font-size:1.2rem;cursor:pointer;"><i class="fas fa-image"></i></button>
-              <input type="text" id="pasteurTexte" placeholder="Écrire un message..." style="flex:1;border:none;outline:none;font-size:0.95rem;color:white;background:transparent;">
+            <div style="flex:1;background:#2A3942;border-radius:24px;display:flex;align-items:center;padding:8px 14px;gap:8px;">
+              <button onclick="document.getElementById('pasteurImgInput').click()" style="background:none;border:none;color:#8696A0;font-size:1.2rem;cursor:pointer;padding:0;"><i class="fas fa-image"></i></button>
+              <input type="text" id="pasteurTexte" placeholder="Écrire un message..." 
+                oninput="var i=document.getElementById('pasteurBtnIcon');i.className=this.value.trim()?'fas fa-paper-plane':'fas fa-microphone';"
+                style="flex:1;border:none;outline:none;font-size:0.95rem;color:white;background:transparent;min-width:0;">
               <input type="file" id="pasteurImgInput" accept="image/*" style="display:none;" onchange="previewImgPasteur(event)">
             </div>
-            <button id="pasteurSendBtn" onclick="envoyerMsgOuDemarrerAudio()" style="width:46px;height:46px;background:#25D366;border:none;border-radius:50%;color:white;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <button id="pasteurSendBtn" onclick="envoyerMsgOuDemarrerAudio()"
+              style="width:46px;height:46px;background:#25D366;border:none;border-radius:50%;color:white;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(37,211,102,0.4);">
               <i class="fas fa-microphone" id="pasteurBtnIcon"></i>
             </button>
           </div>
