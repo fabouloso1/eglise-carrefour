@@ -328,36 +328,63 @@
     document.getElementById('gate-form').style.display    = 'none';
     document.getElementById('gate-success').style.display = 'block';
 
-    // Mande pèmisyon notifikasyon APRE enskripsyon
+    // Abòne FCM otomatikman + mande pèmisyon
     setTimeout(async () => {
-      if ('Notification' in window && Notification.permission === 'default') {
-        try {
-          const perm = await Notification.requestPermission();
-          if (perm === 'granted') {
-            // Notif byenveni imedyatman
-            new Notification('🙏 Bienvenue — Église de Dieu de la Prophétie', {
-              body: 'Vous recevrez désormais toutes les notifications: études, événements et rappels bibliques à 9h!',
-              icon: 'logo.png',
-              tag:  'bienvenue'
-            });
-            // Programme notif 9h si plan2026 disponib
-            if (typeof PLAN_2026 !== 'undefined') {
-              const today = new Date();
-              const key   = today.toISOString().split('T')[0];
-              const plan  = PLAN_2026[key];
-              if (plan && 'serviceWorker' in navigator && navigator.serviceWorker.controller) {
-                navigator.serviceWorker.controller.postMessage({
-                  type:  'SCHEDULE_DAILY',
-                  title: '📖 Lecture du jour — ' + plan.reference,
-                  body:  plan.intro,
-                  url:   '/eglise-carrefour/Guide.html'
-                });
-              }
-            }
-          }
-        } catch(e) { console.log('Notif:', e.message); }
-      }
-    }, 1500); // Tann 1.5s apre siksè
+      try {
+        const VAPID = 'BJ1bOLbFM6qNV2XgVA4F9pA7cWng1NKPlU24sgSOk8MyqhhqWsBXVlN0V2Sjnt-Z7xFIHK8wiRS12xFGWddAtFI';
+        const SW    = '/eglise-carrefour/firebase-messaging-sw.js';
+
+        // Chaje Firebase dynamikman
+        const { initializeApp, getApps } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
+        const { getMessaging, getToken } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js');
+        const { getFirestore, doc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+
+        const app = getApps().find(a => a.name === 'gate') || initializeApp({
+          apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
+          authDomain: "eglise-carrefour.firebaseapp.com",
+          projectId: "eglise-carrefour",
+          storageBucket: "eglise-carrefour.firebasestorage.app",
+          messagingSenderId: "421333694767",
+          appId: "1:421333694767:web:30c18da36ae020821a49da"
+        }, 'gate');
+
+        const db = getFirestore(app);
+        const messaging = getMessaging(app);
+
+        // Mande pèmisyon
+        const perm = await Notification.requestPermission();
+        if (perm !== 'granted') return;
+
+        // Enrejistre Service Worker
+        const swReg = await navigator.serviceWorker.register(SW, { scope: '/eglise-carrefour/' });
+        await navigator.serviceWorker.ready;
+
+        // Jwenn FCM token
+        const token = await getToken(messaging, { vapidKey: VAPID, serviceWorkerRegistration: swReg });
+        if (!token) return;
+
+        // Sove token + info manm nan Firestore
+        await setDoc(doc(db, 'fcm_tokens', token.substring(0, 40)), {
+          token:     token,
+          nom:       nom,
+          telephone: tel,
+          date:      new Date().toISOString(),
+          platform:  navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop'
+        });
+
+        localStorage.setItem('fcm_subscribed', 'true');
+        localStorage.setItem('fcm_token', token);
+        localStorage.setItem('fcm_nom', nom);
+
+        // Notif byenveni
+        new Notification('Bienvenue — Eglise de Dieu de la Prophetie', {
+          body: 'Vous etes inscrit ! Vous recevrez les annonces, etudes et rappels a 9h.',
+          icon: '/eglise-carrefour/logo.png',
+          tag:  'bienvenue'
+        });
+
+      } catch(e) { console.log('FCM gate:', e.message); }
+    }, 1500);
   };
 
   // ===== FÈMEN GATE =====
@@ -370,10 +397,65 @@
   };
 
   // ===== INIT — Rele sa lè paj la chaje =====
-  window.gateInit = function() {
+  // ===== EKRAN BLOKE =====
+  function montreEkranBloke() {
+    // Kache tout sit la
+    document.body.style.overflow = 'hidden';
+    const blok = document.createElement('div');
+    blok.id = 'bloque-overlay';
+    blok.innerHTML = `
+      <div style="position:fixed;inset:0;background:#0f0c2e;z-index:99999;display:flex;align-items:center;justify-content:center;padding:24px;">
+        <div style="background:linear-gradient(135deg,#1a0a3c,#0d1f4a);border-radius:24px;padding:40px 28px;max-width:400px;width:100%;text-align:center;border-top:4px solid #e74c3c;">
+          <div style="font-size:3.5rem;margin-bottom:20px;">🚫</div>
+          <h2 style="color:#ff6b6b;font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:12px;font-weight:800;">Accès restreint</h2>
+          <p style="color:rgba(255,255,255,0.75);font-size:0.98rem;line-height:1.7;margin-bottom:24px;">
+            Votre accès à ce site a été temporairement suspendu.<br>
+            Veuillez contacter le Pasteur pour rétablir votre accès.
+          </p>
+          <a href="tel:+50912345678"
+            style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#f1c40f,#e67e22);color:#0f0c2e;padding:14px 28px;border-radius:30px;font-weight:800;font-size:1rem;text-decoration:none;margin-bottom:12px;">
+            <i class="fas fa-phone"></i> Contacter le Pasteur
+          </a>
+          <p style="color:rgba(255,255,255,0.3);font-size:0.8rem;margin-top:10px;">
+            Église de Dieu de la Prophétie de Carrefour
+          </p>
+        </div>
+      </div>`;
+    document.body.appendChild(blok);
+  }
+
+  window.gateInit = async function() {
     if (!estInscrit()) {
-      // Rete yon ti moman pou paj la chaje anvan montre modal
       setTimeout(montreGate, 400);
+      return;
+    }
+
+    // Si enskri — verifye si li bloke nan Firebase
+    try {
+      const membre = JSON.parse(localStorage.getItem('eglise_membre') || '{}');
+      const tel    = membre.telephone || '';
+      const nom    = membre.nom || '';
+      if (!tel) return;
+
+      // Chèche nan Firebase si moun sa bloke
+      const firebase = window.firebase;
+      if (!firebase || !firebase.apps || !firebase.apps.length) return;
+
+      const db   = firebase.firestore();
+      const snap = await db.collection('membres')
+        .where('telephone', '==', tel)
+        .limit(1)
+        .get();
+
+      if (!snap.empty) {
+        const data = snap.docs[0].data();
+        if (data.bloque === true) {
+          montreEkranBloke();
+        }
+      }
+    } catch(e) {
+      // Si Firebase pa disponib, laisse passer
+      console.log('Gate check:', e.message);
     }
   };
 

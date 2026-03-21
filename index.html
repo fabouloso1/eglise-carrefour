@@ -20,11 +20,15 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Église Carrefour">
   <link rel="apple-touch-icon" href="logo.png">
+  <!-- Firebase Messaging -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
 </head>
 <body>
 
 <!-- Navigation injectée par nav.js -->
 <div id="nav-placeholder"></div>
+
 
 <!-- ===== HEADER ===== -->
 <header>
@@ -306,5 +310,25 @@
   chargerAnnonces();
 })();
 </script>
-</body>
+
 </html>
+
+      <h3 style="color:#1c1c3c;font-size:1.1rem;margin-bottom:6px;">Recevoir les notifications</h3>
+      <p style="color:#666;font-size:0.9rem;">Entrez votre prénom pour être informé des annonces.</p>
+    </div>
+    <input type="text" id="notifNameInput" placeholder="Votre prénom..." maxlength="40"
+      style="width:100%;padding:12px 16px;border:2px solid #ddd;border-radius:10px;font-size:1rem;box-sizing:border-box;margin-bottom:12px;text-align:center;">
+    <button onclick="confirmerAbonnement()"
+      style="width:100%;padding:13px;background:#1c1c3c;color:white;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:8px;">
+      <i class="fas fa-bell"></i> S'abonner
+    </button>
+    <button onclick="fermerNotifModal()"
+      style="width:100%;padding:8px;background:none;color:#aaa;border:none;font-size:0.9rem;cursor:pointer;">
+      Plus tard
+    </button>
+  </div>
+</div>
+
+
+</body>
+

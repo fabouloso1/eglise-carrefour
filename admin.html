@@ -1438,6 +1438,7 @@
     try {
       await window._setDoc(window._doc(window._db, 'temoignages', id), { approuve: true }, { merge: true });
       showToast('Témoignage approuvé !');
+      try { await envoyerNotifAuto('Église de Dieu de la Prophétie','✨ Nouveau témoignage publié — Venez lire ce que Dieu a fait !','https://fabouloso1.github.io/eglise-carrefour/Temoigner.html','annonce'); } catch(e) {}
       loadTemoignages();
     } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
   }
@@ -1719,6 +1720,7 @@
       });
       status.style.background = '#e8f5e9'; status.style.color = '#2e7d32';
       status.textContent = '✅ Vidéo publiée avec succès !';
+      try { await envoyerNotifAuto('Église de Dieu de la Prophétie','🎥 Nouvelle vidéo : '+titre+' — Regardez-la dans la galerie !','https://fabouloso1.github.io/eglise-carrefour/Galerie.html','foto'); } catch(e) {}
       document.getElementById('videoUrl').value = '';
       document.getElementById('videoTitre').value = '';
       document.getElementById('videoDesc').value = '';
@@ -1747,6 +1749,7 @@
       });
 
       showToast('Actualité publiée !');
+      try { await envoyerNotifAuto('Église de Dieu de la Prophétie','📰 Nouvelle actualité : '+titre+' — Lisez-la sur le site !','https://fabouloso1.github.io/eglise-carrefour/Actualites.html','annonce'); } catch(e) {}
       ['actuTitre','actuIntro','actuContenu','actuDate'].forEach(id => document.getElementById(id).value = '');
       loadActualites();
     } catch (err) {
