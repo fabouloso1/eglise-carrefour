@@ -2311,8 +2311,17 @@
   async function reinitialiserMembre(id, nom) {
     if (!confirm('Réinitialiser ' + nom + ' ? Il devra se réinscrire pour accéder au site.')) return;
     try {
+      // Efase manm nan
       await window._deleteDoc(window._doc(window._db, 'membres', id));
-      showToast(nom + ' réinitialisé !');
+      // Chèche ak efase token FCM li tou
+      const tokSnap = await window._getDocs(window._collection(window._db, 'fcm_tokens'));
+      for (const td of tokSnap.docs) {
+        const tdata = td.data();
+        if (tdata.nom && tdata.nom.toLowerCase().includes((nom||'').split(' ')[0].toLowerCase())) {
+          await window._deleteDoc(window._doc(window._db, 'fcm_tokens', td.id));
+        }
+      }
+      showToast(nom + ' réinitialisé — accès et notifications supprimés !');
       chargerMembres();
     } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
   }
@@ -2320,8 +2329,22 @@
   async function supprimerMembre(id) {
     if (!confirm('Supprimer définitivement ce membre ?')) return;
     try {
+      // Jwenn done manm nan anvan efase
+      const mSnap = await window._getDoc(window._doc(window._db, 'membres', id));
+      const mData = mSnap.exists() ? mSnap.data() : {};
+      // Efase manm nan
       await window._deleteDoc(window._doc(window._db, 'membres', id));
-      showToast('Membre supprimé !');
+      // Chèche ak efase token FCM li tou
+      if (mData.nom) {
+        const tokSnap = await window._getDocs(window._collection(window._db, 'fcm_tokens'));
+        for (const td of tokSnap.docs) {
+          const tdata = td.data();
+          if (tdata.nom && tdata.nom.toLowerCase().includes(mData.nom.split(' ')[0].toLowerCase())) {
+            await window._deleteDoc(window._doc(window._db, 'fcm_tokens', td.id));
+          }
+        }
+      }
+      showToast('Membre supprimé définitivement !');
       chargerMembres();
     } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
   }
