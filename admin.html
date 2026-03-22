@@ -570,9 +570,7 @@
       <i class="fas fa-envelope"></i> Contacts
       <span id="contactBadge" style="display:none;background:#e74c3c;color:white;font-size:0.7rem;padding:1px 6px;border-radius:10px;margin-left:4px;"></span>
     </button>
-    <button class="tab-btn" onclick="showTab('notifs')">
-      <i class="fas fa-bell"></i> Notifications
-    </button>
+
   </div>
 
   <!-- Content -->
@@ -1022,54 +1020,6 @@
     </div>
 
     <!-- TAB NOTIFIKASYON -->
-    <div class="tab-panel" id="tab-notifs">
-      <div class="card">
-        <h3><i class="fas fa-bell" style="color:var(--gold)"></i> Envoyer une notification</h3>
-        <p style="font-size:1rem;color:#888;margin-bottom:20px;">Envoyez une notification push à tous les abonnés du site.</p>
-
-        <div style="display:flex;flex-direction:column;gap:14px;max-width:500px;">
-          <div>
-            <label style="font-weight:600;display:block;margin-bottom:6px;">Titre <span style="color:red">*</span></label>
-            <input type="text" id="notifTitle" placeholder="Ex: Nouveau message du pasteur" 
-              style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:1rem;">
-          </div>
-          <div>
-            <label style="font-weight:600;display:block;margin-bottom:6px;">Message <span style="color:red">*</span></label>
-            <textarea id="notifBody" rows="3" placeholder="Ex: Un nouveau message a été publié sur le site..."
-              style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:1rem;resize:vertical;"></textarea>
-          </div>
-          <div>
-            <label style="font-weight:600;display:block;margin-bottom:6px;">Lien (optionnel)</label>
-            <input type="text" id="notifLink" placeholder="https://fabouloso1.github.io/eglise-carrefour/index.html"
-              style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:1rem;">
-          </div>
-          <button onclick="envoyerNotification()"
-            style="background:var(--gold);color:#1c1c3c;font-weight:700;padding:12px;border:none;border-radius:8px;font-size:1rem;cursor:pointer;">
-            <i class="fas fa-paper-plane"></i> Envoyer à tous les abonnés
-          </button>
-          <div id="notifStatus" style="display:none;padding:12px;border-radius:8px;text-align:center;font-weight:600;"></div>
-        </div>
-
-        <div style="margin-top:30px;padding-top:20px;border-top:1px solid #eee;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
-            <h4 style="margin:0;"><i class="fas fa-users"></i> Abonnés 
-              <span id="notifCount" style="font-size:1rem;font-weight:700;color:var(--gold);margin-left:8px;">
-                <i class="fas fa-spinner fa-spin"></i>
-              </span>
-            </h4>
-            <button onclick="reinitialiserAbonnes()"
-              style="background:#e74c3c;color:white;border:none;padding:7px 14px;border-radius:8px;font-size:0.85rem;cursor:pointer;font-weight:600;">
-              <i class="fas fa-trash"></i> Réinitialiser les abonnés
-            </button>
-          </div>
-          <div id="abonneList" style="display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto;">
-            <p style="color:#aaa;font-size:0.9rem;text-align:center;padding:10px;">
-              <i class="fas fa-spinner fa-spin"></i> Chargement...
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
 
   </div><!-- /admin-content -->
 </div><!-- /adminPanel -->
@@ -1192,7 +1142,7 @@
     if (name === 'evenements') chargerEvenements();
     if (name === 'membres') chargerMembres();
     if (name === 'temoignages') loadTemoignages();
-    if (name === 'notifs') loadNotifCount();
+
     if (name === 'contacts') loadContacts();
   }
 
