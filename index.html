@@ -7,7 +7,25 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Église de Dieu de la Prophétie de Carrefour</title>
+  <title>Église de Dieu de la Prophétie de Carrefour — Haïti</title>
+  <!-- SEO -->
+  <meta name="description" content="Bienvenue à l'Église de Dieu de la Prophétie de Carrefour, Haïti. Cultes, études bibliques, annonces et communauté chrétienne.">
+  <meta name="keywords" content="église carrefour haiti, église de dieu prophétie, culte carrefour, chrétien haiti">
+  <meta name="author" content="Église de Dieu de la Prophétie de Carrefour">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://fabouloso1.github.io/eglise-carrefour/index.html">
+  <!-- Open Graph (Facebook, WhatsApp) -->
+  <meta property="og:title" content="Église de Dieu de la Prophétie de Carrefour — Haïti">
+  <meta property="og:description" content="Bienvenue à l'Église de Dieu de la Prophétie de Carrefour, Haïti. Cultes, études bibliques, annonces et communauté chrétienne.">
+  <meta property="og:image" content="https://fabouloso1.github.io/eglise-carrefour/logo.png">
+  <meta property="og:url" content="https://fabouloso1.github.io/eglise-carrefour/index.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_HT">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Église de Dieu de la Prophétie de Carrefour — Haïti">
+  <meta name="twitter:description" content="Bienvenue à l'Église de Dieu de la Prophétie de Carrefour, Haïti. Cultes, études bibliques, annonces et communauté chrétienne.">
+  <meta name="twitter:image" content="https://fabouloso1.github.io/eglise-carrefour/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
@@ -20,13 +38,11 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Église Carrefour">
   <link rel="apple-touch-icon" href="logo.png">
-  <!-- Firebase Messaging -->
 </head>
 <body>
 
 <!-- Navigation injectée par nav.js -->
 <div id="nav-placeholder"></div>
-
 
 <!-- ===== HEADER ===== -->
 <header>
@@ -264,16 +280,11 @@
       for (const d of snap.docs) {
         const a = { id: d.id, ...d.data() };
         const hasDate = a.date && typeof a.date === 'string' && a.date.trim() !== '';
-        // Efase sèlman si gen dat epi dat la depase 7 jou
-        if (hasDate) {
-          const dateAnons = new Date(a.date + 'T00:00:00');
-          const limit = new Date(jodi); limit.setDate(limit.getDate() - 7);
-          if (dateAnons < limit) {
-            try { await db.collection('annonces').doc(d.id).delete(); } catch(ex) {}
-            continue;
-          }
+        if (hasDate && new Date(a.date + 'T00:00:00') < jodi) {
+          try { await db.collection('annonces').doc(d.id).delete(); } catch(ex) {}
+        } else {
+          valid.push(a);
         }
-        valid.push(a);
       }
 
       if (valid.length === 0) return;
@@ -288,9 +299,8 @@
         var col  = colors[a.importance] || '#1c1c3c';
         var date = a.date ? new Date(a.date + 'T00:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}) : '';
         var heure = a.heure || '';
-        var sameTxt = a.details && a.titre && a.details.trim() === a.titre.trim();
-        var desc  = (a.details && !sameTxt) ? '<span style="display:block;font-size:0.9rem;color:#333;margin-top:3px;font-weight:500;">'+a.details+'</span>' : '';
-        var foto  = a.fotoUrl ? '<img src="'+a.fotoUrl+'" style="width:100%;max-height:400px;object-fit:contain;border-radius:10px;margin-top:10px;background:#f0f0f0;">' : '';
+        var desc  = a.details ? '<span style="display:block;font-size:0.9rem;color:#333;margin-top:3px;font-weight:500;">'+a.details+'</span>' : '';
+        var foto  = a.fotoUrl ? '<img src="'+a.fotoUrl+'" style="width:100%;max-height:180px;object-fit:cover;border-radius:10px;margin-top:10px;">' : '';
         return '<li style="flex-direction:column;align-items:flex-start;">'
           + '<div style="display:flex;align-items:center;gap:14px;width:100%;">'
           + '<span class="annonce-icon"><i class="fas '+ico+'" style="color:'+col+'"></i></span>'
@@ -308,5 +318,5 @@
   chargerAnnonces();
 })();
 </script>
-
+</body>
 </html>
