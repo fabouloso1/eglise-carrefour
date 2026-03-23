@@ -297,6 +297,14 @@
     }
     err.style.display = 'none';
 
+    // Mande pèmisyon notifikasyon IMEDYATMAN — dirèkteman nan klike bouton
+    let notifPerm = 'default';
+    if ('Notification' in window && Notification.permission === 'default') {
+      try { notifPerm = await Notification.requestPermission(); } catch(e) {}
+    } else {
+      notifPerm = Notification.permission;
+    }
+
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
 
@@ -351,9 +359,8 @@
         const db = getFirestore(app);
         const messaging = getMessaging(app);
 
-        // Mande pèmisyon
-        const perm = await Notification.requestPermission();
-        if (perm !== 'granted') return;
+        // Verifye pèmisyon — deja mande anwo
+        if (notifPerm !== 'granted') return;
 
         // Enrejistre Service Worker
         const swReg = await navigator.serviceWorker.register(SW, { scope: '/eglise-carrefour/' });
