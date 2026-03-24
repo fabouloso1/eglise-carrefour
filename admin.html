@@ -1973,24 +1973,11 @@
   }
 </script>
 
-<!-- Script FCM Notifications -->
+<!-- Script Notifications OneSignal -->
 <script>
 (function() {
-  // Init Firebase 'notif' app
-  if (!firebase.apps.find(function(a) { return a.name === 'notif'; })) {
-    try {
-      firebase.initializeApp({
-        apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
-        authDomain: "eglise-carrefour.firebaseapp.com",
-        projectId: "eglise-carrefour",
-        storageBucket: "eglise-carrefour.firebasestorage.app",
-        messagingSenderId: "421333694767",
-        appId: "1:421333694767:web:30c18da36ae020821a49da"
-      }, 'notif');
-    } catch(e) {}
-  }
-
-  var db2 = firebase.app('notif').firestore();
+  var ONESIGNAL_APP_ID = "98b15d43-1386-4fd5-b711-59dd32446c43";
+  var ONESIGNAL_API_KEY = "os_v2_app_tcyv2qytqzh5lnyrlhoterdminixlciqzlhupxuxjz7cc2atminavs4rjad4keqnxm6vkl6ftcn2lvuawuyxkqebyyiof6txjruuxxy";
 
   // Jwenn Access Token pou FCM
   async function getAccessToken() {
@@ -2027,32 +2014,31 @@
   // Voye notif bay tout abòne
   window.envoyerNotifAuto = async function(title, body, link, type) {
     try {
-      const snap = await db2.collection('fcm_tokens').get();
-      if (snap.empty) { console.log('Notif: pa gen abòne'); return; }
-      console.log('Notif: ap voye bay', snap.size, 'abòne...');
-      const accessToken = await getAccessToken();
-      let success = 0, failed = 0;
-      for (const d of snap.docs) {
-        const token = d.data().token;
-        try {
-          const res = await fetch('https://fcm.googleapis.com/v1/projects/eglise-carrefour/messages:send', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + accessToken },
-            body: JSON.stringify({
-              message: {
-                token: token,
-                notification: { title: title, body: body },
-                webpush: { fcm_options: { link: link } },
-                data: { link: link, type: type || 'default' }
-              }
-            })
-          });
-          const result = await res.json();
-          if (result.name) { success++; } else { failed++; console.log('Notif echec:', result); }
-        } catch(e) { failed++; console.log('Notif token error:', e); }
+      const res = await fetch('https://onesignal.com/api/v1/notifications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Basic ' + ONESIGNAL_API_KEY
+        },
+        body: JSON.stringify({
+          app_id: ONESIGNAL_APP_ID,
+          included_segments: ['All'],
+          headings: { fr: title, en: title },
+          contents: { fr: body, en: body },
+          url: link,
+          chrome_web_icon: 'https://fabouloso1.github.io/eglise-carrefour/logo.png',
+          firefox_icon: 'https://fabouloso1.github.io/eglise-carrefour/logo.png'
+        })
+      });
+      const data = await res.json();
+      if (data.id) {
+        console.log('✅ Notif OneSignal voye — ID:', data.id);
+      } else {
+        console.log('❌ Notif echec:', JSON.stringify(data));
       }
-      console.log('Notif: ' + success + ' voye, ' + failed + ' echec');
-    } catch(e) { console.log('envoyerNotifAuto error:', e); }
+    } catch(e) {
+      console.log('envoyerNotifAuto error:', e.message);
+    }
   };
 
 })();
