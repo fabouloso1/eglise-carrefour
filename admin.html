@@ -2012,6 +2012,103 @@
   }
 
   // Voye notif bay tout abòne
+  // ===== MANM =====
+  async function chargerMembres() {
+    try {
+      const snap = await window._getDocs(window._query(window._collection(window._db, 'membres'), window._orderBy('timestamp', 'desc')));
+      const el = document.getElementById('membresCount');
+      const listEl = document.getElementById('membresList');
+      if (el) el.textContent = snap.docs.length;
+      if (!listEl) return;
+      if (!snap.docs.length) {
+        listEl.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px;">Aucun membre inscrit.</p>';
+        return;
+      }
+      listEl.innerHTML = snap.docs.map(d => {
+        const m = { id: d.id, ...d.data() };
+        const bloque = m.bloque === true;
+        return `<div style="background:${bloque?'rgba(231,76,60,0.12)':'rgba(255,255,255,0.06)'};border-radius:14px;padding:14px;margin-bottom:10px;border-left:4px solid ${bloque?'#ff6b6b':'#f1c40f'};">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <div style="width:38px;height:38px;background:${bloque?'rgba(231,76,60,0.2)':'rgba(241,196,15,0.15)'};border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fas fa-${bloque?'ban':'user'}" style="color:${bloque?'#ff6b6b':'#f1c40f'};"></i>
+            </div>
+            <div style="flex:1;">
+              <div style="color:white;font-weight:800;font-size:0.95rem;">${m.nom||'—'} ${bloque?'<span style="background:rgba(231,76,60,0.3);color:#ff6b6b;font-size:0.7rem;padding:2px 8px;border-radius:10px;margin-left:6px;">BLOQUÉ</span>':''}</div>
+              <div style="color:rgba(255,255,255,0.5);font-size:0.8rem;"><i class="fas fa-phone" style="color:#f1c40f;margin-right:4px;"></i>${m.telephone||'—'} ${m.ville?'· '+m.ville:''}</div>
+              <div style="color:rgba(255,255,255,0.3);font-size:0.72rem;">${m.date?new Date(m.date).toLocaleDateString('fr-FR'):''}</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            ${bloque
+              ? `<button onclick="debloquerMembre('${m.id}')" style="flex:1;padding:8px;background:rgba(46,213,115,0.15);border:1px solid #2ed573;border-radius:20px;color:#2ed573;font-size:0.8rem;font-weight:700;cursor:pointer;"><i class="fas fa-unlock"></i> Débloquer</button>`
+              : `<button onclick="bloquerMembre('${m.id}','${(m.nom||"").replace(/[^\w ]/g,"")}')" style="flex:1;padding:8px;background:rgba(231,76,60,0.15);border:1px solid #ff6b6b;border-radius:20px;color:#ff6b6b;font-size:0.8rem;font-weight:700;cursor:pointer;"><i class="fas fa-ban"></i> Bloquer</button>`}
+            <button onclick="reinitialiserMembre('${m.id}','${(m.nom||"").replace(/[^\w ]/g,"")}')" style="padding:8px 12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;color:rgba(255,255,255,0.6);font-size:0.8rem;cursor:pointer;" title="Réinitialiser l'accès"><i class="fas fa-redo"></i></button>
+            <button onclick="supprimerMembre('${m.id}')" style="padding:8px 12px;background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.2);border-radius:20px;color:#ff6b6b;font-size:0.8rem;cursor:pointer;"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>`;
+      }).join('');
+    } catch(e) { console.log('chargerMembres:', e.message); }
+  }
+  window.chargerMembres = chargerMembres;
+
+  async function bloquerMembre(id, nom) {
+    if (!confirm('Bloquer ' + nom + ' ?')) return;
+    try {
+      await window._updateDoc(window._doc(window._db, 'membres', id), { bloque: true });
+      showToast(nom + ' bloqué !');
+      chargerMembres();
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+  window.bloquerMembre = bloquerMembre;
+
+  async function debloquerMembre(id) {
+    try {
+      await window._updateDoc(window._doc(window._db, 'membres', id), { bloque: false });
+      showToast('Membre débloqué !');
+      chargerMembres();
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+  window.debloquerMembre = debloquerMembre;
+
+  async function reinitialiserMembre(id, nom) {
+    if (!confirm('Réinitialiser ' + nom + ' ? Il devra se réinscrire.')) return;
+    try {
+      await window._deleteDoc(window._doc(window._db, 'membres', id));
+      // Efase token FCM tou
+      const tokSnap = await window._getDocs(window._collection(window._db, 'fcm_tokens'));
+      for (const td of tokSnap.docs) {
+        const tdata = td.data();
+        if (tdata.nom && tdata.nom.toLowerCase().includes((nom||'').split(' ')[0].toLowerCase())) {
+          await window._deleteDoc(window._doc(window._db, 'fcm_tokens', td.id));
+        }
+      }
+      showToast(nom + ' réinitialisé !');
+      chargerMembres();
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+  window.reinitialiserMembre = reinitialiserMembre;
+
+  async function supprimerMembre(id) {
+    if (!confirm('Supprimer définitivement ce membre ?')) return;
+    try {
+      const mSnap = await window._getDoc(window._doc(window._db, 'membres', id));
+      const mData = mSnap.exists() ? mSnap.data() : {};
+      await window._deleteDoc(window._doc(window._db, 'membres', id));
+      if (mData.nom) {
+        const tokSnap = await window._getDocs(window._collection(window._db, 'fcm_tokens'));
+        for (const td of tokSnap.docs) {
+          const tdata = td.data();
+          if (tdata.nom && tdata.nom.toLowerCase().includes(mData.nom.split(' ')[0].toLowerCase())) {
+            await window._deleteDoc(window._doc(window._db, 'fcm_tokens', td.id));
+          }
+        }
+      }
+      showToast('Membre supprimé !');
+      chargerMembres();
+    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
+  }
+  window.supprimerMembre = supprimerMembre;
+
   window.envoyerNotifAuto = async function(title, body, link, type) {
     try {
       const res = await fetch('https://onesignal.com/api/v1/notifications', {
