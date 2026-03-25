@@ -1,4 +1,23 @@
 // ===== GATE.JS — Système d'accès =====
+// OneSignal init — si pa deja chaje nan paj la
+if (!window._oneSignalGateLoaded) {
+  window._oneSignalGateLoaded = true;
+  var _os = document.createElement('script');
+  _os.src = 'https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js';
+  _os.defer = true;
+  document.head.appendChild(_os);
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  window.OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
+      notifyButton: { enable: false },
+      welcomeNotification: {
+        title: "Église de Dieu de la Prophétie",
+        message: "Bienvenue ! Vous recevrez toutes nos notifications. 🙏"
+      }
+    });
+  });
+}
 // Ajoute nan paj pwoteje yo: <script src="gate.js"></script>
 // Apre nav.js
 
@@ -336,61 +355,21 @@
     document.getElementById('gate-form').style.display    = 'none';
     document.getElementById('gate-success').style.display = 'block';
 
-    // Abòne FCM otomatikman + mande pèmisyon
+    // Abòne OneSignal apre enskripsyon
     setTimeout(async () => {
       try {
-        const VAPID = 'BJ1bOLbFM6qNV2XgVA4F9pA7cWng1NKPlU24sgSOk8MyqhhqWsBXVlN0V2Sjnt-Z7xFIHK8wiRS12xFGWddAtFI';
-        const SW    = '/eglise-carrefour/firebase-messaging-sw.js';
-
-        // Chaje Firebase dynamikman
-        const { initializeApp, getApps } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
-        const { getMessaging, getToken } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js');
-        const { getFirestore, doc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
-
-        const app = getApps().find(a => a.name === 'gate') || initializeApp({
-          apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
-          authDomain: "eglise-carrefour.firebaseapp.com",
-          projectId: "eglise-carrefour",
-          storageBucket: "eglise-carrefour.firebasestorage.app",
-          messagingSenderId: "421333694767",
-          appId: "1:421333694767:web:30c18da36ae020821a49da"
-        }, 'gate');
-
-        const db = getFirestore(app);
-        const messaging = getMessaging(app);
-
-        // Verifye pèmisyon — deja mande anwo
         if (notifPerm !== 'granted') return;
-
-        // Enrejistre Service Worker
-        const swReg = await navigator.serviceWorker.register(SW, { scope: '/eglise-carrefour/' });
-        await navigator.serviceWorker.ready;
-
-        // Jwenn FCM token
-        const token = await getToken(messaging, { vapidKey: VAPID, serviceWorkerRegistration: swReg });
-        if (!token) return;
-
-        // Sove token + info manm nan Firestore
-        await setDoc(doc(db, 'fcm_tokens', token.substring(0, 40)), {
-          token:     token,
-          nom:       nom,
-          telephone: tel,
-          date:      new Date().toISOString(),
-          platform:  navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop'
-        });
-
-        localStorage.setItem('fcm_subscribed', 'true');
-        localStorage.setItem('fcm_token', token);
-        localStorage.setItem('fcm_nom', nom);
-
-        // Notif byenveni
-        new Notification('Bienvenue — Eglise de Dieu de la Prophetie', {
-          body: 'Vous etes inscrit ! Vous recevrez les annonces, etudes et rappels a 9h.',
-          icon: '/eglise-carrefour/logo.png',
-          tag:  'bienvenue'
-        });
-
-      } catch(e) { console.log('FCM gate:', e.message); }
+        // OneSignal deja chaje nan paj la — abòne moun nan
+        if (window.OneSignal) {
+          await window.OneSignal.login(tel); // Itilize telefòn kòm external ID
+          console.log('✅ OneSignal abòne:', nom);
+        } else if (window.OneSignalDeferred) {
+          window.OneSignalDeferred.push(async function(OneSignal) {
+            await OneSignal.login(tel);
+            console.log('✅ OneSignal abòne:', nom);
+          });
+        }
+      } catch(e) { console.log('OneSignal gate:', e.message); }
     }, 1500);
   };
 
