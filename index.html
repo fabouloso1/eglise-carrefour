@@ -538,6 +538,19 @@
         icon: 'logo.png'
       });
 
+      // Programme notif 9h chak jou pou lecture biblique
+      if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+        const today = new Date();
+        const key   = today.toISOString().split('T')[0];
+        const plan  = typeof PLAN_2026 !== 'undefined' ? PLAN_2026[key] : null;
+        navigator.serviceWorker.controller.postMessage({
+          type:  'SCHEDULE_DAILY',
+          title: plan ? '📖 Lecture du jour — ' + plan.reference : '📖 Lecture Biblique du jour',
+          body:  plan ? plan.intro : 'Ouvrez le guide pour votre lecture quotidienne.',
+          url:   'https://fabouloso1.github.io/eglise-carrefour/Guide.html'
+        });
+      }
+
       document.getElementById('notif-modal').classList.remove('open');
 
       // Mete kloch vèt
