@@ -501,14 +501,28 @@
     const perm = await Notification.requestPermission();
 
     if (perm === 'granted') {
-      // Sove nan Firebase
+      // Sove nan Firebase — notif_subscribers + membres
       try {
         if (typeof firebase !== 'undefined' && firebase.apps.length) {
-          await firebase.firestore().collection('notif_subscribers').add({
-            nom, telephone: tel,
-            date: new Date().toLocaleDateString('fr-FR'),
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          const db = firebase.firestore();
+          const dateStr = new Date().toLocaleDateString('fr-FR');
+          const ts = firebase.firestore.FieldValue.serverTimestamp();
+
+          // Sove nan notif_subscribers
+          await db.collection('notif_subscribers').add({
+            nom, telephone: tel, date: dateStr, timestamp: ts
           });
+
+          // Sove nan membres si pa deja la
+          if (tel) {
+            const exist = await db.collection('membres')
+              .where('telephone','==', tel).limit(1).get();
+            if (exist.empty) {
+              await db.collection('membres').add({
+                nom, telephone: tel, date: dateStr, timestamp: ts
+              });
+            }
+          }
         }
       } catch(e) { console.log('Save:', e); }
 

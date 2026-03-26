@@ -508,22 +508,25 @@
     OneSignalDeferred.push(async function(OneSignal) {
       await OneSignal.init({
         appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
-        notifyButton: { enable: false },
-        promptOptions: {
-          slidedown: {
-            prompts: [{
-              type: "push",
-              autoPrompt: true,
-              text: {
-                actionMessage: "Recevez les annonces et rappels de l\'Église de la Prophétie!",
-                acceptButton: "Oui, m\'abonner",
-                cancelButton: "Non merci"
-              },
-              delay: {
-                pageViews: 1,
-                timeDelay: 2
-              }
-            }]
+        notifyButton: {
+          enable: true,
+          size: "medium",
+          position: "bottom-right",
+          theme: "default",
+          showCredit: false,
+          text: {
+            "tip.state.unsubscribed": "Abonnez-vous aux notifications",
+            "tip.state.subscribed": "Vous êtes abonné(e)",
+            "tip.state.blocked": "Notifications bloquées",
+            "message.prenotify": "Cliquez pour vous abonner aux notifications",
+            "message.action.subscribed": "Merci de vous être abonné(e)!",
+            "message.action.resubscribed": "Vous êtes abonné(e) aux notifications",
+            "message.action.unsubscribed": "Vous ne recevrez plus de notifications",
+            "dialog.main.title": "Gérer les notifications",
+            "dialog.main.button.subscribe": "M\'ABONNER",
+            "dialog.main.button.unsubscribe": "SE DÉSABONNER",
+            "dialog.blocked.title": "Débloquer les notifications",
+            "dialog.blocked.message": "Suivez ces instructions pour activer les notifications:"
           }
         }
       });
@@ -2064,36 +2067,66 @@
 
   // Konbyen abòne + lis abòne yo
   function loadNotifCount() {
-    db2.collection('fcm_tokens').orderBy('date', 'desc').get().then(function(snap) {
-      // Konbyen
-      var el = document.getElementById('notifCount');
-      if (el) el.innerHTML = '(' + snap.size + ' abonné(s))';
+    // Chaje notif_subscribers (kloch) + membres
+    Promise.all([
+      db2.collection('notif_subscribers').get(),
+      db2.collection('membres').get()
+    ]).then(function(results) {
+      var notifSnap   = results[0];
+      var membresSnap = results[1];
 
-      // Lis abòne yo
+      // Konte total abonè
+      var el = document.getElementById('notifCount');
+      if (el) el.innerHTML = '(' + notifSnap.size + ' abonné(s))';
+
       var list = document.getElementById('abonneList');
       if (!list) return;
-      if (snap.empty) {
+
+      if (notifSnap.empty) {
         list.innerHTML = '<p style="color:#aaa;text-align:center;padding:10px;font-size:0.9rem;">Aucun abonné pour le moment.</p>';
         return;
       }
-      list.innerHTML = '';
-      var num = 1;
-      snap.forEach(function(d) {
-        var data = d.data();
-        var date = data.date ? new Date(data.date).toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric' }) : 'Date inconnue';
-        var platform = data.platform === 'mobile' ? '<i class="fas fa-mobile-alt" style="color:#4CAF50"></i> Mobile' : '<i class="fas fa-desktop" style="color:#2196F3"></i> PC';
-        var row = document.createElement('div');
-        row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f9f9f9;border-radius:8px;font-size:0.85rem;';
-        var nom = data.nom ? data.nom : 'Anonyme';
-        row.innerHTML = '<span style="font-weight:600;color:#1c1c3c;">' + nom + '</span>' +
-          '<span>' + platform + '</span>' +
-          '<span style="color:#888;">' + date + '</span>';
-        list.appendChild(row);
-        num++;
+
+      // Kreye yon map membres pou jwenn info rapid
+      var membresMap = {};
+      membresSnap.forEach(function(d) {
+        var m = d.data();
+        if (m.telephone) membresMap[m.telephone] = m;
       });
-    }).catch(function(e) { 
-      // Si pa gen index orderBy, chaje san triye
-      db2.collection('fcm_tokens').get().then(function(snap) {
+
+      list.innerHTML = '';
+      notifSnap.forEach(function(d) {
+        var data = d.data();
+        var nom  = data.nom || 'Anonyme';
+        var tel  = data.telephone || '—';
+        var date = data.date || '—';
+
+        // Verifye si li nan membres tou
+        var estMembre = tel !== '—' && membresMap[tel];
+        var badge = estMembre
+          ? '<span style="background:#2ed573;color:#0d1f4a;font-size:0.72rem;padding:2px 8px;border-radius:10px;font-weight:700;margin-left:6px;">Membre</span>'
+          : '<span style="background:#f1c40f;color:#0d1f4a;font-size:0.72rem;padding:2px 8px;border-radius:10px;font-weight:700;margin-left:6px;">Notif seulement</span>';
+
+        var row = document.createElement('div');
+        row.style.cssText = 'background:white;border-radius:12px;padding:12px 16px;margin-bottom:8px;border-left:3px solid #f1c40f;box-shadow:0 2px 6px rgba(0,0,0,0.06);';
+        row.innerHTML =
+          '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;">' +
+            '<div>' +
+              '<span style="font-weight:800;color:#111;font-size:0.98rem;">' + nom + '</span>' +
+              badge +
+            '</div>' +
+            '<span style="color:#888;font-size:0.8rem;">' + date + '</span>' +
+          '</div>' +
+          '<div style="margin-top:4px;color:#555;font-size:0.85rem;">' +
+            '<i class="fas fa-phone" style="color:#f1c40f;margin-right:5px;"></i>' + tel +
+          '</div>';
+        list.appendChild(row);
+      });
+
+    }).catch(function(e) {
+      console.log('loadNotifCount error:', e);
+      // Fallback — chaje sèlman notif_subscribers
+      db2.collection('notif_subscribers').get().then(function(snap) {
         var el = document.getElementById('notifCount');
         if (el) el.innerHTML = '(' + snap.size + ' abonné(s))';
         var list = document.getElementById('abonneList');
@@ -2103,20 +2136,17 @@
           return;
         }
         list.innerHTML = '';
-        var num = 1;
         snap.forEach(function(d) {
           var data = d.data();
-          var platform = data.platform === 'mobile' ? '<i class="fas fa-mobile-alt" style="color:#4CAF50"></i> Mobile' : '<i class="fas fa-desktop" style="color:#2196F3"></i> PC';
           var row = document.createElement('div');
-          row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f9f9f9;border-radius:8px;font-size:0.85rem;margin-bottom:4px;';
-          var nom = data.nom ? data.nom : 'Anonyme';
-          row.innerHTML = '<span style="font-weight:600;color:#1c1c3c;">' + nom + '</span><span>' + platform + '</span>';
+          row.style.cssText = 'background:#f9f9f9;border-radius:10px;padding:10px 14px;margin-bottom:6px;';
+          row.innerHTML = '<strong>' + (data.nom||'Anonyme') + '</strong> — ' + (data.telephone||'—');
           list.appendChild(row);
-          num++;
         });
       });
     });
   }
+
 
   async function getAccessToken() {
     const SA_EMAIL = "firebase-adminsdk-fbsvc@eglise-carrefour.iam.gserviceaccount.com";
