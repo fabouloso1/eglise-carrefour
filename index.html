@@ -22,8 +22,7 @@
   <link rel="apple-touch-icon" href="logo.png">
 
 
-  <!-- OneSignal Notifications -->
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+
   <script>
     window.OneSignalDeferred = window.OneSignalDeferred || [];
     OneSignalDeferred.push(async function(OneSignal) {
@@ -396,5 +395,177 @@
   chargerAnnonces();
 })();
 </script>
+  <!-- Bouton Kloch Notifikasyon -->
+  <style>
+    #kloch-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #1c1c3c, #2d1b4e);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 9999;
+      box-shadow: 0 4px 18px rgba(28,28,60,0.35);
+      border: 2px solid rgba(241,196,15,0.4);
+      transition: all 0.3s;
+    }
+    #kloch-btn:hover { transform: scale(1.1); }
+    #kloch-btn i { color: #f1c40f; font-size: 1.4rem; }
+    #kloch-badge {
+      position: absolute;
+      top: -4px; right: -4px;
+      width: 14px; height: 14px;
+      background: #e74c3c;
+      border-radius: 50%;
+      display: none;
+    }
+
+    #notif-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(7,0,30,0.88);
+      z-index: 99999;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    #notif-modal.open { display: flex; }
+    #notif-modal-box {
+      background: linear-gradient(160deg,#0f0c2e,#1a0a3c);
+      border-radius: 28px 28px 0 0;
+      padding: 36px 26px 50px;
+      width: 100%;
+      max-width: 500px;
+      border-top: 4px solid #f1c40f;
+    }
+  </style>
+
+  <script>
+  // ===== KLOCH NOTIFIKASYON =====
+  document.addEventListener('DOMContentLoaded', function() {
+
+    // Kreye bouton kloch
+    const btn = document.createElement('div');
+    btn.id = 'kloch-btn';
+    btn.innerHTML = '<i class="fas fa-bell"></i><span id="kloch-badge"></span>';
+    document.body.appendChild(btn);
+
+    // Verifye eta notifikasyon
+    function updateBell() {
+      if (Notification.permission === 'granted') {
+        btn.style.borderColor = 'rgba(46,213,115,0.6)';
+        btn.querySelector('i').style.color = '#2ed573';
+      } else if (Notification.permission === 'denied') {
+        btn.style.borderColor = 'rgba(231,76,60,0.6)';
+        btn.querySelector('i').style.color = '#ff6b6b';
+      }
+    }
+
+    if ('Notification' in window) updateBell();
+
+    // Klike kloch
+    btn.addEventListener('click', function() {
+      if (!('Notification' in window)) {
+        alert('Votre navigateur ne supporte pas les notifications.');
+        return;
+      }
+      if (Notification.permission === 'granted') {
+        alert('✅ Vous êtes déjà abonné(e) aux notifications!');
+        return;
+      }
+      if (Notification.permission === 'denied') {
+        alert('❌ Notifications bloquées. Allez dans les paramètres de votre navigateur pour les activer.');
+        return;
+      }
+      // Montre modal
+      document.getElementById('notif-modal').classList.add('open');
+    });
+
+    // Ferme modal si klike deyò
+    document.getElementById('notif-modal').addEventListener('click', function(e) {
+      if (e.target === this) this.classList.remove('open');
+    });
+  });
+
+  async function activerNotifications() {
+    const nom = document.getElementById('notif-nom').value.trim();
+    const tel = document.getElementById('notif-tel').value.trim();
+
+    if (!nom) { alert('Veuillez saisir votre nom.'); return; }
+
+    const perm = await Notification.requestPermission();
+
+    if (perm === 'granted') {
+      // Sove nan Firebase
+      try {
+        if (typeof firebase !== 'undefined' && firebase.apps.length) {
+          await firebase.firestore().collection('notif_subscribers').add({
+            nom, telephone: tel,
+            date: new Date().toLocaleDateString('fr-FR'),
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }
+      } catch(e) { console.log('Save:', e); }
+
+      // Sove localStorage
+      localStorage.setItem('notif_inscrit', '1');
+      if (!localStorage.getItem('eglise_membre')) {
+        localStorage.setItem('eglise_membre', JSON.stringify({ nom, telephone: tel }));
+      }
+
+      // Notif byenveni
+      new Notification('🙏 Bienvenue — Église de la Prophétie!', {
+        body: 'Vous recevrez désormais toutes nos annonces et rappels.',
+        icon: 'logo.png'
+      });
+
+      document.getElementById('notif-modal').classList.remove('open');
+
+      // Mete kloch vèt
+      const btn = document.getElementById('kloch-btn');
+      btn.style.borderColor = 'rgba(46,213,115,0.6)';
+      btn.querySelector('i').style.color = '#2ed573';
+
+      alert('✅ Abonnement activé! Vous recevrez nos notifications.');
+    } else {
+      alert('❌ Permission refusée. Vous pouvez activer les notifications dans les paramètres.');
+      document.getElementById('notif-modal').classList.remove('open');
+    }
+  }
+  </script>
+
+  <!-- Modal pou non ak telefòn -->
+  <div id="notif-modal">
+    <div id="notif-modal-box">
+      <div style="text-align:center;margin-bottom:24px;">
+        <div style="font-size:2.5rem;margin-bottom:10px;">🔔</div>
+        <h2 style="color:#f1c40f;font-size:1.3rem;font-weight:800;margin-bottom:8px;">Activer les notifications</h2>
+        <p style="color:rgba(255,255,255,0.7);font-size:0.95rem;line-height:1.6;">Recevez nos annonces, rappels bibliques et nouvelles de l'église directement sur votre téléphone.</p>
+      </div>
+      <div style="margin-bottom:14px;">
+        <label style="display:block;color:#f1c40f;font-weight:700;font-size:0.9rem;margin-bottom:7px;"><i class="fas fa-user" style="margin-right:6px;"></i>Votre nom *</label>
+        <input type="text" id="notif-nom" placeholder="Ex: Marie Joseph..."
+          style="width:100%;padding:14px;border:2px solid rgba(241,196,15,0.3);border-radius:12px;background:rgba(255,255,255,0.08);color:white;font-size:1rem;box-sizing:border-box;">
+      </div>
+      <div style="margin-bottom:22px;">
+        <label style="display:block;color:#f1c40f;font-weight:700;font-size:0.9rem;margin-bottom:7px;"><i class="fas fa-phone" style="margin-right:6px;"></i>Téléphone</label>
+        <input type="tel" id="notif-tel" placeholder="Ex: +509 3700 0000..."
+          style="width:100%;padding:14px;border:2px solid rgba(241,196,15,0.3);border-radius:12px;background:rgba(255,255,255,0.08);color:white;font-size:1rem;box-sizing:border-box;">
+      </div>
+      <button onclick="activerNotifications()"
+        style="width:100%;padding:16px;background:linear-gradient(135deg,#f1c40f,#e67e22);color:#0f0c2e;border:none;border-radius:50px;font-size:1.05rem;font-weight:800;cursor:pointer;">
+        <i class="fas fa-bell"></i> Activer les notifications
+      </button>
+      <button onclick="document.getElementById('notif-modal').classList.remove('open')"
+        style="width:100%;padding:12px;background:transparent;border:1px solid rgba(255,255,255,0.2);border-radius:50px;color:rgba(255,255,255,0.5);font-size:0.9rem;cursor:pointer;margin-top:10px;">
+        Plus tard
+      </button>
+    </div>
+  </div>
 </body>
 </html>
