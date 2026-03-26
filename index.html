@@ -21,6 +21,7 @@
   <meta name="apple-mobile-web-app-title" content="Église Carrefour">
   <link rel="apple-touch-icon" href="logo.png">
 
+
   <!-- OneSignal Notifications -->
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
   <script>
@@ -28,9 +29,24 @@
     OneSignalDeferred.push(async function(OneSignal) {
       await OneSignal.init({
         appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
-        safari_web_id: "web.onesignal.auto.98b15d43-1386-4fd5-b711-59dd32446c43",
         notifyButton: { enable: false },
-        allowLocalhostAsSecureOrigin: true,
+        promptOptions: {
+          slidedown: {
+            prompts: [{
+              type: "push",
+              autoPrompt: true,
+              text: {
+                actionMessage: "Recevez les annonces et rappels de l\'Église de la Prophétie!",
+                acceptButton: "Oui, m\'abonner",
+                cancelButton: "Non merci"
+              },
+              delay: {
+                pageViews: 1,
+                timeDelay: 2
+              }
+            }]
+          }
+        }
       });
     });
   </script>

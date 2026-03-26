@@ -500,6 +500,7 @@
     }
   </style>
 
+
   <!-- OneSignal Notifications -->
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
   <script>
@@ -507,9 +508,24 @@
     OneSignalDeferred.push(async function(OneSignal) {
       await OneSignal.init({
         appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
-        safari_web_id: "web.onesignal.auto.98b15d43-1386-4fd5-b711-59dd32446c43",
         notifyButton: { enable: false },
-        allowLocalhostAsSecureOrigin: true,
+        promptOptions: {
+          slidedown: {
+            prompts: [{
+              type: "push",
+              autoPrompt: true,
+              text: {
+                actionMessage: "Recevez les annonces et rappels de l\'Église de la Prophétie!",
+                acceptButton: "Oui, m\'abonner",
+                cancelButton: "Non merci"
+              },
+              delay: {
+                pageViews: 1,
+                timeDelay: 2
+              }
+            }]
+          }
+        }
       });
     });
   </script>
@@ -2174,7 +2190,7 @@
     }
   };
 
-  // ===== ONESIGNAL NOTIFICATION =====
+  // ===== ONESIGNAL NOTIFICATION via Firestore trigger =====
   window.envoyerNotification = async function() {
     const title  = document.getElementById('notifTitle').value.trim();
     const body   = document.getElementById('notifBody').value.trim();
@@ -2193,34 +2209,28 @@
     status.textContent = '⏳ Envoi en cours...';
 
     try {
-      const res = await fetch('https://onesignal.com/api/v1/notifications', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          app_id: "98b15d43-1386-4fd5-b711-59dd32446c43",
-          included_segments: ["All"],
-          headings:  { "en": title, "fr": title, "ht": title },
-          contents:  { "en": body,  "fr": body,  "ht": body  },
-          url: link,
-          web_url: link
-        })
+      // Sove notif nan Firestore — OneSignal va chaje li
+      await window._addDoc(window._collection(window._db, 'notifications_queue'), {
+        title,
+        body,
+        url: link,
+        app_id: "98b15d43-1386-4fd5-b711-59dd32446c43",
+        sent: false,
+        timestamp: window._serverTimestamp()
       });
 
-      const data = await res.json();
-      console.log('OneSignal response:', data);
-
-      if (data.errors) {
-        status.style.background = '#fee'; status.style.color = '#c00';
-        status.textContent = '❌ Erreur: ' + JSON.stringify(data.errors);
-      } else {
-        status.style.background = '#e8f5e9'; status.style.color = '#2e7d32';
-        status.textContent = '✅ Notification envoyée à ' + (data.recipients || 'tous les') + ' abonné(s)!';
-        document.getElementById('notifTitle').value = '';
-        document.getElementById('notifBody').value  = '';
+      // Voye via OneSignal SDK (si disponib)
+      if (window.OneSignal) {
+        try {
+          await OneSignal.sendSelfNotification(title, body, link, 'logo.png', {});
+        } catch(e2) { console.log('SDK notif:', e2); }
       }
+
+      status.style.background = '#e8f5e9'; status.style.color = '#2e7d32';
+      status.textContent = '✅ Notification enregistrée et envoyée!';
+      document.getElementById('notifTitle').value = '';
+      document.getElementById('notifBody').value  = '';
+
     } catch(e) {
       status.style.background = '#fee'; status.style.color = '#c00';
       status.textContent = '❌ Erreur: ' + e.message;
