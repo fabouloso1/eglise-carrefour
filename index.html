@@ -29,6 +29,8 @@
     OneSignalDeferred.push(async function(OneSignal) {
       await OneSignal.init({
         appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
+        serviceWorkerParam: { scope: "/eglise-carrefour/" },
+        serviceWorkerPath: "/eglise-carrefour/OneSignalSDKWorker.js",
         notifyButton: {
           enable: true,
           size: "medium",
