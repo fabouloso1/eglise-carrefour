@@ -8,24 +8,6 @@
   <meta http-equiv="Expires" content="0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Faire un Don — Église de Dieu de la Prophétie de Carrefour</title>
-  <!-- SEO -->
-  <meta name="description" content="Soutenez l'Église de Dieu de la Prophétie de Carrefour par un don. MonCash et NatCash disponibles.">
-  <meta name="keywords" content="don église carrefour haiti, offrande moncash">
-  <meta name="author" content="Église de Dieu de la Prophétie de Carrefour">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://fabouloso1.github.io/eglise-carrefour/don.html">
-  <!-- Open Graph (Facebook, WhatsApp) -->
-  <meta property="og:title" content="Faire un Don — Église de Dieu de la Prophétie de Carrefour">
-  <meta property="og:description" content="Soutenez l'Église de Dieu de la Prophétie de Carrefour par un don. MonCash et NatCash disponibles.">
-  <meta property="og:image" content="https://fabouloso1.github.io/eglise-carrefour/logo.png">
-  <meta property="og:url" content="https://fabouloso1.github.io/eglise-carrefour/don.html">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="fr_HT">
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Faire un Don — Église de Dieu de la Prophétie de Carrefour">
-  <meta name="twitter:description" content="Soutenez l'Église de Dieu de la Prophétie de Carrefour par un don. MonCash et NatCash disponibles.">
-  <meta name="twitter:image" content="https://fabouloso1.github.io/eglise-carrefour/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
@@ -350,31 +332,17 @@
       .don-card-body { padding: 20px 16px; }
     }
   </style>
-  <!-- OneSignal Push Notifications -->
+
+  <!-- OneSignal Notifications -->
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
   <script>
     window.OneSignalDeferred = window.OneSignalDeferred || [];
     OneSignalDeferred.push(async function(OneSignal) {
       await OneSignal.init({
         appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
-        promptOptions: {
-          slidedown: {
-            prompts: [{
-              type: "push",
-              autoPrompt: false,
-              text: {
-                actionMessage: "Recevez les annonces, études et actualités de l'église en temps réel !",
-                acceptButton: "Oui, s'abonner",
-                cancelButton: "Plus tard"
-              }
-            }]
-          }
-        },
-        welcomeNotification: {
-          title: "Église de Dieu de la Prophétie",
-          message: "Bienvenue ! Vous recevrez désormais toutes nos notifications. 🙏"
-        },
-        notifyButton: { enable: false }
+        safari_web_id: "web.onesignal.auto.98b15d43-1386-4fd5-b711-59dd32446c43",
+        notifyButton: { enable: false },
+        allowLocalhostAsSecureOrigin: true,
       });
     });
   </script>

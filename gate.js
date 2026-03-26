@@ -1,23 +1,4 @@
 // ===== GATE.JS — Système d'accès =====
-// OneSignal init — si pa deja chaje nan paj la
-if (!window._oneSignalGateLoaded) {
-  window._oneSignalGateLoaded = true;
-  var _os = document.createElement('script');
-  _os.src = 'https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js';
-  _os.defer = true;
-  document.head.appendChild(_os);
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  window.OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
-      notifyButton: { enable: false },
-      welcomeNotification: {
-        title: "Église de Dieu de la Prophétie",
-        message: "Bienvenue ! Vous recevrez toutes nos notifications. 🙏"
-      }
-    });
-  });
-}
 // Ajoute nan paj pwoteje yo: <script src="gate.js"></script>
 // Apre nav.js
 
@@ -316,14 +297,6 @@ if (!window._oneSignalGateLoaded) {
     }
     err.style.display = 'none';
 
-    // Mande pèmisyon notifikasyon IMEDYATMAN — dirèkteman nan klike bouton
-    let notifPerm = 'default';
-    if ('Notification' in window && Notification.permission === 'default') {
-      try { notifPerm = await Notification.requestPermission(); } catch(e) {}
-    } else {
-      notifPerm = Notification.permission;
-    }
-
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
 
@@ -355,22 +328,36 @@ if (!window._oneSignalGateLoaded) {
     document.getElementById('gate-form').style.display    = 'none';
     document.getElementById('gate-success').style.display = 'block';
 
-    // Abòne OneSignal apre enskripsyon
+    // Mande pèmisyon notifikasyon APRE enskripsyon
     setTimeout(async () => {
-      try {
-        if (notifPerm !== 'granted') return;
-        // OneSignal deja chaje nan paj la — abòne moun nan
-        if (window.OneSignal) {
-          await window.OneSignal.login(tel); // Itilize telefòn kòm external ID
-          console.log('✅ OneSignal abòne:', nom);
-        } else if (window.OneSignalDeferred) {
-          window.OneSignalDeferred.push(async function(OneSignal) {
-            await OneSignal.login(tel);
-            console.log('✅ OneSignal abòne:', nom);
-          });
-        }
-      } catch(e) { console.log('OneSignal gate:', e.message); }
-    }, 1500);
+      if ('Notification' in window && Notification.permission === 'default') {
+        try {
+          const perm = await Notification.requestPermission();
+          if (perm === 'granted') {
+            // Notif byenveni imedyatman
+            new Notification('🙏 Bienvenue — Église de Dieu de la Prophétie', {
+              body: 'Vous recevrez désormais toutes les notifications: études, événements et rappels bibliques à 9h!',
+              icon: 'logo.png',
+              tag:  'bienvenue'
+            });
+            // Programme notif 9h si plan2026 disponib
+            if (typeof PLAN_2026 !== 'undefined') {
+              const today = new Date();
+              const key   = today.toISOString().split('T')[0];
+              const plan  = PLAN_2026[key];
+              if (plan && 'serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({
+                  type:  'SCHEDULE_DAILY',
+                  title: '📖 Lecture du jour — ' + plan.reference,
+                  body:  plan.intro,
+                  url:   '/eglise-carrefour/Guide.html'
+                });
+              }
+            }
+          }
+        } catch(e) { console.log('Notif:', e.message); }
+      }
+    }, 1500); // Tann 1.5s apre siksè
   };
 
   // ===== FÈMEN GATE =====
@@ -412,14 +399,7 @@ if (!window._oneSignalGateLoaded) {
 
   window.gateInit = async function() {
     if (!estInscrit()) {
-      // Kache kontni paj la imedyatman
-      document.body.style.visibility = 'hidden';
-      document.body.style.overflow = 'hidden';
-      // Montre gate
-      setTimeout(function() {
-        document.body.style.visibility = 'visible';
-        montreGate();
-      }, 100);
+      setTimeout(montreGate, 400);
       return;
     }
 

@@ -4,25 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Guide de Lecture Biblique 2026 — Église de Dieu de la Prophétie de Carrefour</title>
-  <!-- SEO -->
-  <meta name="description" content="Plan de lecture biblique 2026 avec rappel quotidien à 9h. Lisez la Bible en un an avec notre communauté.">
-  <meta name="keywords" content="lecture biblique 2026, plan bible haiti, guide lecture église">
-  <meta name="author" content="Église de Dieu de la Prophétie de Carrefour">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://fabouloso1.github.io/eglise-carrefour/Guide.html">
-  <!-- Open Graph (Facebook, WhatsApp) -->
-  <meta property="og:title" content="Guide de Lecture Biblique 2026 — Église de Dieu de la Prophétie de Carrefour">
-  <meta property="og:description" content="Plan de lecture biblique 2026 avec rappel quotidien à 9h. Lisez la Bible en un an avec notre communauté.">
-  <meta property="og:image" content="https://fabouloso1.github.io/eglise-carrefour/logo.png">
-  <meta property="og:url" content="https://fabouloso1.github.io/eglise-carrefour/Guide.html">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="fr_HT">
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Guide de Lecture Biblique 2026 — Église de Dieu de la Prophétie de Carrefour">
-  <meta name="twitter:description" content="Plan de lecture biblique 2026 avec rappel quotidien à 9h. Lisez la Bible en un an avec notre communauté.">
-  <meta name="twitter:image" content="https://fabouloso1.github.io/eglise-carrefour/logo.png">
+  <title>Guide de Lecture Biblique 2026</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
@@ -83,31 +65,17 @@
 
   <script src="plan2026.js"></script>
   <script src="bible_fr.js"></script>
-  <!-- OneSignal Push Notifications -->
+
+  <!-- OneSignal Notifications -->
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
   <script>
     window.OneSignalDeferred = window.OneSignalDeferred || [];
     OneSignalDeferred.push(async function(OneSignal) {
       await OneSignal.init({
         appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
-        promptOptions: {
-          slidedown: {
-            prompts: [{
-              type: "push",
-              autoPrompt: false,
-              text: {
-                actionMessage: "Recevez les annonces, études et actualités de l'église en temps réel !",
-                acceptButton: "Oui, s'abonner",
-                cancelButton: "Plus tard"
-              }
-            }]
-          }
-        },
-        welcomeNotification: {
-          title: "Église de Dieu de la Prophétie",
-          message: "Bienvenue ! Vous recevrez désormais toutes nos notifications. 🙏"
-        },
-        notifyButton: { enable: false }
+        safari_web_id: "web.onesignal.auto.98b15d43-1386-4fd5-b711-59dd32446c43",
+        notifyButton: { enable: false },
+        allowLocalhostAsSecureOrigin: true,
       });
     });
   </script>

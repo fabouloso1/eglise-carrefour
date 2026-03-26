@@ -499,6 +499,20 @@
       .photo-preview { grid-template-columns: repeat(3, 1fr); }
     }
   </style>
+
+  <!-- OneSignal Notifications -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
+        safari_web_id: "web.onesignal.auto.98b15d43-1386-4fd5-b711-59dd32446c43",
+        notifyButton: { enable: false },
+        allowLocalhostAsSecureOrigin: true,
+      });
+    });
+  </script>
 </head>
 <body>
 
@@ -570,7 +584,9 @@
       <i class="fas fa-envelope"></i> Contacts
       <span id="contactBadge" style="display:none;background:#e74c3c;color:white;font-size:0.7rem;padding:1px 6px;border-radius:10px;margin-left:4px;"></span>
     </button>
-
+    <button class="tab-btn" onclick="showTab('notifs')">
+      <i class="fas fa-bell"></i> Notifications
+    </button>
   </div>
 
   <!-- Content -->
@@ -696,118 +712,119 @@
     <!-- ===== ÉTUDE ===== -->
     <div class="tab-panel" id="tab-etude">
 
-      <!-- ===== INTERFACE WHATSAPP PASTEUR ===== -->
-      <div id="etude-active-wrap" style="display:none;border-radius:16px;overflow:hidden;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,0,0,0.4);">
+      <!-- ETUDE EN COURS -->
+      <div id="etude-active-wrap" style="display:none;background:#fffde7;border-radius:20px;padding:22px 18px;margin-bottom:16px;border-top:4px solid #f1c40f;border:1px solid #ffe082;">
 
-        <!-- Header WhatsApp -->
-        <div style="background:#075E54;padding:12px 16px;display:flex;align-items:center;gap:12px;">
-          <div style="width:42px;height:42px;background:#128C7E;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:white;flex-shrink:0;">📖</div>
-          <div style="flex:1;">
-            <div style="color:white;font-weight:800;font-size:1rem;">Étude Biblique</div>
-            <div id="etude-active-titre" style="color:rgba(255,255,255,0.7);font-size:0.78rem;"></div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:44px;height:44px;background:rgba(241,196,15,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+            <i class="fas fa-broadcast-tower" style="color:#f1c40f;font-size:1.1rem;"></i>
           </div>
-          <span style="background:rgba(255,255,255,0.2);color:white;font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:20px;">🔴 Live</span>
+          <div>
+            <h3 style="color:#1a1a1a!important;font-size:1.2rem!important;font-weight:800!important;margin:0!important;">Étude en cours</h3>
+            <p id="etude-active-titre" style="color:#333!important;font-size:1rem!important;font-weight:700!important;margin:0!important;"></p>
+          </div>
         </div>
 
-        <!-- Zone messages style WhatsApp -->
-        <div id="questionsList" style="background:#0C1317;padding:12px;height:calc(100vh - 320px);min-height:250px;max-height:500px;overflow-y:auto;"></div>
-
-        <!-- Boutons contrôle compacts -->
-        <div style="background:#1F2C34;padding:8px 12px;display:flex;gap:8px;border-top:1px solid rgba(255,255,255,0.08);">
-          <button onclick="toggleQuestions(true)" title="Ouvrir questions" style="flex:1;padding:7px;background:rgba(37,211,102,0.15);border:1px solid #25D366;border-radius:20px;color:#25D366;font-size:0.8rem;font-weight:700;cursor:pointer;">
-            <i class="fas fa-unlock"></i> Ouvrir
+        <!-- Boutons contrôle -->
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+          <button onclick="toggleQuestions(true)" style="flex:1;min-width:130px;padding:10px 12px;background:rgba(46,213,115,0.15);border:1.5px solid #2ed573;border-radius:20px;color:#2ed573;font-weight:700;cursor:pointer;font-size:0.85rem;">
+            <i class="fas fa-unlock"></i> Ouvrir questions
           </button>
-          <button onclick="toggleQuestions(false)" title="Fermer questions" style="flex:1;padding:7px;background:rgba(231,76,60,0.15);border:1px solid #ff6b6b;border-radius:20px;color:#ff6b6b;font-size:0.8rem;font-weight:700;cursor:pointer;">
-            <i class="fas fa-lock"></i> Fermer
+          <button onclick="toggleQuestions(false)" style="flex:1;min-width:130px;padding:10px 12px;background:rgba(231,76,60,0.15);border:1.5px solid #ff6b6b;border-radius:20px;color:#ff6b6b;font-weight:700;cursor:pointer;font-size:0.85rem;">
+            <i class="fas fa-lock"></i> Fermer questions
           </button>
-          <button onclick="terminerEtude()" title="Terminer l'étude" style="padding:7px 12px;background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);border-radius:20px;color:#ff6b6b;font-size:0.8rem;cursor:pointer;">
-            <i class="fas fa-stop-circle"></i>
+          <button onclick="terminerEtude()" style="width:100%;padding:10px 12px;background:rgba(231,76,60,0.1);border:1.5px solid rgba(231,76,60,0.35);border-radius:20px;color:#ff6b6b;font-weight:700;cursor:pointer;font-size:0.85rem;">
+            <i class="fas fa-stop-circle"></i> Terminer l'étude
           </button>
         </div>
 
-        <!-- Input WhatsApp pasteur -->
-        <div style="background:#1F2C34;padding:8px 10px;">
+        <!-- AUDIO PASTEUR -->
+        <div style="background:rgba(255,193,7,0.12);border:1px solid #ffe082;border-radius:14px;padding:14px;margin-bottom:16px;">
+          <p style="color:#f1c40f!important;font-size:0.88rem!important;font-weight:800!important;margin-bottom:10px!important;">
+            <i class="fas fa-microphone" style="margin-right:6px;"></i>Envoyer un audio aux participants
+          </p>
 
-          <!-- Preview image -->
-          <div id="pasteurImgPreview" style="display:none;margin-bottom:8px;position:relative;">
-            <img id="pasteurImgEl" src="" style="max-height:100px;border-radius:8px;display:block;">
-            <button onclick="annulerImgPasteur()" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.6);color:white;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:0.7rem;">✕</button>
-          </div>
-
-          <!-- Zone enregistrement audio -->
-          <div id="pasteurRecActive" style="display:none;align-items:center;gap:10px;background:#2A3942;border-radius:24px;padding:10px 16px;margin-bottom:8px;">
-            <div style="width:10px;height:10px;background:#e74c3c;border-radius:50%;animation:recPulse 1s infinite;flex-shrink:0;"></div>
-            <span style="color:#e74c3c;font-weight:800;" id="pasteurRecTimer">0:00</span>
-            <span style="color:rgba(255,255,255,0.5);font-size:0.85rem;flex:1;">Enregistrement...</span>
-            <button onclick="annulerPasteurRec()" style="background:none;border:none;color:#aaa;cursor:pointer;font-size:0.85rem;"><i class="fas fa-times"></i></button>
-            <button onclick="stopPasteurRec()" style="background:#25D366;border:none;border-radius:50%;width:40px;height:40px;color:white;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;">
-              <i class="fas fa-stop"></i>
+          <!-- Normal state -->
+          <div id="pasteurRecNormal">
+            <button type="button" onclick="demarrerPasteurRec()"
+              style="width:100%;padding:12px;background:linear-gradient(135deg,#e74c3c,#c0392b);border:none;border-radius:20px;color:white;font-size:0.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+              <i class="fas fa-microphone"></i> Enregistrer un message vocal
             </button>
+          </div>
+
+          <!-- Recording state -->
+          <div id="pasteurRecActive" style="display:none;">
+            <div style="display:flex;align-items:center;gap:10px;background:rgba(231,76,60,0.12);border-radius:10px;padding:12px;margin-bottom:8px;">
+              <div style="width:12px;height:12px;background:#e74c3c;border-radius:50%;animation:recPulse 1s infinite;flex-shrink:0;"></div>
+              <span style="color:#e74c3c;font-weight:800;font-size:1rem;" id="pasteurRecTimer">0:00</span>
+              <span style="color:rgba(255,255,255,0.55);font-size:0.85rem;flex:1;">Enregistrement en cours...</span>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button type="button" onclick="annulerPasteurRec()" style="flex:1;padding:10px;background:rgba(255,255,255,0.1);border:none;border-radius:20px;color:white;cursor:pointer;font-weight:600;font-size:0.88rem;">
+                <i class="fas fa-times"></i> Annuler
+              </button>
+              <button type="button" onclick="stopPasteurRec()" style="flex:2;padding:10px;background:linear-gradient(135deg,#2ed573,#1abc9c);border:none;border-radius:20px;color:#0d1f4a;font-weight:800;cursor:pointer;font-size:0.9rem;">
+                <i class="fas fa-stop-circle"></i> Arrêter
+              </button>
+            </div>
           </div>
 
           <!-- Preview audio -->
-          <div id="pasteurAudioPreview" style="display:none;margin-bottom:8px;">
-            <audio id="pasteurAudioEl" controls style="width:100%;height:36px;border-radius:8px;"></audio>
-            <div style="display:flex;gap:8px;margin-top:6px;">
-              <button onclick="envoyerAudioPasteur()" style="flex:1;padding:9px;background:#25D366;border:none;border-radius:20px;color:white;font-weight:800;cursor:pointer;font-size:0.88rem;">
-                <i class="fas fa-paper-plane"></i> Envoyer
+          <div id="pasteurAudioPreview" style="display:none;margin-top:10px;">
+            <audio id="pasteurAudioEl" controls style="width:100%;border-radius:8px;margin-bottom:8px;"></audio>
+            <div style="display:flex;gap:8px;">
+              <button type="button" onclick="envoyerAudioPasteur()"
+                style="flex:1;padding:12px;background:linear-gradient(135deg,#f1c40f,#e67e22);border:none;border-radius:20px;color:#1c1c3c;font-weight:800;cursor:pointer;font-size:0.9rem;">
+                <i class="fas fa-paper-plane"></i> Envoyer aux participants
               </button>
-              <button onclick="annulerAudioPasteur()" style="padding:9px 14px;background:rgba(231,76,60,0.2);border:none;color:#ff6b6b;border-radius:20px;cursor:pointer;">
+              <button type="button" onclick="annulerAudioPasteur()" style="padding:12px 14px;background:rgba(231,76,60,0.2);border:1px solid rgba(231,76,60,0.3);color:#ff6b6b;border-radius:20px;cursor:pointer;">
                 <i class="fas fa-trash"></i>
               </button>
             </div>
-            <div id="pasteurAudioStatus" style="display:none;margin-top:6px;padding:8px;border-radius:8px;text-align:center;font-size:0.85rem;font-weight:700;"></div>
+            <div id="pasteurAudioStatus" style="display:none;margin-top:8px;padding:10px;border-radius:10px;text-align:center;font-weight:700;font-size:0.88rem;"></div>
           </div>
+        </div>
 
-          <!-- Input normal -->
-          <div id="pasteurRecNormal" style="display:flex;align-items:center;gap:8px;">
-            <div style="flex:1;background:#2A3942;border-radius:24px;display:flex;align-items:center;padding:8px 14px;gap:8px;">
-              <button onclick="document.getElementById('pasteurImgInput').click()" style="background:none;border:none;color:#8696A0;font-size:1.2rem;cursor:pointer;padding:0;"><i class="fas fa-image"></i></button>
-              <input type="text" id="pasteurTexte" placeholder="Écrire un message..." 
-                oninput="var i=document.getElementById('pasteurBtnIcon');i.className=this.value.trim()?'fas fa-paper-plane':'fas fa-microphone';"
-                style="flex:1;border:none;outline:none;font-size:0.95rem;color:white;background:transparent;min-width:0;">
-              <input type="file" id="pasteurImgInput" accept="image/*" style="display:none;" onchange="previewImgPasteur(event)">
-            </div>
-            <button id="pasteurSendBtn" onclick="envoyerMsgOuDemarrerAudio()"
-              style="width:46px;height:46px;background:#25D366;border:none;border-radius:50%;color:white;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(37,211,102,0.4);">
-              <i class="fas fa-microphone" id="pasteurBtnIcon"></i>
-            </button>
-          </div>
-
+        <!-- Questions -->
+        <h4 style="color:#f1c40f!important;font-size:0.92rem!important;font-weight:800!important;margin-bottom:10px!important;">
+          <i class="fas fa-comments" style="margin-right:6px;"></i>Questions (<span id="questionsCount">0</span>)
+        </h4>
+        <div id="questionsList" style="background:rgba(255,255,255,0.7);border:1px solid #ffe082;border-radius:12px;padding:12px;max-height:420px;overflow-y:auto;">
+          <p style="color:#888;text-align:center;padding:16px;font-size:0.95rem;">Aucune question...</p>
         </div>
       </div>
 
-      <!-- Formulaire lancer étude -->
-      <div id="etudeFormWrap" style="background:#ffffff;border-radius:20px;padding:22px 18px;border-top:4px solid #f1c40f;border:1px solid #ffe082;">
+      <!-- LANCER NOUVELLE ETUDE -->
+      <div id="etudeFormWrap" style="background:#fff8e1;border-radius:20px;padding:22px 18px;border-top:4px solid #f1c40f;border:1px solid #ffe082;">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
-          <div style="width:44px;height:44px;background:rgba(241,196,15,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
-            <i class="fas fa-plus-circle" style="color:#f0c040;font-size:1.1rem;"></i>
+          <div style="width:44px;height:44px;background:rgba(124,58,237,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+            <i class="fas fa-plus-circle" style="color:#a78bfa;font-size:1.1rem;"></i>
           </div>
           <div>
-            <h3 style="color:#1c1c3c!important;font-size:1.05rem!important;font-weight:800!important;margin:0!important;">Lancer une nouvelle étude</h3>
-            <p style="color:#555!important;font-size:0.88rem!important;margin:0!important;">Notification envoyée automatiquement</p>
+            <h3 style="color:#a78bfa!important;font-size:1.05rem!important;font-weight:800!important;margin:0!important;">Lancer une nouvelle étude</h3>
+            <p style="color:#555!important;font-size:0.88rem!important;margin:0!important;font-weight:600!important;">Notification envoyée automatiquement</p>
           </div>
         </div>
 
         <div style="margin-bottom:14px;">
           <label style="color:#1a1a1a!important;font-weight:800!important;display:block;margin-bottom:6px;font-size:0.95rem!important;"><i class="fas fa-heading" style="margin-right:5px;"></i>Titre *</label>
-          <input type="text" id="etudeTitre" placeholder="Ex: La Foi qui déplace les montagnes..." style="width:100%;padding:13px 15px;border:2px solid #ffe082!important;border-radius:12px;background:white!important;color:#111!important;font-size:1.05rem!important;font-weight:600!important;box-sizing:border-box;" />
+          <input type="text" id="etudeTitre" placeholder="Ex: La Foi qui déplace les montagnes..." style="width:100%;padding:13px 15px;border:2px solid #ffe082!important;border-radius:12px;background:white!important;color:#111!important;font-size:1.05rem!important;font-weight:600!important;" />
         </div>
         <div style="margin-bottom:14px;">
           <label style="color:#1a1a1a!important;font-weight:800!important;display:block;margin-bottom:6px;font-size:0.95rem!important;"><i class="fas fa-tag" style="margin-right:5px;"></i>Thème *</label>
-          <input type="text" id="etudeTheme" placeholder="Ex: La Foi, La Prière, Le Pardon..." style="width:100%;padding:13px 15px;border:2px solid #ffe082!important;border-radius:12px;background:white!important;color:#111!important;font-size:1.05rem!important;font-weight:600!important;box-sizing:border-box;" />
+          <input type="text" id="etudeTheme" placeholder="Ex: La Foi, La Prière, Le Pardon..." style="width:100%;padding:13px 15px;border:2px solid #ffe082!important;border-radius:12px;background:white!important;color:#111!important;font-size:1.05rem!important;font-weight:600!important;" />
         </div>
         <div style="margin-bottom:14px;">
-          <label style="color:#1a1a1a!important;font-weight:800!important;display:block;margin-bottom:6px;font-size:0.95rem!important;"><i class="fas fa-bullseye" style="margin-right:5px;"></i>Objectif</label>
-          <textarea id="etudeObjectif" placeholder="Quel est l'objectif de cette étude ?" style="width:100%;padding:13px 15px;border:2px solid #ffe082!important;border-radius:12px;background:white!important;color:#111!important;font-size:1.05rem!important;font-weight:600!important;min-height:80px;resize:vertical;box-sizing:border-box;"></textarea>
+          <label style="color:#1a1a1a!important;font-weight:800!important;display:block;margin-bottom:6px;font-size:0.95rem!important;"><i class="fas fa-bullseye" style="margin-right:5px;"></i>Objectif *</label>
+          <textarea id="etudeObjectif" placeholder="Quel est l'objectif de cette étude ?" style="width:100%;padding:13px 15px;border:2px solid #ffe082!important;border-radius:12px;background:white!important;color:#111!important;font-size:1.05rem!important;font-weight:600!important;min-height:80px;resize:vertical;"></textarea>
         </div>
         <div style="margin-bottom:14px;">
           <label style="color:#1a1a1a!important;font-weight:800!important;display:block;margin-bottom:6px;font-size:0.95rem!important;"><i class="fas fa-align-left" style="margin-right:5px;"></i>Développement *</label>
-          <textarea id="etudeContenu" placeholder="Développez le sujet en détail..." style="width:100%;padding:13px 15px;border:2px solid #ffe082!important;border-radius:12px;background:white!important;color:#111!important;font-size:1.05rem!important;font-weight:600!important;min-height:130px;resize:vertical;box-sizing:border-box;"></textarea>
+          <textarea id="etudeContenu" placeholder="Développez le sujet en détail..." style="width:100%;padding:13px 15px;border:2px solid #ffe082!important;border-radius:12px;background:white!important;color:#111!important;font-size:1.05rem!important;font-weight:600!important;min-height:130px;resize:vertical;"></textarea>
         </div>
         <div style="margin-bottom:20px;">
           <label style="color:#1a1a1a!important;font-weight:800!important;display:block;margin-bottom:6px;font-size:0.95rem!important;"><i class="fas fa-bible" style="margin-right:5px;"></i>Référence biblique *</label>
-          <input type="text" id="etudeVerset" placeholder="Ex: Jean 3:16, Hébreux 11:1..." style="width:100%;padding:13px 15px;border:2px solid #ffe082!important;border-radius:12px;background:white!important;color:#111!important;font-size:1.05rem!important;font-weight:600!important;box-sizing:border-box;" />
+          <input type="text" id="etudeVerset" placeholder="Ex: Jean 3:16, Hébreux 11:1..." style="width:100%;padding:13px 15px;border:2px solid #ffe082!important;border-radius:12px;background:white!important;color:#111!important;font-size:1.05rem!important;font-weight:600!important;" />
         </div>
 
         <button onclick="lancerEtude()" style="width:100%;padding:16px;background:linear-gradient(135deg,#f1c40f,#e67e22);border:none;border-radius:30px;color:#1a1a1a!important;font-size:1.1rem!important;font-weight:800!important;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;">
@@ -817,8 +834,8 @@
 
       <div id="etudeStatus" style="display:none;margin-top:12px;padding:14px;border-radius:12px;text-align:center;font-weight:700;font-size:0.95rem;"></div>
     </div>
-
-        <div class="tab-panel" id="tab-evenements">
+    <!-- ===== ÉVÉNEMENTS ===== -->
+    <div class="tab-panel" id="tab-evenements">
       <div class="card" style="background:linear-gradient(135deg,#1c1c3c,#3a1c5c);border:none;">
         <h3 style="color:#f1c40f!important;margin-bottom:16px;"><i class="fas fa-calendar-plus"></i> Ajouter un événement</h3>
         <label style="color:#f1c40f!important;font-weight:700!important;display:block;margin-bottom:6px;">Titre *</label>
@@ -1020,6 +1037,54 @@
     </div>
 
     <!-- TAB NOTIFIKASYON -->
+    <div class="tab-panel" id="tab-notifs">
+      <div class="card">
+        <h3><i class="fas fa-bell" style="color:var(--gold)"></i> Envoyer une notification</h3>
+        <p style="font-size:1rem;color:#888;margin-bottom:20px;">Envoyez une notification push à tous les abonnés du site.</p>
+
+        <div style="display:flex;flex-direction:column;gap:14px;max-width:500px;">
+          <div>
+            <label style="font-weight:600;display:block;margin-bottom:6px;">Titre <span style="color:red">*</span></label>
+            <input type="text" id="notifTitle" placeholder="Ex: Nouveau message du pasteur" 
+              style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:1rem;">
+          </div>
+          <div>
+            <label style="font-weight:600;display:block;margin-bottom:6px;">Message <span style="color:red">*</span></label>
+            <textarea id="notifBody" rows="3" placeholder="Ex: Un nouveau message a été publié sur le site..."
+              style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:1rem;resize:vertical;"></textarea>
+          </div>
+          <div>
+            <label style="font-weight:600;display:block;margin-bottom:6px;">Lien (optionnel)</label>
+            <input type="text" id="notifLink" placeholder="https://fabouloso1.github.io/eglise-carrefour/index.html"
+              style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:1rem;">
+          </div>
+          <button onclick="envoyerNotification()"
+            style="background:var(--gold);color:#1c1c3c;font-weight:700;padding:12px;border:none;border-radius:8px;font-size:1rem;cursor:pointer;">
+            <i class="fas fa-paper-plane"></i> Envoyer à tous les abonnés
+          </button>
+          <div id="notifStatus" style="display:none;padding:12px;border-radius:8px;text-align:center;font-weight:600;"></div>
+        </div>
+
+        <div style="margin-top:30px;padding-top:20px;border-top:1px solid #eee;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+            <h4 style="margin:0;"><i class="fas fa-users"></i> Abonnés 
+              <span id="notifCount" style="font-size:1rem;font-weight:700;color:var(--gold);margin-left:8px;">
+                <i class="fas fa-spinner fa-spin"></i>
+              </span>
+            </h4>
+            <button onclick="reinitialiserAbonnes()"
+              style="background:#e74c3c;color:white;border:none;padding:7px 14px;border-radius:8px;font-size:0.85rem;cursor:pointer;font-weight:600;">
+              <i class="fas fa-trash"></i> Réinitialiser les abonnés
+            </button>
+          </div>
+          <div id="abonneList" style="display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto;">
+            <p style="color:#aaa;font-size:0.9rem;text-align:center;padding:10px;">
+              <i class="fas fa-spinner fa-spin"></i> Chargement...
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </div><!-- /admin-content -->
 </div><!-- /adminPanel -->
@@ -1142,7 +1207,7 @@
     if (name === 'evenements') chargerEvenements();
     if (name === 'membres') chargerMembres();
     if (name === 'temoignages') loadTemoignages();
-
+    if (name === 'notifs') loadNotifCount();
     if (name === 'contacts') loadContacts();
   }
 
@@ -1388,7 +1453,6 @@
     try {
       await window._setDoc(window._doc(window._db, 'temoignages', id), { approuve: true }, { merge: true });
       showToast('Témoignage approuvé !');
-      try { await envoyerNotifAuto('Église de Dieu de la Prophétie','✨ Nouveau témoignage publié — Venez lire ce que Dieu a fait !','https://fabouloso1.github.io/eglise-carrefour/Temoigner.html','annonce'); } catch(e) {}
       loadTemoignages();
     } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
   }
@@ -1533,7 +1597,7 @@
           ? 'Le pasteur a publié ' + uploaded + ' nouvelles photos !'
           : 'Le pasteur a publié une nouvelle photo !';
         const notifLink  = 'https://fabouloso1.github.io/eglise-carrefour/Galerie.html#pasteur';
-        await envoyerNotifAuto(notifTitle, notifBody, notifLink, 'foto');
+        await envoyerNotifAuto(notifTitle, notifBody, notifLink);
       } catch(e) { console.log('Notif auto error:', e); }
     } catch (err) {
       showToast('Erreur publication : ' + err.message, 'error');
@@ -1670,7 +1734,6 @@
       });
       status.style.background = '#e8f5e9'; status.style.color = '#2e7d32';
       status.textContent = '✅ Vidéo publiée avec succès !';
-      try { await envoyerNotifAuto('Église de Dieu de la Prophétie','🎥 Nouvelle vidéo : '+titre+' — Regardez-la dans la galerie !','https://fabouloso1.github.io/eglise-carrefour/Galerie.html','foto'); } catch(e) {}
       document.getElementById('videoUrl').value = '';
       document.getElementById('videoTitre').value = '';
       document.getElementById('videoDesc').value = '';
@@ -1699,7 +1762,6 @@
       });
 
       showToast('Actualité publiée !');
-      try { await envoyerNotifAuto('Église de Dieu de la Prophétie','📰 Nouvelle actualité : '+titre+' — Lisez-la sur le site !','https://fabouloso1.github.io/eglise-carrefour/Actualites.html','annonce'); } catch(e) {}
       ['actuTitre','actuIntro','actuContenu','actuDate'].forEach(id => document.getElementById(id).value = '');
       loadActualites();
     } catch (err) {
@@ -1865,15 +1927,6 @@
       });
 
       showToast('✅ Annonce publiée !');
-      // Notifikasyon otomatik
-      try {
-        await envoyerNotifAuto(
-          'Église de Dieu de la Prophétie',
-          '📢 Nouvelle annonce : ' + titre + ' — Consultez-la sur le site !',
-          'https://fabouloso1.github.io/eglise-carrefour/index.html',
-          'annonce'
-        );
-      } catch(e) { console.log('Notif annonce:', e); }
       supprimerAnonsFoto();
       ['anonsTitre','anonsDate','anonsLe','anonsDetails'].forEach(id => {
         const el = document.getElementById(id);
@@ -1973,18 +2026,88 @@
   }
 </script>
 
-<!-- Script Notifications OneSignal -->
+<!-- Script FCM Notifications -->
 <script>
 (function() {
-  var ONESIGNAL_APP_ID = "98b15d43-1386-4fd5-b711-59dd32446c43";
-  var ONESIGNAL_API_KEY = "os_v2_app_tcyv2qytqzh5lnyrlhoterdminixlciqzlhupxuxjz7cc2atminavs4rjad4keqnxm6vkl6ftcn2lvuawuyxkqebyyiof6txjruuxxy";
+  // Evite double init
+  if (!firebase.apps.length || !firebase.apps.find(a => a.name === 'notif')) {
+    try {
+      firebase.initializeApp({
+        apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
+        authDomain: "eglise-carrefour.firebaseapp.com",
+        projectId: "eglise-carrefour",
+        storageBucket: "eglise-carrefour.firebasestorage.app",
+        messagingSenderId: "421333694767",
+        appId: "1:421333694767:web:30c18da36ae020821a49da"
+      }, 'notif');
+    } catch(e) {}
+  }
 
-  // Jwenn Access Token pou FCM
+  var notifApp = firebase.app('notif');
+  var db2 = notifApp.firestore();
+
+  // Konbyen abòne + lis abòne yo
+  function loadNotifCount() {
+    db2.collection('fcm_tokens').orderBy('date', 'desc').get().then(function(snap) {
+      // Konbyen
+      var el = document.getElementById('notifCount');
+      if (el) el.innerHTML = '(' + snap.size + ' abonné(s))';
+
+      // Lis abòne yo
+      var list = document.getElementById('abonneList');
+      if (!list) return;
+      if (snap.empty) {
+        list.innerHTML = '<p style="color:#aaa;text-align:center;padding:10px;font-size:0.9rem;">Aucun abonné pour le moment.</p>';
+        return;
+      }
+      list.innerHTML = '';
+      var num = 1;
+      snap.forEach(function(d) {
+        var data = d.data();
+        var date = data.date ? new Date(data.date).toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric' }) : 'Date inconnue';
+        var platform = data.platform === 'mobile' ? '<i class="fas fa-mobile-alt" style="color:#4CAF50"></i> Mobile' : '<i class="fas fa-desktop" style="color:#2196F3"></i> PC';
+        var row = document.createElement('div');
+        row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f9f9f9;border-radius:8px;font-size:0.85rem;';
+        var nom = data.nom ? data.nom : 'Anonyme';
+        row.innerHTML = '<span style="font-weight:600;color:#1c1c3c;">' + nom + '</span>' +
+          '<span>' + platform + '</span>' +
+          '<span style="color:#888;">' + date + '</span>';
+        list.appendChild(row);
+        num++;
+      });
+    }).catch(function(e) { 
+      // Si pa gen index orderBy, chaje san triye
+      db2.collection('fcm_tokens').get().then(function(snap) {
+        var el = document.getElementById('notifCount');
+        if (el) el.innerHTML = '(' + snap.size + ' abonné(s))';
+        var list = document.getElementById('abonneList');
+        if (!list) return;
+        if (snap.empty) {
+          list.innerHTML = '<p style="color:#aaa;text-align:center;padding:10px;">Aucun abonné.</p>';
+          return;
+        }
+        list.innerHTML = '';
+        var num = 1;
+        snap.forEach(function(d) {
+          var data = d.data();
+          var platform = data.platform === 'mobile' ? '<i class="fas fa-mobile-alt" style="color:#4CAF50"></i> Mobile' : '<i class="fas fa-desktop" style="color:#2196F3"></i> PC';
+          var row = document.createElement('div');
+          row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f9f9f9;border-radius:8px;font-size:0.85rem;margin-bottom:4px;';
+          var nom = data.nom ? data.nom : 'Anonyme';
+          row.innerHTML = '<span style="font-weight:600;color:#1c1c3c;">' + nom + '</span><span>' + platform + '</span>';
+          list.appendChild(row);
+          num++;
+        });
+      });
+    });
+  }
+
   async function getAccessToken() {
     const SA_EMAIL = "firebase-adminsdk-fbsvc@eglise-carrefour.iam.gserviceaccount.com";
     const PRIVATE_KEY = "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDOrbPvT8HU0I2S\n5ZU44zXx1Rj9NeRovLTCBG9gU8MV4XzavR3LGjvdVPr2ub5VuaAg4jO8FAf+5uAF\nf0M5UZ92t0HKagQQbEqiDfRyab524kq+OF5rhGI5Qd6QBolbkZ3XEiWRGTuGxDjt\nz7Noo/gPknoCV90dQXuhZ6B3R5QedJV662SZmf7uoIbZCpsRO+Qz/zsHA3qQ4uyv\n1p8DBD6cpjsqJNYNq8W+4cbKyGvJKpQ2CdMj6WdH1aw944JQmOxZWiKIlrfZyTJW\nE7Ily0GKaZVjW4z8hhPC5b8/Zen0HS3GlNP5R7umc3SteEyvgRAqzpVwpD8cdfEn\nNUwmpHS9AgMBAAECggEATE4NVJlZsrycyFNC2JHqZLKMW0/+WDzzb347sJC8QePS\nOOABk+7Hk1vAnD7Pas7xs7JP72xl11Jd+ymVJCBig239OEIT5gxVMad9TJCF5VZ+\nyeP92Cw0J3eOOBZxuAD3CWSFwiBSvdrMOeCpGEURXI5zxVGzLQ30Gw8rS1597Q/r\n246FSoM8xa8PObBFU4DU9a1lgYt39zYmIT+iI9U+MEiF2bsA7pXa85kSMCFYH29Z\nmVBxRq8JJFP7Wbcm7HzrFNyestb9r03IzA/JthOPmX+3moXkJNahkAQeVunbptwX\nz9f9eU67aZlzwAiFEl+lLUHNY22q2DsffMpYavPtcQKBgQDyYSr/RQzoaeI3S/8K\nQNtndXBFxC/AfeaIn7A1C9ueCSvodtD1eNVPToIZLMWe+Ej+Rgd6/VjaVtkuUs5o\nDlviDciXZ0MS2LebLStFrsdwK2b08hlJ8/i0h0FbhM+FG8bABI0johpbfFzmHeg0\nRfFMfFUemD9Mrc3ea1wDww0ntwKBgQDaSvIdNEwBeag1pH8R+u3VrTlkvvHCQY8a\njsxceH+TWxPXWmbvlqueFBJBDRD5lVdP2MuuMtWezryXKn7FflYDoceXlAqM8Qjf\nCzE9TK4vRTOfcgE6f3zBunXlaSjh2pVU9V4YLsIrN58nqaE5Q+NlQPVaLlDntHcn\nLP7vix1/KwKBgQCiaO2wwwoVKe4E841fx3m853plpUICD9rLrYUa5mkwiiC70fHO\nqjr0uzx9tfxtuxzeFPqqNNy24P8CBUZ9fzGeVXIV0YGmPUU6W5flR2ooBU0l0JuV\nbD84aHEo6+NJ5ATXYbVZLSPQLZLqNxwC+uLnR2CZ8ZZowQVzhijP9ID6HQKBgE9f\nrQW9fF2U9Pr8Y1AQY+asZBAj9hhiajyH6/s7vXfBSEeoEYHQ0XpbZf/NVnzKNsNL\n21PuHArwtVZqF0qMk44ih0awh92Tz1v6396gQT3i9dBmTdgNfzmaKUBPqpPlPSN1\nTM+SQPwh73cmkP8Xllm88vnlmXmG/0R5cgF8Hi+dAoGBAJW7JAwmcQDuGWdVCyzj\nALScX8FxyGHD0Q4kaSKB7NQhtDyhZcK9ykCmhfiUFnpePDmMb0ykHzyQlYAAOBef\n5QWKh7QASkFVpQQdXjQ0LT2kyQqn1zi2cVIXn+Z9mdb+CKV2SIOMCVQDAZ9vuIXI\nNwv2aSLH9QYdOijCoE5PhUp8\n-----END PRIVATE KEY-----\n";
+
     const now = Math.floor(Date.now() / 1000);
-    const b64u = s => btoa(unescape(encodeURIComponent(s))).split('=').join('').split('+').join('-').split('/').join('_');
+    const b64u = s => btoa(s).split('=').join('').split('+').join('-').split('/').join('_');
     const header = b64u(JSON.stringify({ alg: 'RS256', typ: 'JWT' }));
     const claim  = b64u(JSON.stringify({
       iss: SA_EMAIL,
@@ -2011,55 +2134,172 @@
     return data.access_token;
   }
 
-  // Voye notif bay tout abòne
-  // ===== MANM =====
+  // Fonksyon pou voye notif otomatikman (rele pa lòt fonksyon)
+  async function envoyerNotifAuto(title, body, link) {
+    const snap = await db2.collection('fcm_tokens').get();
+    if (snap.empty) return;
+    const accessToken = await getAccessToken();
+    for (const d of snap.docs) {
+      const token = d.data().token;
+      try {
+        await fetch('https://fcm.googleapis.com/v1/projects/eglise-carrefour/messages:send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + accessToken },
+          body: JSON.stringify({
+            message: {
+              token: token,
+              notification: { title: title, body: body },
+              webpush: { fcm_options: { link: link } }
+            }
+          })
+        });
+      } catch(e) { console.log('notif token error:', e); }
+    }
+  }
+  window.envoyerNotifAuto = envoyerNotifAuto;
+
+  // Reinitialize tout abòne yo
+  window.reinitialiserAbonnes = async function() {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer tous les abonnés ? Ils devront se réabonner.')) return;
+    try {
+      var snap = await db2.collection('fcm_tokens').get();
+      if (snap.empty) { alert('Aucun abonné à supprimer.'); return; }
+      var batch = db2.batch();
+      snap.forEach(function(d) { batch.delete(d.ref); });
+      await batch.commit();
+      alert('✅ ' + snap.size + ' abonné(s) supprimé(s) avec succès.');
+      loadNotifCount();
+    } catch(e) {
+      alert('❌ Erreur : ' + e.message);
+    }
+  };
+
+  // ===== ONESIGNAL NOTIFICATION =====
+  window.envoyerNotification = async function() {
+    const title  = document.getElementById('notifTitle').value.trim();
+    const body   = document.getElementById('notifBody').value.trim();
+    const link   = document.getElementById('notifLink').value.trim() || 'https://fabouloso1.github.io/eglise-carrefour/';
+    const status = document.getElementById('notifStatus');
+
+    if (!title || !body) {
+      status.style.display = 'block';
+      status.style.background = '#fee'; status.style.color = '#c00';
+      status.textContent = '❌ Titre ak mesaj obligatwa';
+      return;
+    }
+
+    status.style.display = 'block';
+    status.style.background = '#fff8e1'; status.style.color = '#555';
+    status.textContent = '⏳ Envoi en cours...';
+
+    try {
+      const res = await fetch('https://onesignal.com/api/v1/notifications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          app_id: "98b15d43-1386-4fd5-b711-59dd32446c43",
+          included_segments: ["All"],
+          headings:  { "en": title, "fr": title, "ht": title },
+          contents:  { "en": body,  "fr": body,  "ht": body  },
+          url: link,
+          web_url: link
+        })
+      });
+
+      const data = await res.json();
+      console.log('OneSignal response:', data);
+
+      if (data.errors) {
+        status.style.background = '#fee'; status.style.color = '#c00';
+        status.textContent = '❌ Erreur: ' + JSON.stringify(data.errors);
+      } else {
+        status.style.background = '#e8f5e9'; status.style.color = '#2e7d32';
+        status.textContent = '✅ Notification envoyée à ' + (data.recipients || 'tous les') + ' abonné(s)!';
+        document.getElementById('notifTitle').value = '';
+        document.getElementById('notifBody').value  = '';
+      }
+    } catch(e) {
+      status.style.background = '#fee'; status.style.color = '#c00';
+      status.textContent = '❌ Erreur: ' + e.message;
+    }
+  };
+
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('[onclick*="notifs"]')) setTimeout(loadNotifCount, 300);
+  });
+
+  loadNotifCount();
+})();
+
+  // ===== MEMBRES =====
   async function chargerMembres() {
     try {
       const snap = await window._getDocs(window._query(window._collection(window._db, 'membres'), window._orderBy('timestamp', 'desc')));
-      const el = document.getElementById('membresCount');
+      const list = snap.docs.map(d => ({id:d.id,...d.data()}));
+      const el    = document.getElementById('membresCount');
       const listEl = document.getElementById('membresList');
-      if (el) el.textContent = snap.docs.length;
-      if (!listEl) return;
-      if (!snap.docs.length) {
-        listEl.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px;">Aucun membre inscrit.</p>';
+      if (el) el.textContent = list.length;
+      if (!list.length) {
+        listEl.innerHTML = '<p style="color:rgba(255,255,255,0.3);text-align:center;padding:30px;">Aucun membre inscrit.</p>';
         return;
       }
-      listEl.innerHTML = snap.docs.map(d => {
-        const m = { id: d.id, ...d.data() };
+      listEl.innerHTML = list.map(m => {
         const bloque = m.bloque === true;
-        return `<div style="background:${bloque?'rgba(231,76,60,0.12)':'rgba(255,255,255,0.06)'};border-radius:14px;padding:14px;margin-bottom:10px;border-left:4px solid ${bloque?'#ff6b6b':'#f1c40f'};">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-            <div style="width:38px;height:38px;background:${bloque?'rgba(231,76,60,0.2)':'rgba(241,196,15,0.15)'};border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        return `
+        <div style="background:${bloque?'rgba(231,76,60,0.12)':'rgba(255,255,255,0.06)'};border-radius:14px;padding:14px 16px;margin-bottom:10px;border-left:4px solid ${bloque?'#ff6b6b':'#f1c40f'};">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+            <div style="width:42px;height:42px;background:${bloque?'rgba(231,76,60,0.2)':'rgba(241,196,15,0.15)'};border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
               <i class="fas fa-${bloque?'ban':'user'}" style="color:${bloque?'#ff6b6b':'#f1c40f'};"></i>
             </div>
             <div style="flex:1;">
-              <div style="color:white;font-weight:800;font-size:0.95rem;">${m.nom||'—'} ${bloque?'<span style="background:rgba(231,76,60,0.3);color:#ff6b6b;font-size:0.7rem;padding:2px 8px;border-radius:10px;margin-left:6px;">BLOQUÉ</span>':''}</div>
-              <div style="color:rgba(255,255,255,0.5);font-size:0.8rem;"><i class="fas fa-phone" style="color:#f1c40f;margin-right:4px;"></i>${m.telephone||'—'} ${m.ville?'· '+m.ville:''}</div>
-              <div style="color:rgba(255,255,255,0.3);font-size:0.72rem;">${m.date?new Date(m.date).toLocaleDateString('fr-FR'):''}</div>
+              <div style="color:white!important;font-weight:800!important;font-size:1rem!important;">
+                ${m.nom||'—'}
+                ${bloque?'<span style="background:rgba(231,76,60,0.25);color:#ff6b6b;font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px;">BLOQUÉ</span>':''}
+              </div>
+              <div style="font-size:0.82rem;color:rgba(255,255,255,0.55);margin-top:2px;">
+                <i class="fas fa-phone" style="color:#f1c40f;margin-right:4px;"></i>${m.telephone||'—'}
+                ${m.ville?'<span style="margin-left:8px;"><i class="fas fa-map-marker-alt" style="color:#f1c40f;margin-right:4px;"></i>'+m.ville+'</span>':''}
+              </div>
+              <div style="font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:2px;">${m.date||'—'}</div>
             </div>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
             ${bloque
-              ? `<button onclick="debloquerMembre('${m.id}')" style="flex:1;padding:8px;background:rgba(46,213,115,0.15);border:1px solid #2ed573;border-radius:20px;color:#2ed573;font-size:0.8rem;font-weight:700;cursor:pointer;"><i class="fas fa-unlock"></i> Débloquer</button>`
-              : `<button onclick="bloquerMembre('${m.id}','${(m.nom||"").replace(/[^\w ]/g,"")}')" style="flex:1;padding:8px;background:rgba(231,76,60,0.15);border:1px solid #ff6b6b;border-radius:20px;color:#ff6b6b;font-size:0.8rem;font-weight:700;cursor:pointer;"><i class="fas fa-ban"></i> Bloquer</button>`}
-            <button onclick="reinitialiserMembre('${m.id}','${(m.nom||"").replace(/[^\w ]/g,"")}')" style="padding:8px 12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;color:rgba(255,255,255,0.6);font-size:0.8rem;cursor:pointer;" title="Réinitialiser l'accès"><i class="fas fa-redo"></i></button>
-            <button onclick="supprimerMembre('${m.id}')" style="padding:8px 12px;background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.2);border-radius:20px;color:#ff6b6b;font-size:0.8rem;cursor:pointer;"><i class="fas fa-trash"></i></button>
+              ? `<button onclick="debloquerMembre('${m.id}')"
+                  style="flex:1;padding:9px 12px;background:rgba(46,213,115,0.2);border:1.5px solid #2ed573;border-radius:20px;color:#2ed573;font-size:0.85rem;font-weight:700;cursor:pointer;">
+                  <i class="fas fa-unlock"></i> Débloquer
+                </button>`
+              : `<button onclick="bloquerMembre('${m.id}','${(m.nom||'').replace(/'/g,'')}')"
+                  style="flex:1;padding:9px 12px;background:rgba(231,76,60,0.15);border:1.5px solid rgba(231,76,60,0.4);border-radius:20px;color:#ff6b6b;font-size:0.85rem;font-weight:700;cursor:pointer;">
+                  <i class="fas fa-ban"></i> Bloquer
+                </button>`
+            }
+            <button onclick="reinitialiserMembre('${m.id}','${(m.nom||'').replace(/'/g,'')}')"
+              style="padding:9px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:20px;color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:700;cursor:pointer;"
+              title="Supprimer l'inscription (la personne devra se réinscrire)">
+              <i class="fas fa-redo"></i> Réinitialiser
+            </button>
+            <button onclick="supprimerMembre('${m.id}')"
+              style="padding:9px 12px;background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.25);border-radius:20px;color:#ff6b6b;font-size:0.85rem;cursor:pointer;">
+              <i class="fas fa-trash"></i>
+            </button>
           </div>
         </div>`;
       }).join('');
-    } catch(e) { console.log('chargerMembres:', e.message); }
+    } catch(e) { console.log('Membres:', e.message); }
   }
-  window.chargerMembres = chargerMembres;
 
   async function bloquerMembre(id, nom) {
-    if (!confirm('Bloquer ' + nom + ' ?')) return;
+    if (!confirm('Bloquer ' + nom + ' ? Il ne pourra plus accéder au site.')) return;
     try {
       await window._updateDoc(window._doc(window._db, 'membres', id), { bloque: true });
       showToast(nom + ' bloqué !');
       chargerMembres();
     } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
   }
-  window.bloquerMembre = bloquerMembre;
 
   async function debloquerMembre(id) {
     try {
@@ -2068,77 +2308,277 @@
       chargerMembres();
     } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
   }
-  window.debloquerMembre = debloquerMembre;
 
   async function reinitialiserMembre(id, nom) {
-    if (!confirm('Réinitialiser ' + nom + ' ? Il devra se réinscrire.')) return;
+    if (!confirm('Réinitialiser ' + nom + ' ? Il devra se réinscrire pour accéder au site.')) return;
     try {
       await window._deleteDoc(window._doc(window._db, 'membres', id));
-      // Efase token FCM tou
-      const tokSnap = await window._getDocs(window._collection(window._db, 'fcm_tokens'));
-      for (const td of tokSnap.docs) {
-        const tdata = td.data();
-        if (tdata.nom && tdata.nom.toLowerCase().includes((nom||'').split(' ')[0].toLowerCase())) {
-          await window._deleteDoc(window._doc(window._db, 'fcm_tokens', td.id));
-        }
-      }
       showToast(nom + ' réinitialisé !');
       chargerMembres();
     } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
   }
-  window.reinitialiserMembre = reinitialiserMembre;
 
   async function supprimerMembre(id) {
     if (!confirm('Supprimer définitivement ce membre ?')) return;
     try {
-      const mSnap = await window._getDoc(window._doc(window._db, 'membres', id));
-      const mData = mSnap.exists() ? mSnap.data() : {};
       await window._deleteDoc(window._doc(window._db, 'membres', id));
-      if (mData.nom) {
-        const tokSnap = await window._getDocs(window._collection(window._db, 'fcm_tokens'));
-        for (const td of tokSnap.docs) {
-          const tdata = td.data();
-          if (tdata.nom && tdata.nom.toLowerCase().includes(mData.nom.split(' ')[0].toLowerCase())) {
-            await window._deleteDoc(window._doc(window._db, 'fcm_tokens', td.id));
-          }
-        }
-      }
       showToast('Membre supprimé !');
       chargerMembres();
     } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
   }
-  window.supprimerMembre = supprimerMembre;
 
-  window.envoyerNotifAuto = async function(title, body, link, type) {
+  // ===== ÉTUDE =====
+  async function chargerEtudeActive() {
     try {
-      const res = await fetch('https://onesignal.com/api/v1/notifications', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + ONESIGNAL_API_KEY
-        },
-        body: JSON.stringify({
-          app_id: ONESIGNAL_APP_ID,
-          included_segments: ['All'],
-          headings: { fr: title, en: title },
-          contents: { fr: body, en: body },
-          url: link,
-          chrome_web_icon: 'https://fabouloso1.github.io/eglise-carrefour/logo.png',
-          firefox_icon: 'https://fabouloso1.github.io/eglise-carrefour/logo.png'
-        })
-      });
-      const data = await res.json();
-      if (data.id) {
-        console.log('✅ Notif OneSignal voye — ID:', data.id);
-      } else {
-        console.log('❌ Notif echec:', JSON.stringify(data));
+      const snap = await window._getDoc(window._doc(window._db, 'config', 'etude'));
+      const wrap     = document.getElementById('etude-active-wrap');
+      const formWrap = document.getElementById('etudeFormWrap');
+      if (!snap.exists() || !snap.data().actif) {
+        if(wrap) wrap.style.display='none';
+        if(formWrap) formWrap.style.display='block'; // Montre fòm si pa gen etude
+        return;
       }
-    } catch(e) {
-      console.log('envoyerNotifAuto error:', e.message);
-    }
-  };
+      const e = snap.data();
+      if(wrap) wrap.style.display='block';
+      if(formWrap) formWrap.style.display='none'; // Kache fòm si etude aktif
+      const titreEl = document.getElementById('etude-active-titre');
+      if(titreEl) titreEl.textContent = e.titre;
+      const qSnap = await window._getDocs(window._query(window._collection(window._db,'etude_questions'),window._orderBy('timestamp','asc')));
+      afficherQuestions(qSnap.docs);
+    } catch(e) { console.log('Etude:', e.message); }
+  }
 
-})();
+  function afficherQuestions(docs) {
+    const list = document.getElementById('questionsList');
+    const countEl = document.getElementById('questionsCount');
+    if(countEl) countEl.textContent = docs.length;
+    if (!list) return;
+    if (!docs.length) { list.innerHTML = '<p style="color:rgba(255,255,255,0.35);text-align:center;padding:16px;">Aucune question...</p>'; return; }
+    list.innerHTML = docs.map(d => {
+      const q = d.data();
+      return `<div style="background:rgba(255,255,255,0.06);border-radius:12px;padding:14px;margin-bottom:10px;border-left:3px solid #f1c40f;">
+        <div style="color:white!important;font-size:0.95rem!important;font-weight:600!important;margin-bottom:4px;">${q.question||''}</div>
+        <div style="color:rgba(255,255,255,0.45);font-size:0.78rem;margin-bottom:8px;"><i class="fas fa-user" style="color:#f1c40f;margin-right:4px;"></i>${q.auteur||'Anonyme'} · ${q.heure||''}</div>
+        ${q.reponse?`<div style="background:rgba(46,213,115,0.1);border:1px solid rgba(46,213,115,0.2);border-radius:8px;padding:10px;margin-bottom:8px;"><div style="color:#2ed573!important;font-size:0.78rem!important;font-weight:700!important;margin-bottom:4px;"><i class="fas fa-reply"></i> Réponse du Pasteur</div><div style="color:rgba(255,255,255,0.85)!important;font-size:0.9rem!important;">${q.reponse}</div></div>`:''}
+        <div style="display:flex;gap:8px;">
+          <input type="text" placeholder="Répondre..." id="rep-${d.id}" style="flex:1;padding:8px 12px;border:1.5px solid rgba(241,196,15,0.25);border-radius:8px;background:rgba(255,255,255,0.07);color:white;font-size:0.88rem;">
+          <button onclick="repondreQuestion('${d.id}')" style="padding:8px 14px;background:linear-gradient(135deg,#f1c40f,#e67e22);border:none;border-radius:8px;color:#0d1f4a;font-weight:800;cursor:pointer;"><i class="fas fa-paper-plane"></i></button>
+          <button onclick="supprimerQuestion('${d.id}')" style="padding:8px 12px;background:rgba(231,76,60,0.2);border:none;color:#ff6b6b;border-radius:8px;cursor:pointer;"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  async function repondreQuestion(id) {
+    const input = document.getElementById('rep-'+id);
+    const rep = input ? input.value.trim() : '';
+    if (!rep) return;
+    try {
+      await window._updateDoc(window._doc(window._db,'etude_questions',id), { reponse: rep });
+      input.value = '';
+      showToast('Réponse envoyée !');
+      chargerEtudeActive();
+    } catch(e) { showToast('Erreur : '+e.message,'error'); }
+  }
+
+  async function supprimerQuestion(id) {
+    try { await window._deleteDoc(window._doc(window._db,'etude_questions',id)); chargerEtudeActive(); } catch(e) {}
+  }
+
+  // ===== AUDIO PASTEUR =====
+  let mpPasteur = null, chunksPasteur = [], intPasteur = null, secPasteur = 0, blobPasteur = null;
+
+  async function demarrerPasteurRec() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mpPasteur = new MediaRecorder(stream);
+      chunksPasteur = []; secPasteur = 0; blobPasteur = null;
+      mpPasteur.ondataavailable = e => chunksPasteur.push(e.data);
+      mpPasteur.start();
+      document.getElementById('pasteurRecNormal').style.display = 'none';
+      document.getElementById('pasteurRecActive').style.display = 'block';
+      document.getElementById('pasteurAudioPreview').style.display = 'none';
+      intPasteur = setInterval(() => {
+        secPasteur++;
+        const m = Math.floor(secPasteur/60), s = secPasteur%60;
+        document.getElementById('pasteurRecTimer').textContent = m+':'+(s<10?'0':'')+s;
+      }, 1000);
+    } catch(e) { showToast('Microphone inaccessible : ' + e.message, 'error'); }
+  }
+
+  function stopPasteurRec() {
+    if (!mpPasteur) return;
+    clearInterval(intPasteur);
+    mpPasteur.onstop = () => {
+      blobPasteur = new Blob(chunksPasteur, { type: 'audio/webm' });
+      const url = URL.createObjectURL(blobPasteur);
+      document.getElementById('pasteurAudioEl').src = url;
+      document.getElementById('pasteurAudioPreview').style.display = 'block';
+      document.getElementById('pasteurRecActive').style.display = 'none';
+      document.getElementById('pasteurRecNormal').style.display = 'block';
+    };
+    mpPasteur.stop();
+    mpPasteur.stream.getTracks().forEach(t => t.stop());
+  }
+
+  function annulerPasteurRec() {
+    if (mpPasteur) { try { mpPasteur.stop(); mpPasteur.stream.getTracks().forEach(t=>t.stop()); } catch(e){} }
+    clearInterval(intPasteur);
+    blobPasteur = null;
+    document.getElementById('pasteurRecActive').style.display = 'none';
+    document.getElementById('pasteurRecNormal').style.display = 'block';
+  }
+
+  function annulerAudioPasteur() {
+    blobPasteur = null;
+    document.getElementById('pasteurAudioPreview').style.display = 'none';
+    document.getElementById('pasteurAudioEl').src = '';
+  }
+
+  async function envoyerAudioPasteur() {
+    if (!blobPasteur) return;
+    const st = document.getElementById('pasteurAudioStatus');
+    st.style.display = 'block';
+    st.style.background = 'rgba(255,255,255,0.05)';
+    st.style.color = 'rgba(255,255,255,0.6)';
+    st.textContent = '⏳ Upload en cours...';
+    try {
+      const fd = new FormData();
+      fd.append('file', new File([blobPasteur], 'pasteur.webm', { type:'audio/webm' }));
+      fd.append('upload_preset', 'eglise_upload');
+      fd.append('folder', 'etude/pasteur');
+      const res  = await fetch('https://api.cloudinary.com/v1_1/dvcxhpibq/video/upload', { method:'POST', body:fd });
+      const data = await res.json();
+      if (!data.secure_url) throw new Error('Upload échoué');
+
+      // Sove nan etude_questions kòm mesaj Pastè spesyal
+      await window._addDoc(window._collection(window._db, 'etude_questions'), {
+        auteur:    'Pasteur Anouis Jean',
+        question:  '🎤 Message vocal du Pasteur',
+        audioUrl:  data.secure_url,
+        isPasteur: true,
+        heure:     new Date().toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' }),
+        timestamp: window._serverTimestamp()
+      });
+
+      st.style.background = 'rgba(46,213,115,0.15)';
+      st.style.color = '#2ed573';
+      st.textContent = '✅ Audio envoyé aux participants !';
+      blobPasteur = null;
+      document.getElementById('pasteurAudioEl').src = '';
+      setTimeout(() => {
+        document.getElementById('pasteurAudioPreview').style.display = 'none';
+        st.style.display = 'none';
+      }, 3000);
+    } catch(e) {
+      st.style.background = 'rgba(231,76,60,0.15)';
+      st.style.color = '#ff6b6b';
+      st.textContent = '❌ Erreur : ' + e.message;
+    }
+  }
+
+  async function toggleQuestions(ouvert) {
+    try { await window._updateDoc(window._doc(window._db,'config','etude'),{questionsOuvertes:ouvert}); showToast(ouvert?'Questions ouvertes !':'Questions fermées !'); } catch(e) {}
+  }
+
+  async function terminerEtude() {
+    if (!confirm('Terminer cette étude ? Toutes les questions seront supprimées.')) return;
+    try {
+      const qSnap = await window._getDocs(window._collection(window._db,'etude_questions'));
+      for (const d of qSnap.docs) await window._deleteDoc(window._doc(window._db,'etude_questions',d.id));
+      await window._updateDoc(window._doc(window._db,'config','etude'),{actif:false});
+      const wrap = document.getElementById('etude-active-wrap');
+      if(wrap) wrap.style.display='none';
+      showToast('Étude terminée !');
+    } catch(e) { showToast('Erreur : '+e.message,'error'); }
+  }
+
+  // ===== HELPER NOTIF =====
+  async function envoyerNotif(title, body, link) {
+    let tries = 0;
+    while (!window.envoyerNotifAuto && tries < 50) {
+      await new Promise(r => setTimeout(r, 100));
+      tries++;
+    }
+    if (window.envoyerNotifAuto) {
+      try { await window.envoyerNotifAuto(title, body, link); } 
+      catch(e) { console.log('Notif err:', e.message); }
+    }
+  }
+
+  async function lancerEtude() {
+    const titre    = document.getElementById('etudeTitre').value.trim();
+    const theme    = document.getElementById('etudeTheme').value.trim();
+    const objectif = document.getElementById('etudeObjectif').value.trim();
+    const contenu  = document.getElementById('etudeContenu').value.trim();
+    const verset   = document.getElementById('etudeVerset').value.trim();
+    if (!titre || !theme || !contenu || !verset) { showToast('Titre, thème, développement et référence sont requis !','error'); return; }
+    const status = document.getElementById('etudeStatus');
+    status.style.display='block'; status.style.background='#fff8e1'; status.style.color='#555'; status.textContent='⏳ Lancement...';
+    try {
+      const oldQ = await window._getDocs(window._collection(window._db,'etude_questions'));
+      for (const d of oldQ.docs) await window._deleteDoc(window._doc(window._db,'etude_questions',d.id));
+      await window._setDoc(window._doc(window._db,'config','etude'),{titre,theme,objectif,contenu,verset,actif:true,questionsOuvertes:true,timestamp:window._serverTimestamp(),date:new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})});
+      envoyerNotif('📖 Étude Biblique — '+titre,'Nouvelle étude lancée ! Venez poser vos questions.','https://fabouloso1.github.io/eglise-carrefour/Etude.html');
+      status.style.background='#e8f5e9'; status.style.color='#2e7d32'; status.textContent='✅ Étude lancée !';
+      ['etudeTitre','etudeTheme','etudeObjectif','etudeContenu','etudeVerset'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';}); 
+      setTimeout(()=>{status.style.display='none';},3000);
+      chargerEtudeActive();
+    } catch(e) { status.style.background='#fee'; status.style.color='#c00'; status.textContent='❌ Erreur : '+e.message; }
+  }
+
+  // ===== ÉVÉNEMENTS =====
+  async function publierEvenement() {
+    const titre = document.getElementById('evTitre').value.trim();
+    const date  = document.getElementById('evDate').value;
+    if (!titre) { showToast('Titre requis !','error'); return; }
+    if (!date)  { showToast('Date requise !','error'); return; }
+    const jodi = new Date(); jodi.setHours(0,0,0,0);
+    if (new Date(date) < jodi) { showToast('Date déjà passée !','error'); return; }
+    const status = document.getElementById('evStatus');
+    status.style.display='block'; status.style.background='#fff8e1'; status.style.color='#555'; status.textContent='⏳ Publication...';
+    try {
+      await window._addDoc(window._collection(window._db,'evenements'),{titre,date,heure:document.getElementById('evHeure').value||'',description:document.getElementById('evDesc').value||'',prix:document.getElementById('evPrix').value||'',timestamp:window._serverTimestamp()});
+      status.style.background='#e8f5e9'; status.style.color='#2e7d32'; status.textContent='✅ Événement publié !';
+      ['evTitre','evDate','evHeure','evDesc','evPrix'].forEach(id=>document.getElementById(id).value='');
+      setTimeout(()=>{status.style.display='none';},3000);
+      chargerEvenements();
+      envoyerNotif('Église de Dieu de la Prophétie','📅 Nouvel événement : '+titre,'https://fabouloso1.github.io/eglise-carrefour/Horaires.html');
+    } catch(e) { status.style.background='#fee'; status.style.color='#c00'; status.textContent='❌ Erreur : '+e.message; }
+  }
+
+  async function chargerEvenements() {
+    try {
+      const jodi = new Date(); jodi.setHours(0,0,0,0);
+      const snap = await window._getDocs(window._query(window._collection(window._db,'evenements'),window._orderBy('date','asc')));
+      const items = []; const aEffacer = [];
+      snap.docs.forEach(d=>{const ev={id:d.id,...d.data()};if(new Date(ev.date)<jodi){aEffacer.push(d.id);}else{items.push(ev);}});
+      for (const id of aEffacer) { try{await window._deleteDoc(window._doc(window._db,'evenements',id));}catch(e){} }
+      const countEl=document.getElementById('evCount'); if(countEl) countEl.textContent=items.length;
+      const listEl=document.getElementById('evList'); if(!listEl) return;
+      if(!items.length){listEl.innerHTML='<p style="color:#aaa;text-align:center;padding:20px;">Aucun événement à venir.</p>';return;}
+      const colors={Urgent:'#e74c3c',Important:'#e67e22',Normal:'#1c1c3c'};
+      listEl.innerHTML=items.map(ev=>{
+        const df=new Date(ev.date).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+        return `<div style="border:1px solid #eee;border-radius:12px;padding:14px;margin-bottom:10px;border-left:4px solid #1c1c3c;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+            <div style="flex:1;">
+              <div style="font-weight:700;color:#111;font-size:1rem;margin-bottom:4px;">${ev.titre}</div>
+              <div style="font-size:0.85rem;color:#555;"><i class="fas fa-calendar" style="color:#f1c40f;margin-right:4px;"></i>${df}${ev.heure?'<span style="margin-left:8px;"><i class="fas fa-clock" style="color:#f1c40f;margin-right:4px;"></i>'+ev.heure+'</span>':''}</div>
+              ${ev.description?`<div style="font-size:0.82rem;color:#777;margin-top:4px;">${ev.description}</div>`:''}
+              ${ev.prix?`<div style="font-size:0.82rem;color:#f1c40f;font-weight:700;margin-top:4px;"><i class="fas fa-ticket" style="margin-right:4px;"></i>${ev.prix}</div>`:''}
+            </div>
+            <button onclick="effacerEvenement('${ev.id}')" style="background:#fee;border:none;color:#e74c3c;width:34px;height:34px;border-radius:8px;cursor:pointer;"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>`;
+      }).join('');
+    } catch(e) { console.log('Evenements:',e.message); }
+  }
+
+  async function effacerEvenement(id) {
+    if (!confirm('Supprimer ?')) return;
+    try { await window._deleteDoc(window._doc(window._db,'evenements',id)); showToast('Supprimé !'); chargerEvenements(); } catch(e) { showToast('Erreur : '+e.message,'error'); }
+  }
 </script>
 
 </body>
