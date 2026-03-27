@@ -1,13 +1,12 @@
 {
   "name": "Église de Dieu de la Prophétie de Carrefour",
   "short_name": "Église Carrefour",
-  "description": "Site officiel de l'Église de Dieu de la Prophétie de Carrefour",
-  "start_url": "/eglise-carrefour/index.html",
+  "description": "Application officielle de l'Église de Dieu de la Prophétie de Carrefour",
+  "start_url": "/eglise-carrefour/",
   "display": "standalone",
   "background_color": "#1c1c3c",
   "theme_color": "#1c1c3c",
-  "orientation": "portrait-primary",
-  "lang": "fr",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "logo.png",
@@ -21,7 +20,5 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ],
-  "categories": ["religion", "lifestyle"],
-  "screenshots": []
+  ]
 }
