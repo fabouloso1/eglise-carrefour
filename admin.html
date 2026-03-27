@@ -1407,7 +1407,21 @@
         const t = d.data();
         const approuve = t.approuve === true;
         const audioHTML = t.audioUrl
-          ? `<audio controls src="${t.audioUrl}" style="width:100%;margin:8px 0;border-radius:8px;height:40px;"></audio>`
+          ? `<div style="margin:10px 0;">
+               <audio data-temo-audio src="${t.audioUrl}"
+                 style="width:100%;border-radius:10px;height:44px;display:block;"
+                 preload="metadata"
+                 onplay="stopOtherAudios(this)"
+                 onended="this.currentTime=0"></audio>
+               <div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
+                 <i class='fas fa-volume-up' style='color:#f1c40f;font-size:0.8rem;'></i>
+                 <input type="range" min="1" max="3" step="0.1" value="2"
+                   oninput="setAudioVolume(this)"
+                   style="flex:1;accent-color:#f1c40f;height:4px;cursor:pointer;"
+                   title="Volume">
+                 <span style='color:#f1c40f;font-size:0.75rem;font-weight:700;min-width:32px;'>200%</span>
+               </div>
+             </div>`
           : '';
         return `
           <div style="background:rgba(255,255,255,0.06);border-radius:14px;padding:16px;margin-bottom:12px;border-left:4px solid ${approuve ? '#2ed573' : '#f1c40f'};">
@@ -1433,7 +1447,62 @@
             </div>
           </div>`;
       }).join('');
+      setTimeout(initAudioBoost, 200);
     } catch(e) { console.log('Temoignages:', e.message); }
+  }
+
+  // ===== AUDIO TEMOIGNAGE — Volume + 1 seul a la fois + reset =====
+  function stopOtherAudios(current) {
+    document.querySelectorAll('[data-temo-audio]').forEach(a => {
+      if (a !== current && !a.paused) { a.pause(); a.currentTime = 0; }
+    });
+    // Booste volume a 2x (defaut)
+    if (current.volume !== undefined) current.volume = Math.min(current.dataset.vol || 1, 1);
+  }
+
+  function setAudioVolume(slider) {
+    const wrap = slider.closest('div').parentElement;
+    const audio = wrap.querySelector('[data-temo-audio]');
+    const val = parseFloat(slider.value);
+    const label = slider.nextElementSibling;
+    if (label) label.textContent = Math.round(val * 100) + '%';
+
+    if (val <= 1) {
+      // Volume normal (0-1)
+      audio.volume = val;
+      audio.dataset.vol = val;
+      if (audio._gainNode) { audio._gainNode.gain.value = 1; }
+    } else {
+      // Amplification via Web Audio API (1x-3x)
+      if (!audio._audioCtx) {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const source = ctx.createMediaElementSource(audio);
+        const gain = ctx.createGain();
+        source.connect(gain);
+        gain.connect(ctx.destination);
+        audio._audioCtx = ctx;
+        audio._gainNode = gain;
+      }
+      audio._gainNode.gain.value = val;
+      audio.volume = 1;
+    }
+  }
+
+  // Applique volume 2x par defaut quand la liste charge
+  function initAudioBoost() {
+    document.querySelectorAll('[data-temo-audio]').forEach(audio => {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const source = ctx.createMediaElementSource(audio);
+        const gain = ctx.createGain();
+        gain.gain.value = 2;
+        source.connect(gain);
+        gain.connect(ctx.destination);
+        audio._audioCtx = ctx;
+        audio._gainNode = gain;
+        audio.volume = 1;
+      } catch(e) {}
+    });
   }
 
   async function approuverTemoignage(id) {
