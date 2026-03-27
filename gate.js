@@ -373,7 +373,9 @@
 
   window.gateInit = async function() {
     if (!estInscrit()) {
-      setTimeout(montreGate, 400);
+      // Bloke kontni paj la imedyatman
+      document.body.style.overflow = 'hidden';
+      montreGate();
       return;
     }
 

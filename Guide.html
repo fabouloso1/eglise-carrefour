@@ -434,6 +434,13 @@
 <script src="pwa.js"></script>
 
 <script src="gate.js"></script>
-<script>window.addEventListener("load", function(){ if(window.gateInit) gateInit(); });</script>
+<script>// Bloke paj la imedyatman si pa enskri
+    (function(){
+      var d = localStorage.getItem('eglise_membre');
+      var ok = false;
+      try { var m = JSON.parse(d||'{}'); ok = !!(m.nom && m.telephone); } catch(e){}
+      if (!ok) { document.body.style.overflow='hidden'; }
+    })();
+    document.addEventListener('DOMContentLoaded', function(){ if(window.gateInit) gateInit(); });</script>
 </body>
 </html>
