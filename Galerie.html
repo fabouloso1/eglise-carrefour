@@ -410,7 +410,7 @@
             const isYT     = v.videoId || (v.videoUrl && String(v.videoUrl).includes('youtube'));
             const thumb    = v.thumb || (v.videoId ? `https://img.youtube.com/vi/${v.videoId}/hqdefault.jpg` : '');
             const embedUrl = isYT && v.videoId ? `https://www.youtube.com/embed/${v.videoId}?autoplay=1` : '';
-            const directUrl= v.url || '';
+            const directUrl= v.videoUrl || v.url || '';
             const onclick  = isYT
               ? `ouvrirVideoYT('${esc(embedUrl)}', '${esc(v.titre || '')}')`
               : `ouvrirVideoDirect('${esc(directUrl)}', '${esc(v.titre || '')}')`;
