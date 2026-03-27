@@ -499,39 +499,7 @@
       .photo-preview { grid-template-columns: repeat(3, 1fr); }
     }
   </style>
-
-
-  <!-- OneSignal Notifications -->
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-  <script>
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function(OneSignal) {
-      await OneSignal.init({
-        appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
-        notifyButton: {
-          enable: true,
-          size: "medium",
-          position: "bottom-right",
-          theme: "default",
-          showCredit: false,
-          text: {
-            "tip.state.unsubscribed": "Abonnez-vous aux notifications",
-            "tip.state.subscribed": "Vous êtes abonné(e)",
-            "tip.state.blocked": "Notifications bloquées",
-            "message.prenotify": "Cliquez pour vous abonner aux notifications",
-            "message.action.subscribed": "Merci de vous être abonné(e)!",
-            "message.action.resubscribed": "Vous êtes abonné(e) aux notifications",
-            "message.action.unsubscribed": "Vous ne recevrez plus de notifications",
-            "dialog.main.title": "Gérer les notifications",
-            "dialog.main.button.subscribe": "M\'ABONNER",
-            "dialog.main.button.unsubscribe": "SE DÉSABONNER",
-            "dialog.blocked.title": "Débloquer les notifications",
-            "dialog.blocked.message": "Suivez ces instructions pour activer les notifications:"
-          }
-        }
-      });
-    });
-  </script>
+  
 </head>
 <body>
 
@@ -2148,52 +2116,7 @@
       });
     });
   }
-
-
-  async function getAccessToken() {
-    const SA_EMAIL = "firebase-adminsdk-fbsvc@eglise-carrefour.iam.gserviceaccount.com";
-    const PRIVATE_KEY = "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDOrbPvT8HU0I2S\n5ZU44zXx1Rj9NeRovLTCBG9gU8MV4XzavR3LGjvdVPr2ub5VuaAg4jO8FAf+5uAF\nf0M5UZ92t0HKagQQbEqiDfRyab524kq+OF5rhGI5Qd6QBolbkZ3XEiWRGTuGxDjt\nz7Noo/gPknoCV90dQXuhZ6B3R5QedJV662SZmf7uoIbZCpsRO+Qz/zsHA3qQ4uyv\n1p8DBD6cpjsqJNYNq8W+4cbKyGvJKpQ2CdMj6WdH1aw944JQmOxZWiKIlrfZyTJW\nE7Ily0GKaZVjW4z8hhPC5b8/Zen0HS3GlNP5R7umc3SteEyvgRAqzpVwpD8cdfEn\nNUwmpHS9AgMBAAECggEATE4NVJlZsrycyFNC2JHqZLKMW0/+WDzzb347sJC8QePS\nOOABk+7Hk1vAnD7Pas7xs7JP72xl11Jd+ymVJCBig239OEIT5gxVMad9TJCF5VZ+\nyeP92Cw0J3eOOBZxuAD3CWSFwiBSvdrMOeCpGEURXI5zxVGzLQ30Gw8rS1597Q/r\n246FSoM8xa8PObBFU4DU9a1lgYt39zYmIT+iI9U+MEiF2bsA7pXa85kSMCFYH29Z\nmVBxRq8JJFP7Wbcm7HzrFNyestb9r03IzA/JthOPmX+3moXkJNahkAQeVunbptwX\nz9f9eU67aZlzwAiFEl+lLUHNY22q2DsffMpYavPtcQKBgQDyYSr/RQzoaeI3S/8K\nQNtndXBFxC/AfeaIn7A1C9ueCSvodtD1eNVPToIZLMWe+Ej+Rgd6/VjaVtkuUs5o\nDlviDciXZ0MS2LebLStFrsdwK2b08hlJ8/i0h0FbhM+FG8bABI0johpbfFzmHeg0\nRfFMfFUemD9Mrc3ea1wDww0ntwKBgQDaSvIdNEwBeag1pH8R+u3VrTlkvvHCQY8a\njsxceH+TWxPXWmbvlqueFBJBDRD5lVdP2MuuMtWezryXKn7FflYDoceXlAqM8Qjf\nCzE9TK4vRTOfcgE6f3zBunXlaSjh2pVU9V4YLsIrN58nqaE5Q+NlQPVaLlDntHcn\nLP7vix1/KwKBgQCiaO2wwwoVKe4E841fx3m853plpUICD9rLrYUa5mkwiiC70fHO\nqjr0uzx9tfxtuxzeFPqqNNy24P8CBUZ9fzGeVXIV0YGmPUU6W5flR2ooBU0l0JuV\nbD84aHEo6+NJ5ATXYbVZLSPQLZLqNxwC+uLnR2CZ8ZZowQVzhijP9ID6HQKBgE9f\nrQW9fF2U9Pr8Y1AQY+asZBAj9hhiajyH6/s7vXfBSEeoEYHQ0XpbZf/NVnzKNsNL\n21PuHArwtVZqF0qMk44ih0awh92Tz1v6396gQT3i9dBmTdgNfzmaKUBPqpPlPSN1\nTM+SQPwh73cmkP8Xllm88vnlmXmG/0R5cgF8Hi+dAoGBAJW7JAwmcQDuGWdVCyzj\nALScX8FxyGHD0Q4kaSKB7NQhtDyhZcK9ykCmhfiUFnpePDmMb0ykHzyQlYAAOBef\n5QWKh7QASkFVpQQdXjQ0LT2kyQqn1zi2cVIXn+Z9mdb+CKV2SIOMCVQDAZ9vuIXI\nNwv2aSLH9QYdOijCoE5PhUp8\n-----END PRIVATE KEY-----\n";
-
-    const now = Math.floor(Date.now() / 1000);
-    const b64u = s => btoa(s).split('=').join('').split('+').join('-').split('/').join('_');
-    const header = b64u(JSON.stringify({ alg: 'RS256', typ: 'JWT' }));
-    const claim  = b64u(JSON.stringify({
-      iss: SA_EMAIL,
-      scope: 'https://www.googleapis.com/auth/firebase.messaging',
-      aud: 'https://oauth2.googleapis.com/token',
-      exp: now + 3600, iat: now
-    }));
-    const toSign = header + '.' + claim;
-    const keyData = PRIVATE_KEY.replace(/-----BEGIN PRIVATE KEY-----/g,'').replace(/-----END PRIVATE KEY-----/g,'').replace(/\s/g,'');
-    const binaryKey = Uint8Array.from(atob(keyData), c => c.charCodeAt(0));
-    const cryptoKey = await crypto.subtle.importKey(
-      'pkcs8', binaryKey.buffer,
-      { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign']
-    );
-    const sig = await crypto.subtle.sign('RSASSA-PKCS1-v1_5', cryptoKey, new TextEncoder().encode(toSign));
-    const jwt = toSign + '.' + btoa(String.fromCharCode(...new Uint8Array(sig))).split('=').join('').split('+').join('-').split('/').join('_');
-    const res = await fetch('https://oauth2.googleapis.com/token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: 'grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=' + jwt
-    });
-    const data = await res.json();
-    if (!data.access_token) throw new Error('Token failed: ' + JSON.stringify(data));
-    return data.access_token;
-  }
-
-  // Fonksyon pou voye notif otomatikman (rele pa lòt fonksyon)
-  // Sove notif nan Firestore — paj la ap voye notif lè moun ouvri sit la
-  async function envoyerNotifAuto(title, body, link) {
-    try {
-      await db2.collection('notifications_log').add({
-        title, body, url: link || 'https://fabouloso1.github.io/eglise-carrefour',
-        sent: true,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      });
-    } catch(e) { console.log('notif log:', e); }
-  }
-  window.envoyerNotifAuto = envoyerNotifAuto;
+// Fonksyon pou voye notif otomatikman (rele pa lòt fonksyon)
 
   // Reinitialize tout abòne yo
   window.reinitialiserAbonnes = async function() {
@@ -2211,51 +2134,12 @@
     }
   };
 
-  // ===== ONESIGNAL NOTIFICATION via Firestore trigger =====
-  window.envoyerNotification = async function() {
-    const title  = document.getElementById('notifTitle').value.trim();
-    const body   = document.getElementById('notifBody').value.trim();
-    const link   = document.getElementById('notifLink').value.trim() || 'https://fabouloso1.github.io/eglise-carrefour/';
+    window.envoyerNotification = async function() {
     const status = document.getElementById('notifStatus');
-
-    if (!title || !body) {
-      status.style.display = 'block';
-      status.style.background = '#fee'; status.style.color = '#c00';
-      status.textContent = '❌ Titre ak mesaj obligatwa';
-      return;
-    }
-
     status.style.display = 'block';
-    status.style.background = '#fff8e1'; status.style.color = '#555';
-    status.textContent = '⏳ Envoi en cours...';
-
-    try {
-      // Sove notif nan Firestore — OneSignal va chaje li
-      await window._addDoc(window._collection(window._db, 'notifications_queue'), {
-        title,
-        body,
-        url: link,
-        app_id: "98b15d43-1386-4fd5-b711-59dd32446c43",
-        sent: false,
-        timestamp: window._serverTimestamp()
-      });
-
-      // Voye via OneSignal SDK (si disponib)
-      if (window.OneSignal) {
-        try {
-          await OneSignal.sendSelfNotification(title, body, link, 'logo.png', {});
-        } catch(e2) { console.log('SDK notif:', e2); }
-      }
-
-      status.style.background = '#e8f5e9'; status.style.color = '#2e7d32';
-      status.textContent = '✅ Notification enregistrée et envoyée!';
-      document.getElementById('notifTitle').value = '';
-      document.getElementById('notifBody').value  = '';
-
-    } catch(e) {
-      status.style.background = '#fee'; status.style.color = '#c00';
-      status.textContent = '❌ Erreur: ' + e.message;
-    }
+    status.style.background = '#fff8e1';
+    status.style.color = '#555';
+    status.textContent = '⚠️ Système de notification en cours de configuration.';
   };
 
   document.addEventListener('click', function(e) {
@@ -2525,19 +2409,7 @@
   }
 
   // ===== HELPER NOTIF =====
-  async function envoyerNotif(title, body, link) {
-    let tries = 0;
-    while (!window.envoyerNotifAuto && tries < 50) {
-      await new Promise(r => setTimeout(r, 100));
-      tries++;
-    }
-    if (window.envoyerNotifAuto) {
-      try { await window.envoyerNotifAuto(title, body, link); } 
-      catch(e) { console.log('Notif err:', e.message); }
-    }
-  }
-
-  async function lancerEtude() {
+async function lancerEtude() {
     const titre    = document.getElementById('etudeTitre').value.trim();
     const theme    = document.getElementById('etudeTheme').value.trim();
     const objectif = document.getElementById('etudeObjectif').value.trim();
