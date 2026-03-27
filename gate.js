@@ -22,7 +22,9 @@
   function montreGate() {
     if (document.getElementById('gate-overlay')) return;
 
-    // Kache kontni paj la
+    // Debloke vizibilite paj la men kache scroll
+    document.documentElement.style.visibility = '';
+    document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
 
     const overlay = document.createElement('div');
@@ -336,6 +338,8 @@
     if (overlay) overlay.remove();
     if (style)   style.remove();
     document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+    document.documentElement.style.visibility = '';
   };
 
   // ===== INIT — Rele sa lè paj la chaje =====

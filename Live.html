@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<script>
+// Bloke paj la imedyatman si pa enskri
+(function(){
+  var d = localStorage.getItem('eglise_membre');
+  var ok = false;
+  try { var m = JSON.parse(d||'{}'); ok = !!(m.nom && m.telephone); } catch(e){}
+  if (!ok) {
+    document.documentElement.style.visibility = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+  }
+})();
+</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Live — Église de Dieu de la Prophétie de Carrefour</title>
@@ -727,6 +739,14 @@
       try { var m = JSON.parse(d||'{}'); ok = !!(m.nom && m.telephone); } catch(e){}
       if (!ok) { document.body.style.overflow='hidden'; }
     })();
-    document.addEventListener('DOMContentLoaded', function(){ if(window.gateInit) gateInit(); });</script>
+    document.addEventListener('DOMContentLoaded', function(){
+  if(window.gateInit) {
+    gateInit();
+  } else {
+    // Si gate.js pa chaje, debloke paj la
+    document.documentElement.style.visibility = '';
+    document.documentElement.style.overflow = '';
+  }
+});</script>
 </body>
 </html>
