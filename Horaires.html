@@ -279,7 +279,6 @@
     }
 
     /* ====== ANNONCES FIREBASE ====== */
-    #firebase-annonces { display: none; margin-top: 60px; }
     .annoncer-list { display: flex; flex-direction: column; gap: 16px; margin-top: 24px; }
     .annonce-item {
       background: #fffbf0; border-radius: 16px;
@@ -388,20 +387,6 @@
         }).join('');
       } catch(e) { console.log('Événements:', e.message); }
     }
-
-    async function chargerAnnonces() {
-      try {
-        const snap = await getDocs(query(collection(db, 'annonces'), orderBy('timestamp', 'desc')));
-        const list = snap.docs.map(d => ({id: d.id, ...d.data()}));
-        if (!list.length) return;
-        const sec = document.getElementById('firebase-annonces');
-        sec.style.display = 'block';
-        const colors = { Urgent:'#e74c3c', Important:'#e67e22', Normal:'#1c1c3c' };
-        sec.querySelector('.annoncer-list').innerHTML = list.map(a => `
-          <div class="annonce-item" style="border-left-color:${colors[a.importance]||'#f1c40f'}">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-              <span style="background:${colors[a.importance]||'#1c1c3c'};color:white;font-size:0.78rem;font-weight:700;padding:3px 12px;border-radius:20px;">
-                <i class="fas fa-calendar-day" style="margin-right:5px;"></i>${a.date||''}
               </span>
             </div>
             <h4>${a.titre||''}</h4>
@@ -412,7 +397,6 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       chargerEvenements();
-      chargerAnnonces();
     });
   </script>
   <!-- OneSignal Push Notifications -->
@@ -677,16 +661,6 @@
   </div>
 
   <!-- ====== ANNONCES FIREBASE ====== -->
-  <div id="firebase-annonces" style="background:linear-gradient(135deg,#f0fff4,#e6fffa);border-radius:24px;padding:24px 20px;">
-    <div class="sec-head" style="margin-top:60px;">
-      <h2>
-        <span class="sec-icon"><i class="fas fa-bullhorn"></i></span>
-        Annonces du Pasteur
-      </h2>
-      <p>Informations importantes publiées par l'église</p>
-    </div>
-    <div class="annoncer-list"></div>
-  </div>
 
   <!-- ====== ÉVÉNEMENTS FIREBASE (dynamik) ====== -->
   <div id="firebase-evenements" style="display:none;">
@@ -712,15 +686,7 @@
 
     <div class="ev-cards">
 
-      <!-- Réveil Hommes Mariés -->
-      <div class="ev-card">
-        <div class="ev-card-stripe"></div>
-        <div class="ev-card-body">
-          <div class="ev-date"><i class="fas fa-calendar-day"></i> 15 – 28 Mars 2025</div>
-          <h3>Réveil Annuel des Hommes Mariés</h3>
-          <p>Une semaine de réveil organisée avec les hommes mariés de l'église. Un moment de grâce à ne pas manquer !</p>
-        </div>
-      </div>
+
 
       <!-- Grand Concert JEM -->
       <div class="ev-card">
