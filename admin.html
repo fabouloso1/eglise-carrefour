@@ -2120,14 +2120,22 @@
 
   // Reinitialize tout abòne yo
   window.reinitialiserAbonnes = async function() {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer tous les abonnés ? Ils devront se réabonner.')) return;
+    if (!confirm('Supprimer tous les abonnés aux notifications ? Ils devront se réabonner.')) return;
     try {
-      var snap = await db2.collection('fcm_tokens').get();
-      if (snap.empty) { alert('Aucun abonné à supprimer.'); return; }
+      // Efase nan notif_subscribers
+      var snap1 = await db2.collection('notif_subscribers').get();
+      // Efase nan fcm_tokens tou
+      var snap2 = await db2.collection('fcm_tokens').get();
+      
+      var total = snap1.size + snap2.size;
+      if (total === 0) { alert('Aucun abonné à supprimer.'); return; }
+      
       var batch = db2.batch();
-      snap.forEach(function(d) { batch.delete(d.ref); });
+      snap1.forEach(function(d) { batch.delete(d.ref); });
+      snap2.forEach(function(d) { batch.delete(d.ref); });
       await batch.commit();
-      alert('✅ ' + snap.size + ' abonné(s) supprimé(s) avec succès.');
+      
+      alert('✅ ' + total + ' abonné(s) supprimé(s) avec succès.');
       loadNotifCount();
     } catch(e) {
       alert('❌ Erreur : ' + e.message);
