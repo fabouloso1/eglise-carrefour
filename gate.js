@@ -101,35 +101,35 @@
 
       #gate-card {
         background: linear-gradient(160deg, #0f0c2e 0%, #1a0a3c 50%, #0d1f4a 100%);
-        border-radius: 28px 28px 0 0;
-        padding: 36px 26px 50px;
+        border-radius: 20px 20px 0 0;
+        padding: 22px 20px 32px;
         width: 100%;
-        max-width: 500px;
-        max-height: 94vh;
+        max-width: 480px;
+        max-height: 80vh;
         overflow-y: auto;
-        animation: gateSlideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        animation: gateSlideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
         border-top: 3px solid #f1c40f;
       }
 
       /* HEADER */
-      #gate-header { text-align: center; margin-bottom: 30px; }
+      #gate-header { text-align: center; margin-bottom: 16px; }
 
       #gate-logo-wrap {
-        width: 80px; height: 80px;
-        border-radius: 20px;
+        width: 56px; height: 56px;
+        border-radius: 14px;
         overflow: hidden;
-        margin: 0 auto 18px;
-        border: 3px solid rgba(241,196,15,0.5);
-        box-shadow: 0 0 24px rgba(241,196,15,0.25);
+        margin: 0 auto 12px;
+        border: 2px solid rgba(241,196,15,0.5);
+        box-shadow: 0 0 16px rgba(241,196,15,0.2);
         background: #1c1c3c;
       }
       #gate-logo-wrap img { width: 100%; height: 100%; object-fit: cover; }
 
       #gate-title {
         font-family: 'Playfair Display', serif !important;
-        font-size: 1.7rem !important;
+        font-size: 1.3rem !important;
         color: #f1c40f !important;
-        margin-bottom: 10px !important;
+        margin-bottom: 6px !important;
         font-weight: 700 !important;
         line-height: 1.3 !important;
       }
@@ -142,7 +142,7 @@
       }
 
       /* CHAMPS */
-      .gate-field { margin-bottom: 20px; }
+      .gate-field { margin-bottom: 12px; }
 
       .gate-field label {
         display: block;
@@ -159,7 +159,7 @@
 
       .gate-field input {
         width: 100%;
-        padding: 16px 18px !important;
+        padding: 11px 14px !important;
         border: 2px solid rgba(241,196,15,0.3) !important;
         border-radius: 14px !important;
         font-size: 1.05rem !important;
@@ -197,7 +197,7 @@
       /* BOUTON SOUMET */
       #gate-btn {
         width: 100%;
-        padding: 18px !important;
+        padding: 13px !important;
         background: linear-gradient(135deg, #f1c40f, #e67e22) !important;
         color: #0f0c2e !important;
         border: none;
@@ -365,6 +365,11 @@
       </div>`;
     document.body.appendChild(blok);
   }
+
+  // Paj ki pwoteje
+  var PROTECTED_PAGES = ['priere.html','Temoigner.html','Guide.html','Galerie.html','Live.html'];
+  var currentPage = window.location.pathname.split('/').pop();
+  var isProtected = PROTECTED_PAGES.some(function(p) { return currentPage === p; });
 
   window.gateInit = async function() {
     if (!estInscrit()) {

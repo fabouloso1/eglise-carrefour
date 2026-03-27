@@ -61,6 +61,9 @@ const NAV = (() => {
               <button class="lang-option" data-lang="ht" onclick="changeLang('ht')">🇭🇹 Kreyòl</button>
             </div>
           </div>
+          <button id="inscriptionNavBtn" onclick="gateShowFromNav()" style="background:linear-gradient(135deg,#f1c40f,#e67e22);color:#1a1a1a;border:none;border-radius:20px;padding:7px 14px;font-size:0.82rem;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:6px;">
+            <i class="fas fa-user-plus"></i> <span>Inscription</span>
+          </button>
           <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
         </div>
         <ul class="nav-links" id="navLinks">${items}</ul>
