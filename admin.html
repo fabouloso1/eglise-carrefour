@@ -190,6 +190,19 @@
       border-bottom-color: var(--gold);
     }
 
+    /* Koule pou chak tab */
+    .tab-btn[data-tab="dashboard"]  { border-top: 3px solid #3498db; }
+    .tab-btn[data-tab="galerie"]    { border-top: 3px solid #9b59b6; }
+    .tab-btn[data-tab="membres"]    { border-top: 3px solid #1abc9c; }
+    .tab-btn[data-tab="etude"]      { border-top: 3px solid #e67e22; }
+    .tab-btn[data-tab="evenements"] { border-top: 3px solid #e74c3c; }
+    .tab-btn[data-tab="annonces"]   { border-top: 3px solid #f39c12; }
+    .tab-btn[data-tab="live"]       { border-top: 3px solid #e74c3c; }
+    .tab-btn[data-tab="temoignages"]{ border-top: 3px solid #f1c40f; }
+    .tab-btn[data-tab="prieres"]    { border-top: 3px solid #2ecc71; }
+    .tab-btn[data-tab="contacts"]   { border-top: 3px solid #3498db; }
+    .tab-btn[data-tab="notifs"]     { border-top: 3px solid #e74c3c; }
+
     .tab-btn i { font-size: 1rem; }
 
     /* Content */
@@ -539,39 +552,41 @@
 
   <!-- Tabs -->
   <div class="admin-tabs">
-    <button class="tab-btn active" onclick="showTab('dashboard')">
+    <button class="tab-btn active" onclick="showTab('dashboard')" data-tab="dashboard">
       <i class="fas fa-chart-pie"></i> Tableau de bord
     </button>
-    <button class="tab-btn" onclick="showTab('galerie')">
+    <button class="tab-btn" onclick="showTab('galerie')" data-tab="galerie">
       <i class="fas fa-images"></i> Galerie
     </button>
-    <button class="tab-btn" onclick="showTab('membres')">
+    <button class="tab-btn" onclick="showTab('membres')" data-tab="membres">
       <i class="fas fa-users"></i> Membres
+      <span id="membresBadge" style="display:none;background:#1abc9c;color:white;font-size:0.7rem;padding:1px 6px;border-radius:10px;margin-left:4px;"></span>
     </button>
-    <button class="tab-btn" onclick="showTab('etude')">
+    <button class="tab-btn" onclick="showTab('etude')" data-tab="etude">
       <i class="fas fa-book-open"></i> Étude
     </button>
-    <button class="tab-btn" onclick="showTab('evenements')">
+    <button class="tab-btn" onclick="showTab('evenements')" data-tab="evenements">
       <i class="fas fa-calendar-star"></i> Événements
     </button>
-    <button class="tab-btn" onclick="showTab('annonces')">
+    <button class="tab-btn" onclick="showTab('annonces')" data-tab="annonces">
       <i class="fas fa-bullhorn"></i> Annonces
     </button>
-    <button class="tab-btn" onclick="showTab('live')">
+    <button class="tab-btn" onclick="showTab('live')" data-tab="live">
       <i class="fas fa-circle-dot"></i> Live
     </button>
-    <button class="tab-btn" onclick="showTab('temoignages')">
+    <button class="tab-btn" onclick="showTab('temoignages')" data-tab="temoignages">
       <i class="fas fa-star"></i> Témoignages
+      <span id="temoBadge" style="display:none;background:#e74c3c;color:white;font-size:0.7rem;padding:1px 6px;border-radius:10px;margin-left:4px;"></span>
     </button>
-    <button class="tab-btn" onclick="showTab('prieres');clearPriereBadge()">
+    <button class="tab-btn" onclick="showTab('prieres');clearPriereBadge()" data-tab="prieres">
       <i class="fas fa-hands-praying"></i> Prières
       <span id="priereBadge" style="display:none;background:#e74c3c;color:white;font-size:0.7rem;padding:1px 6px;border-radius:10px;margin-left:4px;"></span>
     </button>
-    <button class="tab-btn" onclick="showTab('contacts')">
+    <button class="tab-btn" onclick="showTab('contacts')" data-tab="contacts">
       <i class="fas fa-envelope"></i> Contacts
       <span id="contactBadge" style="display:none;background:#e74c3c;color:white;font-size:0.7rem;padding:1px 6px;border-radius:10px;margin-left:4px;"></span>
     </button>
-    <button class="tab-btn" onclick="showTab('notifs')">
+    <button class="tab-btn" onclick="showTab('notifs')" data-tab="notifs">
       <i class="fas fa-bell"></i> Notifications
     </button>
   </div>
@@ -606,13 +621,13 @@
 
       <div class="card">
         <h3><i class="fas fa-bolt"></i> Actions rapides</h3>
-        <button class="btn btn-gold" style="width:100%;margin-bottom:10px" onclick="showTab('galerie')">
+        <button class="btn btn-gold" style="width:100%;margin-bottom:10px" onclick="showTab('galerie')" data-tab="galerie">
           <i class="fas fa-camera"></i> Ajouter des photos à la galerie
         </button>
-        <button class="btn btn-primary" style="width:100%;margin-bottom:10px" onclick="showTab('etude')">
+        <button class="btn btn-primary" style="width:100%;margin-bottom:10px" onclick="showTab('etude')" data-tab="etude">
           <i class="fas fa-pen"></i> Écrire une actualité
         </button>
-        <button class="btn btn-primary" style="width:100%;" onclick="showTab('annonces')">
+        <button class="btn btn-primary" style="width:100%;" onclick="showTab('annonces')" data-tab="annonces">
           <i class="fas fa-bullhorn"></i> Ajouter une annonce
         </button>
       </div>
@@ -1192,8 +1207,8 @@
     if (name === 'galerie') loadFotos();
     if (name === 'etude') chargerEtudeActive();
     if (name === 'evenements') chargerEvenements();
-    if (name === 'membres') chargerMembres();
-    if (name === 'temoignages') loadTemoignages();
+    if (name === 'membres') { chargerMembres(); setTimeout(async()=>{ try{ const s=await window._getDocs(window._collection(window._db,'membres')); localStorage.setItem('membres_seen',s.size); document.getElementById('membresBadge').style.display='none'; }catch(e){} },500); }
+    if (name === 'temoignages') { loadTemoignages(); document.getElementById('temoBadge').style.display='none'; }
     if (name === 'notifs') loadNotifCount();
     if (name === 'contacts') loadContacts();
   }
@@ -1305,6 +1320,40 @@
   checkContactBadge();
   setInterval(checkContactBadge, 30000);
 
+  // ===== BADGE TEMOIGNAGES (non approuvés) =====
+  async function checkTemoBadge() {
+    try {
+      const q = window._query(
+        window._collection(window._db, 'temoignages'),
+        window._where('approuve', '==', false)
+      );
+      const snap = await window._getDocs(q);
+      const badge = document.getElementById('temoBadge');
+      if (badge) {
+        if (snap.size > 0) { badge.style.display = 'inline'; badge.textContent = snap.size; }
+        else { badge.style.display = 'none'; }
+      }
+    } catch(e) {}
+  }
+  checkTemoBadge();
+  setInterval(checkTemoBadge, 30000);
+
+  // ===== BADGE MEMBRES (nouveaux non vus) =====
+  async function checkMembresBadge() {
+    try {
+      const snap = await window._getDocs(window._collection(window._db, 'membres'));
+      const badge = document.getElementById('membresBadge');
+      if (badge) {
+        const total = snap.size;
+        const seen  = parseInt(localStorage.getItem('membres_seen') || '0');
+        if (total > seen) { badge.style.display = 'inline'; badge.textContent = total - seen; }
+        else { badge.style.display = 'none'; }
+      }
+    } catch(e) {}
+  }
+  checkMembresBadge();
+  setInterval(checkMembresBadge, 60000);
+
   // ===== BADGE PRIERES =====
   async function checkPriereBadge() {
     try {
@@ -1407,7 +1456,7 @@
         const t = d.data();
         const approuve = t.approuve === true;
         const audioHTML = t.audioUrl
-          ? `<div style="margin:10px 0;">
+          ? `<div class="temo-audio-wrap" style="margin:10px 0;">
                <audio data-temo-audio controls src="${t.audioUrl}"
                  style="width:100%;border-radius:10px;height:44px;display:block;"
                  preload="metadata"
@@ -1447,62 +1496,44 @@
             </div>
           </div>`;
       }).join('');
-      setTimeout(initAudioBoost, 200);
     } catch(e) { console.log('Temoignages:', e.message); }
   }
 
-  // ===== AUDIO TEMOIGNAGE — Volume + 1 seul a la fois + reset =====
+  // ===== AUDIO TEMOIGNAGE — 1 seul a la fois + boost volume =====
   function stopOtherAudios(current) {
+    // Stop tout lòt audio yo
     document.querySelectorAll('[data-temo-audio]').forEach(a => {
       if (a !== current && !a.paused) { a.pause(); a.currentTime = 0; }
     });
-    // Booste volume a 2x (defaut)
-    if (current.volume !== undefined) current.volume = Math.min(current.dataset.vol || 1, 1);
-  }
-
-  function setAudioVolume(slider) {
-    const wrap = slider.closest('div').parentElement;
-    const audio = wrap.querySelector('[data-temo-audio]');
-    const val = parseFloat(slider.value);
-    const label = slider.nextElementSibling;
-    if (label) label.textContent = Math.round(val * 100) + '%';
-
-    if (val <= 1) {
-      // Volume normal (0-1)
-      audio.volume = val;
-      audio.dataset.vol = val;
-      if (audio._gainNode) { audio._gainNode.gain.value = 1; }
-    } else {
-      // Amplification via Web Audio API (1x-3x)
-      if (!audio._audioCtx) {
+    // Boost via Web Audio API si pa encore fait (sèlman apre user gesture)
+    if (!current._gainNode) {
+      try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const source = ctx.createMediaElementSource(audio);
+        const source = ctx.createMediaElementSource(current);
         const gain = ctx.createGain();
+        gain.gain.value = current._gainValue || 2;
         source.connect(gain);
         gain.connect(ctx.destination);
-        audio._audioCtx = ctx;
-        audio._gainNode = gain;
-      }
-      audio._gainNode.gain.value = val;
-      audio.volume = 1;
+        current._audioCtx = ctx;
+        current._gainNode = gain;
+      } catch(e) {}
+    }
+    if (current._audioCtx && current._audioCtx.state === 'suspended') {
+      current._audioCtx.resume();
     }
   }
 
-  // Applique volume 2x par defaut quand la liste charge
-  function initAudioBoost() {
-    document.querySelectorAll('[data-temo-audio]').forEach(audio => {
-      try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const source = ctx.createMediaElementSource(audio);
-        const gain = ctx.createGain();
-        gain.gain.value = 2;
-        source.connect(gain);
-        gain.connect(ctx.destination);
-        audio._audioCtx = ctx;
-        audio._gainNode = gain;
-        audio.volume = 1;
-      } catch(e) {}
-    });
+  function setAudioVolume(slider) {
+    const container = slider.closest('.temo-audio-wrap');
+    const audio = container ? container.querySelector('[data-temo-audio]') : null;
+    if (!audio) return;
+    const val = parseFloat(slider.value);
+    const label = slider.nextElementSibling;
+    if (label) label.textContent = Math.round(val * 100) + '%';
+    audio._gainValue = val;
+    if (audio._gainNode) {
+      audio._gainNode.gain.value = val;
+    }
   }
 
   async function approuverTemoignage(id) {
