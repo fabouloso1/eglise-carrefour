@@ -326,7 +326,7 @@
 
     // Montre siksè
     document.getElementById('gate-form').style.display    = 'none';
-    document.getElementById('gate-success').style.display = 'block'; 1.5s apre siksè
+    document.getElementById('gate-success').style.display = 'block';
   };
 
   // ===== FÈMEN GATE =====
