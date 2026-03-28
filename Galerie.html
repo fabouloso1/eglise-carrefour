@@ -556,11 +556,15 @@
     document.documentElement.style.overflow = 'hidden';
   }
 })();
-document.addEventListener('DOMContentLoaded', function() {
-  if (window.gateInit) {
-    gateInit();
-  }
-});
+// Rele gateInit — pa tann DOMContentLoaded ki deja fire nan </body>
+if (window.gateInit) {
+  gateInit();
+} else {
+  // Si gate.js pa chaje kòrèkteman, eseye ankò
+  window.addEventListener('load', function() {
+    if (window.gateInit) gateInit();
+  });
+}
 </script>
 </body>
 </html>

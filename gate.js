@@ -59,7 +59,7 @@
 
           <div id="gate-error" style="display:none;"></div>
 
-          <button id="gate-btn" onclick="gateSubmit()">
+          <button id="gate-btn">
             <i class="fas fa-check-circle"></i>
             <span>S'inscrire et accéder</span>
           </button>
@@ -74,7 +74,7 @@
           <div id="gate-success-icon">🙏</div>
           <h3>Bienvenue dans notre famille !</h3>
           <p>Votre inscription a été enregistrée. Vous avez maintenant accès à toutes les pages.</p>
-          <button onclick="gateFermer()" id="gate-continue-btn">
+          <button id="gate-continue-btn">
             <i class="fas fa-arrow-right"></i> Continuer
           </button>
         </div>
@@ -274,6 +274,12 @@
 
     document.head.appendChild(style);
     document.body.appendChild(overlay);
+
+    // Event listeners dirèkteman — pa depann sou onclick global
+    var btnSubmit   = document.getElementById('gate-btn');
+    var btnContinue = document.getElementById('gate-continue-btn');
+    if (btnSubmit)   btnSubmit.addEventListener('click', window.gateSubmit);
+    if (btnContinue) btnContinue.addEventListener('click', window.gateFermer);
   }
 
   // ===== SOUMÈT ENSKRIPSYON =====
@@ -358,7 +364,7 @@
             Votre accès à ce site a été temporairement suspendu.<br>
             Veuillez contacter le Pasteur pour rétablir votre accès.
           </p>
-          <a href="tel:+50912345678"
+          <a href="tel:+50931573591"
             style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#f1c40f,#e67e22);color:#0f0c2e;padding:14px 28px;border-radius:30px;font-weight:800;font-size:1rem;text-decoration:none;margin-bottom:12px;">
             <i class="fas fa-phone"></i> Contacter le Pasteur
           </a>
