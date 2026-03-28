@@ -971,27 +971,7 @@
   verifierAcces();
 </script>
 <script src="pwa.js"></script>
+
 <script src="gate.js"></script>
-<script>
-// Bloke imedyatman si pa enskri
-(function() {
-  var d = localStorage.getItem('eglise_membre');
-  var ok = false;
-  try { var m = JSON.parse(d || '{}'); ok = !!(m.nom && m.telephone); } catch(e) {}
-  if (!ok) {
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
-  }
-})();
-// Rele gateInit — pa tann DOMContentLoaded ki deja fire nan </body>
-if (window.gateInit) {
-  gateInit();
-} else {
-  // Si gate.js pa chaje kòrèkteman, eseye ankò
-  window.addEventListener('load', function() {
-    if (window.gateInit) gateInit();
-  });
-}
-</script>
 </body>
 </html>
