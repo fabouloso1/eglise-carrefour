@@ -445,22 +445,24 @@
 </script>
 <script src="pwa.js"></script>
 
+
 <script src="gate.js"></script>
-<script>// Bloke paj la imedyatman si pa enskri
-    (function(){
-      var d = localStorage.getItem('eglise_membre');
-      var ok = false;
-      try { var m = JSON.parse(d||'{}'); ok = !!(m.nom && m.telephone); } catch(e){}
-      if (!ok) { document.body.style.overflow='hidden'; }
-    })();
-    document.addEventListener('DOMContentLoaded', function(){
-  if(window.gateInit) {
-    gateInit();
-  } else {
-    // Si gate.js pa chaje, debloke paj la
-    document.documentElement.style.visibility = '';
-    document.documentElement.style.overflow = '';
+<script>
+// Bloke imedyatman si pa enskri
+(function() {
+  var d = localStorage.getItem('eglise_membre');
+  var ok = false;
+  try { var m = JSON.parse(d || '{}'); ok = !!(m.nom && m.telephone); } catch(e) {}
+  if (!ok) {
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
   }
-});</script>
+})();
+document.addEventListener('DOMContentLoaded', function() {
+  if (window.gateInit) {
+    gateInit();
+  }
+});
+</script>
 </body>
 </html>

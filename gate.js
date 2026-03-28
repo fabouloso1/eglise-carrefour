@@ -370,44 +370,46 @@
     document.body.appendChild(blok);
   }
 
-  // Paj ki pwoteje
-  var PROTECTED_PAGES = ['priere.html','Temoigner.html','Guide.html','Galerie.html','Live.html'];
-  var currentPage = window.location.pathname.split('/').pop();
-  var isProtected = PROTECTED_PAGES.some(function(p) { return currentPage === p; });
+  // Paj ki pwoteje — Etude.html ajoute
+  var PROTECTED_PAGES = [
+    'priere.html','Temoigner.html','Guide.html',
+    'Galerie.html','Etude.html','Live.html'
+  ];
 
   window.gateInit = async function() {
+    // 1. Verifye si paj sa pwoteje
+    var currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    var isProtected = PROTECTED_PAGES.some(function(p) {
+      return currentPage === p;
+    });
+
+    // 2. Si pa enskri — montre modal enskripsyon
     if (!estInscrit()) {
-      // Bloke kontni paj la imedyatman
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow   = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
       montreGate();
       return;
     }
 
-    // Si enskri — verifye si li bloke nan Firebase
+    // 3. Si enskri — verifye si li bloke nan Firebase
     try {
       const membre = JSON.parse(localStorage.getItem('eglise_membre') || '{}');
       const tel    = membre.telephone || '';
-      const nom    = membre.nom || '';
       if (!tel) return;
 
-      // Chèche nan Firebase si moun sa bloke
       const firebase = window.firebase;
       if (!firebase || !firebase.apps || !firebase.apps.length) return;
 
-      const db   = firebase.firestore();
-      const snap = await db.collection('membres')
+      const snap = await firebase.firestore()
+        .collection('membres')
         .where('telephone', '==', tel)
         .limit(1)
         .get();
 
-      if (!snap.empty) {
-        const data = snap.docs[0].data();
-        if (data.bloque === true) {
-          montreEkranBloke();
-        }
+      if (!snap.empty && snap.docs[0].data().bloque === true) {
+        montreEkranBloke();
       }
     } catch(e) {
-      // Si Firebase pa disponib, laisse passer
       console.log('Gate check:', e.message);
     }
   };
