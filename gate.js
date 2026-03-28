@@ -77,6 +77,7 @@ function montreGate() {
 
   document.body.style.overflow = 'hidden';
   document.documentElement.style.overflow = 'hidden';
+  document.documentElement.style.visibility = 'visible';
 
   var ov = document.createElement('div');
   ov.id = 'gate-overlay';
@@ -174,6 +175,11 @@ function gateInit() {
         }).catch(function() {});
     }
   } catch(e) {}
+}
+
+// Fonksyon pou bouton nan Navigasyon an
+function gateShowFromNav() {
+  montreGate();
 }
 
 // Rele gateInit otomatikman
