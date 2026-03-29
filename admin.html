@@ -644,40 +644,61 @@
     <div class="tab-panel" id="tab-galerie">
 
       <!-- Ajoute foto -->
-      <div class="card">
-        <h3><i class="fas fa-camera"></i> Ajouter des photos à la galerie</h3>
+      <div style="background:linear-gradient(135deg,#0d1b3e,#1a1150);border-radius:20px;padding:24px 20px;margin-bottom:16px;border:1px solid rgba(108,92,231,0.3);">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+          <div style="width:48px;height:48px;background:linear-gradient(135deg,#6c5ce7,#a29bfe);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fas fa-camera" style="color:white;font-size:1.2rem;"></i>
+          </div>
+          <div>
+            <h3 style="color:white!important;font-size:1.1rem!important;font-weight:800!important;margin:0!important;">Ajouter des photos</h3>
+            <p style="color:rgba(255,255,255,0.5)!important;font-size:0.82rem!important;margin:0!important;">Publiez vos photos sur la galerie du site</p>
+          </div>
+        </div>
 
-        <label>Description de la photo (optionnel)</label>
-        <input type="text" id="fotoDesc" placeholder="Ex : Culte dimanche 15 juin..." />
+        <label style="display:block;color:#a29bfe!important;font-weight:700!important;font-size:0.88rem!important;margin-bottom:6px;">Description (optionnel)</label>
+        <input type="text" id="fotoDesc" placeholder="Ex : Culte dimanche 15 juin..."
+          style="width:100%;padding:12px 14px;border:2px solid rgba(162,155,254,0.3);border-radius:12px;background:rgba(255,255,255,0.07);color:white;font-size:0.95rem;box-sizing:border-box;margin-bottom:14px;" />
 
-        <div class="upload-zone" id="uploadZone">
+        <div class="upload-zone" id="uploadZone"
+          style="border:2px dashed rgba(162,155,254,0.5);border-radius:14px;padding:28px;text-align:center;cursor:pointer;background:rgba(108,92,231,0.08);transition:all 0.2s;">
           <input type="file" id="fotoInput" accept="image/*" multiple onchange="handleFotoSelect(event)">
-          <i class="fas fa-cloud-upload-alt"></i>
-          <p><strong>Cliquer pour choisir des photos</strong><br>ou glisser-déposer ici<br><small style="color:#aaa">JPG, PNG — max 5MB chacune</small></p>
+          <i class="fas fa-cloud-upload-alt" style="font-size:2.2rem;color:#a29bfe;display:block;margin-bottom:10px;"></i>
+          <p style="color:white!important;font-weight:700!important;margin:0 0 4px!important;">Cliquer pour choisir des photos</p>
+          <small style="color:rgba(255,255,255,0.4);">JPG, PNG — max 5MB chacune</small>
         </div>
 
         <div class="photo-preview" id="photoPreview"></div>
 
-        <button class="btn btn-gold" id="uploadBtn" onclick="uploadFotos()" style="width:100%" disabled>
+        <button id="uploadBtn" onclick="uploadFotos()" disabled
+          style="width:100%;margin-top:14px;padding:14px;background:linear-gradient(135deg,#6c5ce7,#a29bfe);color:white;border:none;border-radius:30px;font-size:1rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
           <i class="fas fa-upload"></i> Publier les photos sur le site
         </button>
       </div>
 
       <!-- Ajoute video -->
-      <div class="card">
-        <h3><i class="fas fa-video" style="color:var(--gold)"></i> Ajouter une vidéo à la galerie</h3>
+      <div style="background:linear-gradient(135deg,#0d3b2e,#1a4a1a);border-radius:20px;padding:24px 20px;margin-bottom:16px;border:1px solid rgba(46,213,115,0.3);">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+          <div style="width:48px;height:48px;background:linear-gradient(135deg,#00b894,#2ed573);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fas fa-video" style="color:white;font-size:1.2rem;"></i>
+          </div>
+          <div>
+            <h3 style="color:white!important;font-size:1.1rem!important;font-weight:800!important;margin:0!important;">Ajouter une vidéo</h3>
+            <p style="color:rgba(255,255,255,0.5)!important;font-size:0.82rem!important;margin:0!important;">Publiez vos vidéos sur la galerie du site</p>
+          </div>
+        </div>
+        <h3 style="display:none"><i class="fas fa-video" style="color:var(--gold)"></i> Ajouter une vidéo à la galerie</h3>
 
-        <label>Titre de la vidéo *</label>
-        <input type="text" id="videoTitre" placeholder="Ex : Culte du dimanche 15 juin..." />
+        <label style="display:block;color:#2ed573!important;font-weight:700!important;font-size:0.88rem!important;margin-bottom:6px;">Titre de la vidéo *</label>
+        <input type="text" id="videoTitre" placeholder="Ex : Culte du dimanche 15 juin..." style="width:100%;padding:12px 14px;border:2px solid rgba(46,213,115,0.3);border-radius:12px;background:rgba(255,255,255,0.07);color:white;font-size:0.95rem;box-sizing:border-box;margin-bottom:14px;" />
 
-        <label>Description (optionnel)</label>
-        <input type="text" id="videoDesc" placeholder="Ex : Message du Pasteur Anouis Jean..." />
+        <label style="display:block;color:#2ed573!important;font-weight:700!important;font-size:0.88rem!important;margin-bottom:6px;">Description (optionnel)</label>
+        <input type="text" id="videoDesc" placeholder="Ex : Message du Pasteur..." style="width:100%;padding:12px 14px;border:2px solid rgba(46,213,115,0.3);border-radius:12px;background:rgba(255,255,255,0.07);color:white;font-size:0.95rem;box-sizing:border-box;margin-bottom:14px;" />
 
-        <label>Fichier vidéo *</label>
+        <label style="display:block;color:#2ed573!important;font-weight:700!important;font-size:0.88rem!important;margin-bottom:6px;">Fichier vidéo *</label>
         <div id="videoDropZone" onclick="document.getElementById('videoFileInput').click()"
-          style="border:2px dashed var(--gold);border-radius:12px;padding:30px;text-align:center;cursor:pointer;background:#fffde7;transition:background 0.2s;"
+          style="border:2px dashed rgba(46,213,115,0.5);border-radius:14px;padding:28px;text-align:center;cursor:pointer;background:rgba(46,213,115,0.06);transition:all 0.2s;"
           ondragover="event.preventDefault();this.style.background='#fff8c4'"
-          ondragleave="this.style.background='#fffde7'"
+          ondragleave="this.style.background='rgba(46,213,115,0.06)'"
           ondrop="handleVideoDrop(event)">
           <input type="file" id="videoFileInput" accept="video/*" style="display:none" onchange="handleVideoSelect(event)">
           <i class="fas fa-cloud-upload-alt" style="font-size:2rem;color:var(--gold);display:block;margin-bottom:10px;"></i>
@@ -700,17 +721,25 @@
           <p id="videoProgressText" style="text-align:center;font-size:0.82rem;color:#888;margin-top:6px;">0%</p>
         </div>
 
-        <button class="btn btn-gold" id="publishVideoBtn" onclick="publishVideo()" style="width:100%;margin-top:16px;" disabled>
+        <button id="publishVideoBtn" onclick="publishVideo()" disabled style="width:100%;margin-top:16px;padding:14px;background:linear-gradient(135deg,#00b894,#2ed573);color:white;border:none;border-radius:30px;font-size:1rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
           <i class="fas fa-upload"></i> Publier la vidéo sur le site
         </button>
         <div id="videoStatus" style="display:none;margin-top:10px;padding:12px;border-radius:10px;text-align:center;font-weight:700;"></div>
       </div>
 
       <!-- Foto existant yo -->
-      <div class="card">
-        <h3><i class="fas fa-th"></i> Photos en galerie (<span id="fotoCount">0</span>)</h3>
+      <div style="background:linear-gradient(135deg,#1a0a2e,#2d1050);border-radius:20px;padding:22px 18px;border:1px solid rgba(241,196,15,0.2);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:44px;height:44px;background:linear-gradient(135deg,#f1c40f,#e67e22);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+            <i class="fas fa-images" style="color:#0d1b3e;font-size:1.1rem;"></i>
+          </div>
+          <div>
+            <h3 style="color:white!important;font-size:1rem!important;font-weight:800!important;margin:0!important;">Photos en galerie (<span id="fotoCount">0</span>)</h3>
+            <p style="color:rgba(255,255,255,0.4)!important;font-size:0.8rem!important;margin:0!important;">Gérez les photos publiées</p>
+          </div>
+        </div>
         <div class="item-list" id="fotoList">
-          <p style="color:#aaa;text-align:center;padding:20px;font-size:0.85rem;">Chargement des photos...</p>
+          <p style="color:rgba(255,255,255,0.3);text-align:center;padding:20px;">Chargement...</p>
         </div>
       </div>
     </div>
