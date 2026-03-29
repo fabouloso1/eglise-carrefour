@@ -2360,8 +2360,15 @@
   async function reinitialiserMembre(id, nom) {
     if (!confirm('Réinitialiser ' + nom + ' ? Il devra se réinscrire pour accéder au site.')) return;
     try {
+      const snap = await window._getDoc(window._doc(window._db, 'membres', id));
+      const tel  = snap.exists() ? snap.data().telephone : null;
       await window._deleteDoc(window._doc(window._db, 'membres', id));
-      showToast(nom + ' réinitialisé !');
+      if (tel) {
+        await window._setDoc(window._doc(window._db, 'reinscription_required', tel.replace(/\D/g,'')), {
+          telephone: tel, date: new Date().toISOString(), reason: 'reinitialise_par_pasteur'
+        });
+      }
+      showToast(nom + ' réinitialisé — devra se réinscrire !');
       chargerMembres();
     } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
   }
@@ -2369,8 +2376,15 @@
   async function supprimerMembre(id) {
     if (!confirm('Supprimer définitivement ce membre ?')) return;
     try {
+      const snap = await window._getDoc(window._doc(window._db, 'membres', id));
+      const tel  = snap.exists() ? snap.data().telephone : null;
       await window._deleteDoc(window._doc(window._db, 'membres', id));
-      showToast('Membre supprimé !');
+      if (tel) {
+        await window._setDoc(window._doc(window._db, 'reinscription_required', tel.replace(/\D/g,'')), {
+          telephone: tel, date: new Date().toISOString(), reason: 'supprime_par_pasteur'
+        });
+      }
+      showToast('Membre supprimé définitivement !');
       chargerMembres();
     } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
   }

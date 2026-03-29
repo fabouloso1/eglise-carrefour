@@ -161,17 +161,33 @@ function gateInit() {
     montreGate();
     return;
   }
-  // Verifye si bloke nan Firebase
+
   try {
     var m = JSON.parse(localStorage.getItem(GATE_STORAGE) || '{}');
     if (!m.telephone) return;
+    var telKey = m.telephone.replace(/\D/g, '');
+
     if (window.firebase && firebase.apps && firebase.apps.length) {
-      firebase.firestore().collection('membres')
-        .where('telephone', '==', m.telephone).limit(1).get()
-        .then(function(snap) {
-          if (!snap.empty && snap.docs[0].data().bloque === true) {
-            montreEkranBloke();
+      var db = firebase.firestore();
+
+      // 1. Verifye si Pastè efase moun nan — reinskripsyon obligatwa
+      db.collection('reinscription_required').doc(telKey).get()
+        .then(function(doc) {
+          if (doc.exists) {
+            // Efase localStorage — fòse reinskripsyon
+            localStorage.removeItem('eglise_membre');
+            db.collection('reinscription_required').doc(telKey).delete();
+            montreGate();
+            return;
           }
+          // 2. Verifye si bloke
+          db.collection('membres')
+            .where('telephone', '==', m.telephone).limit(1).get()
+            .then(function(snap) {
+              if (!snap.empty && snap.docs[0].data().bloque === true) {
+                montreEkranBloke();
+              }
+            }).catch(function() {});
         }).catch(function() {});
     }
   } catch(e) {}
