@@ -50,7 +50,7 @@ function gateSubmit() {
           telephone: { stringValue: tel },
           ville:     { stringValue: vil.trim() },
           date:      { stringValue: new Date().toLocaleDateString('fr-FR') },
-          timestamp: { stringValue: new Date().toISOString() }
+          timestamp: { timestampValue: new Date().toISOString() }
         }
       })
     });

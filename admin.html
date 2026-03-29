@@ -1494,7 +1494,7 @@
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
                   <div style="width:36px;height:36px;background:linear-gradient(135deg,#f1c40f,#e67e22);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#1c1c3c;font-size:0.9rem;flex-shrink:0;">${(t.nom||'A')[0].toUpperCase()}</div>
                   <div>
-                    <div style="color:#1a3a5c!important;font-weight:800!important;font-size:1rem!important;">${t.nom||'Anonyme'}</div>
+                    <div style="color:white!important;font-weight:800!important;font-size:1rem!important;">${t.nom||'Anonyme'}</div>
                     <div style="color:#7fb3d3;font-size:0.75rem;">${t.categorie||''} · ${t.dateEvenement||t.date||''}</div>
                   </div>
                   <span style="margin-left:auto;padding:3px 12px;border-radius:20px;font-size:0.78rem;font-weight:700;background:${approuve?'rgba(39,174,96,0.12)':'rgba(230,126,34,0.12)'};color:${approuve?'#27ae60':'#e67e22'};">
@@ -2281,65 +2281,66 @@
   // ===== MEMBRES =====
   async function chargerMembres() {
     try {
-      const snap = await window._getDocs(window._query(window._collection(window._db, 'membres'), window._orderBy('date', 'desc')));
-      const list = snap.docs.map(d => ({id:d.id,...d.data()}));
-      const el    = document.getElementById('membresCount');
+      // Chaje TOUT membres — sans orderBy pou evite pwoblèm index
+      const snap = await window._getDocs(window._collection(window._db, 'membres'));
+      const list = snap.docs.map(d => ({id: d.id, ...d.data()}));
+
+      // Triye nan JavaScript — pa nan Firestore
+      list.sort(function(a, b) {
+        const ta = a.timestamp ? (a.timestamp.seconds || 0) : 0;
+        const tb = b.timestamp ? (b.timestamp.seconds || 0) : 0;
+        return tb - ta; // Pi nouvo anwo
+      });
+
+      const el     = document.getElementById('membresCount');
       const listEl = document.getElementById('membresList');
       if (el) el.textContent = list.length;
+
       if (!list.length) {
         listEl.innerHTML = '<p style="color:rgba(255,255,255,0.3);text-align:center;padding:30px;">Aucun membre inscrit.</p>';
         return;
       }
+
       listEl.innerHTML = list.map(m => {
         const bloque = m.bloque === true;
-        return `
-        <div style="background:${bloque?'rgba(231,76,60,0.12)':'rgba(255,255,255,0.06)'};border-radius:14px;padding:14px 16px;margin-bottom:10px;border-left:4px solid ${bloque?'#ff6b6b':'#f1c40f'};">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-            <div style="width:42px;height:42px;background:${bloque?'rgba(231,76,60,0.2)':'rgba(241,196,15,0.15)'};border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-              <i class="fas fa-${bloque?'ban':'user'}" style="color:${bloque?'#ff6b6b':'#f1c40f'};"></i>
-            </div>
-            <div style="flex:1;">
-              <div style="color:#1a3a5c!important;font-weight:800!important;font-size:1rem!important;">
-                ${m.nom||'—'}
-                ${bloque?'<span style="background:rgba(231,76,60,0.25);color:#ff6b6b;font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px;">BLOQUÉ</span>':''}
-              </div>
-              <div style="font-size:0.82rem;color:rgba(255,255,255,0.55);margin-top:2px;">
-                <i class="fas fa-phone" style="color:#f1c40f;margin-right:4px;"></i>${m.telephone||'—'}
-                ${m.ville?'<span style="margin-left:8px;"><i class="fas fa-map-marker-alt" style="color:#f1c40f;margin-right:4px;"></i>'+m.ville+'</span>':''}
-              </div>
-              <div style="font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:2px;">${
-                m.timestamp ? new Date(m.timestamp).toLocaleDateString('fr-FR') :
-                m.date || '—'
-              }</div>
-            </div>
-          </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            ${bloque
-              ? `<button onclick="debloquerMembre('${m.id}')"
-                  style="flex:1;padding:9px 12px;background:rgba(46,213,115,0.2);border:1.5px solid #2ed573;border-radius:20px;color:#2ed573;font-size:0.85rem;font-weight:700;cursor:pointer;">
-                  <i class="fas fa-unlock"></i> Débloquer
-                </button>`
-              : `<button onclick="bloquerMembre('${m.id}','${(m.nom||'').replace(/'/g,'')}')"
-                  style="flex:1;padding:9px 12px;background:rgba(231,76,60,0.15);border:1.5px solid rgba(231,76,60,0.4);border-radius:20px;color:#ff6b6b;font-size:0.85rem;font-weight:700;cursor:pointer;">
-                  <i class="fas fa-ban"></i> Bloquer
-                </button>`
-            }
-            <button onclick="reinitialiserMembre('${m.id}','${(m.nom||'').replace(/'/g,'')}')"
-              style="padding:9px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:20px;color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:700;cursor:pointer;"
-              title="Supprimer l'inscription (la personne devra se réinscrire)">
-              <i class="fas fa-redo"></i> Réinitialiser
-            </button>
-            <button onclick="supprimerMembre('${m.id}')"
-              style="padding:9px 12px;background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.25);border-radius:20px;color:#ff6b6b;font-size:0.85rem;cursor:pointer;">
-              <i class="fas fa-trash"></i>
-            </button>
-          </div>
-        </div>`;
+        const nom    = m.nom || '—';
+        const tel    = m.telephone || '—';
+        const ville  = m.ville || '';
+        const date   = m.date || '—';
+
+        return '<div style="background:' + (bloque ? 'rgba(231,76,60,0.12)' : 'rgba(255,255,255,0.06)') + ';border-radius:14px;padding:14px 16px;margin-bottom:10px;border-left:4px solid ' + (bloque ? '#ff6b6b' : '#f1c40f') + ';">' +
+          '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">' +
+            '<div style="width:42px;height:42px;background:' + (bloque ? 'rgba(231,76,60,0.2)' : 'rgba(241,196,15,0.15)') + ';border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
+              '<i class="fas fa-' + (bloque ? 'ban' : 'user') + '" style="color:' + (bloque ? '#ff6b6b' : '#f1c40f') + ';"></i>' +
+            '</div>' +
+            '<div style="flex:1;">' +
+              '<div style="color:white!important;font-weight:800!important;font-size:1rem!important;">' + nom +
+                (bloque ? ' <span style="background:rgba(231,76,60,0.25);color:#ff6b6b;font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px;">BLOQUÉ</span>' : '') +
+              '</div>' +
+              '<div style="font-size:0.85rem;color:rgba(255,255,255,0.7);margin-top:3px;">' +
+                '<i class="fas fa-phone" style="color:#f1c40f;margin-right:5px;"></i>' + tel +
+                (ville ? ' &nbsp;·&nbsp; <i class="fas fa-map-marker-alt" style="color:#f1c40f;margin-right:4px;"></i>' + ville : '') +
+              '</div>' +
+              '<div style="font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:2px;">' + date + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+            (bloque
+              ? '<button onclick="debloquerMembre('' + m.id + '')" style="flex:1;padding:9px 12px;background:rgba(46,213,115,0.2);border:1.5px solid #2ed573;border-radius:20px;color:#2ed573;font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-unlock"></i> Débloquer</button>'
+              : '<button onclick="bloquerMembre('' + m.id + '','' + nom.replace(/'/g, '') + '')" style="flex:1;padding:9px 12px;background:rgba(231,76,60,0.15);border:1.5px solid rgba(231,76,60,0.4);border-radius:20px;color:#ff6b6b;font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-ban"></i> Bloquer</button>') +
+            '<button onclick="reinitialiserMembre('' + m.id + '','' + nom.replace(/'/g, '') + '')" style="padding:9px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:20px;color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-redo"></i> Réinitialiser</button>' +
+            '<button onclick="supprimerMembre('' + m.id + '')" style="padding:9px 12px;background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.25);border-radius:20px;color:#ff6b6b;font-size:0.85rem;cursor:pointer;"><i class="fas fa-trash"></i></button>' +
+          '</div>' +
+        '</div>';
       }).join('');
-    } catch(e) { console.log('Membres:', e.message); }
+
+    } catch(e) {
+      console.log('Membres erreur:', e);
+      document.getElementById('membresList').innerHTML = '<p style="color:#e74c3c;padding:20px;text-align:center;">Erreur: ' + e.message + '</p>';
+    }
   }
 
-  async function bloquerMembre(id, nom) {
+    async function bloquerMembre(id, nom) {
     if (!confirm('Bloquer ' + nom + ' ? Il ne pourra plus accéder au site.')) return;
     try {
       await window._updateDoc(window._doc(window._db, 'membres', id), { bloque: true });
