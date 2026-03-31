@@ -312,6 +312,163 @@
     </button>
   </div>
 <!-- Gate.js APRE Firebase — garanti lòd la -->
+<!-- Bouton Notifikasyon -->
+<style>
+#notif-btn {
+  position: fixed; bottom: 90px; right: 20px;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 9990;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  border: none; transition: all 0.3s;
+  background: linear-gradient(135deg, #1c1c3c, #2d1b4e);
+  border: 2px solid rgba(241,196,15,0.4);
+}
+#notif-btn:hover { transform: scale(1.1); }
+#notif-btn i { color: #f1c40f; font-size: 1.3rem; }
+#notif-btn.active { background: linear-gradient(135deg,#2ed573,#1abc9c); border-color: #2ed573; }
+#notif-btn.active i { color: white; }
+#notif-btn.blocked { background: linear-gradient(135deg,#e74c3c,#c0392b); border-color: #e74c3c; }
+#notif-btn.blocked i { color: white; }
+</style>
+
+<div id="notif-btn" onclick="clicNotif()" title="Notifications">
+  <i class="fas fa-bell" id="notif-icon"></i>
+</div>
+
+<script src="notif.js"></script>
+<script>
+async function clicNotif() {
+  const btn  = document.getElementById('notif-btn');
+  const icon = document.getElementById('notif-icon');
+
+  if (!window.notifEstSupporte || !notifEstSupporte()) {
+    alert('Votre navigateur ne supporte pas les notifications.');
+    return;
+  }
+
+  if (window.notifPermission && notifPermission() === 'denied') {
+    alert('Notifications bloquées. Activez-les dans les paramètres de votre navigateur.');
+    return;
+  }
+
+  if (window.notifEstAbonne && notifEstAbonne()) {
+    alert('✅ Vous êtes déjà abonné aux notifications!');
+    return;
+  }
+
+  // Montre modal enskripsyon si pa enskri
+  const membre = JSON.parse(localStorage.getItem('eglise_membre') || '{}');
+  if (!membre.nom) {
+    // Mande non anvan notif
+    showNotifModal();
+    return;
+  }
+
+  // Aktive notif dirèkteman
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="color:#f1c40f"></i>';
+  const ok = await activerNotifications();
+  if (ok) {
+    btn.className = 'active';
+    icon.className = 'fas fa-bell';
+    btn.innerHTML = '<i class="fas fa-bell" style="color:white"></i>';
+    // Ti toast
+    showNotifToast('🔔 Notifications activées!', '#2ed573');
+  } else {
+    btn.className = 'blocked';
+    btn.innerHTML = '<i class="fas fa-bell-slash" style="color:white"></i>';
+  }
+}
+
+function showNotifModal() {
+  const modal = document.createElement('div');
+  modal.id = 'notif-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(7,0,30,0.88);z-index:99999;display:flex;align-items:flex-end;justify-content:center;';
+  modal.innerHTML = `
+    <div style="background:linear-gradient(160deg,#0f0c2e,#1a0a3c);border-radius:28px 28px 0 0;padding:32px 24px 48px;width:100%;max-width:500px;border-top:4px solid #f1c40f;">
+      <div style="text-align:center;margin-bottom:22px;">
+        <div style="font-size:2.5rem;margin-bottom:10px;">🔔</div>
+        <h2 style="color:#f1c40f;font-size:1.3rem;font-weight:800;margin-bottom:8px;">Activer les notifications</h2>
+        <p style="color:rgba(255,255,255,0.7);font-size:0.92rem;line-height:1.6;">Recevez les annonces, études et rappels de l'église directement sur votre téléphone.</p>
+      </div>
+      <div style="margin-bottom:12px;">
+        <label style="display:block;color:#f1c40f;font-weight:700;font-size:0.88rem;margin-bottom:6px;">Votre nom *</label>
+        <input type="text" id="notif-modal-nom" placeholder="Ex: Marie Joseph..."
+          style="width:100%;padding:13px;border:2px solid rgba(241,196,15,0.3);border-radius:12px;background:rgba(255,255,255,0.08);color:white;font-size:1rem;box-sizing:border-box;">
+      </div>
+      <div style="margin-bottom:20px;">
+        <label style="display:block;color:#f1c40f;font-weight:700;font-size:0.88rem;margin-bottom:6px;">Téléphone (optionnel)</label>
+        <input type="tel" id="notif-modal-tel" placeholder="Ex: +509 3700 0000..."
+          style="width:100%;padding:13px;border:2px solid rgba(241,196,15,0.3);border-radius:12px;background:rgba(255,255,255,0.08);color:white;font-size:1rem;box-sizing:border-box;">
+      </div>
+      <button onclick="soumettreNotifModal()"
+        style="width:100%;padding:15px;background:linear-gradient(135deg,#f1c40f,#e67e22);color:#0f0c2e;border:none;border-radius:50px;font-size:1.05rem;font-weight:800;cursor:pointer;margin-bottom:10px;">
+        <i class="fas fa-bell"></i> Activer les notifications
+      </button>
+      <button onclick="document.getElementById('notif-modal').remove()"
+        style="width:100%;padding:12px;background:transparent;border:1px solid rgba(255,255,255,0.2);border-radius:50px;color:rgba(255,255,255,0.5);font-size:0.9rem;cursor:pointer;">
+        Plus tard
+      </button>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+async function soumettreNotifModal() {
+  const nom = document.getElementById('notif-modal-nom').value.trim();
+  const tel = document.getElementById('notif-modal-tel').value.trim();
+  if (!nom) { alert('Veuillez saisir votre nom.'); return; }
+
+  // Sove info
+  localStorage.setItem('eglise_membre', JSON.stringify({ nom, telephone: tel, date: new Date().toLocaleDateString('fr-FR') }));
+  
+  // Sove nan Firebase
+  try {
+    if (window.firebase && firebase.apps.length) {
+      firebase.firestore().collection('membres').add({
+        nom, telephone: tel, date: new Date().toLocaleDateString('fr-FR'),
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+  } catch(e) {}
+
+  document.getElementById('notif-modal').remove();
+
+  // Aktive notif
+  const btn = document.getElementById('notif-btn');
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="color:#f1c40f"></i>';
+  const ok = await activerNotifications();
+  if (ok) {
+    btn.className = 'active';
+    btn.innerHTML = '<i class="fas fa-bell" style="color:white"></i>';
+    showNotifToast('🔔 ' + nom + ', notifications activées!', '#2ed573');
+  } else {
+    btn.innerHTML = '<i class="fas fa-bell" style="color:#f1c40f"></i>';
+  }
+}
+
+function showNotifToast(msg, color) {
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:160px;left:50%;transform:translateX(-50%);background:' + color + ';color:white;padding:12px 24px;border-radius:30px;font-weight:700;z-index:99999;font-size:0.95rem;box-shadow:0 4px 16px rgba(0,0,0,0.3);';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+// Mete ajou aparans bouton selon eta
+document.addEventListener('DOMContentLoaded', function() {
+  const btn = document.getElementById('notif-btn');
+  if (!btn) return;
+  if (window.notifEstAbonne && notifEstAbonne()) {
+    btn.className = 'active';
+    btn.innerHTML = '<i class="fas fa-bell" style="color:white"></i>';
+  } else if (window.Notification && Notification.permission === 'denied') {
+    btn.className = 'blocked';
+    btn.innerHTML = '<i class="fas fa-bell-slash" style="color:white"></i>';
+  }
+});
+</script>
+
 <script src="gate.js"></script>
 </body>
 </html>

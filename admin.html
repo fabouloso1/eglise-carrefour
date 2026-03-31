@@ -1093,50 +1093,60 @@
 
     <!-- TAB NOTIFIKASYON -->
     <div class="tab-panel" id="tab-notifs">
-      <div class="card">
-        <h3><i class="fas fa-bell" style="color:var(--gold)"></i> Envoyer une notification</h3>
-        <p style="font-size:1rem;color:#888;margin-bottom:20px;">Envoyez une notification push à tous les abonnés du site.</p>
 
-        <div style="display:flex;flex-direction:column;gap:14px;max-width:500px;">
-          <div>
-            <label style="font-weight:600;display:block;margin-bottom:6px;">Titre <span style="color:red">*</span></label>
-            <input type="text" id="notifTitle" placeholder="Ex: Nouveau message du pasteur" 
-              style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:1rem;">
+      <!-- Voye notif -->
+      <div style="background:linear-gradient(135deg,#1a0a3c,#0d1f4a);border-radius:20px;padding:24px 20px;margin-bottom:16px;border:1px solid rgba(241,196,15,0.2);">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+          <div style="width:48px;height:48px;background:linear-gradient(135deg,#f1c40f,#e67e22);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fas fa-paper-plane" style="color:#0d1f4a;font-size:1.2rem;"></i>
           </div>
           <div>
-            <label style="font-weight:600;display:block;margin-bottom:6px;">Message <span style="color:red">*</span></label>
-            <textarea id="notifBody" rows="3" placeholder="Ex: Un nouveau message a été publié sur le site..."
-              style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:1rem;resize:vertical;"></textarea>
+            <h3 style="color:white!important;font-size:1.1rem!important;font-weight:800!important;margin:0!important;">Envoyer une notification</h3>
+            <p style="color:rgba(255,255,255,0.5)!important;font-size:0.82rem!important;margin:0!important;">Push notification pour tous les abonnés</p>
           </div>
-          <div>
-            <label style="font-weight:600;display:block;margin-bottom:6px;">Lien (optionnel)</label>
-            <input type="text" id="notifLink" placeholder="https://fabouloso1.github.io/eglise-carrefour/index.html"
-              style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:1rem;">
-          </div>
-          <button onclick="envoyerNotification()"
-            style="background:var(--gold);color:#1c1c3c;font-weight:700;padding:12px;border:none;border-radius:8px;font-size:1rem;cursor:pointer;">
-            <i class="fas fa-paper-plane"></i> Envoyer à tous les abonnés
-          </button>
-          <div id="notifStatus" style="display:none;padding:12px;border-radius:8px;text-align:center;font-weight:600;"></div>
         </div>
 
-        <div style="margin-top:30px;padding-top:20px;border-top:1px solid #eee;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
-            <h4 style="margin:0;"><i class="fas fa-users"></i> Abonnés 
-              <span id="notifCount" style="font-size:1rem;font-weight:700;color:var(--gold);margin-left:8px;">
-                <i class="fas fa-spinner fa-spin"></i>
-              </span>
-            </h4>
-            <button onclick="reinitialiserAbonnes()"
-              style="background:#e74c3c;color:white;border:none;padding:7px 14px;border-radius:8px;font-size:0.85rem;cursor:pointer;font-weight:600;">
-              <i class="fas fa-trash"></i> Réinitialiser les abonnés
-            </button>
+        <div style="margin-bottom:12px;">
+          <label style="display:block;color:#f1c40f!important;font-weight:700!important;font-size:0.88rem!important;margin-bottom:6px;"><i class="fas fa-heading" style="margin-right:5px;"></i>Titre *</label>
+          <input type="text" id="notifTitle" placeholder="Ex: Nouvelle annonce importante..."
+            style="width:100%;padding:12px 14px;border:2px solid rgba(241,196,15,0.3);border-radius:12px;background:rgba(255,255,255,0.07);color:white;font-size:0.95rem;box-sizing:border-box;">
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <label style="display:block;color:#f1c40f!important;font-weight:700!important;font-size:0.88rem!important;margin-bottom:6px;"><i class="fas fa-align-left" style="margin-right:5px;"></i>Message *</label>
+          <textarea id="notifBody" rows="3" placeholder="Ex: Un culte spécial aura lieu dimanche à 6h00..."
+            style="width:100%;padding:12px 14px;border:2px solid rgba(241,196,15,0.3);border-radius:12px;background:rgba(255,255,255,0.07);color:white;font-size:0.95rem;box-sizing:border-box;resize:vertical;"></textarea>
+        </div>
+
+        <div style="margin-bottom:20px;">
+          <label style="display:block;color:#f1c40f!important;font-weight:700!important;font-size:0.88rem!important;margin-bottom:6px;"><i class="fas fa-link" style="margin-right:5px;"></i>Lien (optionnel)</label>
+          <input type="text" id="notifLink" placeholder="https://fabouloso1.github.io/eglise-carrefour/"
+            style="width:100%;padding:12px 14px;border:2px solid rgba(241,196,15,0.3);border-radius:12px;background:rgba(255,255,255,0.07);color:white;font-size:0.95rem;box-sizing:border-box;">
+        </div>
+
+        <button onclick="envoyerNotification()"
+          style="width:100%;padding:15px;background:linear-gradient(135deg,#f1c40f,#e67e22);color:#0d1f4a;border:none;border-radius:30px;font-size:1.05rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px;">
+          <i class="fas fa-paper-plane"></i> Envoyer à tous les abonnés
+        </button>
+
+        <div id="notifStatus" style="display:none;padding:12px;border-radius:12px;text-align:center;font-weight:700;font-size:0.95rem;"></div>
+      </div>
+
+      <!-- Lis abonè yo -->
+      <div style="background:linear-gradient(135deg,#0d1f4a,#1a0a3c);border-radius:20px;padding:22px 18px;border:1px solid rgba(255,255,255,0.08);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:44px;height:44px;background:rgba(241,196,15,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+              <i class="fas fa-users" style="color:#f1c40f;"></i>
+            </div>
+            <div>
+              <h3 style="color:white!important;font-size:1rem!important;font-weight:800!important;margin:0!important;">Abonnés aux notifications (<span id="notifCount">0</span>)</h3>
+              <p style="color:rgba(255,255,255,0.4)!important;font-size:0.8rem!important;margin:0!important;">Personnes ayant activé les notifications</p>
+            </div>
           </div>
-          <div id="abonneList" style="display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto;">
-            <p style="color:#aaa;font-size:0.9rem;text-align:center;padding:10px;">
-              <i class="fas fa-spinner fa-spin"></i> Chargement...
-            </p>
-          </div>
+        </div>
+        <div id="abonneList">
+          <p style="color:rgba(255,255,255,0.3);text-align:center;padding:20px;">Chargement...</p>
         </div>
       </div>
     </div>
@@ -2187,25 +2197,26 @@
 
   // Konbyen abòne + lis abòne yo
   function loadNotifCount() {
-    // Chaje notif_subscribers (kloch) + membres
-    Promise.all([
-      db2.collection('notif_subscribers').get(),
-      db2.collection('membres').get()
-    ]).then(function(results) {
-      var notifSnap   = results[0];
-      var membresSnap = results[1];
-
-      // Konte total abonè
-      var el = document.getElementById('notifCount');
-      if (el) el.innerHTML = '(' + notifSnap.size + ' abonné(s))';
-
-      var list = document.getElementById('abonneList');
-      if (!list) return;
-
-      if (notifSnap.empty) {
-        list.innerHTML = '<p style="color:#aaa;text-align:center;padding:10px;font-size:0.9rem;">Aucun abonné pour le moment.</p>';
-        return;
-      }
+    window._getDocs(window._collection(window._db, 'push_subscriptions'))
+      .then(function(snap) {
+        const el = document.getElementById('notifCount');
+        if (el) el.textContent = snap.size;
+        const list = document.getElementById('abonneList');
+        if (!list) return;
+        if (snap.empty) {
+          list.innerHTML = '<p style="color:rgba(255,255,255,0.3);text-align:center;padding:20px;">Aucun abonné.</p>';
+          return;
+        }
+        list.innerHTML = snap.docs.map(function(d) {
+          var data = d.data();
+          return '<div style="background:rgba(255,255,255,0.05);border-radius:12px;padding:12px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;">' +
+            '<div style="width:38px;height:38px;background:rgba(241,196,15,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;">' +
+              '<i class="fas fa-bell" style="color:#f1c40f;font-size:0.9rem;"></i></div>' +
+            '<div><div style="color:white;font-weight:700;">' + (data.nom||'Anonyme') + '</div>' +
+            '<div style="color:rgba(255,255,255,0.4);font-size:0.8rem;">' + (data.telephone||'—') + ' · ' + (data.date||'—') + '</div></div></div>';
+        }).join('');
+      }).catch(function() {});
+  }
 
       // Kreye yon map membres pou jwenn info rapid
       var membresMap = {};
@@ -2293,11 +2304,45 @@
   };
 
     window.envoyerNotification = async function() {
+    const title  = document.getElementById('notifTitle').value.trim();
+    const body   = document.getElementById('notifBody').value.trim();
+    const link   = document.getElementById('notifLink').value.trim() || 'https://fabouloso1.github.io/eglise-carrefour/';
     const status = document.getElementById('notifStatus');
+
+    if (!title || !body) {
+      status.style.display = 'block';
+      status.style.background = 'rgba(231,76,60,0.2)'; status.style.color = '#ff8a80';
+      status.textContent = '❌ Titre et message obligatoires';
+      return;
+    }
+
     status.style.display = 'block';
-    status.style.background = '#fff8e1';
-    status.style.color = '#555';
-    status.textContent = '⚠️ Système de notification en cours de configuration.';
+    status.style.background = 'rgba(241,196,15,0.1)'; status.style.color = '#f1c40f';
+    status.textContent = '⏳ Envoi en cours...';
+
+    try {
+      const snap = await window._getDocs(window._collection(window._db, 'push_subscriptions'));
+
+      // Sove nan notif_queue
+      await window._addDoc(window._collection(window._db, 'notif_queue'), {
+        title, body, url: link,
+        icon: '/eglise-carrefour/logo.png',
+        total: snap.size, sent: true,
+        timestamp: window._serverTimestamp()
+      });
+
+      // Voye via BroadcastChannel pou moun ki sou sit la
+      try { const bc = new BroadcastChannel('eglise-notif'); bc.postMessage({ title, body, url: link }); bc.close(); } catch(e) {}
+
+      status.style.background = 'rgba(46,213,115,0.15)'; status.style.color = '#2ed573';
+      status.textContent = '✅ Notification enregistrée pour ' + snap.size + ' abonné(s)!';
+      document.getElementById('notifTitle').value = '';
+      document.getElementById('notifBody').value  = '';
+
+    } catch(e) {
+      status.style.background = 'rgba(231,76,60,0.2)'; status.style.color = '#ff8a80';
+      status.textContent = '❌ Erreur: ' + e.message;
+    }
   };
 
   document.addEventListener('click', function(e) {
@@ -2660,5 +2705,6 @@ async function lancerEtude() {
   }
 </script>
 
+<script src="notif.js"></script>
 </body>
 </html>
