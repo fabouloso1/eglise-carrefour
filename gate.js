@@ -39,22 +39,22 @@ function gateSubmit() {
     date: new Date().toLocaleDateString('fr-FR')
   }));
 
-  // Sove nan Firebase (si disponib)
+  // Sove nan Firebase SDK (pi fyab)
   try {
-    fetch('https://firestore.googleapis.com/v1/projects/eglise-carrefour/databases/(default)/documents/membres', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        fields: {
-          nom:       { stringValue: nom },
-          telephone: { stringValue: tel },
-          ville:     { stringValue: vil.trim() },
-          date:      { stringValue: new Date().toLocaleDateString('fr-FR') },
-          timestamp: { timestampValue: new Date().toISOString() }
-        }
-      })
-    });
-  } catch(e) {}
+    if (window.firebase && firebase.apps && firebase.apps.length) {
+      firebase.firestore().collection('membres').add({
+        nom:       nom,
+        telephone: tel,
+        ville:     vil.trim(),
+        date:      new Date().toLocaleDateString('fr-FR'),
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(function() {
+        console.log('Membre enregistré:', nom);
+      }).catch(function(e) {
+        console.log('Firebase error:', e.message);
+      });
+    }
+  } catch(e) { console.log('Save error:', e); }
 
   // Montre siksè
   document.getElementById('gate-form').style.display = 'none';

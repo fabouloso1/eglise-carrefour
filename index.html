@@ -233,7 +233,6 @@
   afficherVerset();
 </script>
 <script src="pwa.js"></script>
-<script src="gate.js"></script>
 
 <!-- Firebase pou Anons dinamik -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -252,6 +251,9 @@
   }
   const db = firebase.firestore();
 
+  // ===== GATE.JS chaje ICI — apre Firebase =====
+  // Pa itilize script src — integre dirèkteman pou garanti lòd la
+  
   async function chargerAnnonces() {
     try {
       const snap = await db.collection('annonces').orderBy('timestamp','desc').get();
@@ -309,5 +311,7 @@
       <span>📲 Installer l'application</span>
     </button>
   </div>
+<!-- Gate.js APRE Firebase — garanti lòd la -->
+<script src="gate.js"></script>
 </body>
 </html>
