@@ -2,50 +2,147 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel Admin — Église de Carrefour</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    :root { --primary: #1c1c3c; --gold: #f1c40f; --bg: #f4f6fb; }
-    body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; }
-    .admin-container { max-width: 800px; margin: auto; }
-    .admin-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-left: 5px solid var(--gold); }
-    h2 { color: var(--primary); margin-bottom: 15px; font-size: 1.2rem; }
-    input, textarea, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
-    button { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; }
-    button:hover { background: #2a2a5a; }
-    .btn-notif { background: var(--gold); color: var(--primary); margin-top: 10px; }
+    :root {
+      --primary: #1c1c3c;
+      --primary-dark: #12122a;
+      --secondary: #3a1c3c;
+      --gold: #f1c40f;
+      --gold-dark: #d4a900;
+      --danger: #e74c3c;
+      --success: #2ecc71;
+      --text: #333;
+      --bg: #f4f6fb;
+      --card: #fff;
+      --border: #e0e0e0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 17px;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .admin-container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+    .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: var(--primary); color: #fff; padding: 20px; border-radius: 15px; box-shadow: var(--shadow-md); }
+    .admin-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 30px; }
+    .nav-btn { background: #fff; border: 1px solid var(--border); padding: 15px 10px; border-radius: 12px; cursor: pointer; text-align: center; transition: all 0.2s; font-weight: 600; color: var(--primary); }
+    .nav-btn.active { background: var(--gold); color: var(--primary); border-color: var(--gold); }
+    
+    .admin-section { display: none; animation: fadeIn 0.3s ease; }
+    .admin-section.active { display: block; }
+
+    .admin-card { background: var(--card); padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; border: 1px solid var(--border); }
+    .section-header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; border-bottom: 2px solid var(--bg); padding-bottom: 15px; }
+    .section-icon { width: 45px; height: 45px; background: var(--primary); color: var(--gold); display: flex; align-items: center; justify-content: center; border-radius: 10px; font-size: 20px; }
+    
+    .form-group { margin-bottom: 18px; }
+    label { display: block; font-weight: 700; margin-bottom: 8px; color: var(--primary); font-size: 0.95rem; }
+    input, textarea, select { width: 100%; padding: 12px 15px; border: 2px solid #eee; border-radius: 10px; font-size: 16px; transition: border-color 0.2s; font-family: inherit; }
+    input:focus, textarea:focus { border-color: var(--gold); outline: none; }
+
+    .btn-admin { width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: transform 0.1s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .btn-admin:active { transform: scale(0.98); }
+    
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
 
 <div class="admin-container">
-  <h1 style="text-align:center; color:var(--primary); margin-bottom:20px;">Tablo Kontwòl Pastè a</h1>
-
-  <div class="admin-card">
-    <h2><i class="fas fa-bell"></i> Voye yon Alèt bay Tout Moun</h2>
-    <p style="font-size: 0.8rem; color: #666; margin-bottom: 10px;">Mesaj sa a ap parèt sou telefòn tout fidèl yo.</p>
-    <input type="text" id="notif-titre" placeholder="Tit Alèt la (Egz: Randevou Lapriyè)">
-    <textarea id="notif-mesaj" placeholder="Ekri mesaj la la a..."></textarea>
-    <select id="notif-tip">
-      <option value="annonce">📢 Senp Anons</option>
-      <option value="etude-biblique">📖 Etid Biblik</option>
-      <option value="foto">📸 Nouvo Foto</option>
-      <option value="video">🎥 Nouvo Videyo</option>
-    </select>
-    <button class="btn-notif" onclick="voyeAlèt()">
-      <i class="fas fa-paper-plane"></i> VOYE ALÈT LA KOUNYE A
-    </button>
+  <div class="admin-header">
+    <div>
+      <h1 style="font-size:1.4rem;">Panel Administration</h1>
+      <p style="opacity:0.8; font-size:0.9rem;">Gestion des contenus de l'église</p>
+    </div>
+    <button onclick="window.location.href='index.html'" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:#fff; padding:8px 15px; border-radius:8px; cursor:pointer;">Voir le site</button>
   </div>
 
-  <p style="text-align:center;"><a href="index.html" style="color:var(--primary); text-decoration:none;">← Tounen sou sit la</a></p>
+  <div class="admin-nav">
+    <div class="nav-btn active" onclick="showSection('actualites', this)"><i class="fas fa-newspaper"></i><br>Actualités</div>
+    <div class="nav-btn" onclick="showSection('evenements', this)"><i class="fas fa-calendar-alt"></i><br>Événements</div>
+    <div class="nav-btn" onclick="showSection('notifications', this)"><i class="fas fa-bell"></i><br>Notifications</div>
+    <div class="nav-btn" onclick="showSection('membres', this)"><i class="fas fa-users"></i><br>Membres</div>
+  </div>
+
+  <section id="section-actualites" class="admin-section active">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-newspaper"></i></div>
+      <div><h2>Actualités</h2><p>Publier des articles ou annonces</p></div>
+    </div>
+    <div class="admin-card">
+       <p>Fòm piblikasyon ou an mèt rete la...</p>
+    </div>
+  </section>
+
+  <section id="section-evenements" class="admin-section">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-calendar-alt"></i></div>
+      <div><h2>Événements</h2><p>Gérer le calendrier de l'église</p></div>
+    </div>
+    <div class="admin-card">
+       <p>Kòd evènman ou yo...</p>
+    </div>
+  </section>
+
+  <section id="section-notifications" class="admin-section">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-bell"></i></div>
+      <div>
+        <h2>Notifications Push</h2>
+        <p>Voye yon alèt sou telefòn fidèl yo</p>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <div class="form-group">
+        <label>Titre de la notification</label>
+        <input type="text" id="notif-titre" placeholder="Egz: Gwo sèvis aswè a">
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea id="notif-mesaj" placeholder="Ekri mesaj la a..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Catégorie</label>
+        <select id="notif-tip">
+          <option value="annonce">📢 Annonce</option>
+          <option value="etude-biblique">📖 Étude Biblique</option>
+          <option value="foto">📸 Nouvelle Photo</option>
+          <option value="video">🎥 Nouvelle Vidéo</option>
+        </select>
+      </div>
+      <button class="btn-admin" onclick="voyeAlètPouse()" style="background:var(--gold); color:var(--primary);">
+        <i class="fas fa-paper-plane"></i> Envoyer maintenant
+      </button>
+    </div>
+  </section>
+
+  <section id="section-membres" class="admin-section">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-users"></i></div>
+      <div><h2>Membres</h2><p>Liste des personnes inscrites</p></div>
+    </div>
+    <div id="liste-membres">Chargement...</div>
+  </section>
+
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
-  // Konfigirasyon Firebase (Mwen pran yo nan sw.js ou a)
+  // Konfigirasyon Firebase ou a
   const firebaseConfig = {
     apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
     authDomain: "eglise-carrefour.firebaseapp.com",
@@ -58,31 +155,40 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  async function voyeAlèt() {
-    const t = document.getElementById('notif-titre').value.trim();
-    const m = document.getElementById('notif-mesaj').value.trim();
+  // Chanje seksyon yo
+  function showSection(id, btn) {
+    document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+    document.getElementById('section-' + id).classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  // FONKSYON POU VOYE NOTIFIKASYON
+  async function voyeAlètPouse() {
+    const titre = document.getElementById('notif-titre').value.trim();
+    const mesaj = document.getElementById('notif-mesaj').value.trim();
     const tip = document.getElementById('notif-tip').value;
 
-    if (!t || !m) {
-      alert("Pastè, tanpri ranpli Tit ak Mesaj la.");
+    if (!titre || !mesaj) {
+      alert("Tanpri ranpli tit la ak mesaj la.");
       return;
     }
 
     try {
       await db.collection('notifications_push').add({
-        title: t,
-        body: m,
+        title: titre,
+        body: mesaj,
         type: tip,
-        date: new Date().toLocaleString('fr-FR'),
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        date: new Date().toLocaleString('fr-FR')
       });
 
-      alert("✅ Alèt la pati! Mèsi Pastè.");
+      alert("✅ Alèt la anrejistre epi l ap pati pou tout moun!");
       document.getElementById('notif-titre').value = "";
       document.getElementById('notif-mesaj').value = "";
-    } catch (err) {
-      console.error(err);
-      alert("❌ Gen yon erè, mesaj la pa pati.");
+    } catch (e) {
+      console.error(e);
+      alert("Erè: " + e.message);
     }
   }
 </script>
