@@ -2370,6 +2370,42 @@
     if (e.target.closest('[onclick*="notifs"]')) setTimeout(loadNotifCount, 300);
   });
 
+  // ===== FONKSYON NOTIF =====
+  // envoyerNotif — rele pa tout aksyon (foto, anons, etude, etc.)
+  window.envoyerNotif = async function(title, body, url) {
+    try {
+      var snap = await db2.collection('notif_subscribers').get();
+      if (snap.empty) return;
+      // Sove nan notif_queue pou service worker
+      await db2.collection('notif_queue').add({
+        title: title, body: body, url: url || 'https://fabouloso1.github.io/eglise-carrefour/',
+        icon: 'https://fabouloso1.github.io/eglise-carrefour/logo.png',
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        sent: false
+      });
+      // Voye via OneSignal REST API
+      await fetch('https://onesignal.com/api/v1/notifications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Basic os_v2_app_tcyv2qytqzh5lnyrlhoterdminixlciqzlhupxuxjz7cc2atminavs4rjad4keqnxm6vkl6ftcn2lvuawuyxkqebyyiof6txjruuxxy'
+        },
+        body: JSON.stringify({
+          app_id: '98b15d43-1386-4fd5-b711-59dd32446c43',
+          included_segments: ['All'],
+          headings: { fr: title },
+          contents: { fr: body },
+          url: url || 'https://fabouloso1.github.io/eglise-carrefour/',
+          chrome_web_icon: 'https://fabouloso1.github.io/eglise-carrefour/logo.png'
+        })
+      });
+      console.log('✅ Notif voye:', title);
+    } catch(e) { console.log('envoyerNotif error:', e.message); }
+  };
+
+  // envoyerNotifAuto — menm fonksyon
+  window.envoyerNotifAuto = window.envoyerNotif;
+
   loadNotifCount();
 })();
 
