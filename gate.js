@@ -74,6 +74,17 @@ function gateFermer() {
 // Montre modal enskripsyon
 function montreGate() {
   if (document.getElementById('gate-overlay')) return;
+  
+  // Si deja enskri — pa montre fòm — montre mesaj dirèkteman
+  if (gateEstInscrit()) {
+    var membre = JSON.parse(localStorage.getItem(GATE_STORAGE) || '{}');
+    var nom = membre.nom || '';
+    // Debloke paj la si bloke
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+    // Pa montre modal
+    return;
+  }
 
   document.body.style.overflow = 'hidden';
   document.documentElement.style.overflow = 'hidden';
@@ -96,13 +107,15 @@ function montreGate() {
         '<input type="text" id="gate-ville" placeholder="Ex: Carrefour..."></div>' +
       '<div id="gate-error" style="display:none;"></div>' +
       '<button id="gate-btn" type="button">S\'inscrire et accéder</button>' +
+      '<button type="button" onclick="history.back()" style="width:100%;padding:11px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:50px;color:rgba(255,255,255,0.5);font-size:0.9rem;cursor:pointer;margin-top:8px;">← Retour</button>' +
       '<p id="gate-note">Vos informations sont confidentielles.</p>' +
     '</div>' +
     '<div id="gate-success" style="display:none;">' +
       '<div style="font-size:3rem;margin-bottom:16px;">🙏</div>' +
       '<h3>Bienvenue dans notre famille!</h3>' +
-      '<p>Inscription enregistrée. Vous avez accès à toutes les pages.</p>' +
+      '<p>Inscription enregistrée. Vous avez maintenant accès à toutes les pages.</p>' +
       '<button id="gate-continue-btn" type="button">Continuer →</button>' +
+      '<button type="button" onclick="history.back()" style="width:100%;padding:11px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:50px;color:rgba(255,255,255,0.5);font-size:0.9rem;cursor:pointer;margin-top:8px;">← Retour à la page précédente</button>' +
     '</div>' +
   '</div>';
 

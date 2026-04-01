@@ -2315,15 +2315,13 @@
       status.textContent = '❌ Titre et message obligatoires';
       return;
     }
-
     status.style.display = 'block';
     status.style.background = 'rgba(241,196,15,0.1)'; status.style.color = '#f1c40f';
     status.textContent = '⏳ Envoi en cours...';
 
     try {
       const snap = await window._getDocs(window._collection(window._db, 'push_subscriptions'));
-
-      // Sove nan notif_queue
+      
       await window._addDoc(window._collection(window._db, 'notif_queue'), {
         title, body, url: link,
         icon: '/eglise-carrefour/logo.png',
@@ -2331,18 +2329,17 @@
         timestamp: window._serverTimestamp()
       });
 
-      // Voye via BroadcastChannel pou moun ki sou sit la
       try { const bc = new BroadcastChannel('eglise-notif'); bc.postMessage({ title, body, url: link }); bc.close(); } catch(e) {}
 
       status.style.background = 'rgba(46,213,115,0.15)'; status.style.color = '#2ed573';
-      status.textContent = '✅ Notification enregistrée pour ' + snap.size + ' abonné(s)!';
+      status.textContent = '✅ Notification envoyée à ' + snap.size + ' abonné(s)!';
       document.getElementById('notifTitle').value = '';
       document.getElementById('notifBody').value  = '';
-
     } catch(e) {
       status.style.background = 'rgba(231,76,60,0.2)'; status.style.color = '#ff8a80';
       status.textContent = '❌ Erreur: ' + e.message;
     }
+  }
   };
 
   document.addEventListener('click', function(e) {
@@ -2354,63 +2351,48 @@
 
   // ===== MEMBRES =====
   async function chargerMembres() {
+    const el     = document.getElementById('membresCount');
+    const listEl = document.getElementById('membresList');
+    if (!window._getDocs || !window._db) {
+      if (listEl) listEl.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px;">Connexion Firebase non disponible.</p>';
+      return;
+    }
     try {
-      // Chaje TOUT membres — sans orderBy pou evite pwoblèm index
       const snap = await window._getDocs(window._collection(window._db, 'membres'));
       const list = snap.docs.map(d => ({id: d.id, ...d.data()}));
-
-      // Triye nan JavaScript — pa nan Firestore
-      list.sort(function(a, b) {
-        const ta = a.timestamp ? (a.timestamp.seconds || 0) : 0;
-        const tb = b.timestamp ? (b.timestamp.seconds || 0) : 0;
-        return tb - ta; // Pi nouvo anwo
-      });
-
-      const el     = document.getElementById('membresCount');
-      const listEl = document.getElementById('membresList');
+      list.sort((a,b) => ((b.timestamp?.seconds||0) - (a.timestamp?.seconds||0)));
       if (el) el.textContent = list.length;
-
       if (!list.length) {
         listEl.innerHTML = '<p style="color:rgba(255,255,255,0.3);text-align:center;padding:30px;">Aucun membre inscrit.</p>';
         return;
       }
-
-      listEl.innerHTML = list.map(m => {
-        const bloque = m.bloque === true;
-        const nom    = m.nom || '—';
-        const tel    = m.telephone || '—';
-        const ville  = m.ville || '';
-        const date   = m.date || '—';
-
-        return '<div style="background:' + (bloque ? 'rgba(231,76,60,0.12)' : 'rgba(255,255,255,0.06)') + ';border-radius:14px;padding:14px 16px;margin-bottom:10px;border-left:4px solid ' + (bloque ? '#ff6b6b' : '#f1c40f') + ';">' +
+      listEl.innerHTML = list.map(function(m) {
+        var bloque = m.bloque === true;
+        var nom = m.nom || '—';
+        var tel = m.telephone || '—';
+        var date = m.date || '—';
+        var id = m.id;
+        var safenom = nom.replace(/'/g, '');
+        return '<div style="background:' + (bloque?'rgba(231,76,60,0.12)':'rgba(255,255,255,0.06)') + ';border-radius:14px;padding:14px 16px;margin-bottom:10px;border-left:4px solid ' + (bloque?'#ff6b6b':'#f1c40f') + ';">' +
           '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">' +
-            '<div style="width:42px;height:42px;background:' + (bloque ? 'rgba(231,76,60,0.2)' : 'rgba(241,196,15,0.15)') + ';border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
-              '<i class="fas fa-' + (bloque ? 'ban' : 'user') + '" style="color:' + (bloque ? '#ff6b6b' : '#f1c40f') + ';"></i>' +
-            '</div>' +
+            '<div style="width:42px;height:42px;background:' + (bloque?'rgba(231,76,60,0.2)':'rgba(241,196,15,0.15)') + ';border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
+              '<i class="fas fa-' + (bloque?'ban':'user') + '" style="color:' + (bloque?'#ff6b6b':'#f1c40f') + ';"></i></div>' +
             '<div style="flex:1;">' +
-              '<div style="color:white!important;font-weight:800!important;font-size:1rem!important;">' + nom +
-                (bloque ? ' <span style="background:rgba(231,76,60,0.25);color:#ff6b6b;font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px;">BLOQUÉ</span>' : '') +
-              '</div>' +
-              '<div style="font-size:0.85rem;color:rgba(255,255,255,0.7);margin-top:3px;">' +
-                '<i class="fas fa-phone" style="color:#f1c40f;margin-right:5px;"></i>' + tel +
-                (ville ? ' &nbsp;·&nbsp; <i class="fas fa-map-marker-alt" style="color:#f1c40f;margin-right:4px;"></i>' + ville : '') +
-              '</div>' +
+              '<div style="color:white;font-weight:800;font-size:1rem;">' + nom + (bloque?' <span style="background:rgba(231,76,60,0.25);color:#ff6b6b;font-size:0.72rem;padding:2px 8px;border-radius:10px;margin-left:6px;">BLOQUÉ</span>':'') + '</div>' +
+              '<div style="font-size:0.85rem;color:rgba(255,255,255,0.7);margin-top:3px;"><i class="fas fa-phone" style="color:#f1c40f;margin-right:5px;"></i>' + tel + '</div>' +
               '<div style="font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:2px;">' + date + '</div>' +
-            '</div>' +
-          '</div>' +
+            '</div></div>' +
           '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
             (bloque
-              ? '<button onclick="debloquerMembre('' + m.id + '')" style="flex:1;padding:9px 12px;background:rgba(46,213,115,0.2);border:1.5px solid #2ed573;border-radius:20px;color:#2ed573;font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-unlock"></i> Débloquer</button>'
-              : '<button onclick="bloquerMembre('' + m.id + '','' + nom.replace(/'/g, '') + '')" style="flex:1;padding:9px 12px;background:rgba(231,76,60,0.15);border:1.5px solid rgba(231,76,60,0.4);border-radius:20px;color:#ff6b6b;font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-ban"></i> Bloquer</button>') +
-            '<button onclick="reinitialiserMembre('' + m.id + '','' + nom.replace(/'/g, '') + '')" style="padding:9px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:20px;color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-redo"></i> Réinitialiser</button>' +
-            '<button onclick="supprimerMembre('' + m.id + '')" style="padding:9px 12px;background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.25);border-radius:20px;color:#ff6b6b;font-size:0.85rem;cursor:pointer;"><i class="fas fa-trash"></i></button>' +
-          '</div>' +
-        '</div>';
+              ? '<button onclick="debloquerMembre('' + id + '')" style="flex:1;padding:9px 12px;background:rgba(46,213,115,0.2);border:1.5px solid #2ed573;border-radius:20px;color:#2ed573;font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-unlock"></i> Débloquer</button>'
+              : '<button onclick="bloquerMembre('' + id + '','' + safenom + '')" style="flex:1;padding:9px 12px;background:rgba(231,76,60,0.15);border:1.5px solid rgba(231,76,60,0.4);border-radius:20px;color:#ff6b6b;font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-ban"></i> Bloquer</button>') +
+            ' <button onclick="reinitialiserMembre('' + id + '','' + safenom + '')" style="padding:9px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:20px;color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-redo"></i> Réinitialiser</button>' +
+            ' <button onclick="supprimerMembre('' + id + '')" style="padding:9px 12px;background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.25);border-radius:20px;color:#ff6b6b;font-size:0.85rem;cursor:pointer;"><i class="fas fa-trash"></i></button>' +
+          '</div></div>';
       }).join('');
-
     } catch(e) {
-      console.log('Membres erreur:', e);
-      document.getElementById('membresList').innerHTML = '<p style="color:#e74c3c;padding:20px;text-align:center;">Erreur: ' + e.message + '</p>';
+      console.log('chargerMembres:', e.message);
+      if (listEl) listEl.innerHTML = '<p style="color:#e74c3c;padding:20px;text-align:center;">Erreur: ' + e.message + '</p>';
     }
   }
 
