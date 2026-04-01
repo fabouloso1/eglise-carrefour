@@ -1212,8 +1212,10 @@
   window._deleteObject = deleteObject;
   window._ADMIN_PASSWORD = ADMIN_PASSWORD;
 
-  // Init
+  // Init — Firebase ready
   document.getElementById('loadingOverlay').style.display = 'none';
+  window._firebaseReady = true;
+  window.dispatchEvent(new Event('firebaseReady'));
 
   // Verifye si deja login
   if (localStorage.getItem('admin_ok') === 'true') {
@@ -1238,7 +1240,13 @@
       localStorage.setItem('admin_ok', 'true');
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('adminPanel').style.display = 'block';
-      loadAll();
+      // Tann Firebase si pa ready
+      if (window._firebaseReady) {
+        doLoadAll();
+      } else {
+        window.addEventListener('firebaseReady', function() { doLoadAll(); }, { once: true });
+        setTimeout(function() { if (window._db) doLoadAll(); }, 3000);
+      }
     } else {
       document.getElementById('loginError').style.display = 'block';
       document.getElementById('loginPassword').value = '';
@@ -1270,9 +1278,9 @@
     if (name === 'galerie') loadFotos();
     if (name === 'etude') chargerEtudeActive();
     if (name === 'evenements') chargerEvenements();
-    if (name === 'membres') { chargerMembres(); setTimeout(async()=>{ try{ const s=await window._getDocs(window._collection(window._db,'membres')); localStorage.setItem('membres_seen',s.size); document.getElementById('membresBadge').style.display='none'; }catch(e){} },500); }
+    if (name === 'membres') { if (window._db) chargerMembres(); else window.addEventListener('firebaseReady', chargerMembres, {once:true}); setTimeout(async()=>{ try{ const s=await window._getDocs(window._collection(window._db,'membres')); localStorage.setItem('membres_seen',s.size); document.getElementById('membresBadge').style.display='none'; }catch(e){} },500); }
     if (name === 'temoignages') { loadTemoignages(); document.getElementById('temoBadge').style.display='none'; }
-    if (name === 'notifs') loadNotifCount();
+    if (name === 'notifs') { if (window._db) loadNotifCount(); else window.addEventListener('firebaseReady', loadNotifCount, {once:true}); }
     if (name === 'contacts') loadContacts();
   }
 
@@ -1615,6 +1623,21 @@
 
   // ===== LOAD ALL =====
   function loadAll() {
+    // Tann Firebase ready si pa disponib encore
+    if (!window._db) {
+      window.addEventListener('firebaseReady', function() {
+        doLoadAll();
+      }, { once: true });
+      // Timeout safety — si event pa fire nan 3 sek
+      setTimeout(function() {
+        if (window._db) doLoadAll();
+      }, 3000);
+    } else {
+      doLoadAll();
+    }
+  }
+
+  function doLoadAll() {
     loadFotos();
     loadLive();
     loadTemoignages();
@@ -1622,6 +1645,7 @@
     loadAnnonces();
     chargerEvenements();
     chargerMembres();
+    loadNotifCount();
   }
 
   // ===== GALERIE =====
