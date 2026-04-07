@@ -15,66 +15,299 @@
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1c1c3c">
-  <style>
-    /* Popup Style */
-    #gate-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85); z-index: 99999;
-      display: none; justify-content: center; align-items: center; padding: 20px;
-      backdrop-filter: blur(5px);
-    }
-    .gate-card {
-      background: white; padding: 30px; border-radius: 20px;
-      width: 100%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    }
-    .gate-input {
-      width: 100%; padding: 14px; margin-bottom: 12px;
-      border: 1px solid #ddd; border-radius: 10px; outline: none; font-size: 16px;
-    }
-    .gate-btn-submit {
-      width: 100%; background: #1c1c3c; color: white; padding: 15px;
-      border: none; border-radius: 10px; font-weight: bold; font-size: 16px; cursor: pointer;
-    }
-  </style>
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Église Carrefour">
+  <link rel="apple-touch-icon" href="logo.png">
 </head>
 <body>
 
-  <header style="padding: 15px; background: #1c1c3c; display: flex; justify-content: space-between; align-items: center;">
-    <img src="logo.png" alt="Logo" style="height: 40px;">
-    <button onclick="openAdmin()" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:white; padding:8px 15px; border-radius:20px; cursor:pointer;">
-      <i class="fas fa-user-shield"></i> Admin
-    </button>
-  </header>
+<!-- Navigation injectée par nav.js -->
+<div id="nav-placeholder"></div>
 
-  <div style="text-align: center; padding: 50px 20px; color: white;">
-    <h1>Byenvini</h1>
-    <button onclick="document.getElementById('gate-overlay').style.display='flex'" class="nav-btn" style="margin-top:20px; padding: 15px 30px; border-radius: 30px; cursor: pointer; background: #f1c40f; border: none; font-weight: bold;">
-      Inscription
-    </button>
-  </div>
-
-  <div id="gate-overlay">
-    <div class="gate-card">
-        <div id="gate-form">
-            <h2 style="color:#1c1c3c; margin-bottom:20px; text-align:center;">Enskripsyon Manm</h2>
-            <input type="text" id="gate-nom" class="gate-input" placeholder="Non konplè">
-            <input type="tel" id="gate-tel" class="gate-input" placeholder="Nimewo Telefòn">
-            <input type="text" id="gate-ville" class="gate-input" placeholder="Adrès ou (Vil/Komin)">
-            
-            <p id="gate-error" style="color:#e74c3c; display:none; font-size:14px; margin-bottom:10px; text-align:center;"></p>
-            
-            <button id="gate-btn" onclick="gateSubmit()" class="gate-btn-submit">Anrejistre m</button>
-            <button onclick="document.getElementById('gate-overlay').style.display='none'" style="width:100%; background:none; border:none; color:#777; margin-top:10px; cursor:pointer;">Anile</button>
-        </div>
-
-        <div id="gate-success" style="display:none; text-align:center; padding:20px;">
-            <i class="fas fa-check-circle" style="font-size:60px; color:#2ecc71;"></i>
-            <p style="margin-top:15px; font-weight:bold; color:#1c1c3c; font-size:18px;">Enskripsyon Reyisi!</p>
-            <button onclick="document.getElementById('gate-overlay').style.display='none'" style="margin-top:20px; padding:10px 25px; border-radius:10px; border:none; background:#1c1c3c; color:white; font-weight:bold; cursor:pointer;">OK</button>
-        </div>
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="header-content">
+    <img src="logo.png" alt="Logo Église de Dieu de la Prophétie" class="logo">
+    <div class="header-text">
+      <h1>Église de Dieu de la Prophétie</h1>
+      <p class="header-subtitle" data-i18n="header_subtitle">de Carrefour</p>
+      <p class="header-verse" data-i18n="header_verse">"Je puis tout par celui qui me fortifie" — Phil. 4:13</p>
     </div>
   </div>
+</header>
 
-  <script src="gate.js"></script>
+<!-- ===== DIAPORAMA ===== -->
+<div class="slideshow-container">
+  <div class="mySlides">
+    <img src="images/image1.jpg" alt="Culte dominical">
+    <div class="slide-caption"><i class="fas fa-cross"></i> <span data-i18n="slide1">Pasteur Anouis Jean</span></div>
+  </div>
+  <div class="mySlides">
+    <img src="images/image2.jpg" alt="Étude biblique">
+    <div class="slide-caption"><i class="fas fa-cross"></i> <span data-i18n="slide2">Pasteur Honore Pierre Jolius</span></div>
+  </div>
+  <div class="mySlides">
+    <img src="images/image3.jpg" alt="Culte dominical">
+    <div class="slide-caption"><i class="fas fa-cross"></i> <span data-i18n="slide3">Sœur Woodeline en prière</span></div>
+  </div>
+  <div class="mySlides">
+    <img src="images/image4.jpg" alt="Étude biblique">
+    <div class="slide-caption"><i class="fas fa-cross"></i> <span data-i18n="slide4">Évangéliste Guerrier Michel</span></div>
+  </div>
+  <div class="mySlides">
+    <img src="images/image5.jpg" alt="Culte dominical">
+    <div class="slide-caption"><i class="fas fa-cross"></i> <span data-i18n="slide5">Pasteur Anouis Jean</span></div>
+  </div>
+  <div class="mySlides">
+    <img src="images/image6.jpg" alt="Étude biblique">
+    <div class="slide-caption"><i class="fas fa-cross"></i> <span data-i18n="slide6">Pasteur Honore Pierre Jolius</span></div>
+  </div>
+  <div class="mySlides">
+    <img src="images/image7.jpg" alt="Culte dominical">
+    <div class="slide-caption"><i class="fas fa-cross"></i> <span data-i18n="slide7">Évangéliste Tidot Ameus</span></div>
+  </div>
+  <div class="mySlides">
+    <img src="images/image8.jpg" alt="Étude biblique">
+    <div class="slide-caption"><i class="fas fa-cross"></i> <span data-i18n="slide8">Pasteur Anouis Jean</span></div>
+  </div>
+
+  <button class="slide-btn prev" onclick="changeSlide(-1)" aria-label="Précédent">&#10094;</button>
+  <button class="slide-btn next" onclick="changeSlide(1)" aria-label="Suivant">&#10095;</button>
+</div>
+
+<div class="dot-container">
+  <span class="dot active" onclick="goToSlide(0)"></span>
+  <span class="dot" onclick="goToSlide(1)"></span>
+  <span class="dot" onclick="goToSlide(2)"></span>
+  <span class="dot" onclick="goToSlide(3)"></span>
+  <span class="dot" onclick="goToSlide(4)"></span>
+  <span class="dot" onclick="goToSlide(5)"></span>
+  <span class="dot" onclick="goToSlide(6)"></span>
+  <span class="dot" onclick="goToSlide(7)"></span>
+</div>
+
+<!-- ===== CONTENU PRINCIPAL ===== -->
+<main>
+
+  <!-- Bannière bienvenu -->
+  <section class="welcome-banner">
+    <div class="welcome-icon"><i class="fas fa-dove"></i></div>
+    <div class="welcome-text">
+      <h2 data-i18n="welcome_title">Bienvenue dans notre famille</h2>
+      <p data-i18n="welcome_text">Rejoignez-nous chaque dimanche pour adorer Dieu ensemble, grandir dans la foi et servir notre communauté.</p>
+    </div>
+    <a href="Horaires.html" class="welcome-btn" data-i18n="welcome_btn">Voir nos horaires <i class="fas fa-arrow-right"></i></a>
+  </section>
+
+  <!-- Liens rapides -->
+  <section class="quick-links">
+    <a href="priere.html" class="quick-card">
+      <i class="fas fa-hands-praying"></i>
+      <h3 data-i18n="quick_priere_title">Demande de prière</h3>
+      <p data-i18n="quick_priere_text">Soumettez vos requêtes de prière</p>
+    </a>
+    <a href="Temoigner.html" class="quick-card">
+      <i class="fas fa-star"></i>
+      <h3 data-i18n="quick_temo_title">Témoignages</h3>
+      <p data-i18n="quick_temo_text">Partagez ce que Dieu a fait</p>
+    </a>
+    <a href="Etude.html" class="quick-card">
+      <i class="fas fa-book-open"></i>
+      <h3>Étude Biblique</h3>
+      <p>Participez à l'étude interactive</p>
+    </a>
+    <a href="Guide.html" class="quick-card">
+      <i class="fas fa-bible"></i>
+      <h3>Lecture Biblique</h3>
+      <p>Un chapitre par jour — rappel à 9h</p>
+    </a>
+    <a href="Galerie.html" class="quick-card">
+      <i class="fas fa-images"></i>
+      <h3 data-i18n="quick_galerie_title">Galerie</h3>
+      <p data-i18n="quick_galerie_text">Photos et vidéos de nos cultes</p>
+    </a>
+  </section>
+
+  <!-- Annonces dynamiques Firebase -->
+  <section class="annonces">
+    <h2><i class="fas fa-bullhorn"></i> <span data-i18n="annonces_title">Annonces</span></h2>
+    <ul id="annonces-list">
+      <!-- Anons Firebase chaje isi -->
+    </ul>
+    <a href="Horaires.html" class="see-all-link" data-i18n="see_all_horaires">Voir tous les horaires <i class="fas fa-arrow-right"></i></a>
+  </section>
+
+  <!-- Verset du Jour -->
+  <section id="versetDuJour">
+    <div class="verset-icon"><i class="fas fa-book-open"></i></div>
+    <h2 data-i18n="verset_title">Verset du Jour</h2>
+    <p id="verset">Je puis tout par celui qui me fortifie.</p>
+    <span id="verset-ref" class="verset-ref">— Philippiens 4:13</span>
+  </section>
+
+  <!-- Bouton Don -->
+  <section class="don-section">
+    <div class="don-inner">
+      <i class="fas fa-heart don-icon"></i>
+      <div>
+        <h3 data-i18n="don_title">Soutenir notre ministère</h3>
+        <p data-i18n="don_text">Votre générosité nous aide à poursuivre notre mission évangélique.</p>
+      </div>
+      <a href="don.html" class="don-button" data-i18n="don_btn">Faire un don <i class="fas fa-hand-holding-heart"></i></a>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer injecté par nav.js -->
+<div id="foot-placeholder"></div>
+
+<!-- ===== SCRIPTS ===== -->
+<script src="lang.js"></script>
+<script src="nav.js"></script>
+<script>
+  // Init nav + lang
+  NAV.init('index.html');
+  // Applique la traduction après que le nav soit injecté
+  (function() {
+    var lang = localStorage.getItem('site_lang') || 'fr';
+    if (window.applyLang) window.applyLang(lang);
+  })();
+
+  // ===== DIAPORAMA =====
+  let slideIndex = 0;
+  let autoSlide;
+
+  const slides = document.getElementsByClassName('mySlides');
+  const dots   = document.getElementsByClassName('dot');
+
+  function showSlide(n) {
+    if (n >= slides.length) slideIndex = 0;
+    if (n < 0) slideIndex = slides.length - 1;
+    for (let i = 0; i < slides.length; i++) {
+      slides[i].classList.remove('active-slide');
+      dots[i].classList.remove('active');
+    }
+    slides[slideIndex].classList.add('active-slide');
+    dots[slideIndex].classList.add('active');
+  }
+
+  function changeSlide(n) {
+    resetTimer();
+    slideIndex += n;
+    showSlide(slideIndex);
+  }
+
+  function goToSlide(n) {
+    resetTimer();
+    slideIndex = n;
+    showSlide(slideIndex);
+  }
+
+  function resetTimer() {
+    clearInterval(autoSlide);
+    autoSlide = setInterval(() => { slideIndex++; showSlide(slideIndex); }, 5000);
+  }
+
+  // Démarre diaporama
+  showSlide(0);
+  resetTimer();
+
+  // ===== VERSET DU JOUR =====
+  // lang.js gère la traduction — ici on applique le français par défaut
+  function afficherVerset() {
+    const lang = localStorage.getItem('site_lang') || 'fr';
+    if (window.TRANSLATIONS && window.TRANSLATIONS[lang] && window.TRANSLATIONS[lang].versets) {
+      const idx = new Date().getDay();
+      const v   = window.TRANSLATIONS[lang].versets[idx];
+      const el    = document.getElementById('verset');
+      const elRef = document.getElementById('verset-ref');
+      if (el) el.textContent = v.texte;
+      if (elRef) elRef.textContent = '— ' + v.ref;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', afficherVerset);
+  afficherVerset();
+</script>
+<script src="pwa.js"></script>
+<script src="gate.js"></script>
+
+<!-- Firebase pou Anons dinamik -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+(function() {
+  if (!firebase.apps.length) {
+    firebase.initializeApp({
+      apiKey:"AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
+      authDomain:"eglise-carrefour.firebaseapp.com",
+      projectId:"eglise-carrefour",
+      storageBucket:"eglise-carrefour.appspot.com",
+      messagingSenderId:"421333694767",
+      appId:"1:421333694767:web:30c18da36ae020821a49da"
+    });
+  }
+  const db = firebase.firestore();
+
+  async function chargerAnnonces() {
+    try {
+      const snap = await db.collection('annonces').orderBy('timestamp','desc').get();
+      if (snap.empty) return;
+
+      const jodi = new Date(); jodi.setHours(0,0,0,0);
+      const valid = [];
+
+      for (const d of snap.docs) {
+        const a = { id: d.id, ...d.data() };
+        const hasDate = a.date && typeof a.date === 'string' && a.date.trim() !== '';
+        if (hasDate && new Date(a.date + 'T00:00:00') < jodi) {
+          try { await db.collection('annonces').doc(d.id).delete(); } catch(ex) {}
+        } else {
+          valid.push(a);
+        }
+      }
+
+      if (valid.length === 0) return;
+
+      const icons  = { urgent:'fa-exclamation-circle', important:'fa-star', normal:'fa-bullhorn' };
+      const colors = { urgent:'#e74c3c', important:'#f1c40f', normal:'#1c1c3c' };
+      const list   = document.getElementById('annonces-list');
+      if (!list) return;
+
+      list.innerHTML = valid.map(function(a) {
+        var ico  = icons[a.importance]  || 'fa-bullhorn';
+        var col  = colors[a.importance] || '#1c1c3c';
+        var date = a.date ? new Date(a.date + 'T00:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}) : '';
+        var heure = a.heure || '';
+        var desc  = a.details ? '<span style="display:block;font-size:0.9rem;color:#333;margin-top:3px;font-weight:500;">'+a.details+'</span>' : '';
+        var foto  = a.fotoUrl ? '<img src="'+a.fotoUrl+'" style="width:100%;max-height:180px;object-fit:cover;border-radius:10px;margin-top:10px;">' : '';
+        return '<li style="flex-direction:column;align-items:flex-start;">'
+          + '<div style="display:flex;align-items:center;gap:14px;width:100%;">'
+          + '<span class="annonce-icon"><i class="fas '+ico+'" style="color:'+col+'"></i></span>'
+          + '<div style="flex:1;"><strong>'+(a.titre||'')+'</strong>'+desc
+          + '<span class="annonce-date">'+date+(heure?' — '+heure:'')+'</span></div></div>'
+          + foto + '</li>';
+      }).join('');
+
+    } catch(e) {
+      console.log('Annonces erreur:', e.message);
+    }
+  }
+
+
+  chargerAnnonces();
+})();
+</script>
+  <!-- ===== BOUTON ENSTALE APP ===== -->
+  <div id="pwa-install-btn" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9990;width:calc(100% - 48px);max-width:400px;">
+    <button onclick="instalerApp()"
+      style="width:100%;padding:16px 22px;background:linear-gradient(135deg,#1c1c3c,#3a1c3c);color:white;border:none;border-radius:50px;font-size:1rem;font-weight:800;cursor:pointer;box-shadow:0 6px 24px rgba(28,28,60,0.4);display:flex;align-items:center;justify-content:center;gap:12px;">
+      <img src="logo.png" style="width:32px;height:32px;object-fit:contain;border-radius:8px;background:rgba(255,255,255,0.1);padding:2px;">
+      <span>📲 Installer l'application</span>
+    </button>
+  </div>
 </body>
 </html>

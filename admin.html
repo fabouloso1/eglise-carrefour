@@ -1093,60 +1093,50 @@
 
     <!-- TAB NOTIFIKASYON -->
     <div class="tab-panel" id="tab-notifs">
+      <div class="card">
+        <h3><i class="fas fa-bell" style="color:var(--gold)"></i> Envoyer une notification</h3>
+        <p style="font-size:1rem;color:#888;margin-bottom:20px;">Envoyez une notification push à tous les abonnés du site.</p>
 
-      <!-- Voye notif -->
-      <div style="background:linear-gradient(135deg,#1a0a3c,#0d1f4a);border-radius:20px;padding:24px 20px;margin-bottom:16px;border:1px solid rgba(241,196,15,0.2);">
-        <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
-          <div style="width:48px;height:48px;background:linear-gradient(135deg,#f1c40f,#e67e22);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <i class="fas fa-paper-plane" style="color:#0d1f4a;font-size:1.2rem;"></i>
+        <div style="display:flex;flex-direction:column;gap:14px;max-width:500px;">
+          <div>
+            <label style="font-weight:600;display:block;margin-bottom:6px;">Titre <span style="color:red">*</span></label>
+            <input type="text" id="notifTitle" placeholder="Ex: Nouveau message du pasteur" 
+              style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:1rem;">
           </div>
           <div>
-            <h3 style="color:white!important;font-size:1.1rem!important;font-weight:800!important;margin:0!important;">Envoyer une notification</h3>
-            <p style="color:rgba(255,255,255,0.5)!important;font-size:0.82rem!important;margin:0!important;">Push notification pour tous les abonnés</p>
+            <label style="font-weight:600;display:block;margin-bottom:6px;">Message <span style="color:red">*</span></label>
+            <textarea id="notifBody" rows="3" placeholder="Ex: Un nouveau message a été publié sur le site..."
+              style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:1rem;resize:vertical;"></textarea>
           </div>
-        </div>
-
-        <div style="margin-bottom:12px;">
-          <label style="display:block;color:#f1c40f!important;font-weight:700!important;font-size:0.88rem!important;margin-bottom:6px;"><i class="fas fa-heading" style="margin-right:5px;"></i>Titre *</label>
-          <input type="text" id="notifTitle" placeholder="Ex: Nouvelle annonce importante..."
-            style="width:100%;padding:12px 14px;border:2px solid rgba(241,196,15,0.3);border-radius:12px;background:rgba(255,255,255,0.07);color:white;font-size:0.95rem;box-sizing:border-box;">
-        </div>
-
-        <div style="margin-bottom:12px;">
-          <label style="display:block;color:#f1c40f!important;font-weight:700!important;font-size:0.88rem!important;margin-bottom:6px;"><i class="fas fa-align-left" style="margin-right:5px;"></i>Message *</label>
-          <textarea id="notifBody" rows="3" placeholder="Ex: Un culte spécial aura lieu dimanche à 6h00..."
-            style="width:100%;padding:12px 14px;border:2px solid rgba(241,196,15,0.3);border-radius:12px;background:rgba(255,255,255,0.07);color:white;font-size:0.95rem;box-sizing:border-box;resize:vertical;"></textarea>
-        </div>
-
-        <div style="margin-bottom:20px;">
-          <label style="display:block;color:#f1c40f!important;font-weight:700!important;font-size:0.88rem!important;margin-bottom:6px;"><i class="fas fa-link" style="margin-right:5px;"></i>Lien (optionnel)</label>
-          <input type="text" id="notifLink" placeholder="https://fabouloso1.github.io/eglise-carrefour/"
-            style="width:100%;padding:12px 14px;border:2px solid rgba(241,196,15,0.3);border-radius:12px;background:rgba(255,255,255,0.07);color:white;font-size:0.95rem;box-sizing:border-box;">
-        </div>
-
-        <button onclick="envoyerNotification()"
-          style="width:100%;padding:15px;background:linear-gradient(135deg,#f1c40f,#e67e22);color:#0d1f4a;border:none;border-radius:30px;font-size:1.05rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px;">
-          <i class="fas fa-paper-plane"></i> Envoyer à tous les abonnés
-        </button>
-
-        <div id="notifStatus" style="display:none;padding:12px;border-radius:12px;text-align:center;font-weight:700;font-size:0.95rem;"></div>
-      </div>
-
-      <!-- Lis abonè yo -->
-      <div style="background:linear-gradient(135deg,#0d1f4a,#1a0a3c);border-radius:20px;padding:22px 18px;border:1px solid rgba(255,255,255,0.08);">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
-          <div style="display:flex;align-items:center;gap:12px;">
-            <div style="width:44px;height:44px;background:rgba(241,196,15,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;">
-              <i class="fas fa-users" style="color:#f1c40f;"></i>
-            </div>
-            <div>
-              <h3 style="color:white!important;font-size:1rem!important;font-weight:800!important;margin:0!important;">Abonnés aux notifications (<span id="notifCount">0</span>)</h3>
-              <p style="color:rgba(255,255,255,0.4)!important;font-size:0.8rem!important;margin:0!important;">Personnes ayant activé les notifications</p>
-            </div>
+          <div>
+            <label style="font-weight:600;display:block;margin-bottom:6px;">Lien (optionnel)</label>
+            <input type="text" id="notifLink" placeholder="https://fabouloso1.github.io/eglise-carrefour/index.html"
+              style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:1rem;">
           </div>
+          <button onclick="envoyerNotification()"
+            style="background:var(--gold);color:#1c1c3c;font-weight:700;padding:12px;border:none;border-radius:8px;font-size:1rem;cursor:pointer;">
+            <i class="fas fa-paper-plane"></i> Envoyer à tous les abonnés
+          </button>
+          <div id="notifStatus" style="display:none;padding:12px;border-radius:8px;text-align:center;font-weight:600;"></div>
         </div>
-        <div id="abonneList">
-          <p style="color:rgba(255,255,255,0.3);text-align:center;padding:20px;">Chargement...</p>
+
+        <div style="margin-top:30px;padding-top:20px;border-top:1px solid #eee;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+            <h4 style="margin:0;"><i class="fas fa-users"></i> Abonnés 
+              <span id="notifCount" style="font-size:1rem;font-weight:700;color:var(--gold);margin-left:8px;">
+                <i class="fas fa-spinner fa-spin"></i>
+              </span>
+            </h4>
+            <button onclick="reinitialiserAbonnes()"
+              style="background:#e74c3c;color:white;border:none;padding:7px 14px;border-radius:8px;font-size:0.85rem;cursor:pointer;font-weight:600;">
+              <i class="fas fa-trash"></i> Réinitialiser les abonnés
+            </button>
+          </div>
+          <div id="abonneList" style="display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto;">
+            <p style="color:#aaa;font-size:0.9rem;text-align:center;padding:10px;">
+              <i class="fas fa-spinner fa-spin"></i> Chargement...
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -1212,10 +1202,8 @@
   window._deleteObject = deleteObject;
   window._ADMIN_PASSWORD = ADMIN_PASSWORD;
 
-  // Init — Firebase ready
+  // Init
   document.getElementById('loadingOverlay').style.display = 'none';
-  window._firebaseReady = true;
-  window.dispatchEvent(new Event('firebaseReady'));
 
   // Verifye si deja login
   if (localStorage.getItem('admin_ok') === 'true') {
@@ -1240,13 +1228,7 @@
       localStorage.setItem('admin_ok', 'true');
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('adminPanel').style.display = 'block';
-      // Tann Firebase si pa ready
-      if (window._firebaseReady) {
-        doLoadAll();
-      } else {
-        window.addEventListener('firebaseReady', function() { doLoadAll(); }, { once: true });
-        setTimeout(function() { if (window._db) doLoadAll(); }, 3000);
-      }
+      loadAll();
     } else {
       document.getElementById('loginError').style.display = 'block';
       document.getElementById('loginPassword').value = '';
@@ -1278,9 +1260,9 @@
     if (name === 'galerie') loadFotos();
     if (name === 'etude') chargerEtudeActive();
     if (name === 'evenements') chargerEvenements();
-    if (name === 'membres') { if (window._db) chargerMembres(); else window.addEventListener('firebaseReady', chargerMembres, {once:true}); setTimeout(async()=>{ try{ const s=await window._getDocs(window._collection(window._db,'membres')); localStorage.setItem('membres_seen',s.size); document.getElementById('membresBadge').style.display='none'; }catch(e){} },500); }
+    if (name === 'membres') { chargerMembres(); setTimeout(async()=>{ try{ const s=await window._getDocs(window._collection(window._db,'membres')); localStorage.setItem('membres_seen',s.size); document.getElementById('membresBadge').style.display='none'; }catch(e){} },500); }
     if (name === 'temoignages') { loadTemoignages(); document.getElementById('temoBadge').style.display='none'; }
-    if (name === 'notifs') { if (window._db) loadNotifCount(); else window.addEventListener('firebaseReady', loadNotifCount, {once:true}); }
+    if (name === 'notifs') loadNotifCount();
     if (name === 'contacts') loadContacts();
   }
 
@@ -1623,21 +1605,6 @@
 
   // ===== LOAD ALL =====
   function loadAll() {
-    // Tann Firebase ready si pa disponib encore
-    if (!window._db) {
-      window.addEventListener('firebaseReady', function() {
-        doLoadAll();
-      }, { once: true });
-      // Timeout safety — si event pa fire nan 3 sek
-      setTimeout(function() {
-        if (window._db) doLoadAll();
-      }, 3000);
-    } else {
-      doLoadAll();
-    }
-  }
-
-  function doLoadAll() {
     loadFotos();
     loadLive();
     loadTemoignages();
@@ -1645,7 +1612,6 @@
     loadAnnonces();
     chargerEvenements();
     chargerMembres();
-    loadNotifCount();
   }
 
   // ===== GALERIE =====
@@ -2221,26 +2187,25 @@
 
   // Konbyen abòne + lis abòne yo
   function loadNotifCount() {
-    window._getDocs(window._collection(window._db, 'push_subscriptions'))
-      .then(function(snap) {
-        const el = document.getElementById('notifCount');
-        if (el) el.textContent = snap.size;
-        const list = document.getElementById('abonneList');
-        if (!list) return;
-        if (snap.empty) {
-          list.innerHTML = '<p style="color:rgba(255,255,255,0.3);text-align:center;padding:20px;">Aucun abonné.</p>';
-          return;
-        }
-        list.innerHTML = snap.docs.map(function(d) {
-          var data = d.data();
-          return '<div style="background:rgba(255,255,255,0.05);border-radius:12px;padding:12px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;">' +
-            '<div style="width:38px;height:38px;background:rgba(241,196,15,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;">' +
-              '<i class="fas fa-bell" style="color:#f1c40f;font-size:0.9rem;"></i></div>' +
-            '<div><div style="color:white;font-weight:700;">' + (data.nom||'Anonyme') + '</div>' +
-            '<div style="color:rgba(255,255,255,0.4);font-size:0.8rem;">' + (data.telephone||'—') + ' · ' + (data.date||'—') + '</div></div></div>';
-        }).join('');
-      }).catch(function() {});
-  }
+    // Chaje notif_subscribers (kloch) + membres
+    Promise.all([
+      db2.collection('notif_subscribers').get(),
+      db2.collection('membres').get()
+    ]).then(function(results) {
+      var notifSnap   = results[0];
+      var membresSnap = results[1];
+
+      // Konte total abonè
+      var el = document.getElementById('notifCount');
+      if (el) el.innerHTML = '(' + notifSnap.size + ' abonné(s))';
+
+      var list = document.getElementById('abonneList');
+      if (!list) return;
+
+      if (notifSnap.empty) {
+        list.innerHTML = '<p style="color:#aaa;text-align:center;padding:10px;font-size:0.9rem;">Aucun abonné pour le moment.</p>';
+        return;
+      }
 
       // Kreye yon map membres pou jwenn info rapid
       var membresMap = {};
@@ -2328,131 +2293,79 @@
   };
 
     window.envoyerNotification = async function() {
-    const title  = document.getElementById('notifTitle').value.trim();
-    const body   = document.getElementById('notifBody').value.trim();
-    const link   = document.getElementById('notifLink').value.trim() || 'https://fabouloso1.github.io/eglise-carrefour/';
     const status = document.getElementById('notifStatus');
-
-    if (!title || !body) {
-      status.style.display = 'block';
-      status.style.background = 'rgba(231,76,60,0.2)'; status.style.color = '#ff8a80';
-      status.textContent = '❌ Titre et message obligatoires';
-      return;
-    }
     status.style.display = 'block';
-    status.style.background = 'rgba(241,196,15,0.1)'; status.style.color = '#f1c40f';
-    status.textContent = '⏳ Envoi en cours...';
-
-    try {
-      const snap = await window._getDocs(window._collection(window._db, 'push_subscriptions'));
-      
-      await window._addDoc(window._collection(window._db, 'notif_queue'), {
-        title, body, url: link,
-        icon: '/eglise-carrefour/logo.png',
-        total: snap.size, sent: true,
-        timestamp: window._serverTimestamp()
-      });
-
-      try { const bc = new BroadcastChannel('eglise-notif'); bc.postMessage({ title, body, url: link }); bc.close(); } catch(e) {}
-
-      status.style.background = 'rgba(46,213,115,0.15)'; status.style.color = '#2ed573';
-      status.textContent = '✅ Notification envoyée à ' + snap.size + ' abonné(s)!';
-      document.getElementById('notifTitle').value = '';
-      document.getElementById('notifBody').value  = '';
-    } catch(e) {
-      status.style.background = 'rgba(231,76,60,0.2)'; status.style.color = '#ff8a80';
-      status.textContent = '❌ Erreur: ' + e.message;
-    }
-  }
+    status.style.background = '#fff8e1';
+    status.style.color = '#555';
+    status.textContent = '⚠️ Système de notification en cours de configuration.';
   };
 
   document.addEventListener('click', function(e) {
     if (e.target.closest('[onclick*="notifs"]')) setTimeout(loadNotifCount, 300);
   });
 
-  // ===== FONKSYON NOTIF =====
-  // envoyerNotif — rele pa tout aksyon (foto, anons, etude, etc.)
-  window.envoyerNotif = async function(title, body, url) {
-    try {
-      var snap = await db2.collection('notif_subscribers').get();
-      if (snap.empty) return;
-      // Sove nan notif_queue pou service worker
-      await db2.collection('notif_queue').add({
-        title: title, body: body, url: url || 'https://fabouloso1.github.io/eglise-carrefour/',
-        icon: 'https://fabouloso1.github.io/eglise-carrefour/logo.png',
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        sent: false
-      });
-      // Voye via OneSignal REST API
-      await fetch('https://onesignal.com/api/v1/notifications', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Basic os_v2_app_tcyv2qytqzh5lnyrlhoterdminixlciqzlhupxuxjz7cc2atminavs4rjad4keqnxm6vkl6ftcn2lvuawuyxkqebyyiof6txjruuxxy'
-        },
-        body: JSON.stringify({
-          app_id: '98b15d43-1386-4fd5-b711-59dd32446c43',
-          included_segments: ['All'],
-          headings: { fr: title },
-          contents: { fr: body },
-          url: url || 'https://fabouloso1.github.io/eglise-carrefour/',
-          chrome_web_icon: 'https://fabouloso1.github.io/eglise-carrefour/logo.png'
-        })
-      });
-      console.log('✅ Notif voye:', title);
-    } catch(e) { console.log('envoyerNotif error:', e.message); }
-  };
-
-  // envoyerNotifAuto — menm fonksyon
-  window.envoyerNotifAuto = window.envoyerNotif;
-
   loadNotifCount();
 })();
 
   // ===== MEMBRES =====
   async function chargerMembres() {
-    const el     = document.getElementById('membresCount');
-    const listEl = document.getElementById('membresList');
-    if (!window._getDocs || !window._db) {
-      if (listEl) listEl.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px;">Connexion Firebase non disponible.</p>';
-      return;
-    }
     try {
+      // Chaje TOUT membres — sans orderBy pou evite pwoblèm index
       const snap = await window._getDocs(window._collection(window._db, 'membres'));
       const list = snap.docs.map(d => ({id: d.id, ...d.data()}));
-      list.sort((a,b) => ((b.timestamp?.seconds||0) - (a.timestamp?.seconds||0)));
+
+      // Triye nan JavaScript — pa nan Firestore
+      list.sort(function(a, b) {
+        const ta = a.timestamp ? (a.timestamp.seconds || 0) : 0;
+        const tb = b.timestamp ? (b.timestamp.seconds || 0) : 0;
+        return tb - ta; // Pi nouvo anwo
+      });
+
+      const el     = document.getElementById('membresCount');
+      const listEl = document.getElementById('membresList');
       if (el) el.textContent = list.length;
+
       if (!list.length) {
         listEl.innerHTML = '<p style="color:rgba(255,255,255,0.3);text-align:center;padding:30px;">Aucun membre inscrit.</p>';
         return;
       }
-      listEl.innerHTML = list.map(function(m) {
-        var bloque = m.bloque === true;
-        var nom = m.nom || '—';
-        var tel = m.telephone || '—';
-        var date = m.date || '—';
-        var id = m.id;
-        var safenom = nom.replace(/'/g, '');
-        return '<div style="background:' + (bloque?'rgba(231,76,60,0.12)':'rgba(255,255,255,0.06)') + ';border-radius:14px;padding:14px 16px;margin-bottom:10px;border-left:4px solid ' + (bloque?'#ff6b6b':'#f1c40f') + ';">' +
+
+      listEl.innerHTML = list.map(m => {
+        const bloque = m.bloque === true;
+        const nom    = m.nom || '—';
+        const tel    = m.telephone || '—';
+        const ville  = m.ville || '';
+        const date   = m.date || '—';
+
+        return '<div style="background:' + (bloque ? 'rgba(231,76,60,0.12)' : 'rgba(255,255,255,0.06)') + ';border-radius:14px;padding:14px 16px;margin-bottom:10px;border-left:4px solid ' + (bloque ? '#ff6b6b' : '#f1c40f') + ';">' +
           '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">' +
-            '<div style="width:42px;height:42px;background:' + (bloque?'rgba(231,76,60,0.2)':'rgba(241,196,15,0.15)') + ';border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
-              '<i class="fas fa-' + (bloque?'ban':'user') + '" style="color:' + (bloque?'#ff6b6b':'#f1c40f') + ';"></i></div>' +
+            '<div style="width:42px;height:42px;background:' + (bloque ? 'rgba(231,76,60,0.2)' : 'rgba(241,196,15,0.15)') + ';border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
+              '<i class="fas fa-' + (bloque ? 'ban' : 'user') + '" style="color:' + (bloque ? '#ff6b6b' : '#f1c40f') + ';"></i>' +
+            '</div>' +
             '<div style="flex:1;">' +
-              '<div style="color:white;font-weight:800;font-size:1rem;">' + nom + (bloque?' <span style="background:rgba(231,76,60,0.25);color:#ff6b6b;font-size:0.72rem;padding:2px 8px;border-radius:10px;margin-left:6px;">BLOQUÉ</span>':'') + '</div>' +
-              '<div style="font-size:0.85rem;color:rgba(255,255,255,0.7);margin-top:3px;"><i class="fas fa-phone" style="color:#f1c40f;margin-right:5px;"></i>' + tel + '</div>' +
+              '<div style="color:white!important;font-weight:800!important;font-size:1rem!important;">' + nom +
+                (bloque ? ' <span style="background:rgba(231,76,60,0.25);color:#ff6b6b;font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px;">BLOQUÉ</span>' : '') +
+              '</div>' +
+              '<div style="font-size:0.85rem;color:rgba(255,255,255,0.7);margin-top:3px;">' +
+                '<i class="fas fa-phone" style="color:#f1c40f;margin-right:5px;"></i>' + tel +
+                (ville ? ' &nbsp;·&nbsp; <i class="fas fa-map-marker-alt" style="color:#f1c40f;margin-right:4px;"></i>' + ville : '') +
+              '</div>' +
               '<div style="font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:2px;">' + date + '</div>' +
-            '</div></div>' +
+            '</div>' +
+          '</div>' +
           '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
             (bloque
-              ? '<button onclick="debloquerMembre('' + id + '')" style="flex:1;padding:9px 12px;background:rgba(46,213,115,0.2);border:1.5px solid #2ed573;border-radius:20px;color:#2ed573;font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-unlock"></i> Débloquer</button>'
-              : '<button onclick="bloquerMembre('' + id + '','' + safenom + '')" style="flex:1;padding:9px 12px;background:rgba(231,76,60,0.15);border:1.5px solid rgba(231,76,60,0.4);border-radius:20px;color:#ff6b6b;font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-ban"></i> Bloquer</button>') +
-            ' <button onclick="reinitialiserMembre('' + id + '','' + safenom + '')" style="padding:9px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:20px;color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-redo"></i> Réinitialiser</button>' +
-            ' <button onclick="supprimerMembre('' + id + '')" style="padding:9px 12px;background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.25);border-radius:20px;color:#ff6b6b;font-size:0.85rem;cursor:pointer;"><i class="fas fa-trash"></i></button>' +
-          '</div></div>';
+              ? '<button onclick="debloquerMembre('' + m.id + '')" style="flex:1;padding:9px 12px;background:rgba(46,213,115,0.2);border:1.5px solid #2ed573;border-radius:20px;color:#2ed573;font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-unlock"></i> Débloquer</button>'
+              : '<button onclick="bloquerMembre('' + m.id + '','' + nom.replace(/'/g, '') + '')" style="flex:1;padding:9px 12px;background:rgba(231,76,60,0.15);border:1.5px solid rgba(231,76,60,0.4);border-radius:20px;color:#ff6b6b;font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-ban"></i> Bloquer</button>') +
+            '<button onclick="reinitialiserMembre('' + m.id + '','' + nom.replace(/'/g, '') + '')" style="padding:9px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:20px;color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-redo"></i> Réinitialiser</button>' +
+            '<button onclick="supprimerMembre('' + m.id + '')" style="padding:9px 12px;background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.25);border-radius:20px;color:#ff6b6b;font-size:0.85rem;cursor:pointer;"><i class="fas fa-trash"></i></button>' +
+          '</div>' +
+        '</div>';
       }).join('');
+
     } catch(e) {
-      console.log('chargerMembres:', e.message);
-      if (listEl) listEl.innerHTML = '<p style="color:#e74c3c;padding:20px;text-align:center;">Erreur: ' + e.message + '</p>';
+      console.log('Membres erreur:', e);
+      document.getElementById('membresList').innerHTML = '<p style="color:#e74c3c;padding:20px;text-align:center;">Erreur: ' + e.message + '</p>';
     }
   }
 
@@ -2747,6 +2660,5 @@ async function lancerEtude() {
   }
 </script>
 
-<script src="notif.js"></script>
 </body>
 </html>
