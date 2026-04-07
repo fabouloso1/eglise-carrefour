@@ -1,8 +1,7 @@
-// ===== GATE.JS — SISTÈM KONPLÈ OUVRI ADMIN AK ENSRIPSYON =====
+// ===== GATE.JS — Sistèm Enskripsyon ak Aksè =====
 
 var GATE_STORAGE = 'eglise_membre';
 
-// 1. Fonksyon pou anrejistre manm
 function gateSubmit() {
   var nom = document.getElementById('gate-nom').value.trim();
   var tel = document.getElementById('gate-tel').value.trim();
@@ -27,7 +26,7 @@ function gateSubmit() {
     date: new Date().toLocaleDateString('fr-FR')
   };
 
-  // Voye done yo nan Firebase pou yo parèt nan Panel Admin
+  // Voye done yo nan Firebase
   fetch('https://firestore.googleapis.com/v1/projects/eglise-carrefour/databases/(default)/documents/membres', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -47,30 +46,17 @@ function gateSubmit() {
     document.getElementById('gate-success').style.display = 'block';
   })
   .catch(function() {
-    // Si entènèt fèb, sove l nan telefòn nan kanmenm
     localStorage.setItem(GATE_STORAGE, JSON.stringify(doneMounNan));
     document.getElementById('gate-form').style.display = 'none';
     document.getElementById('gate-success').style.display = 'block';
   });
 }
 
-// 2. Fonksyon pou ouvri Panel Admin ak modpas
 function openAdmin() {
   var pass = prompt("Antre modpas administratè a :");
-  if (pass === "1234") { // Chanje 1234 si ou vle yon lòt modpas
+  if (pass === "1234") { 
     window.location.href = "admin.html";
   } else if (pass !== null) {
     alert("Modpas sa a pa bon !");
   }
 }
-
-// 3. Louvri popup la otomatikman si moun nan poko enskri
-window.onload = function() {
-  if(!localStorage.getItem(GATE_STORAGE)) {
-    setTimeout(function() {
-      if(document.getElementById('gate-overlay')) {
-        document.getElementById('gate-overlay').style.display = 'flex';
-      }
-    }, 3000);
-  }
-};
