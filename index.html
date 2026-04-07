@@ -2,17 +2,26 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta name="version" content="1773839943">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Église de Dieu de la Prophétie de Carrefour</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1c1c3c">
   <style>
-    /* Stil pou Popup Enskripsyon an */
+    /* Popup Style */
     #gate-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.85); z-index: 99999;
       display: none; justify-content: center; align-items: center; padding: 20px;
-      backdrop-filter: blur(5px); font-family: sans-serif;
+      backdrop-filter: blur(5px);
     }
     .gate-card {
       background: white; padding: 30px; border-radius: 20px;
@@ -26,30 +35,23 @@
       width: 100%; background: #1c1c3c; color: white; padding: 15px;
       border: none; border-radius: 10px; font-weight: bold; font-size: 16px; cursor: pointer;
     }
-    .admin-access-btn {
-      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-      color: white; padding: 8px 15px; border-radius: 20px; cursor: pointer;
-      font-size: 14px; display: inline-flex; align-items: center; gap: 8px;
-    }
   </style>
 </head>
 <body>
 
-  <header style="padding: 20px; background: #1c1c3c; display: flex; justify-content: space-between; align-items: center;">
-    <img src="logo.png" alt="Logo" style="height: 50px;">
-    <button onclick="openAdmin()" class="admin-access-btn">
+  <header style="padding: 15px; background: #1c1c3c; display: flex; justify-content: space-between; align-items: center;">
+    <img src="logo.png" alt="Logo" style="height: 40px;">
+    <button onclick="openAdmin()" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:white; padding:8px 15px; border-radius:20px; cursor:pointer;">
       <i class="fas fa-user-shield"></i> Admin
     </button>
   </header>
 
-  <main style="padding: 20px; text-align: center; color: white;">
-    <h1 style="margin-top: 50px;">Byenvini nan Egliz la</h1>
-    <p>Klike anba a pou ou enskri kòm manm.</p>
-    
-    <button onclick="document.getElementById('gate-overlay').style.display='flex'" style="background:#f1c40f; color:#1c1c3c; padding:15px 40px; border:none; border-radius:30px; font-weight:bold; font-size:18px; margin-top:20px; cursor:pointer;">
-      ENSRI KOUNYE A
+  <div style="text-align: center; padding: 50px 20px; color: white;">
+    <h1>Byenvini</h1>
+    <button onclick="document.getElementById('gate-overlay').style.display='flex'" class="nav-btn" style="margin-top:20px; padding: 15px 30px; border-radius: 30px; cursor: pointer; background: #f1c40f; border: none; font-weight: bold;">
+      Inscription
     </button>
-  </main>
+  </div>
 
   <div id="gate-overlay">
     <div class="gate-card">
@@ -74,337 +76,5 @@
   </div>
 
   <script src="gate.js"></script>
-</body>
-</html>
-  <section id="versetDuJour">
-    <div class="verset-icon"><i class="fas fa-book-open"></i></div>
-    <h2 data-i18n="verset_title">Verset du Jour</h2>
-    <p id="verset">Je puis tout par celui qui me fortifie.</p>
-    <span id="verset-ref" class="verset-ref">— Philippiens 4:13</span>
-  </section>
-
-  <!-- Bouton Don -->
-  <section class="don-section">
-    <div class="don-inner">
-      <i class="fas fa-heart don-icon"></i>
-      <div>
-        <h3 data-i18n="don_title">Soutenir notre ministère</h3>
-        <p data-i18n="don_text">Votre générosité nous aide à poursuivre notre mission évangélique.</p>
-      </div>
-      <a href="don.html" class="don-button" data-i18n="don_btn">Faire un don <i class="fas fa-hand-holding-heart"></i></a>
-    </div>
-  </section>
-
-</main>
-
-<!-- Footer injecté par nav.js -->
-<div id="foot-placeholder"></div>
-
-<!-- ===== SCRIPTS ===== -->
-<script src="lang.js"></script>
-<script src="nav.js"></script>
-<script>
-  // Init nav + lang
-  NAV.init('index.html');
-  // Applique la traduction après que le nav soit injecté
-  (function() {
-    var lang = localStorage.getItem('site_lang') || 'fr';
-    if (window.applyLang) window.applyLang(lang);
-  })();
-
-  // ===== DIAPORAMA =====
-  let slideIndex = 0;
-  let autoSlide;
-
-  const slides = document.getElementsByClassName('mySlides');
-  const dots   = document.getElementsByClassName('dot');
-
-  function showSlide(n) {
-    if (n >= slides.length) slideIndex = 0;
-    if (n < 0) slideIndex = slides.length - 1;
-    for (let i = 0; i < slides.length; i++) {
-      slides[i].classList.remove('active-slide');
-      dots[i].classList.remove('active');
-    }
-    slides[slideIndex].classList.add('active-slide');
-    dots[slideIndex].classList.add('active');
-  }
-
-  function changeSlide(n) {
-    resetTimer();
-    slideIndex += n;
-    showSlide(slideIndex);
-  }
-
-  function goToSlide(n) {
-    resetTimer();
-    slideIndex = n;
-    showSlide(slideIndex);
-  }
-
-  function resetTimer() {
-    clearInterval(autoSlide);
-    autoSlide = setInterval(() => { slideIndex++; showSlide(slideIndex); }, 5000);
-  }
-
-  // Démarre diaporama
-  showSlide(0);
-  resetTimer();
-
-  // ===== VERSET DU JOUR =====
-  // lang.js gère la traduction — ici on applique le français par défaut
-  function afficherVerset() {
-    const lang = localStorage.getItem('site_lang') || 'fr';
-    if (window.TRANSLATIONS && window.TRANSLATIONS[lang] && window.TRANSLATIONS[lang].versets) {
-      const idx = new Date().getDay();
-      const v   = window.TRANSLATIONS[lang].versets[idx];
-      const el    = document.getElementById('verset');
-      const elRef = document.getElementById('verset-ref');
-      if (el) el.textContent = v.texte;
-      if (elRef) elRef.textContent = '— ' + v.ref;
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', afficherVerset);
-  afficherVerset();
-</script>
-<script src="pwa.js"></script>
-
-<!-- Firebase pou Anons dinamik -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-<script>
-(function() {
-  if (!firebase.apps.length) {
-    firebase.initializeApp({
-      apiKey:"AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
-      authDomain:"eglise-carrefour.firebaseapp.com",
-      projectId:"eglise-carrefour",
-      storageBucket:"eglise-carrefour.appspot.com",
-      messagingSenderId:"421333694767",
-      appId:"1:421333694767:web:30c18da36ae020821a49da"
-    });
-  }
-  const db = firebase.firestore();
-
-  // ===== GATE.JS chaje ICI — apre Firebase =====
-  // Pa itilize script src — integre dirèkteman pou garanti lòd la
-  
-  async function chargerAnnonces() {
-    try {
-      const snap = await db.collection('annonces').orderBy('timestamp','desc').get();
-      if (snap.empty) return;
-
-      const jodi = new Date(); jodi.setHours(0,0,0,0);
-      const valid = [];
-
-      for (const d of snap.docs) {
-        const a = { id: d.id, ...d.data() };
-        const hasDate = a.date && typeof a.date === 'string' && a.date.trim() !== '';
-        if (hasDate && new Date(a.date + 'T00:00:00') < jodi) {
-          try { await db.collection('annonces').doc(d.id).delete(); } catch(ex) {}
-        } else {
-          valid.push(a);
-        }
-      }
-
-      if (valid.length === 0) return;
-
-      const icons  = { urgent:'fa-exclamation-circle', important:'fa-star', normal:'fa-bullhorn' };
-      const colors = { urgent:'#e74c3c', important:'#f1c40f', normal:'#1c1c3c' };
-      const list   = document.getElementById('annonces-list');
-      if (!list) return;
-
-      list.innerHTML = valid.map(function(a) {
-        var ico  = icons[a.importance]  || 'fa-bullhorn';
-        var col  = colors[a.importance] || '#1c1c3c';
-        var date = a.date ? new Date(a.date + 'T00:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}) : '';
-        var heure = a.heure || '';
-        var desc  = a.details ? '<span style="display:block;font-size:0.9rem;color:#333;margin-top:3px;font-weight:500;">'+a.details+'</span>' : '';
-        var foto  = a.fotoUrl ? '<img src="'+a.fotoUrl+'" style="width:100%;max-height:180px;object-fit:cover;border-radius:10px;margin-top:10px;">' : '';
-        return '<li style="flex-direction:column;align-items:flex-start;">'
-          + '<div style="display:flex;align-items:center;gap:14px;width:100%;">'
-          + '<span class="annonce-icon"><i class="fas '+ico+'" style="color:'+col+'"></i></span>'
-          + '<div style="flex:1;"><strong>'+(a.titre||'')+'</strong>'+desc
-          + '<span class="annonce-date">'+date+(heure?' — '+heure:'')+'</span></div></div>'
-          + foto + '</li>';
-      }).join('');
-
-    } catch(e) {
-      console.log('Annonces erreur:', e.message);
-    }
-  }
-
-
-  chargerAnnonces();
-})();
-</script>
-  <!-- ===== BOUTON ENSTALE APP ===== -->
-  <div id="pwa-install-btn" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9990;width:calc(100% - 48px);max-width:400px;">
-    <button onclick="instalerApp()"
-      style="width:100%;padding:16px 22px;background:linear-gradient(135deg,#1c1c3c,#3a1c3c);color:white;border:none;border-radius:50px;font-size:1rem;font-weight:800;cursor:pointer;box-shadow:0 6px 24px rgba(28,28,60,0.4);display:flex;align-items:center;justify-content:center;gap:12px;">
-      <img src="logo.png" style="width:32px;height:32px;object-fit:contain;border-radius:8px;background:rgba(255,255,255,0.1);padding:2px;">
-      <span>📲 Installer l'application</span>
-    </button>
-  </div>
-<!-- Gate.js APRE Firebase — garanti lòd la -->
-<!-- Bouton Notifikasyon -->
-<style>
-#notif-btn {
-  position: fixed; bottom: 90px; right: 20px;
-  width: 52px; height: 52px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; z-index: 9990;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-  border: none; transition: all 0.3s;
-  background: linear-gradient(135deg, #1c1c3c, #2d1b4e);
-  border: 2px solid rgba(241,196,15,0.4);
-}
-#notif-btn:hover { transform: scale(1.1); }
-#notif-btn i { color: #f1c40f; font-size: 1.3rem; }
-#notif-btn.active { background: linear-gradient(135deg,#2ed573,#1abc9c); border-color: #2ed573; }
-#notif-btn.active i { color: white; }
-#notif-btn.blocked { background: linear-gradient(135deg,#e74c3c,#c0392b); border-color: #e74c3c; }
-#notif-btn.blocked i { color: white; }
-</style>
-
-<div id="notif-btn" onclick="clicNotif()" title="Notifications">
-  <i class="fas fa-bell" id="notif-icon"></i>
-</div>
-
-<script src="notif.js"></script>
-<script>
-async function clicNotif() {
-  const btn  = document.getElementById('notif-btn');
-  const icon = document.getElementById('notif-icon');
-
-  if (!window.notifEstSupporte || !notifEstSupporte()) {
-    alert('Votre navigateur ne supporte pas les notifications.');
-    return;
-  }
-
-  if (window.notifPermission && notifPermission() === 'denied') {
-    alert('Notifications bloquées. Activez-les dans les paramètres de votre navigateur.');
-    return;
-  }
-
-  if (window.notifEstAbonne && notifEstAbonne()) {
-    alert('✅ Vous êtes déjà abonné aux notifications!');
-    return;
-  }
-
-  // Montre modal enskripsyon si pa enskri
-  const membre = JSON.parse(localStorage.getItem('eglise_membre') || '{}');
-  if (!membre.nom) {
-    // Mande non anvan notif
-    showNotifModal();
-    return;
-  }
-
-  // Aktive notif dirèkteman
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="color:#f1c40f"></i>';
-  const ok = await activerNotifications();
-  if (ok) {
-    btn.className = 'active';
-    icon.className = 'fas fa-bell';
-    btn.innerHTML = '<i class="fas fa-bell" style="color:white"></i>';
-    // Ti toast
-    showNotifToast('🔔 Notifications activées!', '#2ed573');
-  } else {
-    btn.className = 'blocked';
-    btn.innerHTML = '<i class="fas fa-bell-slash" style="color:white"></i>';
-  }
-}
-
-function showNotifModal() {
-  const modal = document.createElement('div');
-  modal.id = 'notif-modal';
-  modal.style.cssText = 'position:fixed;inset:0;background:rgba(7,0,30,0.88);z-index:99999;display:flex;align-items:flex-end;justify-content:center;';
-  modal.innerHTML = `
-    <div style="background:linear-gradient(160deg,#0f0c2e,#1a0a3c);border-radius:28px 28px 0 0;padding:32px 24px 48px;width:100%;max-width:500px;border-top:4px solid #f1c40f;">
-      <div style="text-align:center;margin-bottom:22px;">
-        <div style="font-size:2.5rem;margin-bottom:10px;">🔔</div>
-        <h2 style="color:#f1c40f;font-size:1.3rem;font-weight:800;margin-bottom:8px;">Activer les notifications</h2>
-        <p style="color:rgba(255,255,255,0.7);font-size:0.92rem;line-height:1.6;">Recevez les annonces, études et rappels de l'église directement sur votre téléphone.</p>
-      </div>
-      <div style="margin-bottom:12px;">
-        <label style="display:block;color:#f1c40f;font-weight:700;font-size:0.88rem;margin-bottom:6px;">Votre nom *</label>
-        <input type="text" id="notif-modal-nom" placeholder="Ex: Marie Joseph..."
-          style="width:100%;padding:13px;border:2px solid rgba(241,196,15,0.3);border-radius:12px;background:rgba(255,255,255,0.08);color:white;font-size:1rem;box-sizing:border-box;">
-      </div>
-      <div style="margin-bottom:20px;">
-        <label style="display:block;color:#f1c40f;font-weight:700;font-size:0.88rem;margin-bottom:6px;">Téléphone (optionnel)</label>
-        <input type="tel" id="notif-modal-tel" placeholder="Ex: +509 3700 0000..."
-          style="width:100%;padding:13px;border:2px solid rgba(241,196,15,0.3);border-radius:12px;background:rgba(255,255,255,0.08);color:white;font-size:1rem;box-sizing:border-box;">
-      </div>
-      <button onclick="soumettreNotifModal()"
-        style="width:100%;padding:15px;background:linear-gradient(135deg,#f1c40f,#e67e22);color:#0f0c2e;border:none;border-radius:50px;font-size:1.05rem;font-weight:800;cursor:pointer;margin-bottom:10px;">
-        <i class="fas fa-bell"></i> Activer les notifications
-      </button>
-      <button onclick="document.getElementById('notif-modal').remove()"
-        style="width:100%;padding:12px;background:transparent;border:1px solid rgba(255,255,255,0.2);border-radius:50px;color:rgba(255,255,255,0.5);font-size:0.9rem;cursor:pointer;">
-        Plus tard
-      </button>
-    </div>`;
-  document.body.appendChild(modal);
-}
-
-async function soumettreNotifModal() {
-  const nom = document.getElementById('notif-modal-nom').value.trim();
-  const tel = document.getElementById('notif-modal-tel').value.trim();
-  if (!nom) { alert('Veuillez saisir votre nom.'); return; }
-
-  // Sove info
-  localStorage.setItem('eglise_membre', JSON.stringify({ nom, telephone: tel, date: new Date().toLocaleDateString('fr-FR') }));
-  
-  // Sove nan Firebase
-  try {
-    if (window.firebase && firebase.apps.length) {
-      firebase.firestore().collection('membres').add({
-        nom, telephone: tel, date: new Date().toLocaleDateString('fr-FR'),
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      });
-    }
-  } catch(e) {}
-
-  document.getElementById('notif-modal').remove();
-
-  // Aktive notif
-  const btn = document.getElementById('notif-btn');
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="color:#f1c40f"></i>';
-  const ok = await activerNotifications();
-  if (ok) {
-    btn.className = 'active';
-    btn.innerHTML = '<i class="fas fa-bell" style="color:white"></i>';
-    showNotifToast('🔔 ' + nom + ', notifications activées!', '#2ed573');
-  } else {
-    btn.innerHTML = '<i class="fas fa-bell" style="color:#f1c40f"></i>';
-  }
-}
-
-function showNotifToast(msg, color) {
-  const t = document.createElement('div');
-  t.style.cssText = 'position:fixed;bottom:160px;left:50%;transform:translateX(-50%);background:' + color + ';color:white;padding:12px 24px;border-radius:30px;font-weight:700;z-index:99999;font-size:0.95rem;box-shadow:0 4px 16px rgba(0,0,0,0.3);';
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 3000);
-}
-
-// Mete ajou aparans bouton selon eta
-document.addEventListener('DOMContentLoaded', function() {
-  const btn = document.getElementById('notif-btn');
-  if (!btn) return;
-  if (window.notifEstAbonne && notifEstAbonne()) {
-    btn.className = 'active';
-    btn.innerHTML = '<i class="fas fa-bell" style="color:white"></i>';
-  } else if (window.Notification && Notification.permission === 'denied') {
-    btn.className = 'blocked';
-    btn.innerHTML = '<i class="fas fa-bell-slash" style="color:white"></i>';
-  }
-});
-</script>
-
-<script src="gate.js"></script>
 </body>
 </html>
