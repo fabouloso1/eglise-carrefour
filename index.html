@@ -309,5 +309,124 @@
       <span>📲 Installer l'application</span>
     </button>
   </div>
+
+<!-- Modal Inscription (pou bouton nav) -->
+<div id="gate-overlay-static" style="display:none;position:fixed;inset:0;background:rgba(10,5,40,0.93);z-index:99999;align-items:flex-end;justify-content:center;">
+  <div style="background:linear-gradient(160deg,#0f0c2e,#1a0a3c);border-radius:20px 20px 0 0;padding:24px 20px 36px;width:100%;max-width:480px;border-top:3px solid #f1c40f;">
+    <div style="text-align:center;margin-bottom:16px;">
+      <img src="logo.png" style="width:56px;height:56px;border-radius:14px;border:2px solid rgba(241,196,15,0.5);display:block;margin:0 auto 10px;">
+      <h2 style="color:#f1c40f;font-size:1.3rem;font-weight:800;margin:0 0 6px;">Rejoignez notre communauté</h2>
+      <p style="color:rgba(255,255,255,0.75);font-size:0.9rem;margin:0;">Inscrivez-vous pour accéder aux pages membres.</p>
+    </div>
+    <div id="gate-form-static">
+      <div style="margin-bottom:12px;">
+        <label style="display:block;color:#f1c40f;font-weight:700;font-size:0.88rem;margin-bottom:6px;">Nom complet *</label>
+        <input type="text" id="gate-nom-s" placeholder="Ex: Marie Joseph..." style="width:100%;padding:12px 14px;border:2px solid rgba(241,196,15,0.3);border-radius:12px;font-size:1rem;color:white;background:rgba(255,255,255,0.08);box-sizing:border-box;">
+      </div>
+      <div style="margin-bottom:12px;">
+        <label style="display:block;color:#f1c40f;font-weight:700;font-size:0.88rem;margin-bottom:6px;">Téléphone *</label>
+        <input type="tel" id="gate-tel-s" placeholder="Ex: +509 3700 0000..." style="width:100%;padding:12px 14px;border:2px solid rgba(241,196,15,0.3);border-radius:12px;font-size:1rem;color:white;background:rgba(255,255,255,0.08);box-sizing:border-box;">
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="display:block;color:#f1c40f;font-weight:700;font-size:0.88rem;margin-bottom:6px;">Quartier / Ville</label>
+        <input type="text" id="gate-ville-s" placeholder="Ex: Carrefour..." style="width:100%;padding:12px 14px;border:2px solid rgba(241,196,15,0.3);border-radius:12px;font-size:1rem;color:white;background:rgba(255,255,255,0.08);box-sizing:border-box;">
+      </div>
+      <p id="gate-error-s" style="display:none;color:#ff8a80;font-weight:700;font-size:0.88rem;margin-bottom:10px;text-align:center;"></p>
+      <button onclick="gateSubmitStatic()" style="width:100%;padding:14px;background:linear-gradient(135deg,#f1c40f,#e67e22);color:#0f0c2e;border:none;border-radius:50px;font-size:1.05rem;font-weight:800;cursor:pointer;margin-bottom:10px;">S'inscrire et accéder</button>
+      <button onclick="fermerGateStatic()" style="width:100%;padding:11px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:50px;color:rgba(255,255,255,0.5);font-size:0.9rem;cursor:pointer;">Plus tard</button>
+    </div>
+    <div id="gate-success-static" style="display:none;text-align:center;padding:20px 0;">
+      <div style="font-size:3rem;margin-bottom:14px;">🙏</div>
+      <h3 style="color:#f1c40f;font-size:1.3rem;font-weight:800;margin-bottom:10px;">Bienvenue !</h3>
+      <p style="color:rgba(255,255,255,0.75);margin-bottom:20px;">Vous êtes inscrit. Vous avez accès à toutes les pages membres.</p>
+      <button onclick="fermerGateStatic()" style="padding:13px 36px;background:linear-gradient(135deg,#f1c40f,#e67e22);color:#0f0c2e;border:none;border-radius:50px;font-size:1rem;font-weight:800;cursor:pointer;">Continuer →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function ouvrirGateStatic() {
+  var saved = localStorage.getItem('eglise_membre');
+  if (saved) {
+    try {
+      var m = JSON.parse(saved);
+      if (m.nom && m.telephone) {
+        // Deja enskri — montre toast
+        var t = document.createElement('div');
+        t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#2ed573;color:#0d1f4a;padding:12px 24px;border-radius:20px;font-weight:800;z-index:99999;font-size:0.9rem;white-space:nowrap;';
+        t.innerHTML = '<i class="fas fa-check-circle" style="margin-right:6px;"></i>Vous êtes déjà inscrit, ' + m.nom.split(' ')[0] + ' !';
+        document.body.appendChild(t);
+        setTimeout(function(){ t.remove(); }, 3000);
+        return;
+      }
+    } catch(e) {}
+  }
+  var ov = document.getElementById('gate-overlay-static');
+  ov.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function fermerGateStatic() {
+  document.getElementById('gate-overlay-static').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function gateSubmitStatic() {
+  var nom = document.getElementById('gate-nom-s').value.trim();
+  var tel = document.getElementById('gate-tel-s').value.trim();
+  var vil = document.getElementById('gate-ville-s').value.trim();
+  var err = document.getElementById('gate-error-s');
+
+  if (!nom) { err.style.display='block'; err.textContent='Veuillez saisir votre nom.'; return; }
+  if (!tel || tel.replace(/\D/g,'').length < 8) { err.style.display='block'; err.textContent='Numéro invalide.'; return; }
+  err.style.display = 'none';
+
+  localStorage.setItem('eglise_membre', JSON.stringify({ nom:nom, telephone:tel, ville:vil, date:new Date().toLocaleDateString('fr-FR') }));
+
+  // Sove nan Firebase
+  fetch('https://firestore.googleapis.com/v1/projects/eglise-carrefour/databases/(default)/documents/membres', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fields: {
+      nom: { stringValue: nom }, telephone: { stringValue: tel },
+      ville: { stringValue: vil }, date: { stringValue: new Date().toLocaleDateString('fr-FR') },
+      timestamp: { stringValue: new Date().toISOString() }
+    }})
+  }).catch(function(){});
+
+  document.getElementById('gate-form-static').style.display = 'none';
+  document.getElementById('gate-success-static').style.display = 'block';
+
+  // Mete ajou bouton nav
+  var btn = document.getElementById('inscriptionNavBtn');
+  if (btn) {
+    btn.innerHTML = '<i class="fas fa-user-check"></i> <span>' + nom.split(' ')[0] + '</span>';
+    btn.style.background = 'linear-gradient(135deg,#2ed573,#1abc9c)';
+  }
+}
+
+// Ferme si klike deyò
+document.getElementById('gate-overlay-static').addEventListener('click', function(e){
+  if (e.target === this) fermerGateStatic();
+});
+
+// Mete ajou bouton nav si deja enskri
+window.addEventListener('load', function() {
+  var btn = document.getElementById('inscriptionNavBtn');
+  if (!btn) return;
+  var saved = localStorage.getItem('eglise_membre');
+  if (saved) {
+    try {
+      var m = JSON.parse(saved);
+      if (m.nom) {
+        btn.innerHTML = '<i class="fas fa-user-check"></i> <span>' + m.nom.split(' ')[0] + '</span>';
+        btn.style.background = 'linear-gradient(135deg,#2ed573,#1abc9c)';
+      }
+    } catch(e) {}
+  }
+  // Konekte bouton nav ak modal la
+  btn.onclick = ouvrirGateStatic;
+});
+</script>
 </body>
 </html>
