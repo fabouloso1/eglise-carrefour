@@ -170,6 +170,31 @@
 <script>
   // Init nav + lang
   NAV.init('index.html');
+
+  // Bouton Inscription — sèlman sou index.html
+  window.addEventListener('load', function() {
+    var hamburger = document.getElementById('hamburgerBtn');
+    if (!hamburger) return;
+
+    var btn = document.createElement('button');
+    btn.id = 'inscriptionNavBtn';
+    btn.innerHTML = '<i class="fas fa-user-plus"></i> <span>Inscription</span>';
+    btn.style.cssText = 'background:linear-gradient(135deg,#f1c40f,#e67e22);color:#1a1a1a;border:none;border-radius:20px;padding:7px 14px;font-size:0.82rem;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:6px;';
+    btn.onclick = ouvrirGateStatic;
+    hamburger.parentNode.insertBefore(btn, hamburger);
+
+    // Si deja enskri — chanje bouton an vèt
+    var saved = localStorage.getItem('eglise_membre');
+    if (saved) {
+      try {
+        var m = JSON.parse(saved);
+        if (m.nom) {
+          btn.innerHTML = '<i class="fas fa-user-check"></i> <span>' + m.nom.split(' ')[0] + '</span>';
+          btn.style.background = 'linear-gradient(135deg,#2ed573,#1abc9c)';
+        }
+      } catch(e) {}
+    }
+  });
   // Applique la traduction après que le nav soit injecté
   (function() {
     var lang = localStorage.getItem('site_lang') || 'fr';
@@ -333,7 +358,7 @@
       </div>
       <p id="gate-error-s" style="display:none;color:#ff8a80;font-weight:700;font-size:0.88rem;margin-bottom:10px;text-align:center;"></p>
       <button onclick="gateSubmitStatic()" style="width:100%;padding:14px;background:linear-gradient(135deg,#f1c40f,#e67e22);color:#0f0c2e;border:none;border-radius:50px;font-size:1.05rem;font-weight:800;cursor:pointer;margin-bottom:10px;">S'inscrire et accéder</button>
-      <button onclick="fermerGateStatic()" style="width:100%;padding:11px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:50px;color:rgba(255,255,255,0.5);font-size:0.9rem;cursor:pointer;">Plus tard</button>
+      <button onclick="fermerGateStatic()" style="width:100%;padding:11px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:50px;color:rgba(255,255,255,0.5);font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="fas fa-arrow-left"></i> Retour</button>
     </div>
     <div id="gate-success-static" style="display:none;text-align:center;padding:20px 0;">
       <div style="font-size:3rem;margin-bottom:14px;">🙏</div>
