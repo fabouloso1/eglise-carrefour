@@ -76,8 +76,8 @@ const NAV = (() => {
         <div class="footer-brand">
           <img src="logo.png" alt="Logo" class="footer-logo">
           <p class="footer-name">Église de Dieu de la Prophétie<br><span>de Carrefour</span></p>
-          <p class="footer-tagline" style="color:rgba(255,255,255,0.5);font-size:0.82rem;font-style:italic;margin-top:6px;">📞 31 57 3591 &nbsp;·&nbsp; 37 31 9017 &nbsp;·&nbsp; 40 73 9184</p>
-          <p class="footer-tagline" style="color:rgba(255,255,255,0.5);font-size:0.82rem;margin-top:4px;">✉️ prophetiewaney93@gmail.com</p>
+          <p class="footer-tagline" style="color:rgba(255,255,255,0.5);font-size:0.82rem;font-style:italic;margin-top:6px;">31 57 3591 &nbsp;·&nbsp; 37 31 9017 &nbsp;·&nbsp; 40 73 9184</p>
+          <p class="footer-tagline" style="color:rgba(255,255,255,0.5);font-size:0.82rem;margin-top:4px;">prophetiewaney93@gmail.com</p>
         </div>
         <div class="footer-links">
           <h4>Navigation</h4>

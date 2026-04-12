@@ -408,14 +408,16 @@ function gateSubmitStatic() {
 
   localStorage.setItem('eglise_membre', JSON.stringify({ nom:nom, telephone:tel, ville:vil, date:new Date().toLocaleDateString('fr-FR') }));
 
-  // Sove nan Firebase
-  fetch('https://firestore.googleapis.com/v1/projects/eglise-carrefour/databases/(default)/documents/membres', {
-    method: 'POST',
+  // Sove nan Firebase pou non an parèt nan panel admin lan
+  var telKey = tel.replace(/\D/g,'');
+  fetch('https://firestore.googleapis.com/v1/projects/eglise-carrefour/databases/(default)/documents/membres/' + encodeURIComponent(telKey) + '?key=AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM', {
+    method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ fields: {
       nom: { stringValue: nom }, telephone: { stringValue: tel },
       ville: { stringValue: vil }, date: { stringValue: new Date().toLocaleDateString('fr-FR') },
-      timestamp: { stringValue: new Date().toISOString() }
+      bloque: { booleanValue: false },
+      timestamp: { timestampValue: new Date().toISOString() }
     }})
   }).catch(function(){});
 

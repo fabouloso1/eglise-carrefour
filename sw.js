@@ -5,10 +5,10 @@ const VERSION = 'v2026-notif';
 const CACHE   = 'eglise-' + VERSION;
 
 const ASSETS = [
-  '/eglise-carrefour/',
-  '/eglise-carrefour/index.html',
-  '/eglise-carrefour/style.css',
-  '/eglise-carrefour/logo.png'
+  './',
+  './index.html',
+  './style.css',
+  './logo.png'
 ];
 
 // ===== INSTALL =====
@@ -56,9 +56,9 @@ self.addEventListener('push', e => {
 
   const title   = data.title   || 'Église de la Prophétie';
   const body    = data.body    || 'Nouveau message';
-  const icon    = data.icon    || '/eglise-carrefour/logo.png';
-  const badge   = data.badge   || '/eglise-carrefour/logo.png';
-  const url     = data.url     || '/eglise-carrefour/';
+  const icon    = data.icon    || './logo.png';
+  const badge   = data.badge   || './logo.png';
+  const url     = data.url     || './';
   const tag     = data.tag     || 'eglise-notif';
 
   e.waitUntil(
@@ -76,13 +76,13 @@ self.addEventListener('notificationclick', e => {
   e.notification.close();
   const url = (e.notification.data && e.notification.data.url)
     ? e.notification.data.url
-    : '/eglise-carrefour/';
+    : './';
 
   e.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true })
       .then(wins => {
         for (const win of wins) {
-          if (win.url.includes('eglise-carrefour') && 'focus' in win) {
+          if ('focus' in win) {
             win.navigate(url);
             return win.focus();
           }

@@ -2,7 +2,7 @@
   "name": "Église de Dieu de la Prophétie de Carrefour",
   "short_name": "Église Carrefour",
   "description": "Application officielle de l'Église de Dieu de la Prophétie de Carrefour",
-  "start_url": "/eglise-carrefour/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#1c1c3c",
   "theme_color": "#1c1c3c",

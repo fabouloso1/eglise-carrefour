@@ -2308,66 +2308,112 @@
 })();
 
   // ===== MEMBRES =====
-  async function chargerMembres() {
+  var _membresListener = null;
+  var _membresCache = {};
+
+  function escapeHtml(value) {
+    return String(value || '').replace(/[&<>"']/g, function(ch) {
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[ch];
+    });
+  }
+
+  function membreTimestampValue(m) {
+    if (!m || !m.timestamp) return 0;
+    if (typeof m.timestamp.seconds === 'number') return m.timestamp.seconds;
+    if (typeof m.timestamp === 'string') {
+      var parsed = Date.parse(m.timestamp);
+      return Number.isNaN(parsed) ? 0 : parsed / 1000;
+    }
+    if (typeof m.timestamp.toDate === 'function') return m.timestamp.toDate().getTime() / 1000;
+    return 0;
+  }
+
+  function renderMembres(list) {
+    const el = document.getElementById('membresCount');
+    const listEl = document.getElementById('membresList');
+    if (!listEl) return;
+    if (el) el.textContent = list.length;
+
+    _membresCache = {};
+    list.forEach(function(m) { _membresCache[m.id] = m; });
+
+    if (!list.length) {
+      listEl.innerHTML = '<p style="color:rgba(255,255,255,0.3);text-align:center;padding:30px;">Aucun membre inscrit.</p>';
+      return;
+    }
+
+    listEl.innerHTML = list.map(function(m) {
+      const bloque = m.bloque === true;
+      const nom = escapeHtml(m.nom || '—');
+      const tel = escapeHtml(m.telephone || '—');
+      const ville = escapeHtml(m.ville || '');
+      const date = escapeHtml(m.date || '—');
+      const id = escapeHtml(m.id);
+
+      return '<div style="background:' + (bloque ? 'rgba(231,76,60,0.12)' : 'rgba(255,255,255,0.06)') + ';border-radius:14px;padding:14px 16px;margin-bottom:10px;border-left:4px solid ' + (bloque ? '#ff6b6b' : '#1abc9c') + ';">' +
+        '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">' +
+          '<div style="width:42px;height:42px;background:' + (bloque ? 'rgba(231,76,60,0.2)' : 'rgba(26,188,156,0.18)') + ';border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
+            '<i class="fas fa-' + (bloque ? 'ban' : 'user') + '" style="color:' + (bloque ? '#ff6b6b' : '#1abc9c') + ';"></i>' +
+          '</div>' +
+          '<div style="flex:1;min-width:0;">' +
+            '<div style="color:white!important;font-weight:800!important;font-size:1rem!important;word-break:break-word;">' + nom +
+              (bloque ? ' <span style="background:rgba(231,76,60,0.25);color:#ff6b6b;font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px;">BLOQUÉ</span>' : '') +
+            '</div>' +
+            '<div style="font-size:0.85rem;color:rgba(255,255,255,0.75);margin-top:3px;word-break:break-word;">' +
+              '<i class="fas fa-phone" style="color:#f1c40f;margin-right:5px;"></i>' + tel +
+              (ville ? ' &nbsp;·&nbsp; <i class="fas fa-map-marker-alt" style="color:#f1c40f;margin-right:4px;"></i>' + ville : '') +
+            '</div>' +
+            '<div style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin-top:2px;">Inscrit le ' + date + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+          (bloque
+            ? '<button data-member-action="unblock" data-member-id="' + id + '" style="flex:1;padding:9px 12px;background:rgba(46,213,115,0.2);border:1.5px solid #2ed573;border-radius:20px;color:#2ed573;font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-unlock"></i> Débloquer</button>'
+            : '<button data-member-action="block" data-member-id="' + id + '" style="flex:1;padding:9px 12px;background:rgba(231,76,60,0.15);border:1.5px solid rgba(231,76,60,0.4);border-radius:20px;color:#ff6b6b;font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-ban"></i> Bloquer</button>') +
+          '<button data-member-action="reset" data-member-id="' + id + '" style="padding:9px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:20px;color:rgba(255,255,255,0.7);font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-redo"></i> Réinitialiser</button>' +
+          '<button data-member-action="delete" data-member-id="' + id + '" style="padding:9px 12px;background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.25);border-radius:20px;color:#ff6b6b;font-size:0.85rem;cursor:pointer;"><i class="fas fa-trash"></i></button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function chargerMembres() {
+    const listEl = document.getElementById('membresList');
+    if (!listEl) return;
+    listEl.innerHTML = '<p style="color:rgba(255,255,255,0.5);text-align:center;padding:30px;"><i class="fas fa-spinner fa-spin"></i> Chargement des membres...</p>';
+
     try {
-      // Chaje TOUT membres — sans orderBy pou evite pwoblèm index
-      const snap = await window._getDocs(window._collection(window._db, 'membres'));
-      const list = snap.docs.map(d => ({id: d.id, ...d.data()}));
-
-      // Triye nan JavaScript — pa nan Firestore
-      list.sort(function(a, b) {
-        const ta = a.timestamp ? (a.timestamp.seconds || 0) : 0;
-        const tb = b.timestamp ? (b.timestamp.seconds || 0) : 0;
-        return tb - ta; // Pi nouvo anwo
+      if (_membresListener) { _membresListener(); _membresListener = null; }
+      _membresListener = window._onSnapshot(window._collection(window._db, 'membres'), function(snap) {
+        const list = snap.docs.map(function(d) { return { id: d.id, ...d.data() }; });
+        list.sort(function(a, b) { return membreTimestampValue(b) - membreTimestampValue(a); });
+        renderMembres(list);
+      }, function(error) {
+        listEl.innerHTML = '<p style="color:#e74c3c;padding:20px;text-align:center;">Erreur: ' + escapeHtml(error.message) + '</p>';
       });
-
-      const el     = document.getElementById('membresCount');
-      const listEl = document.getElementById('membresList');
-      if (el) el.textContent = list.length;
-
-      if (!list.length) {
-        listEl.innerHTML = '<p style="color:rgba(255,255,255,0.3);text-align:center;padding:30px;">Aucun membre inscrit.</p>';
-        return;
-      }
-
-      listEl.innerHTML = list.map(m => {
-        const bloque = m.bloque === true;
-        const nom    = m.nom || '—';
-        const tel    = m.telephone || '—';
-        const ville  = m.ville || '';
-        const date   = m.date || '—';
-
-        return '<div style="background:' + (bloque ? 'rgba(231,76,60,0.12)' : 'rgba(255,255,255,0.06)') + ';border-radius:14px;padding:14px 16px;margin-bottom:10px;border-left:4px solid ' + (bloque ? '#ff6b6b' : '#f1c40f') + ';">' +
-          '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">' +
-            '<div style="width:42px;height:42px;background:' + (bloque ? 'rgba(231,76,60,0.2)' : 'rgba(241,196,15,0.15)') + ';border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
-              '<i class="fas fa-' + (bloque ? 'ban' : 'user') + '" style="color:' + (bloque ? '#ff6b6b' : '#f1c40f') + ';"></i>' +
-            '</div>' +
-            '<div style="flex:1;">' +
-              '<div style="color:white!important;font-weight:800!important;font-size:1rem!important;">' + nom +
-                (bloque ? ' <span style="background:rgba(231,76,60,0.25);color:#ff6b6b;font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px;">BLOQUÉ</span>' : '') +
-              '</div>' +
-              '<div style="font-size:0.85rem;color:rgba(255,255,255,0.7);margin-top:3px;">' +
-                '<i class="fas fa-phone" style="color:#f1c40f;margin-right:5px;"></i>' + tel +
-                (ville ? ' &nbsp;·&nbsp; <i class="fas fa-map-marker-alt" style="color:#f1c40f;margin-right:4px;"></i>' + ville : '') +
-              '</div>' +
-              '<div style="font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:2px;">' + date + '</div>' +
-            '</div>' +
-          '</div>' +
-          '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
-            (bloque
-              ? '<button onclick="debloquerMembre('' + m.id + '')" style="flex:1;padding:9px 12px;background:rgba(46,213,115,0.2);border:1.5px solid #2ed573;border-radius:20px;color:#2ed573;font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-unlock"></i> Débloquer</button>'
-              : '<button onclick="bloquerMembre('' + m.id + '','' + nom.replace(/'/g, '') + '')" style="flex:1;padding:9px 12px;background:rgba(231,76,60,0.15);border:1.5px solid rgba(231,76,60,0.4);border-radius:20px;color:#ff6b6b;font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-ban"></i> Bloquer</button>') +
-            '<button onclick="reinitialiserMembre('' + m.id + '','' + nom.replace(/'/g, '') + '')" style="padding:9px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:20px;color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-redo"></i> Réinitialiser</button>' +
-            '<button onclick="supprimerMembre('' + m.id + '')" style="padding:9px 12px;background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.25);border-radius:20px;color:#ff6b6b;font-size:0.85rem;cursor:pointer;"><i class="fas fa-trash"></i></button>' +
-          '</div>' +
-        '</div>';
-      }).join('');
-
     } catch(e) {
-      console.log('Membres erreur:', e);
-      document.getElementById('membresList').innerHTML = '<p style="color:#e74c3c;padding:20px;text-align:center;">Erreur: ' + e.message + '</p>';
+      window._getDocs(window._collection(window._db, 'membres')).then(function(snap) {
+        const list = snap.docs.map(function(d) { return { id: d.id, ...d.data() }; });
+        list.sort(function(a, b) { return membreTimestampValue(b) - membreTimestampValue(a); });
+        renderMembres(list);
+      }).catch(function(error) {
+        listEl.innerHTML = '<p style="color:#e74c3c;padding:20px;text-align:center;">Erreur: ' + escapeHtml(error.message) + '</p>';
+      });
     }
   }
+
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('[data-member-action]');
+    if (!btn) return;
+    var id = btn.getAttribute('data-member-id');
+    var member = _membresCache[id] || {};
+    var nom = member.nom || 'ce membre';
+    var action = btn.getAttribute('data-member-action');
+    if (action === 'block') bloquerMembre(id, nom);
+    if (action === 'unblock') debloquerMembre(id);
+    if (action === 'reset') reinitialiserMembre(id, nom);
+    if (action === 'delete') supprimerMembre(id);
+  });
 
     async function bloquerMembre(id, nom) {
     if (!confirm('Bloquer ' + nom + ' ? Il ne pourra plus accéder au site.')) return;

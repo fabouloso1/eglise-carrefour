@@ -1,6 +1,7 @@
 // ===== GATE.JS — Système d'accès =====
 
 var GATE_STORAGE = 'eglise_membre';
+var FIREBASE_WEB_API_KEY = 'AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM';
 
 // Verifye si moun nan enskri
 function gateEstInscrit() {
@@ -8,6 +9,39 @@ function gateEstInscrit() {
     var d = JSON.parse(localStorage.getItem(GATE_STORAGE) || '{}');
     return !!(d.nom && d.telephone);
   } catch(e) { return false; }
+}
+
+function gateSaveMemberOnline(nom, tel, vil) {
+  var telKey = tel.replace(/\D/g, '');
+  if (!telKey) return Promise.resolve();
+
+  var fields = {
+    nom: { stringValue: nom },
+    telephone: { stringValue: tel },
+    ville: { stringValue: (vil || '').trim() },
+    date: { stringValue: new Date().toLocaleDateString('fr-FR') },
+    bloque: { booleanValue: false },
+    timestamp: { timestampValue: new Date().toISOString() }
+  };
+
+  if (window.firebase && firebase.apps && firebase.apps.length) {
+    try {
+      return firebase.firestore().collection('membres').doc(telKey).set({
+        nom: nom,
+        telephone: tel,
+        ville: (vil || '').trim(),
+        date: new Date().toLocaleDateString('fr-FR'),
+        bloque: false,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+    } catch(e) {}
+  }
+
+  return fetch('https://firestore.googleapis.com/v1/projects/eglise-carrefour/databases/(default)/documents/membres/' + encodeURIComponent(telKey) + '?key=' + FIREBASE_WEB_API_KEY, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fields: fields })
+  });
 }
 
 // Soumèt fòm enskripsyon
@@ -39,22 +73,7 @@ function gateSubmit() {
     date: new Date().toLocaleDateString('fr-FR')
   }));
 
-  // Sove nan Firebase (si disponib)
-  try {
-    fetch('https://firestore.googleapis.com/v1/projects/eglise-carrefour/databases/(default)/documents/membres', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        fields: {
-          nom:       { stringValue: nom },
-          telephone: { stringValue: tel },
-          ville:     { stringValue: vil.trim() },
-          date:      { stringValue: new Date().toLocaleDateString('fr-FR') },
-          timestamp: { timestampValue: new Date().toISOString() }
-        }
-      })
-    });
-  } catch(e) {}
+  gateSaveMemberOnline(nom, tel, vil).catch(function() {});
 
   // Montre siksè
   document.getElementById('gate-form').style.display = 'none';
@@ -198,5 +217,6 @@ function gateShowFromNav() {
   montreGate();
 }
 
-// Rele gateInit otomatikman
-gateInit();
+if (document.body && document.body.getAttribute('data-require-gate') === 'true') {
+  gateInit();
+}

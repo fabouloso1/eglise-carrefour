@@ -173,7 +173,7 @@
         <div class="info-icon"><i class="fas fa-envelope"></i></div>
         <div style="width:100%;">
           <h3 data-i18n="contact_email_title">Email</h3>
-          <a href="/cdn-cgi/l/email-protection#ccbcbea3bca4a9b8a5a9bbada2a9b5f5ff8caba1ada5a0e2afa3a1"><span class="__cf_email__" data-cfemail="19696b7669717c6d707c6e78777c60202a597e74787075377a7674">[email&#160;protected]</span></a>
+          <a href="mailto:prophetiewaney93@gmail.com">prophetiewaney93@gmail.com</a>
         </div>
       </div>
 
@@ -259,4 +259,50 @@
     <div class="map-placeholder">
       <i class="fas fa-map-marked-alt"></i>
       <p>Carte Google Maps — Remplacez avec votre iframe Maps</p>
-    </d
+    </div>
+  </div>
+</div>
+
+<div id="foot-placeholder"></div>
+
+<script src="lang.js"></script>
+<script src="nav.js"></script>
+<script>
+  NAV.init('Contact.html');
+
+  (function() {
+    var lang = localStorage.getItem('site_lang') || 'fr';
+    if (window.applyLang) window.applyLang(lang);
+  })();
+
+  var form = document.getElementById('contactForm');
+  var successMsg = document.getElementById('successMsg');
+
+  if (form && successMsg) {
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      var prenom = document.getElementById('prenom').value.trim();
+      var nom = document.getElementById('nom').value.trim();
+      var email = document.getElementById('email').value.trim();
+      var telephone = document.getElementById('telephone').value.trim();
+      var sujet = document.getElementById('sujet').value;
+      var message = document.getElementById('message').value.trim();
+
+      var body = [
+        'Nom: ' + prenom + ' ' + nom,
+        'Email: ' + email,
+        'Téléphone: ' + (telephone || 'Non renseigné'),
+        'Sujet: ' + sujet,
+        '',
+        message
+      ].join('\n');
+
+      window.location.href = 'mailto:prophetiewaney93@gmail.com?subject=' + encodeURIComponent('Message depuis le site - ' + sujet) + '&body=' + encodeURIComponent(body);
+      successMsg.style.display = 'block';
+      form.reset();
+    });
+  }
+</script>
+<script src="pwa.js"></script>
+</body>
+</html>
