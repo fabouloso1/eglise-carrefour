@@ -1,4 +1,6 @@
 const NAV = (() => {
+  const RESTRICTED_PAGES = new Set(["Galerie.html","Etude.html","Guide.html","Temoigner.html","priere.html"]);
+
   const LINKS = [
     { href: 'index.html',    icon: 'fa-home',          label: 'Accueil',           i18n: 'nav_accueil' },
     { href: 'Apropos.html',  icon: 'fa-church',         label: 'À propos',          i18n: 'nav_apropos', dropdown: [
@@ -24,6 +26,10 @@ const NAV = (() => {
     return link.label;
   }
 
+  function gateAttr(href) {
+    return RESTRICTED_PAGES.has(href) ? ` onclick="return gateRequireNavigation(event, '${href}')"` : '';
+  }
+
   function buildNav(activePage) {
     const items = LINKS.map(link => {
       const isActive = link.href === activePage || (link.dropdown && link.dropdown.some(d => d.href === activePage));
@@ -32,7 +38,7 @@ const NAV = (() => {
 
       if (link.dropdown) {
         const sub = link.dropdown.map(d =>
-          `<li><a href="${d.href}"${d.href===activePage?' class="active"':''}><i class="fas ${d.icon}"></i> <span data-i18n="${d.i18n}">${d.label}</span></a></li>`
+          `<li><a href="${d.href}"${d.href===activePage?' class="active"':''}${gateAttr(d.href)}><i class="fas ${d.icon}"></i> <span data-i18n="${d.i18n}">${d.label}</span></a></li>`
         ).join('');
         return `<li class="dropdown">
           <a href="${link.href}" class="dropdown-toggle${isActive?' active':''}">
@@ -41,7 +47,7 @@ const NAV = (() => {
           <ul class="submenu">${sub}</ul>
         </li>`;
       }
-      return `<li><a href="${link.href}" class="${cls}${isActive?' active':''}"><i class="fas ${link.icon}"></i> <span data-i18n="${link.i18n}">${label}</span></a></li>`;
+      return `<li><a href="${link.href}" class="${cls}${isActive?' active':''}"${gateAttr(link.href)}><i class="fas ${link.icon}"></i> <span data-i18n="${link.i18n}">${label}</span></a></li>`;
     }).join('');
 
     return `
@@ -58,7 +64,6 @@ const NAV = (() => {
               <button class="lang-option" data-lang="fr" onclick="changeLang('fr')">🇫🇷 Français</button>
               <button class="lang-option" data-lang="en" onclick="changeLang('en')">🇺🇸 English</button>
               <button class="lang-option" data-lang="es" onclick="changeLang('es')">🇪🇸 Español</button>
-              <button class="lang-option" data-lang="ht" onclick="changeLang('ht')">🇭🇹 Kreyòl</button>
             </div>
           </div>
           <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -175,7 +180,7 @@ const NAV = (() => {
       initInteractions();
 
       // Init lang apre nav chaje
-      const flags = { fr:'🇫🇷', en:'🇺🇸', es:'🇪🇸', ht:'🇭🇹' };
+      const flags = { fr:'🇫🇷', en:'🇺🇸', es:'🇪🇸' };
       window.changeLang = function(lang) {
         const flagEl = document.getElementById('langFlag');
         if (flagEl) flagEl.textContent = flags[lang] || '🇫🇷';

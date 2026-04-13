@@ -180,7 +180,10 @@
     btn.id = 'inscriptionNavBtn';
     btn.innerHTML = '<i class="fas fa-user-plus"></i> <span>Inscription</span>';
     btn.style.cssText = 'background:linear-gradient(135deg,#f1c40f,#e67e22);color:#1a1a1a;border:none;border-radius:20px;padding:7px 14px;font-size:0.82rem;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:6px;';
-    btn.onclick = ouvrirGateStatic;
+    btn.onclick = function() {
+      if (typeof ouvrirGateStatic === 'function') ouvrirGateStatic();
+      else if (typeof montreGate === 'function') montreGate();
+    };
     hamburger.parentNode.insertBefore(btn, hamburger);
 
     // Si deja enskri — chanje bouton an vèt
@@ -361,7 +364,7 @@
       <button onclick="fermerGateStatic()" style="width:100%;padding:11px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:50px;color:rgba(255,255,255,0.5);font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="fas fa-arrow-left"></i> Retour</button>
     </div>
     <div id="gate-success-static" style="display:none;text-align:center;padding:20px 0;">
-      <div style="font-size:3rem;margin-bottom:14px;">🙏</div>
+      <div style="font-size:3rem;margin-bottom:14px;"></div>
       <h3 style="color:#f1c40f;font-size:1.3rem;font-weight:800;margin-bottom:10px;">Bienvenue !</h3>
       <p style="color:rgba(255,255,255,0.75);margin-bottom:20px;">Vous êtes inscrit. Vous avez accès à toutes les pages membres.</p>
       <button onclick="fermerGateStatic()" style="padding:13px 36px;background:linear-gradient(135deg,#f1c40f,#e67e22);color:#0f0c2e;border:none;border-radius:50px;font-size:1rem;font-weight:800;cursor:pointer;">Continuer →</button>
@@ -381,7 +384,7 @@ function ouvrirGateStatic() {
         document.getElementById('gate-ville-s').value = m.ville || '';
         document.getElementById('gate-error-s').style.display = 'block';
         document.getElementById('gate-error-s').style.color = '#f1c40f';
-        document.getElementById('gate-error-s').textContent = 'Ou te deja enskri sou telefòn sa a. Peze bouton an ankò pou voye non ou nan panel admin lan.';
+        document.getElementById('gate-error-s').textContent = 'Vous êtes déjà inscrit sur cet appareil. Vous avez accès aux pages membres.';
       }
     } catch(e) {}
   }
@@ -409,7 +412,7 @@ function gateSaveMemberStatic(nom, tel, vil) {
   }).then(function(res) {
     if (!res.ok) {
       return res.text().then(function() {
-        throw new Error('Enskripsyon an pa rive sove nan panel admin lan. Tanpri verifye koneksyon an epi eseye ankò.');
+        throw new Error('L'inscription n'a pas pu être enregistrée dans le panneau d'administration. Veuillez vérifier votre connexion et réessayer.');
       });
     }
     return res;
@@ -441,7 +444,7 @@ function gateSubmitStatic() {
   }).catch(function(error) {
     err.style.display = 'block';
     err.style.color = '#ff8a80';
-    err.textContent = error.message || 'Enskripsyon an pa rive sove. Tanpri eseye ankò.';
+    err.textContent = error.message || 'L'inscription n'a pas pu être enregistrée. Veuillez réessayer.';
     localStorage.removeItem('eglise_membre');
   }).finally(function() {
     if (btn) { btn.disabled = false; btn.innerHTML = "S'inscrire et accéder"; }
@@ -468,7 +471,10 @@ window.addEventListener('load', function() {
     } catch(e) {}
   }
   // Konekte bouton nav ak modal la
-  btn.onclick = ouvrirGateStatic;
+  btn.onclick = function() {
+    if (typeof ouvrirGateStatic === 'function') ouvrirGateStatic();
+    else if (typeof montreGate === 'function') montreGate();
+  };
 });
 </script>
 </body>

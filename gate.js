@@ -1,9 +1,9 @@
 // ===== GATE.JS — Système d'accès =====
 
 var GATE_STORAGE = 'eglise_membre';
+var GATE_AFTER_REGISTER_URL = null;
 var FIREBASE_WEB_API_KEY = 'AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM';
 
-// Verifye si moun nan enskri
 function gateEstInscrit() {
   try {
     var d = JSON.parse(localStorage.getItem(GATE_STORAGE) || '{}');
@@ -32,7 +32,7 @@ function gateSaveMemberOnline(nom, tel, vil) {
     }).then(function(res) {
       if (!res.ok) {
         return res.text().then(function(text) {
-          throw new Error('Enskripsyon an pa rive sove. Tanpri verifye koneksyon an epi eseye ankò.');
+          throw new Error('L'inscription n'a pas pu être enregistrée. Veuillez vérifier votre connexion et réessayer.');
         });
       }
       return res;
@@ -55,7 +55,6 @@ function gateSaveMemberOnline(nom, tel, vil) {
   return saveWithRest();
 }
 
-// Soumèt fòm enskripsyon
 function gateSubmit() {
   var nom = document.getElementById('gate-nom').value.trim();
   var tel = document.getElementById('gate-tel').value.trim();
@@ -64,12 +63,12 @@ function gateSubmit() {
 
   if (!nom) {
     err.style.display = 'block';
-    err.textContent = '⚠️ Veuillez saisir votre nom.';
+    err.textContent = 'Veuillez saisir votre nom.';
     return;
   }
   if (!tel || tel.replace(/\D/g, '').length < 8) {
     err.style.display = 'block';
-    err.textContent = '⚠️ Numéro de téléphone invalide.';
+    err.textContent = 'Numéro de téléphone invalide.';
     return;
   }
   err.style.display = 'none';
@@ -87,13 +86,12 @@ function gateSubmit() {
     document.getElementById('gate-success').style.display = 'block';
   }).catch(function(error) {
     err.style.display = 'block';
-    err.textContent = error.message || 'Enskripsyon an pa rive sove. Tanpri eseye ankò.';
+    err.textContent = error.message || 'L'inscription n'a pas pu être enregistrée. Veuillez réessayer.';
     btn.disabled = false;
     btn.innerHTML = "S'inscrire et accéder";
   });
 }
 
-// Fèmen gate epi debloke paj la
 function gateFermer() {
   var ov = document.getElementById('gate-overlay');
   var st = document.getElementById('gate-style');
@@ -101,9 +99,15 @@ function gateFermer() {
   if (st) st.remove();
   document.body.style.overflow = '';
   document.documentElement.style.overflow = '';
+  if (GATE_AFTER_REGISTER_URL) {
+    var next = GATE_AFTER_REGISTER_URL;
+    GATE_AFTER_REGISTER_URL = null;
+    window.location.href = next;
+  } else {
+    document.documentElement.style.visibility = 'visible';
+  }
 }
 
-// Montre modal enskripsyon
 function montreGate() {
   if (document.getElementById('gate-overlay')) return;
   var savedMember = {};
@@ -118,8 +122,8 @@ function montreGate() {
   ov.innerHTML = '<div id="gate-card">' +
     '<div id="gate-header">' +
       '<div id="gate-logo-wrap"><img src="logo.png" alt="Logo" onerror="this.style.display=\'none\'"></div>' +
-      '<h2 id="gate-title">Rejoignez notre communauté</h2>' +
-      '<p id="gate-subtitle">Inscrivez-vous pour accéder à cette page.</p>' +
+      '<h2 id="gate-title">Inscription requise</h2>' +
+      '<p id="gate-subtitle">Veuillez vous inscrire d’abord pour accéder à cette page.</p>' +
     '</div>' +
     '<div id="gate-form">' +
       '<div class="gate-field"><label>Votre nom complet *</label>' +
@@ -133,8 +137,8 @@ function montreGate() {
       '<p id="gate-note">Vos informations sont confidentielles.</p>' +
     '</div>' +
     '<div id="gate-success" style="display:none;">' +
-      '<div style="font-size:3rem;margin-bottom:16px;">🙏</div>' +
-      '<h3>Bienvenue dans notre famille!</h3>' +
+      '<div style="font-size:3rem;margin-bottom:16px;"></div>' +
+      '<h3>Bienvenue dans notre famille !</h3>' +
       '<p>Inscription enregistrée. Vous avez accès à toutes les pages.</p>' +
       '<button id="gate-continue-btn" type="button">Continuer →</button>' +
     '</div>' +
@@ -167,12 +171,10 @@ function montreGate() {
   document.head.appendChild(st);
   document.body.appendChild(ov);
 
-  // Attach events dirèkteman
-  document.getElementById('gate-btn').onclick = gateSubmit;
+    document.getElementById('gate-btn').onclick = gateSubmit;
   document.getElementById('gate-continue-btn').onclick = gateFermer;
 }
 
-// Montre ekran bloke
 function montreEkranBloke() {
   document.body.style.overflow = 'hidden';
   var blok = document.createElement('div');
@@ -180,7 +182,7 @@ function montreEkranBloke() {
   blok.style.cssText = 'position:fixed;inset:0;background:#0f0c2e;z-index:99999;display:flex;align-items:center;justify-content:center;padding:24px';
   blok.innerHTML =
     '<div style="background:linear-gradient(135deg,#1a0a3c,#0d1f4a);border-radius:24px;padding:40px 28px;max-width:400px;width:100%;text-align:center;border-top:4px solid #e74c3c">' +
-    '<div style="font-size:3.5rem;margin-bottom:20px">🚫</div>' +
+    '<div style="font-size:3.5rem;margin-bottom:20px"></div>' +
     '<h2 style="color:#ff6b6b;font-size:1.5rem;margin-bottom:12px;font-weight:800">Accès restreint</h2>' +
     '<p style="color:rgba(255,255,255,0.75);font-size:0.95rem;line-height:1.7;margin-bottom:24px">Votre accès a été suspendu. Contactez le Pasteur pour le rétablir.</p>' +
     '<a href="tel:+50931573591" style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#f1c40f,#e67e22);color:#0f0c2e;padding:14px 28px;border-radius:30px;font-weight:800;font-size:1rem;text-decoration:none">' +
@@ -189,7 +191,6 @@ function montreEkranBloke() {
   document.body.appendChild(blok);
 }
 
-// INIT PRINCIPAL
 function gateInit() {
   if (!gateEstInscrit()) {
     montreGate();
@@ -205,18 +206,15 @@ function gateInit() {
     if (window.firebase && firebase.apps && firebase.apps.length) {
       var db = firebase.firestore();
 
-      // 1. Verifye si Pastè efase moun nan — reinskripsyon obligatwa
-      db.collection('reinscription_required').doc(telKey).get()
+            db.collection('reinscription_required').doc(telKey).get()
         .then(function(doc) {
           if (doc.exists) {
-            // Efase localStorage — fòse reinskripsyon
-            localStorage.removeItem('eglise_membre');
+                        localStorage.removeItem('eglise_membre');
             db.collection('reinscription_required').doc(telKey).delete();
             montreGate();
             return;
           }
-          // 2. Verifye si bloke
-          db.collection('membres')
+                    db.collection('membres')
             .where('telephone', '==', m.telephone).limit(1).get()
             .then(function(snap) {
               if (!snap.empty && snap.docs[0].data().bloque === true) {
@@ -228,11 +226,26 @@ function gateInit() {
   } catch(e) {}
 }
 
-// Fonksyon pou bouton nan Navigasyon an
 function gateShowFromNav() {
   montreGate();
 }
 
-if (document.body && document.body.getAttribute('data-require-gate') === 'true') {
-  gateInit();
+function gateRequireNavigation(event, href) {
+  if (gateEstInscrit()) return true;
+  if (event && event.preventDefault) event.preventDefault();
+  GATE_AFTER_REGISTER_URL = href || null;
+  montreGate();
+  return false;
+}
+
+function gateReadyInit() {
+  if (document.body && document.body.getAttribute('data-require-gate') === 'true') {
+    gateInit();
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', gateReadyInit);
+} else {
+  gateReadyInit();
 }
