@@ -24,6 +24,14 @@ function gateSaveMemberOnline(nom, tel, vil) {
     timestamp: { timestampValue: new Date().toISOString() }
   };
 
+  function saveWithRest() {
+    return fetch('https://firestore.googleapis.com/v1/projects/eglise-carrefour/databases/(default)/documents/membres/' + encodeURIComponent(telKey) + '?key=' + FIREBASE_WEB_API_KEY, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fields: fields })
+    });
+  }
+
   if (window.firebase && firebase.apps && firebase.apps.length) {
     try {
       return firebase.firestore().collection('membres').doc(telKey).set({
@@ -33,15 +41,11 @@ function gateSaveMemberOnline(nom, tel, vil) {
         date: new Date().toLocaleDateString('fr-FR'),
         bloque: false,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      }, { merge: true });
+      }, { merge: true }).catch(saveWithRest);
     } catch(e) {}
   }
 
-  return fetch('https://firestore.googleapis.com/v1/projects/eglise-carrefour/databases/(default)/documents/membres/' + encodeURIComponent(telKey) + '?key=' + FIREBASE_WEB_API_KEY, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fields: fields })
-  });
+  return saveWithRest();
 }
 
 // Soumèt fòm enskripsyon

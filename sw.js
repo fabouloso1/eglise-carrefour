@@ -1,7 +1,7 @@
 // Service Worker — Église de Carrefour
 // Push Notifications + Cache
 
-const VERSION = 'v2026-notif';
+const VERSION = 'v2026-membres-github-2';
 const CACHE   = 'eglise-' + VERSION;
 
 const ASSETS = [

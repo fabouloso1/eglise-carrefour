@@ -2310,6 +2310,8 @@
   // ===== MEMBRES =====
   var _membresListener = null;
   var _membresCache = {};
+  var _membresRestTimer = null;
+  var FIREBASE_WEB_API_KEY_ADMIN = 'AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM';
 
   function escapeHtml(value) {
     return String(value || '').replace(/[&<>"']/g, function(ch) {
@@ -2326,6 +2328,47 @@
     }
     if (typeof m.timestamp.toDate === 'function') return m.timestamp.toDate().getTime() / 1000;
     return 0;
+  }
+
+  function firestoreValueToJs(value) {
+    if (!value) return '';
+    if (Object.prototype.hasOwnProperty.call(value, 'stringValue')) return value.stringValue;
+    if (Object.prototype.hasOwnProperty.call(value, 'booleanValue')) return value.booleanValue;
+    if (Object.prototype.hasOwnProperty.call(value, 'integerValue')) return Number(value.integerValue);
+    if (Object.prototype.hasOwnProperty.call(value, 'doubleValue')) return Number(value.doubleValue);
+    if (Object.prototype.hasOwnProperty.call(value, 'timestampValue')) return value.timestampValue;
+    if (Object.prototype.hasOwnProperty.call(value, 'nullValue')) return null;
+    if (value.mapValue && value.mapValue.fields) return firestoreFieldsToJs(value.mapValue.fields);
+    if (value.arrayValue && value.arrayValue.values) return value.arrayValue.values.map(firestoreValueToJs);
+    return '';
+  }
+
+  function firestoreFieldsToJs(fields) {
+    var data = {};
+    Object.keys(fields || {}).forEach(function(key) {
+      data[key] = firestoreValueToJs(fields[key]);
+    });
+    return data;
+  }
+
+  async function chargerMembresRest() {
+    const listEl = document.getElementById('membresList');
+    const url = 'https://firestore.googleapis.com/v1/projects/eglise-carrefour/databases/(default)/documents/membres?key=' + FIREBASE_WEB_API_KEY_ADMIN;
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) {
+      var texte = await res.text().catch(function() { return ''; });
+      throw new Error('Firebase REST ' + res.status + (texte ? ' - ' + texte.substring(0, 120) : ''));
+    }
+    const json = await res.json();
+    const list = (json.documents || []).map(function(docData) {
+      var id = (docData.name || '').split('/').pop();
+      return Object.assign({ id: id }, firestoreFieldsToJs(docData.fields || {}));
+    });
+    list.sort(function(a, b) { return membreTimestampValue(b) - membreTimestampValue(a); });
+    renderMembres(list);
+    if (listEl && !list.length) {
+      listEl.innerHTML = '<p style="color:rgba(255,255,255,0.35);text-align:center;padding:30px;">Aucun membre inscrit pour le moment. Faites une nouvelle inscription depuis le bouton Inscription, puis revenez ici.</p>';
+    }
   }
 
   function renderMembres(list) {
@@ -2384,20 +2427,39 @@
 
     try {
       if (_membresListener) { _membresListener(); _membresListener = null; }
+      if (_membresRestTimer) { clearInterval(_membresRestTimer); _membresRestTimer = null; }
+      if (!window._onSnapshot || !window._collection || !window._db) throw new Error('Firebase SDK non disponible');
       _membresListener = window._onSnapshot(window._collection(window._db, 'membres'), function(snap) {
         const list = snap.docs.map(function(d) { return { id: d.id, ...d.data() }; });
         list.sort(function(a, b) { return membreTimestampValue(b) - membreTimestampValue(a); });
-        renderMembres(list);
+        if (list.length) {
+          renderMembres(list);
+        } else {
+          chargerMembresRest().catch(function() { renderMembres([]); });
+        }
       }, function(error) {
-        listEl.innerHTML = '<p style="color:#e74c3c;padding:20px;text-align:center;">Erreur: ' + escapeHtml(error.message) + '</p>';
+        chargerMembresRest().catch(function(restError) {
+          listEl.innerHTML = '<p style="color:#e74c3c;padding:20px;text-align:center;">Erreur: ' + escapeHtml(error.message || restError.message) + '</p>';
+        });
       });
     } catch(e) {
-      window._getDocs(window._collection(window._db, 'membres')).then(function(snap) {
-        const list = snap.docs.map(function(d) { return { id: d.id, ...d.data() }; });
-        list.sort(function(a, b) { return membreTimestampValue(b) - membreTimestampValue(a); });
-        renderMembres(list);
+      chargerMembresRest().then(function() {
+        if (_membresRestTimer) clearInterval(_membresRestTimer);
+        _membresRestTimer = setInterval(function() {
+          chargerMembresRest().catch(function() {});
+        }, 10000);
       }).catch(function(error) {
-        listEl.innerHTML = '<p style="color:#e74c3c;padding:20px;text-align:center;">Erreur: ' + escapeHtml(error.message) + '</p>';
+        if (window._getDocs && window._collection && window._db) {
+          window._getDocs(window._collection(window._db, 'membres')).then(function(snap) {
+            const list = snap.docs.map(function(d) { return { id: d.id, ...d.data() }; });
+            list.sort(function(a, b) { return membreTimestampValue(b) - membreTimestampValue(a); });
+            renderMembres(list);
+          }).catch(function(error2) {
+            listEl.innerHTML = '<p style="color:#e74c3c;padding:20px;text-align:center;">Erreur: ' + escapeHtml(error2.message || error.message) + '</p>';
+          });
+        } else {
+          listEl.innerHTML = '<p style="color:#e74c3c;padding:20px;text-align:center;">Erreur: ' + escapeHtml(error.message) + '</p>';
+        }
       });
     }
   }
