@@ -29,6 +29,13 @@ function gateSaveMemberOnline(nom, tel, vil) {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ fields: fields })
+    }).then(function(res) {
+      if (!res.ok) {
+        return res.text().then(function(text) {
+          throw new Error('Enskripsyon an pa rive sove. Tanpri verifye koneksyon an epi eseye ankò.');
+        });
+      }
+      return res;
     });
   }
 
@@ -71,17 +78,19 @@ function gateSubmit() {
   btn.disabled = true;
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
 
-  // Sove nan localStorage
-  localStorage.setItem(GATE_STORAGE, JSON.stringify({
-    nom: nom, telephone: tel, ville: vil.trim(),
-    date: new Date().toLocaleDateString('fr-FR')
-  }));
-
-  gateSaveMemberOnline(nom, tel, vil).catch(function() {});
-
-  // Montre siksè
-  document.getElementById('gate-form').style.display = 'none';
-  document.getElementById('gate-success').style.display = 'block';
+  gateSaveMemberOnline(nom, tel, vil).then(function() {
+    localStorage.setItem(GATE_STORAGE, JSON.stringify({
+      nom: nom, telephone: tel, ville: vil.trim(),
+      date: new Date().toLocaleDateString('fr-FR')
+    }));
+    document.getElementById('gate-form').style.display = 'none';
+    document.getElementById('gate-success').style.display = 'block';
+  }).catch(function(error) {
+    err.style.display = 'block';
+    err.textContent = error.message || 'Enskripsyon an pa rive sove. Tanpri eseye ankò.';
+    btn.disabled = false;
+    btn.innerHTML = "S'inscrire et accéder";
+  });
 }
 
 // Fèmen gate epi debloke paj la
@@ -97,6 +106,8 @@ function gateFermer() {
 // Montre modal enskripsyon
 function montreGate() {
   if (document.getElementById('gate-overlay')) return;
+  var savedMember = {};
+  try { savedMember = JSON.parse(localStorage.getItem(GATE_STORAGE) || '{}'); } catch(e) {}
 
   document.body.style.overflow = 'hidden';
   document.documentElement.style.overflow = 'hidden';
@@ -112,11 +123,11 @@ function montreGate() {
     '</div>' +
     '<div id="gate-form">' +
       '<div class="gate-field"><label>Votre nom complet *</label>' +
-        '<input type="text" id="gate-nom" placeholder="Ex: Marie Joseph..."></div>' +
+        '<input type="text" id="gate-nom" placeholder="Ex: Marie Joseph..." value="' + String(savedMember.nom || '').replace(/"/g, '&quot;') + '"></div>' +
       '<div class="gate-field"><label>Numéro de téléphone *</label>' +
-        '<input type="tel" id="gate-tel" placeholder="Ex: +509 3700 0000..."></div>' +
+        '<input type="tel" id="gate-tel" placeholder="Ex: +509 3700 0000..." value="' + String(savedMember.telephone || '').replace(/"/g, '&quot;') + '"></div>' +
       '<div class="gate-field"><label>Quartier / Ville (optionnel)</label>' +
-        '<input type="text" id="gate-ville" placeholder="Ex: Carrefour..."></div>' +
+        '<input type="text" id="gate-ville" placeholder="Ex: Carrefour..." value="' + String(savedMember.ville || '').replace(/"/g, '&quot;') + '"></div>' +
       '<div id="gate-error" style="display:none;"></div>' +
       '<button id="gate-btn" type="button">S\'inscrire et accéder</button>' +
       '<p id="gate-note">Vos informations sont confidentielles.</p>' +
@@ -189,6 +200,7 @@ function gateInit() {
     var m = JSON.parse(localStorage.getItem(GATE_STORAGE) || '{}');
     if (!m.telephone) return;
     var telKey = m.telephone.replace(/\D/g, '');
+    if (m.nom && telKey) gateSaveMemberOnline(m.nom, m.telephone, m.ville || '').catch(function() {});
 
     if (window.firebase && firebase.apps && firebase.apps.length) {
       var db = firebase.firestore();
