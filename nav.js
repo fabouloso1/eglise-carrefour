@@ -177,6 +177,31 @@ const NAV = (() => {
       document.getElementById('foot-placeholder').innerHTML = buildFooter();
       initInteractions();
 
+      // ===== DARK MODE =====
+      window.toggleDarkMode = function() {
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute('data-theme');
+        const icon = document.getElementById('darkModeIcon');
+
+        if (currentTheme === 'dark') {
+          html.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          if (icon) icon.className = 'fas fa-moon';
+        } else {
+          html.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          if (icon) icon.className = 'fas fa-sun';
+        }
+      };
+
+      // Restore dark mode si te sove
+      const savedTheme = localStorage.getItem('theme');
+      const darkIcon = document.getElementById('darkModeIcon');
+      if (savedTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        if (darkIcon) darkIcon.className = 'fas fa-sun';
+      }
+
       // Init lang apre nav chaje
       const flags = { fr:'🇫🇷', en:'🇺🇸', es:'🇪🇸', ht:'🇭🇹' };
       window.changeLang = function(lang) {
