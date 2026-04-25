@@ -180,10 +180,7 @@
     btn.id = 'inscriptionNavBtn';
     btn.innerHTML = '<i class="fas fa-user-plus"></i> <span>Inscription</span>';
     btn.style.cssText = 'background:linear-gradient(135deg,#f1c40f,#e67e22);color:#1a1a1a;border:none;border-radius:20px;padding:7px 14px;font-size:0.82rem;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:6px;';
-    btn.onclick = function() {
-      if (typeof ouvrirGateStatic === 'function') ouvrirGateStatic();
-      else if (typeof montreGate === 'function') montreGate();
-    };
+    btn.onclick = ouvrirGateStatic;
     hamburger.parentNode.insertBefore(btn, hamburger);
 
     // Si deja enskri — chanje bouton an vèt
@@ -360,11 +357,11 @@
         <input type="text" id="gate-ville-s" placeholder="Ex: Carrefour..." style="width:100%;padding:12px 14px;border:2px solid rgba(241,196,15,0.3);border-radius:12px;font-size:1rem;color:white;background:rgba(255,255,255,0.08);box-sizing:border-box;">
       </div>
       <p id="gate-error-s" style="display:none;color:#ff8a80;font-weight:700;font-size:0.88rem;margin-bottom:10px;text-align:center;"></p>
-      <button onclick="gateSubmitStatic()" style="width:100%;padding:14px;background:linear-gradient(135deg,#f1c40f,#e67e22);color:#0f0c2e;border:none;border-radius:50px;font-size:1.05rem;font-weight:800;cursor:pointer;margin-bottom:10px;">S'inscrire et accéder</button>
+      <button onclick="gateSubmitStatic(event)" style="width:100%;padding:14px;background:linear-gradient(135deg,#f1c40f,#e67e22);color:#0f0c2e;border:none;border-radius:50px;font-size:1.05rem;font-weight:800;cursor:pointer;margin-bottom:10px;">S'inscrire et accéder</button>
       <button onclick="fermerGateStatic()" style="width:100%;padding:11px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:50px;color:rgba(255,255,255,0.5);font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="fas fa-arrow-left"></i> Retour</button>
     </div>
     <div id="gate-success-static" style="display:none;text-align:center;padding:20px 0;">
-      <div style="font-size:3rem;margin-bottom:14px;"></div>
+      <div style="font-size:3rem;margin-bottom:14px;">🙏</div>
       <h3 style="color:#f1c40f;font-size:1.3rem;font-weight:800;margin-bottom:10px;">Bienvenue !</h3>
       <p style="color:rgba(255,255,255,0.75);margin-bottom:20px;">Vous êtes inscrit. Vous avez accès à toutes les pages membres.</p>
       <button onclick="fermerGateStatic()" style="padding:13px 36px;background:linear-gradient(135deg,#f1c40f,#e67e22);color:#0f0c2e;border:none;border-radius:50px;font-size:1rem;font-weight:800;cursor:pointer;">Continuer →</button>
@@ -379,12 +376,13 @@ function ouvrirGateStatic() {
     try {
       var m = JSON.parse(saved);
       if (m.nom && m.telephone) {
-        document.getElementById('gate-nom-s').value = m.nom || '';
-        document.getElementById('gate-tel-s').value = m.telephone || '';
-        document.getElementById('gate-ville-s').value = m.ville || '';
-        document.getElementById('gate-error-s').style.display = 'block';
-        document.getElementById('gate-error-s').style.color = '#f1c40f';
-        document.getElementById('gate-error-s').textContent = 'Vous êtes déjà inscrit sur cet appareil. Vous avez accès aux pages membres.';
+        // Deja enskri — montre toast
+        var t = document.createElement('div');
+        t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#2ed573;color:#0d1f4a;padding:12px 24px;border-radius:20px;font-weight:800;z-index:99999;font-size:0.9rem;white-space:nowrap;';
+        t.innerHTML = '<i class="fas fa-check-circle" style="margin-right:6px;"></i>Vous êtes déjà inscrit, ' + m.nom.split(' ')[0] + ' !';
+        document.body.appendChild(t);
+        setTimeout(function(){ t.remove(); }, 3000);
+        return;
       }
     } catch(e) {}
   }
@@ -399,40 +397,38 @@ function fermerGateStatic() {
 }
 
 function gateSaveMemberStatic(nom, tel, vil) {
-  var telKey = tel.replace(/\D/g,'');
+  var telKey = tel.replace(/\D/g, '');
+  if (!telKey) return Promise.resolve();
+  var fields = {
+    nom: { stringValue: nom },
+    telephone: { stringValue: tel },
+    ville: { stringValue: (vil||'').trim() },
+    date: { stringValue: new Date().toLocaleDateString('fr-FR') },
+    bloque: { booleanValue: false },
+    timestamp: { timestampValue: new Date().toISOString() }
+  };
   return fetch('https://firestore.googleapis.com/v1/projects/eglise-carrefour/databases/(default)/documents/membres/' + encodeURIComponent(telKey) + '?key=AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM', {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fields: {
-      nom: { stringValue: nom }, telephone: { stringValue: tel },
-      ville: { stringValue: vil }, date: { stringValue: new Date().toLocaleDateString('fr-FR') },
-      bloque: { booleanValue: false },
-      timestamp: { timestampValue: new Date().toISOString() }
-    }})
+    body: JSON.stringify({ fields: fields })
   }).then(function(res) {
-    if (!res.ok) {
-      return res.text().then(function() {
-        throw new Error('L'inscription n'a pas pu être enregistrée dans le panneau d'administration. Veuillez vérifier votre connexion et réessayer.');
-      });
-    }
+    if (!res.ok) throw new Error("L'inscription n'a pas pu être enregistrée.");
     return res;
   });
 }
 
-function gateSubmitStatic() {
+function gateSubmitStatic(e) {
   var nom = document.getElementById('gate-nom-s').value.trim();
   var tel = document.getElementById('gate-tel-s').value.trim();
   var vil = document.getElementById('gate-ville-s').value.trim();
   var err = document.getElementById('gate-error-s');
-  var btn = event && event.currentTarget ? event.currentTarget : null;
-
+  if (e && e.preventDefault) e.preventDefault();
+  var btn = e && e.currentTarget ? e.currentTarget : null;
   if (!nom) { err.style.display='block'; err.textContent='Veuillez saisir votre nom.'; return; }
   if (!tel || tel.replace(/\D/g,'').length < 8) { err.style.display='block'; err.textContent='Numéro invalide.'; return; }
   err.style.display = 'none';
-  err.style.color = '#ff8a80';
   if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...'; }
-
-  gateSaveMemberStatic(nom, tel, vil).then(function() {
+  gateSaveMemberOnline(nom, tel, vil).then(function() {
     localStorage.setItem('eglise_membre', JSON.stringify({ nom:nom, telephone:tel, ville:vil, date:new Date().toLocaleDateString('fr-FR') }));
     document.getElementById('gate-form-static').style.display = 'none';
     document.getElementById('gate-success-static').style.display = 'block';
@@ -444,11 +440,37 @@ function gateSubmitStatic() {
   }).catch(function(error) {
     err.style.display = 'block';
     err.style.color = '#ff8a80';
-    err.textContent = error.message || 'L'inscription n'a pas pu être enregistrée. Veuillez réessayer.';
+    err.textContent = error.message || "L'inscription n'a pas pu être enregistrée. Veuillez réessayer.";
     localStorage.removeItem('eglise_membre');
   }).finally(function() {
     if (btn) { btn.disabled = false; btn.innerHTML = "S'inscrire et accéder"; }
   });
+}
+  if (!tel || tel.replace(/\D/g,'').length < 8) { err.style.display='block'; err.textContent='Numéro invalide.'; return; }
+  err.style.display = 'none';
+
+  localStorage.setItem('eglise_membre', JSON.stringify({ nom:nom, telephone:tel, ville:vil, date:new Date().toLocaleDateString('fr-FR') }));
+
+  // Sove nan Firebase
+  fetch('https://firestore.googleapis.com/v1/projects/eglise-carrefour/databases/(default)/documents/membres', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fields: {
+      nom: { stringValue: nom }, telephone: { stringValue: tel },
+      ville: { stringValue: vil }, date: { stringValue: new Date().toLocaleDateString('fr-FR') },
+      timestamp: { stringValue: new Date().toISOString() }
+    }})
+  }).catch(function(){});
+
+  document.getElementById('gate-form-static').style.display = 'none';
+  document.getElementById('gate-success-static').style.display = 'block';
+
+  // Mete ajou bouton nav
+  var btn = document.getElementById('inscriptionNavBtn');
+  if (btn) {
+    btn.innerHTML = '<i class="fas fa-user-check"></i> <span>' + nom.split(' ')[0] + '</span>';
+    btn.style.background = 'linear-gradient(135deg,#2ed573,#1abc9c)';
+  }
 }
 
 // Ferme si klike deyò
@@ -471,10 +493,7 @@ window.addEventListener('load', function() {
     } catch(e) {}
   }
   // Konekte bouton nav ak modal la
-  btn.onclick = function() {
-    if (typeof ouvrirGateStatic === 'function') ouvrirGateStatic();
-    else if (typeof montreGate === 'function') montreGate();
-  };
+  btn.onclick = ouvrirGateStatic;
 });
 </script>
 </body>
