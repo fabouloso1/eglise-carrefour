@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<script src="gate.js" defer></script>
 <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -72,6 +73,7 @@
   <script>
     window.OneSignalDeferred = window.OneSignalDeferred || [];
     OneSignalDeferred.push(async function(OneSignal) {
+      if (location.hostname !== 'fabouloso1.github.io') return;
       await OneSignal.init({
         appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
         notifyButton: { enable: false },
@@ -95,7 +97,6 @@
       });
     });
   </script>
-<script src="gate.js" defer></script>
 </head>
 <body data-require-gate="true">
 
@@ -156,7 +157,7 @@
 <!-- MODAL ENSKRIPSYON -->
 <div class="gate-overlay" id="gateOverlay">
   <div class="gate-box">
-    <div style="text-align:center;font-size:3rem;margin-bottom:16px;">📖</div>
+    <div style="text-align:center;font-size:3rem;margin-bottom:16px;"></div>
     <h2>Guide de Lecture Biblique</h2>
     <p>Inscrivez-vous pour accéder au guide quotidien et recevoir votre rappel chaque matin à 9h.</p>
     <label class="gate-label"><i class="fas fa-user" style="margin-right:6px;"></i>Votre nom *</label>
@@ -198,7 +199,6 @@
 
   // ===== EXTRAIT BIBLE =====
   function getExtrait(ref) {
-    // Essaye bible_fr.js
     if (typeof getBibleRef !== 'undefined') {
       const data = getBibleRef(ref);
       const keys = Object.keys(data.versets||{});
@@ -257,26 +257,22 @@
 
     if (!planJour) {
       document.getElementById('gRef').textContent = 'Pas de lecture prévue pour aujourd\'hui';
-      document.getElementById('gExtrait').textContent = '';
       return;
     }
 
     document.getElementById('gDate').textContent    = formatDate(today);
     document.getElementById('gRef').textContent     = planJour.reference;
-    // Afiche vèsè dirèkteman (pa defò)
     const vs = getVersets(planJour.reference);
     const inlineEl = document.getElementById('gBibleInline');
     inlineEl.innerHTML = '<p style=\"color:rgba(255,255,255,0.4);font-style:italic;\"><i class=\"fas fa-spinner fa-spin\" style=\"margin-right:6px;\"></i>Chargement...</p>';
     if (vs && Object.keys(vs).length > 0) {
       afficherVersets(vs, 'gBibleInline');
     } else {
-      // Chaje depi API getbible.net
       chargerChapitrAPI(planJour.reference).then(vsApi => {
         if (vsApi) { afficherVersets(vsApi, 'gBibleInline'); }
         else { inlineEl.innerHTML = '<p style=\"color:rgba(255,255,255,0.5);font-style:italic;\">« Ta parole est une lampe à mes pieds. » — Psaume 119:105</p>'; }
       });
     }
-    // Kalkile lyen biblestudytools.com/lsg/
     const MAP_WORD = {"Jen": "01", "Egz": "02", "Lev": "03", "Nom": "04", "Dèt": "05", "Joz": "06", "Jij": "07", "Rout": "08", "1Sm": "09", "2Sm": "10", "1Wa": "11", "2Wa": "12", "1Ch": "13", "2Ch": "14", "Ezra": "15", "Neh": "16", "Est": "17", "Job": "18", "Sòm": "19", "Pwov": "20", "Ekl": "21", "Kant": "22", "Eza": "23", "Jer": "24", "Lam": "25", "Ezk": "26", "Dan": "27", "Oze": "28", "Joel": "29", "Amos": "30", "Abd": "31", "Jon": "32", "Mik": "33", "Nao": "34", "Ab": "35", "Sof": "36", "Ag": "37", "Zak": "38", "Mal": "39", "Mat": "40", "Mak": "41", "Lik": "42", "Jan": "43", "Ak": "44", "Wom": "45", "1Ko": "46", "2Ko": "47", "Gal": "48", "Efe": "49", "Fil": "50", "Kol": "51", "1Tes": "52", "2Tes": "53", "1Tim": "54", "2Tim": "55", "Tit": "56", "Filem": "57", "Ebre": "58", "Jak": "59", "1Pye": "60", "2Pye": "61", "1Jan": "62", "2Jan": "63", "3Jan": "64", "Jid": "65", "Apo": "66"};
     (function() {
       const parts = planJour.reference.split(' ');
@@ -288,23 +284,19 @@
       }
     })();
 
-    // Progression
     const start  = new Date('2026-01-01');
     const jour   = Math.floor((today - start) / 86400000) + 1;
     const pct    = Math.min(Math.round((jour/365)*100), 100);
     document.getElementById('gBar').style.width     = pct+'%';
     document.getElementById('gBarText').textContent = 'Jour '+jour+' sur 365 — '+pct+'% de l\'année accompli';
 
-    // Semaine
     afficherSemaine(today);
 
-    // Notif si déjà accordé
     if ('Notification' in window && Notification.permission === 'granted') {
       programmerNotif();
     }
   }
 
-  // ===== SEMAINE =====
   function afficherSemaine(today) {
     const jours = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
     const lundi = new Date(today);
@@ -333,7 +325,6 @@
     document.getElementById('gSemaine').innerHTML = html;
   }
 
-  // ===== LECTEUR =====
   function ouvrirLecteur() {
     if (!planJour) return;
     document.getElementById('readerTitle').textContent = planJour.reference;
@@ -363,7 +354,6 @@
     if (e.target === this) fermerLecteur();
   });
 
-  // ===== GATE =====
   function estInscrit() {
     try {
       const d = JSON.parse(localStorage.getItem('eglise_membre')||'{}');
@@ -383,8 +373,8 @@
     const nom = document.getElementById('gateNom').value.trim();
     const tel = document.getElementById('gateTel').value.trim();
     const err = document.getElementById('gateErr');
-    if (!nom) { err.style.display='block'; err.textContent='⚠️ Veuillez saisir votre nom.'; return; }
-    if (!tel || tel.replace(/\D/g,'').length < 8) { err.style.display='block'; err.textContent='⚠️ Numéro invalide.'; return; }
+    if (!nom) { err.style.display='block'; err.textContent='Veuillez saisir votre nom.'; return; }
+    if (!tel || tel.replace(/\D/g,'').length < 8) { err.style.display='block'; err.textContent='Numéro invalide.'; return; }
     err.style.display = 'none';
 
     localStorage.setItem('eglise_membre', JSON.stringify({nom, telephone:tel, date:new Date().toLocaleDateString('fr-FR')}));
@@ -395,12 +385,11 @@
 
     document.getElementById('gateOverlay').classList.remove('open');
 
-    // Demande notif
     if ('Notification' in window && Notification.permission === 'default') {
       setTimeout(async () => {
         const perm = await Notification.requestPermission();
         if (perm === 'granted') {
-          new Notification('📖 Guide de Lecture Biblique 2026', {
+          new Notification('Guide de Lecture Biblique 2026', {
             body:'Rappel activé ! Chaque matin à 9h, votre chapitre vous attend.',
             icon:'logo.png'
           });
@@ -410,7 +399,6 @@
     }
   }
 
-  // ===== NOTIF 9H =====
   function programmerNotif() {
     if (!planJour) return;
     const now  = new Date();
@@ -420,7 +408,7 @@
       const k = dateKey(new Date());
       const p = PLAN_2026 && PLAN_2026[k];
       if (p && Notification.permission === 'granted') {
-        new Notification('📖 Lecture du jour — '+p.reference, {
+        new Notification('Lecture du jour — '+p.reference, {
           body: p.intro + ' · Ouvrez le guide pour lire.',
           icon:'logo.png', tag:'lecture-quotidienne'
         });
@@ -428,12 +416,13 @@
     }, next - now);
   }
 
-  // ===== LANCEMENT =====
   init();
   verifierAcces();
 </script>
 <script src="pwa.js"></script>
 
-<script src="gate.js"></script>
+
+
+<script src="pwa.js"></script>
 </body>
 </html>
