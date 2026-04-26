@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<script src="gate.js" defer></script>
 <meta charset="UTF-8">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta name="version" content="1773839944">
@@ -8,20 +9,17 @@
   <meta http-equiv="Expires" content="0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Galerie Photos & Vidéos — Église de Dieu de la Prophétie de Carrefour</title>
-  <!-- SEO -->
   <meta name="description" content="Photos et vidéos des cultes, événements et moments de louange à l'Église de Dieu de la Prophétie de Carrefour.">
   <meta name="keywords" content="galerie église carrefour, photos culte haiti">
   <meta name="author" content="Église de Dieu de la Prophétie de Carrefour">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://fabouloso1.github.io/eglise-carrefour/Galerie.html">
-  <!-- Open Graph (Facebook, WhatsApp) -->
   <meta property="og:title" content="Galerie Photos & Vidéos — Église de Dieu de la Prophétie de Carrefour">
   <meta property="og:description" content="Photos et vidéos des cultes, événements et moments de louange à l'Église de Dieu de la Prophétie de Carrefour.">
   <meta property="og:image" content="https://fabouloso1.github.io/eglise-carrefour/logo.png">
   <meta property="og:url" content="https://fabouloso1.github.io/eglise-carrefour/Galerie.html">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fr_HT">
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Galerie Photos & Vidéos — Église de Dieu de la Prophétie de Carrefour">
   <meta name="twitter:description" content="Photos et vidéos des cultes, événements et moments de louange à l'Église de Dieu de la Prophétie de Carrefour.">
@@ -39,25 +37,20 @@
   <meta name="apple-mobile-web-app-title" content="Église Carrefour">
   <link rel="apple-touch-icon" href="logo.png">
   <style>
-
-    /* ===== HERO ===== */
     .page-hero { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 70px 24px 60px; text-align: center; position: relative; overflow: hidden; }
     .page-hero::before { content: '\f03e'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: -30px; top: -30px; font-size: 220px; opacity: 0.04; color: white; }
     .page-hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(241,196,15,0.15); border: 1px solid rgba(241,196,15,0.35); color: var(--gold); padding: 6px 18px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
     .page-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 14px; }
     .page-hero p { font-size: 1.05rem; opacity: 0.82; max-width: 500px; margin: 0 auto; }
 
-    /* ===== BREADCRUMB ===== */
     .breadcrumb { background: white; border-bottom: 1px solid var(--border); padding: 12px 24px; }
     .breadcrumb-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--text-muted); }
     .breadcrumb a { color: var(--text-muted); text-decoration: none; }
     .breadcrumb a:hover { color: var(--primary); }
     .breadcrumb span { color: var(--primary); font-weight: 600; }
 
-    /* ===== MAIN ===== */
     .galerie-main { max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px; }
 
-    /* ===== TABS ===== */
     .gallery-tabs-wrap { display: flex; gap: 8px; margin-bottom: 36px; overflow-x: auto; padding-bottom: 4px; }
     .gallery-tabs-wrap::-webkit-scrollbar { display: none; }
     .gallery-tab { display: inline-flex; align-items: center; gap: 7px; padding: 10px 22px; border-radius: 25px; border: 1.5px solid var(--border); background: white; font-family: 'Montserrat', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--text-muted); cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all 0.2s; }
@@ -66,24 +59,19 @@
     .tab-count { background: rgba(255,255,255,0.2); padding: 1px 7px; border-radius: 10px; font-size: 0.75rem; }
     .gallery-tab:not(.active) .tab-count { background: rgba(28,28,60,0.08); color: var(--text-muted); }
 
-    /* ===== SECTIONS ===== */
     .gallery-section { display: none; }
     .gallery-section.active { display: block; }
 
-    /* ===== LOADING ===== */
     .g-loading { text-align: center; padding: 60px 20px; }
     .g-loading i { font-size: 2.5rem; color: var(--gold); display: block; margin-bottom: 14px; opacity: 0.5; }
     .g-loading p { color: var(--text-muted); font-size: 0.95rem; }
 
-    /* ===== ETAT VIDE ===== */
     .empty-state { text-align: center; padding: 60px 20px; }
     .empty-state i { font-size: 3rem; color: var(--gold); opacity: 0.25; display: block; margin-bottom: 16px; }
     .empty-state p { color: var(--text-muted); font-size: 0.95rem; }
 
-    /* ===== GRILLE CATEGORIES (vue principale) ===== */
     .categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; }
 
-    /* ===== CARTE CATEGORIE ===== */
     .kat-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); border: 1px solid var(--border); cursor: pointer; }
     .kat-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.14); }
     .kat-thumb { position: relative; aspect-ratio: 4/3; background: linear-gradient(135deg, var(--primary), var(--secondary)); overflow: hidden; }
@@ -96,7 +84,6 @@
     .kat-info h3 { color: var(--primary); font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
     .kat-info p { color: var(--text-muted); font-size: 0.82rem; }
 
-    /* ===== MODAL CONTENU CATEGORIE ===== */
     .kat-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(5,5,15,0.92); z-index: 8000; }
     .kat-modal-overlay.open { display: block; }
     .kat-modal { position: fixed; inset: 0; z-index: 8001; overflow-y: auto; padding: 20px 16px 40px; }
@@ -108,13 +95,11 @@
     .kat-modal-close:hover { background: rgba(255,255,255,0.28); }
     .kat-modal-body { padding: 16px; }
 
-    /* Grille photos dans modal */
     .modal-photo-grid { display: flex; flex-direction: column; gap: 14px; }
     .modal-photo-item { position: relative; width: 100%; border-radius: 12px; overflow: hidden; cursor: pointer; background: var(--light-bg); }
     .modal-photo-item img { width: 100%; height: auto; display: block; object-fit: contain; max-height: 80vh; }
     .modal-photo-item:active { opacity: 0.80; }
 
-    /* Grille vidéos dans modal */
     .modal-video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
     .modal-video-card { background: var(--light-bg); border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid var(--border); }
     .modal-video-card:hover { opacity: 0.88; }
@@ -126,7 +111,6 @@
     .modal-video-info h4 { color: var(--primary); font-size: 0.88rem; font-weight: 700; margin-bottom: 3px; }
     .modal-video-info p { color: var(--text-muted); font-size: 0.78rem; }
 
-    /* ===== LIGHTBOX PHOTO ===== */
     .lb-overlay { display: none; position: fixed; inset: 0; background: rgba(5,5,15,0.97); z-index: 9999; align-items: center; justify-content: center; padding: 16px; }
     .lb-overlay.open { display: flex; }
     .lb-close { position: fixed; top: 14px; right: 14px; background: rgba(255,255,255,0.12); border: none; width: 42px; height: 42px; border-radius: 50%; color: white; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10000; }
@@ -140,7 +124,6 @@
     .lb-prev { left: 10px; }
     .lb-next { right: 10px; }
 
-    /* ===== VIDEO MODAL ===== */
     .vid-overlay { display: none; position: fixed; inset: 0; background: rgba(5,5,15,0.97); z-index: 9999; align-items: center; justify-content: center; padding: 16px; flex-direction: column; }
     .vid-overlay.open { display: flex; }
     .vid-wrap { width: min(820px, 96vw); }
@@ -151,7 +134,6 @@
 
     @media (max-width: 768px) {
       .categories-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-      /* modal-photo-grid stays vertical on mobile */
       .lb-nav { display: none; }
       .kat-modal { padding: 10px 8px 40px; }
     }
@@ -159,11 +141,11 @@
       .categories-grid { grid-template-columns: 1fr; gap: 10px; }
     }
   </style>
-  <!-- OneSignal Push Notifications -->
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
   <script>
     window.OneSignalDeferred = window.OneSignalDeferred || [];
     OneSignalDeferred.push(async function(OneSignal) {
+      if (location.hostname !== 'fabouloso1.github.io') return;
       await OneSignal.init({
         appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
         promptOptions: {
@@ -181,13 +163,12 @@
         },
         welcomeNotification: {
           title: "Église de Dieu de la Prophétie",
-          message: "Bienvenue ! Vous recevrez désormais toutes nos notifications. 🙏"
+          message: "Bienvenue ! Vous recevrez désormais toutes nos notifications."
         },
         notifyButton: { enable: false }
       });
     });
   </script>
-<script src="gate.js" defer></script>
 </head>
 <body data-require-gate="true">
 
@@ -209,7 +190,6 @@
 
 <div class="galerie-main">
 
-  <!-- Tabs -->
   <div class="gallery-tabs-wrap">
     <button class="gallery-tab active" onclick="switchTab('photos', this)">
       <i class="fas fa-camera"></i> Photos <span class="tab-count" id="countPhotos">0</span>
@@ -219,7 +199,6 @@
     </button>
   </div>
 
-  <!-- Section Photos : liste de catégories -->
   <div class="gallery-section active" id="tab-photos">
     <div id="photosContainer">
       <div class="g-loading">
@@ -229,7 +208,6 @@
     </div>
   </div>
 
-  <!-- Section Vidéos : liste de catégories -->
   <div class="gallery-section" id="tab-videos">
     <div id="videosContainer">
       <div class="g-loading">
@@ -241,7 +219,6 @@
 
 </div>
 
-<!-- ===== MODAL CONTENU D'UNE CATEGORIE ===== -->
 <div class="kat-modal-overlay" id="katModalOverlay" onclick="closeKatModal(event)"></div>
 <div class="kat-modal" id="katModal" style="display:none;">
   <div class="kat-modal-box">
@@ -253,7 +230,6 @@
   </div>
 </div>
 
-<!-- ===== LIGHTBOX PHOTO ===== -->
 <div class="lb-overlay" id="lbOverlay">
   <button class="lb-close" onclick="closeLb()"><i class="fas fa-times"></i></button>
   <button class="lb-nav lb-prev" onclick="lbNav(-1)"><i class="fas fa-chevron-left"></i></button>
@@ -265,7 +241,6 @@
   <button class="lb-nav lb-next" onclick="lbNav(1)"><i class="fas fa-chevron-right"></i></button>
 </div>
 
-<!-- ===== VIDEO MODAL ===== -->
 <div class="vid-overlay" id="vidOverlay">
   <button class="lb-close" onclick="closeVid()"><i class="fas fa-times"></i></button>
   <div class="vid-wrap">
@@ -285,7 +260,6 @@
 <script src="nav.js"></script>
 <script>
   NAV.init('Galerie.html');
-  // Applique la traduction après que le nav soit injecté
   (function() {
     var lang = localStorage.getItem('site_lang') || 'fr';
     if (window.applyLang) window.applyLang(lang);
@@ -303,11 +277,9 @@
   }
   const db = firebase.firestore();
 
-  // État lightbox
   let lbPhotos = [];
   let lbIdx    = 0;
 
-  // ===== TABS =====
   function switchTab(name, btn) {
     document.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.gallery-section').forEach(s => s.classList.remove('active'));
@@ -315,7 +287,6 @@
     document.getElementById('tab-' + name).classList.add('active');
   }
 
-  // ===== CHARGEMENT =====
   async function chargerGalerie() {
     try {
       const snap  = await db.collection('galerie').orderBy('timestamp', 'desc').get();
@@ -333,7 +304,6 @@
     }
   }
 
-  // ===== AFFICHER CATEGORIES (vue principale) =====
   function afficherCategories(items, containerId, type) {
     const container = document.getElementById(containerId);
     if (!items.length) {
@@ -344,7 +314,6 @@
       return;
     }
 
-    // Grouper par catégorie
     const groupes = {};
     items.forEach(item => {
       const kat = item.kategoriNom || item.categorie || 'Galerie';
@@ -376,12 +345,10 @@
       }).join('')}
     </div>`;
 
-    // Stocker tous les items groupés pour usage dans le modal
     window._galerie = window._galerie || {};
     window._galerie[type] = groupes;
   }
 
-  // ===== OUVRIR MODAL D'UNE CATEGORIE =====
   function ouvrirKategorie(kat, type) {
     const groupes = window._galerie?.[type] || {};
     const imgs    = groupes[kat] || [];
@@ -391,7 +358,6 @@
     document.getElementById('katModalIcon').className    = `fas fa-${type === 'video' ? 'play-circle' : 'images'}`;
 
     if (type === 'photo') {
-      // Stocker photos pour lightbox
       lbPhotos = imgs;
 
       document.getElementById('katModalBody').innerHTML = `
@@ -445,7 +411,6 @@
     if (e.target === document.getElementById('katModalOverlay')) fermerKatModal();
   }
 
-  // ===== LIGHTBOX PHOTO =====
   function ouvrirLightbox(idx) {
     lbIdx = idx;
     majLightbox();
@@ -471,7 +436,6 @@
     document.body.style.overflow = '';
   }
 
-  // ===== VIDEO =====
   function ouvrirVideoYT(embedUrl, titre) {
     if (!embedUrl) return;
     document.getElementById('vidFrame').src          = embedUrl;
@@ -502,7 +466,6 @@
     document.body.style.overflow = '';
   }
 
-  // ===== UTILS =====
   function esc(str) {
     if (!str) return '';
     return String(str)
@@ -510,7 +473,6 @@
       .replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
-  // Keyboard
   document.addEventListener('keydown', e => {
     if (document.getElementById('lbOverlay').classList.contains('open')) {
       if (e.key === 'Escape')      closeLb();
@@ -521,7 +483,6 @@
     if (document.getElementById('katModal').style.display === 'block' && e.key === 'Escape') fermerKatModal();
   });
 
-  // Click outside lightbox
   document.getElementById('lbOverlay').addEventListener('click', function(e) {
     if (e.target === this) closeLb();
   });
@@ -531,7 +492,7 @@
 
   chargerGalerie();
 </script>
-<script src="gate.js"></script>
+
 <script src="pwa.js"></script>
 </body>
 </html>
