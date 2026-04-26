@@ -2355,9 +2355,9 @@
           '</div>' +
           '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
             (bloque
-              ? '<button onclick="debloquerMembre('' + m.id + '')" style="flex:1;padding:9px 12px;background:rgba(46,213,115,0.2);border:1.5px solid #2ed573;border-radius:20px;color:#2ed573;font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-unlock"></i> Débloquer</button>'
-              : '<button onclick="bloquerMembre('' + m.id + '','' + nom.replace(/'/g, '') + '')" style="flex:1;padding:9px 12px;background:rgba(231,76,60,0.15);border:1.5px solid rgba(231,76,60,0.4);border-radius:20px;color:#ff6b6b;font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-ban"></i> Bloquer</button>') +
-            '<button onclick="supprimerMembre('' + m.id + '')" style="padding:9px 12px;background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.25);border-radius:20px;color:#ff6b6b;font-size:0.85rem;cursor:pointer;"><i class="fas fa-trash"></i></button>' +
+              ? '<button onclick="debloquerMembre(\'' + m.id + '\')" style="flex:1;padding:9px 12px;background:rgba(46,213,115,0.2);border:1.5px solid #2ed573;border-radius:20px;color:#2ed573;font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-unlock"></i> Débloquer</button>'
+              : '<button onclick="bloquerMembre(\'' + m.id + '\',\'' + nom.replace(/\'/g, '') + '\')" style="flex:1;padding:9px 12px;background:rgba(231,76,60,0.15);border:1.5px solid rgba(231,76,60,0.4);border-radius:20px;color:#ff6b6b;font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-ban"></i> Bloquer</button>') +
+            '<button onclick="supprimerMembre(\'' + m.id + '\')" style="padding:9px 12px;background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.25);border-radius:20px;color:#ff6b6b;font-size:0.85rem;cursor:pointer;"><i class="fas fa-trash"></i></button>' +
           '</div>' +
         '</div>';
       }).join('');
@@ -2381,10 +2381,6 @@
     try {
       await window._updateDoc(window._doc(window._db, 'membres', id), { bloque: false });
       showToast('Membre débloqué !');
-      chargerMembres();
-    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
-  }
-      showToast(nom + ' réinitialisé — devra se réinscrire !');
       chargerMembres();
     } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
   }
