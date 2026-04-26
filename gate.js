@@ -1,30 +1,52 @@
 // ===== GATE.JS — Système d'accès =====
+
 var GATE_STORAGE = 'eglise_membre';
 var GATE_AFTER_REGISTER_URL = null;
 var FIREBASE_WEB_API_KEY = 'AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM';
+
 function gateNormalizePhone(tel) {
   return String(tel || '').replace(/\D/g, '');
 }
+
 function gateGetStoredMember() {
-  try { return JSON.parse(localStorage.getItem(GATE_STORAGE) || '{}'); } catch(e) { return {}; }
+  try {
+    return JSON.parse(localStorage.getItem(GATE_STORAGE) || '{}');
+  } catch(e) {
+    return {};
+  }
 }
-function gateClearLocalAccess() { localStorage.removeItem(GATE_STORAGE); }
-function gateEstInscrit() { var d = gateGetStoredMember(); return !!(d.nom && d.telephone); }
+
+function gateClearLocalAccess() {
+  localStorage.removeItem(GATE_STORAGE);
+}
+
+function gateEstInscrit() {
+  var d = gateGetStoredMember();
+  return !!(d.nom && d.telephone);
+}
+
 function gateFirestoreUrl(collection, id) {
   return 'https://firestore.googleapis.com/v1/projects/eglise-carrefour/databases/(default)/documents/' + collection + '/' + encodeURIComponent(id) + '?key=' + FIREBASE_WEB_API_KEY;
 }
+
 function gateReadRestDocument(collection, id) {
   if (!window.fetch || !id) return Promise.resolve({ available: false });
+
   return fetch(gateFirestoreUrl(collection, id), { method: 'GET' }).then(function(res) {
     if (res.status === 404) return { available: true, exists: false };
     if (!res.ok) throw new Error('Vérification impossible.');
-    return res.json().then(function(doc) { return { available: true, exists: true, doc: doc }; });
+    return res.json().then(function(doc) {
+      return { available: true, exists: true, doc: doc };
+    });
   });
 }
+
 function gateDeleteRestDocument(collection, id) {
   if (!window.fetch || !id) return Promise.resolve();
+
   return fetch(gateFirestoreUrl(collection, id), { method: 'DELETE' }).catch(function() {});
 }
+
 function gateRestField(doc, name) {
   if (!doc || !doc.fields || !doc.fields[name]) return undefined;
   var field = doc.fields[name];
@@ -34,14 +56,17 @@ function gateRestField(doc, name) {
   if ('timestampValue' in field) return field.timestampValue;
   return undefined;
 }
+
 function gateForceReinscription(telKey) {
   gateClearLocalAccess();
   if (telKey) gateDeleteRestDocument('reinscription_required', telKey);
   montreGate();
 }
+
 function gateSaveMemberOnline(nom, tel, vil) {
   var telKey = gateNormalizePhone(tel);
   if (!telKey) return Promise.resolve();
+
   var fields = {
     nom: { stringValue: nom },
     telephone: { stringValue: tel },
@@ -50,51 +75,77 @@ function gateSaveMemberOnline(nom, tel, vil) {
     bloque: { booleanValue: false },
     timestamp: { timestampValue: new Date().toISOString() }
   };
+
   function saveWithRest() {
     return fetch(gateFirestoreUrl('membres', telKey), {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ fields: fields })
     }).then(function(res) {
-      if (!res.ok) return res.text().then(function() { throw new Error("L'inscription n'a pas pu être enregistrée. Veuillez vérifier votre connexion et réessayer."); });
+      if (!res.ok) {
+        return res.text().then(function() {
+          throw new Error('L\'inscription n\'a pas pu être enregistrée. Veuillez vérifier votre connexion et réessayer.');
+        });
+      }
       return res;
     });
   }
+
   if (window.firebase && firebase.apps && firebase.apps.length) {
     try {
       return firebase.firestore().collection('membres').doc(telKey).set({
-        nom: nom, telephone: tel, ville: (vil || '').trim(),
+        nom: nom,
+        telephone: tel,
+        ville: (vil || '').trim(),
         date: new Date().toLocaleDateString('fr-FR'),
         bloque: false,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       }, { merge: true }).catch(saveWithRest);
     } catch(e) {}
   }
+
   return saveWithRest();
 }
+
 function gateSubmit(event) {
   if (event && event.preventDefault) event.preventDefault();
+
   var nom = document.getElementById('gate-nom').value.trim();
   var tel = document.getElementById('gate-tel').value.trim();
   var vil = (document.getElementById('gate-ville') || {}).value || '';
   var err = document.getElementById('gate-error');
-  if (!nom) { err.style.display = 'block'; err.textContent = 'Veuillez saisir votre nom.'; return; }
-  if (!tel || gateNormalizePhone(tel).length < 8) { err.style.display = 'block'; err.textContent = 'Numéro de téléphone invalide.'; return; }
+
+  if (!nom) {
+    err.style.display = 'block';
+    err.textContent = 'Veuillez saisir votre nom.';
+    return;
+  }
+  if (!tel || gateNormalizePhone(tel).length < 8) {
+    err.style.display = 'block';
+    err.textContent = 'Numéro de téléphone invalide.';
+    return;
+  }
   err.style.display = 'none';
+
   var btn = event && event.currentTarget ? event.currentTarget : document.getElementById('gate-btn');
   btn.disabled = true;
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
+
   gateSaveMemberOnline(nom, tel, vil).then(function() {
-    localStorage.setItem(GATE_STORAGE, JSON.stringify({ nom: nom, telephone: tel, ville: vil.trim(), date: new Date().toLocaleDateString('fr-FR') }));
+    localStorage.setItem(GATE_STORAGE, JSON.stringify({
+      nom: nom, telephone: tel, ville: vil.trim(),
+      date: new Date().toLocaleDateString('fr-FR')
+    }));
     document.getElementById('gate-form').style.display = 'none';
     document.getElementById('gate-success').style.display = 'block';
   }).catch(function(error) {
     err.style.display = 'block';
-    err.textContent = error.message || "L'inscription n'a pas pu être enregistrée. Veuillez réessayer.";
+    err.textContent = error.message || 'L\'inscription n\'a pas pu être enregistrée. Veuillez réessayer.';
     btn.disabled = false;
     btn.innerHTML = "S'inscrire et accéder";
   });
 }
+
 function gateFermer() {
   var ov = document.getElementById('gate-overlay');
   var st = document.getElementById('gate-style');
@@ -110,19 +161,22 @@ function gateFermer() {
     document.documentElement.style.visibility = 'visible';
   }
 }
+
 function montreGate() {
   if (document.getElementById('gate-overlay')) return;
   var savedMember = gateGetStoredMember();
+
   document.body.style.overflow = 'hidden';
   document.documentElement.style.overflow = 'hidden';
   document.documentElement.style.visibility = 'visible';
+
   var ov = document.createElement('div');
   ov.id = 'gate-overlay';
   ov.innerHTML = '<div id="gate-card">' +
     '<div id="gate-header">' +
       '<div id="gate-logo-wrap"><img src="logo.png" alt="Logo" onerror="this.style.display=\'none\'"></div>' +
       '<h2 id="gate-title">Inscription requise</h2>' +
-      '<p id="gate-subtitle">Veuillez vous inscrire pour accéder à cette page.</p>' +
+      '<p id="gate-subtitle">Veuillez vous inscrire d’abord pour accéder à cette page.</p>' +
     '</div>' +
     '<div id="gate-form">' +
       '<div class="gate-field"><label>Votre nom complet *</label>' +
@@ -136,12 +190,13 @@ function montreGate() {
       '<p id="gate-note">Vos informations sont confidentielles.</p>' +
     '</div>' +
     '<div id="gate-success" style="display:none;">' +
-      '<div style="font-size:3rem;margin-bottom:16px;">🙏</div>' +
+      '<div style="font-size:3rem;margin-bottom:16px;"></div>' +
       '<h3>Bienvenue dans notre famille !</h3>' +
       '<p>Inscription enregistrée. Vous avez accès à toutes les pages.</p>' +
       '<button id="gate-continue-btn" type="button">Continuer →</button>' +
     '</div>' +
   '</div>';
+
   var st = document.createElement('style');
   st.id = 'gate-style';
   st.textContent =
@@ -165,11 +220,14 @@ function montreGate() {
     '#gate-success p{color:rgba(255,255,255,0.75)!important;font-size:0.95rem!important;margin-bottom:24px!important}' +
     '#gate-continue-btn{padding:14px 36px;background:linear-gradient(135deg,#f1c40f,#e67e22);color:#0f0c2e!important;border:none;border-radius:50px;font-size:1rem!important;font-weight:800!important;cursor:pointer;font-family:inherit}' +
     '@media(min-width:500px){#gate-overlay{align-items:center}#gate-card{border-radius:20px}}';
+
   document.head.appendChild(st);
   document.body.appendChild(ov);
+
   document.getElementById('gate-btn').onclick = gateSubmit;
   document.getElementById('gate-continue-btn').onclick = gateFermer;
 }
+
 function montreEkranBloke() {
   document.body.style.overflow = 'hidden';
   var blok = document.createElement('div');
@@ -177,7 +235,7 @@ function montreEkranBloke() {
   blok.style.cssText = 'position:fixed;inset:0;background:#0f0c2e;z-index:99999;display:flex;align-items:center;justify-content:center;padding:24px';
   blok.innerHTML =
     '<div style="background:linear-gradient(135deg,#1a0a3c,#0d1f4a);border-radius:24px;padding:40px 28px;max-width:400px;width:100%;text-align:center;border-top:4px solid #e74c3c">' +
-    '<div style="font-size:3.5rem;margin-bottom:20px">🚫</div>' +
+    '<div style="font-size:3.5rem;margin-bottom:20px"></div>' +
     '<h2 style="color:#ff6b6b;font-size:1.5rem;margin-bottom:12px;font-weight:800">Accès restreint</h2>' +
     '<p style="color:rgba(255,255,255,0.75);font-size:0.95rem;line-height:1.7;margin-bottom:24px">Votre accès a été suspendu. Contactez le Pasteur pour le rétablir.</p>' +
     '<a href="tel:+50931573591" style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#f1c40f,#e67e22);color:#0f0c2e;padding:14px 28px;border-radius:30px;font-weight:800;font-size:1rem;text-decoration:none">' +
@@ -185,26 +243,79 @@ function montreEkranBloke() {
     '</div>';
   document.body.appendChild(blok);
 }
-function gateCheckWithRest(telKey) {
-  return gateReadRestDocument('reinscription_required', telKey).then(function(marker) {
-    if (marker.available && marker.exists) { gateForceReinscription(telKey); return true; }
-    return gateReadRestDocument('membres', telKey).then(function(member) {
-      if (member.available && !member.exists) { gateForceReinscription(telKey); return true; }
-      if (member.available && gateRestField(member.doc, 'bloque') === true) { montreEkranBloke(); return true; }
+
+function gateCheckWithFirebase(db, telKey) {
+  return db.collection('reinscription_required').doc(telKey).get().then(function(doc) {
+    if (doc.exists) {
+      gateClearLocalAccess();
+      db.collection('reinscription_required').doc(telKey).delete().catch(function() {});
+      montreGate();
+      return true;
+    }
+
+    return db.collection('membres').doc(telKey).get().then(function(memberDoc) {
+      if (!memberDoc.exists) {
+        gateForceReinscription(telKey);
+        return true;
+      }
+      if (memberDoc.data().bloque === true) {
+        montreEkranBloke();
+        return true;
+      }
       return false;
     });
   });
 }
+
+function gateCheckWithRest(telKey) {
+  return gateReadRestDocument('reinscription_required', telKey).then(function(marker) {
+    if (marker.available && marker.exists) {
+      gateForceReinscription(telKey);
+      return true;
+    }
+
+    return gateReadRestDocument('membres', telKey).then(function(member) {
+      if (member.available && !member.exists) {
+        gateForceReinscription(telKey);
+        return true;
+      }
+      if (member.available && gateRestField(member.doc, 'bloque') === true) {
+        montreEkranBloke();
+        return true;
+      }
+      return false;
+    });
+  });
+}
+
 function gateInit() {
-  if (!gateEstInscrit()) { montreGate(); return; }
+  if (!gateEstInscrit()) {
+    montreGate();
+    return;
+  }
+
   try {
     var m = gateGetStoredMember();
     var telKey = gateNormalizePhone(m.telephone);
-    if (!telKey) { gateClearLocalAccess(); montreGate(); return; }
+    if (!telKey) {
+      gateClearLocalAccess();
+      montreGate();
+      return;
+    }
+
+    if (window.firebase && firebase.apps && firebase.apps.length) {
+      gateCheckWithFirebase(firebase.firestore(), telKey).catch(function() {});
+      return;
+    }
+
     gateCheckWithRest(telKey).catch(function() {});
   } catch(e) {}
 }
-function gateShowFromNav() { montreGate(); }
+
+function gateShowFromNav() {
+  montreGate();
+}
+
 function gateRequireNavigation(event, href) {
   if (gateEstInscrit()) return true;
   if (event && event.preventDefault) event.preventDefault();
@@ -212,9 +323,13 @@ function gateRequireNavigation(event, href) {
   montreGate();
   return false;
 }
+
 function gateReadyInit() {
-  if (document.body && document.body.getAttribute('data-require-gate') === 'true') { gateInit(); }
+  if (document.body && document.body.getAttribute('data-require-gate') === 'true') {
+    gateInit();
+  }
 }
+
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', gateReadyInit);
 } else {
