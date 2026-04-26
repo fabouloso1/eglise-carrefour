@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<script src="gate.js" defer></script>
 <meta charset="UTF-8">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta name="version" content="1773839944">
@@ -8,20 +9,17 @@
   <meta http-equiv="Expires" content="0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Témoignages — Église de Dieu de la Prophétie de Carrefour</title>
-  <!-- SEO -->
   <meta name="description" content="Partagez et lisez les témoignages de la grâce de Dieu dans notre communauté à Carrefour, Haïti.">
   <meta name="keywords" content="témoignages église carrefour, grâce de dieu haiti">
   <meta name="author" content="Église de Dieu de la Prophétie de Carrefour">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://fabouloso1.github.io/eglise-carrefour/Temoigner.html">
-  <!-- Open Graph (Facebook, WhatsApp) -->
   <meta property="og:title" content="Témoignages — Église de Dieu de la Prophétie de Carrefour">
   <meta property="og:description" content="Partagez et lisez les témoignages de la grâce de Dieu dans notre communauté à Carrefour, Haïti.">
   <meta property="og:image" content="https://fabouloso1.github.io/eglise-carrefour/logo.png">
   <meta property="og:url" content="https://fabouloso1.github.io/eglise-carrefour/Temoigner.html">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fr_HT">
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Témoignages — Église de Dieu de la Prophétie de Carrefour">
   <meta name="twitter:description" content="Partagez et lisez les témoignages de la grâce de Dieu dans notre communauté à Carrefour, Haïti.">
@@ -55,12 +53,10 @@
 
     .temoignages-main { max-width: 1100px; margin: 0 auto; padding: 50px 24px 80px; }
 
-    /* Intro verset */
     .intro-verse { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border-radius: var(--radius); padding: 32px 36px; text-align: center; margin-bottom: 50px; }
     .intro-verse p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; line-height: 1.8; opacity: 0.92; margin-bottom: 8px; }
     .intro-verse cite { color: var(--gold); font-size: 0.88rem; font-weight: 600; }
 
-    /* Grille témoignages */
     .temoignages-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-bottom: 60px; }
     .temoignage-card { background: white; border-radius: var(--radius); padding: 28px; box-shadow: 0 4px 16px rgba(28,28,60,0.10); border: 1px solid #e0e8ff; border-left: 5px solid #1c1c3c; transition: var(--transition); display: flex; flex-direction: column; position: relative; }
     .temoignage-card:hover { box-shadow: 0 8px 28px rgba(28,28,60,0.35); }
@@ -73,7 +69,6 @@
     .t-category { display: inline-flex; align-items: center; gap: 5px; background: #1c1c3c; color: #f1c40f !important; padding: 6px 14px; border-radius: 15px; font-size: 0.85rem !important; font-weight: 700 !important; }
     .t-category i { color: var(--gold); font-size: 0.7rem; }
 
-    /* Formulaire */
     .form-section { background: linear-gradient(135deg, #1c1c3c, #2d1040); border-radius: var(--radius); padding: 40px; box-shadow: 0 4px 24px rgba(28,28,60,0.2); border: none; border-top: 5px solid var(--gold); }
     .form-title { font-family: 'Playfair Display', serif; font-size: 1.7rem; color: #f1c40f !important; margin-bottom: 8px; }
     .form-subtitle { color: rgba(255,255,255,0.7) !important; font-size: 0.95rem; margin-bottom: 30px; line-height: 1.6; font-weight: 500; }
@@ -100,11 +95,11 @@
       .temoignages-grid { grid-template-columns: 1fr; }
     }
   </style>
-  <!-- OneSignal Push Notifications -->
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
   <script>
     window.OneSignalDeferred = window.OneSignalDeferred || [];
     OneSignalDeferred.push(async function(OneSignal) {
+      if (location.hostname !== 'fabouloso1.github.io') return;
       await OneSignal.init({
         appId: "98b15d43-1386-4fd5-b711-59dd32446c43",
         promptOptions: {
@@ -122,13 +117,12 @@
         },
         welcomeNotification: {
           title: "Église de Dieu de la Prophétie",
-          message: "Bienvenue ! Vous recevrez désormais toutes nos notifications. 🙏"
+          message: "Bienvenue ! Vous recevrez désormais toutes nos notifications."
         },
         notifyButton: { enable: false }
       });
     });
   </script>
-<script src="gate.js" defer></script>
 </head>
 <body data-require-gate="true">
 
@@ -152,13 +146,11 @@
 
 <div class="temoignages-main">
 
-  <!-- Verset -->
   <div class="intro-verse">
     <p>Ils ont triomphé de lui à cause du sang de l'Agneau et à cause de la parole de leur témoignage.</p>
     <cite>— Apocalypse 12:11</cite>
   </div>
 
-  <!-- Grille -->
   <div class="temoignages-grid" id="temoignages-grid-static">
 
     <div class="temoignage-card">
@@ -217,12 +209,10 @@
 
   </div>
 
-  <!-- Témoignages approuvés Firebase (remplacement dynamique) -->
   <div class="temoignages-grid" id="temoignages-grid-dynamic" style="display:none;"></div>
 
-  <!-- Formulaire partage -->
   <div class="form-section">
-    <h2 class="form-title">✨ Partagez votre témoignage</h2>
+    <h2 class="form-title">Partagez votre témoignage</h2>
     <p class="form-subtitle">Votre histoire peut encourager des dizaines de frères et sœurs dans la foi. N'hésitez pas à partager ce que Dieu a fait dans votre vie. Chaque témoignage est publié après validation par notre équipe.</p>
 
     <form id="testimonyForm">
@@ -254,11 +244,9 @@
         <label for="ttemoignage">Votre témoignage *</label>
         <textarea id="ttemoignage" placeholder="Racontez comment Dieu a agi dans votre vie. Soyez aussi précis que possible pour encourager vos frères et sœurs..."></textarea>
 
-        <!-- OU enregistrer une voix -->
         <div style="margin-top:14px;background:rgba(255,255,255,0.06);border:1px solid rgba(241,196,15,0.2);border-radius:12px;padding:16px;">
           <p style="color:#f1c40f;font-size:0.9rem;font-weight:700;margin-bottom:12px;"><i class="fas fa-microphone" style="margin-right:6px;"></i>Ou partagez votre témoignage en voix</p>
 
-          <!-- Zone enregistrement -->
           <div id="recNormal" style="display:flex;gap:10px;align-items:center;">
             <button type="button" id="recBtn" onclick="toggleRec()"
               style="padding:12px 20px;background:linear-gradient(135deg,#e74c3c,#c0392b);border:none;border-radius:30px;color:white;font-size:0.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;">
@@ -268,13 +256,11 @@
           </div>
 
           <div id="recActive" style="display:none;flex-direction:column;gap:10px;background:rgba(231,76,60,0.1);border-radius:14px;padding:16px;">
-            <!-- Timer -->
             <div style="display:flex;align-items:center;gap:10px;">
               <div style="width:14px;height:14px;background:#e74c3c;border-radius:50%;animation:recPulse 1s infinite;flex-shrink:0;"></div>
               <span style="color:#e74c3c;font-weight:800;font-size:1.1rem;" id="recTimerTemo">0:00</span>
               <span style="color:rgba(255,255,255,0.65);font-size:0.9rem;">Enregistrement en cours...</span>
             </div>
-            <!-- Boutons sur ligne séparée -->
             <div style="display:flex;gap:10px;">
               <button type="button" onclick="annulerRecTemo()"
                 style="flex:1;padding:12px;background:rgba(255,255,255,0.1);border:none;border-radius:20px;color:white;cursor:pointer;font-size:0.9rem;font-weight:600;">
@@ -287,7 +273,6 @@
             </div>
           </div>
 
-          <!-- Aperçu audio -->
           <div id="audioPreviewWrap" style="display:none;margin-top:10px;">
             <audio id="audioPreview" controls style="width:100%;border-radius:8px;"></audio>
             <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
@@ -323,7 +308,6 @@
 
 <div id="foot-placeholder"></div>
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
@@ -336,7 +320,6 @@
     if (window.applyLang) window.applyLang(lang);
   })();
 
-  // Firebase init
   if (!firebase.apps.length) {
     firebase.initializeApp({
       apiKey: "AIzaSyBg9wUQyE7gikWOXryjWOuy-3G32tnqZtM",
@@ -349,7 +332,6 @@
   }
   const db = firebase.firestore();
 
-  // ===== CHARGER TÉMOIGNAGES APPROUVÉS =====
   async function chargerTemoignages() {
     try {
       const snap = await db.collection('temoignages')
@@ -358,7 +340,6 @@
 
       const grid = document.getElementById('temoignages-grid-dynamic');
       if (!snap.empty) {
-        // Kache kat statik yo
         document.getElementById('temoignages-grid-static').style.display = 'none';
         grid.style.display = 'grid';
 
@@ -394,7 +375,6 @@
     }
   }
 
-  // ===== SOUMETTRE TÉMOIGNAGE =====
   document.getElementById('testimonyForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const btn = this.querySelector('.submit-btn');
@@ -408,12 +388,11 @@
         nom:          document.getElementById('tname').value.trim() || 'Anonyme',
         dateEvenement:document.getElementById('tdate').value || '',
         categorie:    document.getElementById('tcategorie').value,
-        temoignage:   texte || '🎤 Témoignage vocal',
+        temoignage:   texte || 'Témoignage vocal',
         approuve:     false,
         timestamp:    firebase.firestore.FieldValue.serverTimestamp()
       };
 
-      // Upload audio si gen youn
       if (audioBlobTemo) {
         const formData = new FormData();
         formData.append('file', new File([audioBlobTemo],'temoignage.webm',{type:'audio/webm'}));
@@ -443,7 +422,6 @@
   chargerTemoignages();
 </script>
 <script>
-  // ===== ENREGISTREMENT VOCAL TÉMOIGNAGE =====
   let mrTemo = null, chunksTemo = [], intTemo = null, secTemo = 0, audioBlobTemo = null;
 
   function toggleRec() {
@@ -467,7 +445,7 @@
         secTemo++;
         const m = Math.floor(secTemo/60), s = secTemo%60;
         document.getElementById('recTimerTemo').textContent = m+':'+(s<10?'0':'')+s;
-        if (secTemo >= 120) stopRecTemo(); // Max 2 min
+        if (secTemo >= 120) stopRecTemo();
       }, 1000);
     } catch(e) { alert('Microphone non accessible : ' + e.message); }
   }
@@ -476,7 +454,6 @@
     if (!mrTemo) return;
     clearInterval(intTemo);
 
-    // Mete onstop ANVAN stop()
     mrTemo.onstop = () => {
       audioBlobTemo = new Blob(chunksTemo, { type: 'audio/webm' });
       const url = URL.createObjectURL(audioBlobTemo);
@@ -505,17 +482,15 @@
     document.getElementById('audioPreview').src = '';
   }
 
-  // Voye vwa dirèkteman san ranpli fòm
   window.envoyerVoixTemoignage = async function() {
     if (!audioBlobTemo) return;
     const st = document.getElementById('voixStatus');
     st.style.display = 'block';
     st.style.background = 'rgba(255,255,255,0.05)';
     st.style.color = 'rgba(255,255,255,0.7)';
-    st.textContent = '⏳ Envoi en cours...';
+    st.textContent = 'Envoi en cours...';
 
     try {
-      // Upload Cloudinary
       const formData = new FormData();
       formData.append('file', new File([audioBlobTemo], 'temoignage.webm', { type: 'audio/webm' }));
       formData.append('upload_preset', 'eglise_upload');
@@ -524,12 +499,11 @@
       const data = await res.json();
       if (!data.secure_url) throw new Error('Upload échoué');
 
-      // Sove nan Firebase
       const nom = document.getElementById('tname').value.trim() || 'Anonyme';
       await db.collection('temoignages').add({
         nom,
         categorie:  document.getElementById('tcategorie').value,
-        temoignage: '🎤 Témoignage vocal',
+        temoignage: 'Témoignage vocal',
         audioUrl:   data.secure_url,
         approuve:   false,
         timestamp:  firebase.firestore.FieldValue.serverTimestamp()
@@ -537,11 +511,10 @@
 
       st.style.background = 'rgba(46,213,115,0.15)';
       st.style.color = '#2ed573';
-      st.textContent = '✅ Témoignage vocal envoyé ! Il sera publié après validation.';
+      st.textContent = 'Témoignage vocal envoyé ! Il sera publié après validation.';
       audioBlobTemo = null;
       document.getElementById('audioPreview').src = '';
 
-      // Kache fòm, montre mesaj siksè
       setTimeout(() => {
         document.getElementById('testimonyForm').style.display = 'none';
         document.getElementById('successMsg').style.display = 'block';
@@ -550,11 +523,11 @@
     } catch(e) {
       st.style.background = 'rgba(231,76,60,0.15)';
       st.style.color = '#ff6b6b';
-      st.textContent = '❌ Erreur : ' + e.message;
+      st.textContent = 'Erreur : ' + e.message;
     }
   };
 </script>
-<script src="gate.js"></script>
+
 <script src="pwa.js"></script>
 </body>
 </html>
