@@ -862,19 +862,8 @@
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
-  function verifierAcces() {
-    try {
-      const data = localStorage.getItem('eglise_membre');
-      if (data) {
-        const m = JSON.parse(data);
-        if (m.nom && m.telephone) {
-          chargerEtude();
-        }
-      }
-    } catch(e) {}
-  }
-
-  verifierAcces();
+  // Chaje etude toujou — gate.js ap bloke si pa enskri
+  chargerEtude();
 </script>
 <script src="pwa.js"></script>
 <script src="gate.js"></script>

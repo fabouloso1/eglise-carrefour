@@ -2542,7 +2542,7 @@
       if(formWrap) formWrap.style.display='none'; // Kache fòm si etude aktif
       const titreEl = document.getElementById('etude-active-titre');
       if(titreEl) titreEl.textContent = e.titre;
-      const qSnap = await window._getDocs(window._query(window._collection(window._db,'etude_questions'),window._orderBy('timestamp','asc')));
+      const qSnap = await window._getDocs(window._collection(window._db,'etude_questions'));
       afficherQuestions(qSnap.docs);
     } catch(e) { console.log('Etude:', e.message); }
   }
