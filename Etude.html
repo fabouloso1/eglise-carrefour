@@ -591,16 +591,26 @@
   // ===== CHARGER ÉTUDE =====
   async function chargerEtude() {
     try {
+      // Verifye Firebase disponib
+      if (!window.firebase || !firebase.apps || !firebase.apps.length) {
+        setTimeout(chargerEtude, 500);
+        return;
+      }
+
       const snap = await db.doc('config/etude').get();
       document.getElementById('eLoading').style.display = 'none';
 
-      if (!snap.exists || !snap.data().actif) {
+      // compat v8: snap.exists se yon boolean
+      var existe = typeof snap.exists === 'function' ? snap.exists() : snap.exists;
+      var data   = snap.data ? snap.data() : null;
+
+      if (!existe || !data || !data.actif) {
         document.getElementById('eVide').style.display   = 'block';
         document.getElementById('waStatus').textContent  = 'Aucune étude active';
         return;
       }
 
-      const e = snap.data();
+      var e = data;
       document.getElementById('eContenu').style.display = 'block';
       document.getElementById('eTitre').textContent     = e.titre  || '';
       document.getElementById('eTexte').textContent     = e.contenu || '';
@@ -632,12 +642,14 @@
             var tb = b.data().timestamp ? b.data().timestamp.seconds || 0 : 0;
             return ta - tb;
           });
-          afficherQuestions(docs, e.questionsOuvertes);
+          afficherQuestions(docs, data ? data.questionsOuvertes : false);
         });
 
     } catch(err) {
+      console.error('chargerEtude error:', err);
       document.getElementById('eLoading').style.display = 'none';
       document.getElementById('eVide').style.display    = 'block';
+      document.getElementById('waStatus').textContent   = 'Erreur: ' + err.message;
     }
   }
 
