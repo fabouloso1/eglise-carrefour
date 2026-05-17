@@ -1094,49 +1094,24 @@
     <!-- TAB NOTIFIKASYON -->
     <div class="tab-panel" id="tab-notifs">
       <div class="card">
-        <h3><i class="fas fa-bell" style="color:var(--gold)"></i> Envoyer une notification</h3>
-        <p style="font-size:1rem;color:#888;margin-bottom:20px;">Envoyez une notification push à tous les abonnés du site.</p>
+        <h3><i class="fas fa-bell" style="color:var(--gold)"></i> Notifications Push</h3>
+        <p style="font-size:1rem;color:#555;margin-bottom:8px;line-height:1.6;">Les notifications push sont gérées par <strong>OneSignal</strong>, un service externe sécurisé.</p>
+        <p style="font-size:0.95rem;color:#777;margin-bottom:24px;line-height:1.6;">Cliquez sur le bouton ci-dessous pour ouvrir le tableau de bord OneSignal. Vous pourrez y consulter la liste de vos abonnés et envoyer des notifications à toute la communauté.</p>
 
-        <div style="display:flex;flex-direction:column;gap:14px;max-width:500px;">
-          <div>
-            <label style="font-weight:600;display:block;margin-bottom:6px;">Titre <span style="color:red">*</span></label>
-            <input type="text" id="notifTitle" placeholder="Ex: Nouveau message du pasteur" 
-              style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:1rem;">
-          </div>
-          <div>
-            <label style="font-weight:600;display:block;margin-bottom:6px;">Message <span style="color:red">*</span></label>
-            <textarea id="notifBody" rows="3" placeholder="Ex: Un nouveau message a été publié sur le site..."
-              style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:1rem;resize:vertical;"></textarea>
-          </div>
-          <div>
-            <label style="font-weight:600;display:block;margin-bottom:6px;">Lien (optionnel)</label>
-            <input type="text" id="notifLink" placeholder="https://fabouloso1.github.io/eglise-carrefour/index.html"
-              style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:1rem;">
-          </div>
-          <button onclick="envoyerNotification()"
-            style="background:var(--gold);color:#1c1c3c;font-weight:700;padding:12px;border:none;border-radius:8px;font-size:1rem;cursor:pointer;">
-            <i class="fas fa-paper-plane"></i> Envoyer à tous les abonnés
-          </button>
-          <div id="notifStatus" style="display:none;padding:12px;border-radius:8px;text-align:center;font-weight:600;"></div>
-        </div>
+        <a href="https://dashboard.onesignal.com/apps/98b15d43-1386-4fd5-b711-59dd32446c43" target="_blank" rel="noopener"
+          style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--gold),#e67e22);color:#1c1c3c;font-weight:800;padding:14px 28px;border:none;border-radius:10px;font-size:1rem;text-decoration:none;box-shadow:0 4px 12px rgba(241,196,15,0.3);">
+          <i class="fas fa-external-link-alt"></i> Ouvrir le tableau de bord OneSignal
+        </a>
 
-        <div style="margin-top:30px;padding-top:20px;border-top:1px solid #eee;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
-            <h4 style="margin:0;"><i class="fas fa-users"></i> Abonnés 
-              <span id="notifCount" style="font-size:1rem;font-weight:700;color:var(--gold);margin-left:8px;">
-                <i class="fas fa-spinner fa-spin"></i>
-              </span>
-            </h4>
-            <button onclick="reinitialiserAbonnes()"
-              style="background:#e74c3c;color:white;border:none;padding:7px 14px;border-radius:8px;font-size:0.85rem;cursor:pointer;font-weight:600;">
-              <i class="fas fa-trash"></i> Réinitialiser les abonnés
-            </button>
-          </div>
-          <div id="abonneList" style="display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto;">
-            <p style="color:#aaa;font-size:0.9rem;text-align:center;padding:10px;">
-              <i class="fas fa-spinner fa-spin"></i> Chargement...
-            </p>
-          </div>
+        <div style="margin-top:30px;padding:18px;background:#f8f9fa;border-left:4px solid var(--gold);border-radius:8px;">
+          <h4 style="font-size:1rem;color:#1c1c3c;margin-bottom:10px;"><i class="fas fa-info-circle" style="color:var(--gold)"></i> Comment envoyer une notification ?</h4>
+          <ol style="font-size:0.92rem;color:#555;line-height:1.8;padding-left:22px;margin:0;">
+            <li>Cliquez sur le bouton ci-dessus pour ouvrir OneSignal.</li>
+            <li>Connectez-vous avec le compte OneSignal de l'église.</li>
+            <li>Dans le menu, choisissez <strong>Messages → New Push</strong>.</li>
+            <li>Rédigez votre titre et votre message, puis cliquez sur <strong>Review and Send</strong>.</li>
+            <li>Tous les abonnés recevront la notification immédiatement.</li>
+          </ol>
         </div>
       </div>
     </div>
@@ -2165,10 +2140,11 @@
   }
 </script>
 
-<!-- Script FCM Notifications -->
+<!-- Script FCM Notifications (désactivé — géré via dashboard OneSignal) -->
 <script>
 (function() {
-  // Evite double init
+  return;
+  // Code legacy conservé désactivé ci-dessous
   if (!firebase.apps.length || !firebase.apps.find(a => a.name === 'notif')) {
     try {
       firebase.initializeApp({
@@ -2413,7 +2389,6 @@
           (bloque
             ? '<button data-member-action="unblock" data-member-id="' + id + '" style="flex:1;padding:9px 12px;background:rgba(46,213,115,0.2);border:1.5px solid #2ed573;border-radius:20px;color:#2ed573;font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-unlock"></i> Débloquer</button>'
             : '<button data-member-action="block" data-member-id="' + id + '" style="flex:1;padding:9px 12px;background:rgba(231,76,60,0.15);border:1.5px solid rgba(231,76,60,0.4);border-radius:20px;color:#ff6b6b;font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-ban"></i> Bloquer</button>') +
-          '<button data-member-action="reset" data-member-id="' + id + '" style="padding:9px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:20px;color:rgba(255,255,255,0.7);font-size:0.85rem;font-weight:700;cursor:pointer;"><i class="fas fa-redo"></i> Réinitialiser</button>' +
           '<button data-member-action="delete" data-member-id="' + id + '" style="padding:9px 12px;background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.25);border-radius:20px;color:#ff6b6b;font-size:0.85rem;cursor:pointer;"><i class="fas fa-trash"></i></button>' +
         '</div>' +
       '</div>';
@@ -2473,7 +2448,6 @@
     var action = btn.getAttribute('data-member-action');
     if (action === 'block') bloquerMembre(id, nom);
     if (action === 'unblock') debloquerMembre(id);
-    if (action === 'reset') reinitialiserMembre(id, nom);
     if (action === 'delete') supprimerMembre(id);
   });
 
@@ -2490,22 +2464,6 @@
     try {
       await window._updateDoc(window._doc(window._db, 'membres', id), { bloque: false });
       showToast('Membre débloqué !');
-      chargerMembres();
-    } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
-  }
-
-  async function reinitialiserMembre(id, nom) {
-    if (!confirm('Réinitialiser ' + nom + ' ? Il devra se réinscrire pour accéder au site.')) return;
-    try {
-      const snap = await window._getDoc(window._doc(window._db, 'membres', id));
-      const tel  = snap.exists() ? snap.data().telephone : null;
-      await window._deleteDoc(window._doc(window._db, 'membres', id));
-      if (tel) {
-        await window._setDoc(window._doc(window._db, 'reinscription_required', tel.replace(/\D/g,'')), {
-          telephone: tel, date: new Date().toISOString(), reason: 'reinitialise_par_pasteur'
-        });
-      }
-      showToast(nom + ' réinitialisé — devra se réinscrire !');
       chargerMembres();
     } catch(e) { showToast('Erreur : ' + e.message, 'error'); }
   }
@@ -2542,7 +2500,7 @@
       if(formWrap) formWrap.style.display='none'; // Kache fòm si etude aktif
       const titreEl = document.getElementById('etude-active-titre');
       if(titreEl) titreEl.textContent = e.titre;
-      const qSnap = await window._getDocs(window._collection(window._db,'etude_questions'));
+      const qSnap = await window._getDocs(window._query(window._collection(window._db,'etude_questions'),window._orderBy('timestamp','asc')));
       afficherQuestions(qSnap.docs);
     } catch(e) { console.log('Etude:', e.message); }
   }
@@ -2693,34 +2651,6 @@
   }
 
   // ===== HELPER NOTIF =====
-  // ===== ENVOYER NOTIF (helper) =====
-  async function envoyerNotif(title, body, url) {
-    try {
-      // Sove nan notif_queue pou traçabilite
-      await window._addDoc(window._collection(window._db, 'notif_queue'), {
-        title: title,
-        body:  body,
-        url:   url || 'https://fabouloso1.github.io/eglise-carrefour/',
-        icon:  '/eglise-carrefour/logo.png',
-        sent:  true,
-        timestamp: window._serverTimestamp()
-      });
-      // BroadcastChannel pou moun ki sou sit la
-      try {
-        var bc = new BroadcastChannel('eglise-notif');
-        bc.postMessage({ title, body, url });
-        bc.close();
-      } catch(e) {}
-    } catch(e) {
-      console.log('envoyerNotif:', e.message);
-    }
-  }
-
-  // ===== ENVOYER NOTIF AUTO (alias) =====
-  async function envoyerNotifAuto(title, body, url) {
-    return envoyerNotif(title, body, url);
-  }
-
 async function lancerEtude() {
     const titre    = document.getElementById('etudeTitre').value.trim();
     const theme    = document.getElementById('etudeTheme').value.trim();
