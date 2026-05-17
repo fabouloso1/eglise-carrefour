@@ -2651,6 +2651,30 @@
   }
 
   // ===== HELPER NOTIF =====
+  async function envoyerNotif(title, body, url) {
+    try {
+      await window._addDoc(window._collection(window._db, 'notif_queue'), {
+        title: title,
+        body:  body,
+        url:   url || 'https://fabouloso1.github.io/eglise-carrefour/',
+        icon:  '/eglise-carrefour/logo.png',
+        sent:  true,
+        timestamp: window._serverTimestamp()
+      });
+      try {
+        var bc = new BroadcastChannel('eglise-notif');
+        bc.postMessage({ title, body, url });
+        bc.close();
+      } catch(e) {}
+    } catch(e) {
+      console.log('envoyerNotif:', e.message);
+    }
+  }
+
+  async function envoyerNotifAuto(title, body, url) {
+    return envoyerNotif(title, body, url);
+  }
+
 async function lancerEtude() {
     const titre    = document.getElementById('etudeTitre').value.trim();
     const theme    = document.getElementById('etudeTheme').value.trim();
