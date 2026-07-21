@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Offrande — Église de Dieu de la Prophétie de Waney 93</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0A1F44">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  /* 1. FOND DE PAGE CLARIFIÉ ET PLUS LISIBLE */
+  body {
+    background: linear-gradient(160deg, #F4F0FA 0%, #EAE3F2 55%, #DFD5EB 100%) !important;
+    color: #241531 !important;
+  }
+
+  /* Textes du haut de page adaptés au nouveau fond clair */
+  .section-title { color:#3A1848 !important; font-size:26px !important; }
+  .section-sub { color:#6B2E8C !important; font-size:17px !important; }
+  .page-footer { color:#6A557A !important; font-size:13.5px !important; }
+
+  .form-card {
+    width:100%;
+    max-width:520px;
+    padding:0 20px 8px;
+    margin: 0 auto;
+  }
+
+  /* Fòse bwat fòm nan vin blan epi pran bèl lonbraj */
+  .form-card form {
+    background:#ffffff !important;
+    border-radius:18px !important;
+    padding:26px 22px 28px !important;
+    box-shadow:0 15px 35px -12px rgba(58,24,72,0.15), 0 0 0 1px rgba(0,0,0,0.04) !important;
+  }
+
+  .form-row-2 {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+
+  .field-label {
+    font-size:16px !important;
+    color: #3A1848 !important;
+    font-weight: 600 !important;
+    margin-bottom: 6px !important;
+    display: block !important;
+  }
+
+  /* --- MODÈNIZASYON TOUT LIS AK INPUT YO --- */
+  #ofDate, #filterType, #filterMonth, #ofMontant, #ofNote {
+    background-color:#FBF9FD !important;
+    color: #241531 !important;
+    border: 2px solid #E3D8ED !important;
+    font-family:'Inter', sans-serif !important;
+    font-size:16px !important;
+    font-weight:600 !important;
+    border-radius:12px !important;
+    padding:14px 16px !important;
+    transition: border-color .15s ease, box-shadow .15s ease !important;
+  }
+
+  /* Efè konsantrasyon (Focus) */
+  #ofDate:focus, #filterType:focus, #filterMonth:focus, #ofMontant:focus, #ofNote:focus {
+    outline:none !important;
+    border-color:#6B2EA0 !important;
+    box-shadow:0 0 0 4px rgba(107,46,160,0.14) !important;
+    background-color:#ffffff !important;
+  }
+
+  /* Ranje flèch ak aparans pou lis filtraj yo ak dat la */
+  #filterType, #filterMonth, #ofDate {
+    appearance:none !important;
+    -webkit-appearance:none !important;
+    background-image:url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5 7.5L10 12.5L15 7.5' stroke='%236B2EA0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+    background-repeat:no-repeat !important;
+    background-position:right 14px center !important;
+    background-size:16px !important;
+    padding-right:40px !important;
+    cursor:pointer !important;
+  }
+
+  /* Pou kalandriye a kache flèch pa defo a epi parèt pwòp */
+  #ofDate::-webkit-calendar-picker-indicator {
+    background: transparent !important;
+    bottom: 0 !important;
+    color: transparent !important;
+    cursor: pointer !important;
+    height: auto !important;
+    left: 0 !important;
+    position: absolute !important;
+    right: 0 !important;
+    top: 0 !important;
+    width: auto !important;
+  }
+  
+  .field-group .pw-wrap {
+    position: relative;
+  }
+
+  /* 2. STYLE DE LA LISTE PERSONNALISÉE (CUSTOM SELECT) */
+  .custom-select-wrapper {
+    position: relative;
+    user-select: none;
+  }
+  .custom-select-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #241531 !important;
+    background: #FBF9FD !important;
+    border: 2px solid #E3D8ED !important;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .custom-select-trigger:after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #6B2EA0;
+    transition: transform 0.2s ease;
+  }
+  .custom-select-wrapper.open .custom-select-trigger {
+    border-color: #6B2EA0 !important;
+    box-shadow: 0 0 0 4px rgba(107,46,160,0.14);
+  }
+  .custom-select-wrapper.open .custom-select-trigger:after {
+    transform: rotate(180deg);
+  }
+  .custom-options {
+    position: absolute;
+    display: block;
+    top: 100%;
+    right: 0;
+    left: auto;
+    width: 230px;
+    max-width: calc(100vw - 56px);
+    background: #ffffff !important;
+    border: 2px solid #6B2EA0 !important;
+    border-radius: 12px;
+    margin-top: 6px;
+    max-height: 240px;
+    overflow-y: auto;
+    z-index: 9999 !important;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.15s ease;
+    box-shadow: 0 10px 25px rgba(58,24,72,0.25);
+  }
+  .custom-select-wrapper.open .custom-options {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .custom-optgroup-label {
+    display: block;
+    padding: 8px 14px;
+    font-weight: 700;
+    color: #6B2EA0 !important;
+    background: #F5EEFC !important;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .custom-option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 16px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #241531 !important;
+    cursor: pointer;
+    background: #ffffff !important;
+    transition: background 0.1s ease;
+  }
+  .custom-option:hover {
+    background: #F5EEFC !important;
+    color: #6B2EA0 !important;
+  }
+  .custom-option-icon {
+    width: 28px; height: 28px; flex-shrink: 0;
+    border-radius: 50%;
+    background: #F5EEFC;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+
+  /* Le filtre "Type" est dans la colonne de GAUCHE : le panneau doit s'ouvrir vers la DROITE */
+  #filterTypeWrapper .custom-options {
+    left: 0;
+    right: auto;
+  }
+
+  .btn-enregistrer {
+    width:100%;
+    margin-top:20px;
+    padding:17px;
+    background:linear-gradient(165deg, #34906A 0%, #2E7D5B 100%) !important;
+    color:#fff !important;
+    border:none;
+    border-radius:12px;
+    font-size:17px;
+    font-weight:700;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    cursor:pointer;
+    box-shadow:0 6px 16px -6px rgba(46,125,91,0.5);
+    border-bottom: 4px solid rgba(0,0,0,0.28) !important;
+    transition: transform .1s ease, box-shadow .1s ease, filter .1s ease !important;
+  }
+
+  .btn-enregistrer:hover {transform:translateY(-2px);box-shadow:0 10px 22px -8px rgba(46,125,91,0.55);}
+  .btn-enregistrer:disabled {opacity:0.6;cursor:not-allowed;transform:none;}
+  .btn-enregistrer:active {
+    transform: translateY(3px) !important;
+    border-bottom-width: 2px !important;
+    filter: brightness(0.97);
+  }
+
+  /* Seksyon Istorik */
+  .list-section {
+    width:100%;
+    max-width:520px;
+    padding:24px 20px 8px;
+    margin: 0 auto;
+  }
+
+  /* 3. ENTÊTE HISTORIQUE AVEC BOUTON RÉINITIALISER */
+  .list-header-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .list-title {
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    font-size:20px;
+    color:#3A1848 !important;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    margin-bottom:0;
+  }
+
+  .btn-reset-filters {
+    background: linear-gradient(180deg, #D4553A, #A5281B) !important;
+    color: #fff !important;
+    border: none !important;
+    border-bottom: 4px solid #6E170F !important;
+    border-radius: 20px !important;
+    padding: 8px 16px !important;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    box-shadow: 0 6px 0 -2px #6E170F, 0 8px 18px -6px rgba(165,40,27,0.5);
+  }
+  .btn-reset-filters:hover { transform: translateY(-2px); }
+  .btn-reset-filters:active { transform: translateY(3px); border-bottom-width: 2px !important; box-shadow:0 1px 0 -1px #6E170F; }
+  .btn-reset-filters:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+
+  /* Modal de choix pour réinitialiser */
+  .reset-modal {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(20,10,29,0.55);
+    align-items: center; justify-content: center;
+    z-index: 200;
+    padding: 24px;
+  }
+  .reset-modal.open { display: flex; }
+  .reset-modal-box {
+    background: #fff;
+    border-radius: 18px;
+    padding: 24px 22px;
+    width: 100%;
+    max-width: 360px;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.4);
+  }
+  .reset-modal-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 800; font-size: 20px;
+    color: #2A1038; margin-bottom: 6px;
+  }
+  .reset-modal-text {
+    font-size: 14.5px; font-weight:700; color: #4A3358; margin-bottom: 18px; line-height: 1.4;
+  }
+  .reset-modal-btn {
+    width: 100%; padding: 14px; margin-bottom: 10px;
+    border: none; border-radius: 10px;
+    font-size: 15.5px; font-weight: 800;
+    cursor: pointer; transition: transform 0.1s ease;
+  }
+  .reset-modal-btn:active { transform: scale(0.98); }
+  .reset-modal-btn.month { background: #ECE0F5; color: #5A1F8A; border:2px solid #D3B8EC; }
+  .reset-modal-btn.year { background: linear-gradient(180deg,#C24730,#8E1F0F); color:#fff; }
+  .reset-modal-btn.cancel { background: none; color: #4A3358; margin-bottom: 0; font-weight: 700; }
+
+  /* Modal de confirmation finale (avec icône d'alerte) */
+  .confirm-modal-overlay{
+    display:none;
+    position:fixed; inset:0;
+    background:rgba(20,10,29,0.62);
+    z-index:400;
+    align-items:center; justify-content:center;
+    padding:24px;
+  }
+  .confirm-modal-overlay.open{ display:flex; }
+  .confirm-modal-box{
+    background:#fff;
+    border-radius:20px;
+    width:100%; max-width:360px;
+    padding:28px 24px 24px;
+    text-align:center;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.45);
+    border-top:5px solid #8E1F0F;
+    animation:confirmPopO 0.2s ease-out;
+  }
+  @keyframes confirmPopO{
+    from{ transform:scale(0.92); opacity:0; }
+    to{ transform:scale(1); opacity:1; }
+  }
+  .confirm-modal-icon{
+    width:64px; height:64px;
+    border-radius:50%;
+    background:#FBEAE6;
+    display:flex; align-items:center; justify-content:center;
+    font-size:32px;
+    margin:0 auto 14px;
+  }
+  .confirm-modal-title{
+    font-family:'Fraunces',serif;
+    font-weight:800;
+    font-size:19px;
+    color:#2A1038;
+    margin-bottom:8px;
+  }
+  .confirm-modal-text{
+    font-size:14.5px;
+    font-weight:700;
+    color:#4A3358;
+    line-height:1.5;
+    margin-bottom:22px;
+  }
+  .confirm-modal-text strong{ color:#8E1F0F; font-weight:800; }
+  .confirm-modal-btn{
+    width:100%; padding:14px; border:none; border-radius:12px;
+    font-size:15.5px; font-weight:800; letter-spacing:0.02em;
+    cursor:pointer; margin-bottom:10px; transition:transform 0.1s ease;
+  }
+  .confirm-modal-btn:active{ transform:translateY(2px); }
+  .confirm-modal-btn.danger{
+    background:linear-gradient(180deg,#C24730,#8E1F0F);
+    color:#fff; border-bottom:4px solid #5E1409; text-transform:uppercase;
+  }
+  .confirm-modal-btn.cancel{
+    background:none; color:#4A3358; font-weight:700; margin-bottom:0; padding:10px;
+  }
+
+  .filter-row {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-bottom:16px;
+  }
+
+  .offrande-item {
+    background: #ffffff !important;
+    border: 1.5px solid #E3D8ED !important;
+    border-left:5px solid #6B2E8C !important;
+    border-radius:14px !important;
+    padding:16px 18px !important;
+    margin-bottom:12px !important;
+    box-shadow:0 6px 18px -8px rgba(58,24,72,0.15);
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+    position:relative;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .offrande-item:hover {
+    transform:translateY(-2px);
+    box-shadow:0 10px 22px -8px rgba(58,24,72,0.2);
+  }
+
+  .offrande-item-top { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .offrande-type-wrap { display:flex; align-items:center; gap:9px; }
+
+  .offrande-icon {
+    width:34px; height:34px; flex-shrink:0;
+    border-radius:50%;
+    background:#F5EEFC !important;
+    display:flex; align-items:center; justify-content:center;
+    font-size:16px;
+  }
+
+  .offrande-type { font-size:16.5px !important; font-weight:700 !important; color:#241531 !important; }
+
+  .offrande-montant {
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    font-size:18.5px;
+    color:#fff !important;
+    white-space:nowrap;
+    background:linear-gradient(155deg,#6B2E8C,#4A1F63) !important;
+    padding:5px 14px;
+    border-radius:20px;
+    margin-left: auto;
+  }
+
+  .offrande-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size:13.5px !important;
+    font-weight:700 !important;
+    color:#6B2E8C !important;
+    background:#F5EEFC;
+    padding: 4px 11px;
+    border-radius: 20px;
+    width: fit-content;
+    margin-left: 43px;
+  }
+  .offrande-note { font-size:14.5px !important; color:#6A557A !important; font-style:italic; padding-left:43px; }
+
+  .offrande-delete {
+    position:absolute;
+    top:12px;
+    right:12px;
+    background:none;
+    border:none;
+    color:#C9B4E0;
+    font-size:19px;
+    cursor:pointer;
+    padding:2px 6px;
+    border-radius:4px;
+    transition:color 0.15s ease;
+    display:none;
+  }
+
+  .offrande-item:hover .offrande-delete {display:block;}
+  .offrande-delete:hover {color:#C0392B !important;}
+
+  .total-wrap { width:100%; max-width:520px; padding:14px 20px 36px; margin: 0 auto; }
+
+  .total-card {
+    background:linear-gradient(155deg, #6B2E8C 0%, #3B1848 100%) !important;
+    border:1px solid rgba(232,203,128,0.2) !important;
+    border-radius:14px;
+    padding:20px 22px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:0 12px 28px -10px rgba(58,24,72,0.3);
+  }
+
+  .total-label { font-size:15.5px !important; font-weight:600 !important; color:rgba(255,255,255,0.8) !important; letter-spacing:0.04em; text-transform:uppercase; }
+  .total-amount { font-family:'Fraunces',serif; font-weight:700; font-size:27px; color:#F3D98A !important; }
+
+  .empty-state { text-align:center; padding:30px 16px; color:#6A557A !important; font-size:16px; }
+
+  .status-msg {
+    display:none; margin-top:14px; padding:13px 15px; border-radius:10px; font-size:15.5px; font-weight:500;
+  }
+  .status-msg.show {display:block;}
+  .status-msg.ok {background:#F2F9F5;border-left:3px solid #1A7A4A;color:#1A7A4A;}
+  .status-msg.err {background:#FBEDE8;border-left:3px solid #C0392B;color:#C0392B;}
+  .status-msg.info {background:#F2F5FA;border-left:3px solid #1A3A72;color:#1A3A72;}
+
+  /* ===== AFFICHAGE PC / GRAND ÉCRAN ===== */
+  @media (min-width: 700px){
+    .form-card{ max-width: 650px; }
+    .list-section, .total-wrap{ max-width: 760px; }
+    #listWrap{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 16px;
+    }
+    .offrande-item{ margin-bottom: 12px; }
+  }
+  @media (min-width: 1000px){
+    .form-card{ max-width: 700px; }
+    .list-section, .total-wrap{ max-width: 900px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="back-link">← Retour</a>
+  <div class="seal"><img src="images.jpeg" alt="Logo Église de Dieu de la Prophétie"></div>
+  <h1>Église de Dieu de la Prophétie</h1>
+  <p>Waney 93</p>
+</div>
+
+<p class="section-title">Offrande</p>
+<p class="section-sub">Enregistrer une offrande ou un don</p>
+
+<!-- Formulaire -->
+<div class="form-card">
+  <form id="ofrandeForm" autocomplete="off">
+
+    <div class="form-row-2">
+      <div class="field-group pw-wrap">
+        <label class="field-label" for="ofDate">Date</label>
+        <input type="date" id="ofDate" required>
+      </div>
+      
+      <div class="field-group">
+        <label class="field-label">Type</label>
+        <!-- LISTE PERSONNALISÉE -->
+        <div class="custom-select-wrapper" id="customSelectWrapper">
+          <div class="custom-select-trigger" id="customSelectTrigger">Choisir...</div>
+          <div class="custom-options">
+            <span class="custom-optgroup-label">Offrandes régulières</span>
+            <span class="custom-option" data-value="Dimanche matin"><span class="custom-option-icon">🙏</span>Dimanche matin</span>
+            <span class="custom-option" data-value="Dimanche soir"><span class="custom-option-icon">🙏</span>Dimanche soir</span>
+            <span class="custom-option" data-value="Mardi étude"><span class="custom-option-icon">📖</span>Mardi étude</span>
+            <span class="custom-option" data-value="Jeudi Calme-Tempête"><span class="custom-option-icon">⭐</span>Jeudi Calme-Tempête</span>
+            <span class="custom-option" data-value="École du dimanche"><span class="custom-option-icon">📖</span>École du dimanche</span>
+
+            <span class="custom-optgroup-label">Services spéciaux</span>
+            <span class="custom-option" data-value="Réveil"><span class="custom-option-icon">✨</span>Réveil</span>
+            <span class="custom-option" data-value="Semaine de prière"><span class="custom-option-icon">🕊️</span>Semaine de prière</span>
+            <span class="custom-option" data-value="Jeûne"><span class="custom-option-icon">🕊️</span>Jeûne</span>
+            <span class="custom-option" data-value="Veillée de nuit"><span class="custom-option-icon">✨</span>Veillée de nuit</span>
+
+            <span class="custom-optgroup-label">Autres</span>
+            <span class="custom-option" data-value="Don"><span class="custom-option-icon">🎁</span>Don</span>
+            <span class="custom-option" data-value="Autre"><span class="custom-option-icon">⭐</span>Autre</span>
+          </div>
+        </div>
+        <input type="hidden" id="ofType" required>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="ofMontant">Montant (HTG)</label>
+      <input type="number" id="ofMontant" min="0" step="1" placeholder="0" required>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="ofNote">Note (optionnel)</label>
+      <input type="text" id="ofNote" placeholder="Ex. : Don de Jean Pierre, offrande spéciale...">
+    </div>
+
+    <button type="submit" class="btn-enregistrer" id="btnSave">Enregistrer</button>
+    <div class="status-msg" id="statusMsg"></div>
+  </form>
+</div>
+
+<!-- Filtres + liste -->
+<div class="list-section">
+  <div class="list-header-box">
+    <p class="list-title">Historique</p>
+    <button type="button" class="btn-reset-filters" id="btnResetFilters">🗑️ Réinitialiser</button>
+  </div>
+
+  <!-- Modal de choix pour la réinitialisation -->
+  <div class="reset-modal" id="resetModal">
+    <div class="reset-modal-box">
+      <p class="reset-modal-title">Supprimer les offrandes</p>
+      <p class="reset-modal-text" id="resetModalText">Choisissez les offrandes à supprimer définitivement. Cette action est irréversible.</p>
+      <button type="button" class="reset-modal-btn month" id="btnResetMonth">Supprimer les offrandes de ce mois</button>
+      <button type="button" class="reset-modal-btn year" id="btnResetYear">Supprimer les offrandes de toute l'année</button>
+      <button type="button" class="reset-modal-btn cancel" id="btnResetCancel">Annuler</button>
+    </div>
+  </div>
+
+  <!-- Modal de confirmation finale (avec icône d'alerte) -->
+  <div class="confirm-modal-overlay" id="confirmModalOverlay">
+    <div class="confirm-modal-box">
+      <div class="confirm-modal-icon">⚠️</div>
+      <p class="confirm-modal-title" id="confirmModalTitle">Attention</p>
+      <p class="confirm-modal-text" id="confirmModalText">Cette action est irréversible.</p>
+      <button type="button" class="confirm-modal-btn danger" id="confirmModalYes">🗑️ Oui, supprimer</button>
+      <button type="button" class="confirm-modal-btn cancel" id="confirmModalNo">Annuler</button>
+    </div>
+  </div>
+  
+  <div class="filter-row">
+    <div class="field-group">
+      <div class="custom-select-wrapper" id="filterTypeWrapper">
+        <div class="custom-select-trigger" id="filterTypeTrigger">Tous les types</div>
+        <div class="custom-options">
+          <span class="custom-option" data-value="">Tous les types</span>
+          <span class="custom-option" data-value="Dimanche matin"><span class="custom-option-icon">🙏</span>Dimanche matin</span>
+          <span class="custom-option" data-value="Dimanche soir"><span class="custom-option-icon">🙏</span>Dimanche soir</span>
+          <span class="custom-option" data-value="Mardi étude"><span class="custom-option-icon">📖</span>Mardi étude</span>
+          <span class="custom-option" data-value="Jeudi Calme-Tempête"><span class="custom-option-icon">⭐</span>Jeudi Calme-Tempête</span>
+          <span class="custom-option" data-value="École du dimanche"><span class="custom-option-icon">📖</span>École du dimanche</span>
+          <span class="custom-option" data-value="Réveil"><span class="custom-option-icon">✨</span>Réveil</span>
+          <span class="custom-option" data-value="Semaine de prière"><span class="custom-option-icon">🕊️</span>Semaine de prière</span>
+          <span class="custom-option" data-value="Jeûne"><span class="custom-option-icon">🕊️</span>Jeûne</span>
+          <span class="custom-option" data-value="Veillée de nuit"><span class="custom-option-icon">✨</span>Veillée de nuit</span>
+          <span class="custom-option" data-value="Don"><span class="custom-option-icon">🎁</span>Don</span>
+          <span class="custom-option" data-value="Autre"><span class="custom-option-icon">⭐</span>Autre</span>
+        </div>
+      </div>
+      <input type="hidden" id="filterType" value="">
+    </div>
+
+    <div class="field-group">
+      <div class="custom-select-wrapper" id="filterMonthWrapper">
+        <div class="custom-select-trigger" id="filterMonthTrigger">Tous les mois</div>
+        <div class="custom-options">
+          <span class="custom-option" data-value="">Tous les mois</span>
+          <span class="custom-option" data-value="01">Janvier</span>
+          <span class="custom-option" data-value="02">Février</span>
+          <span class="custom-option" data-value="03">Mars</span>
+          <span class="custom-option" data-value="04">Avril</span>
+          <span class="custom-option" data-value="05">Mai</span>
+          <span class="custom-option" data-value="06">Juin</span>
+          <span class="custom-option" data-value="07">Juillet</span>
+          <span class="custom-option" data-value="08">Août</span>
+          <span class="custom-option" data-value="09">Septembre</span>
+          <span class="custom-option" data-value="10">Octobre</span>
+          <span class="custom-option" data-value="11">Novembre</span>
+          <span class="custom-option" data-value="12">Décembre</span>
+        </div>
+      </div>
+      <input type="hidden" id="filterMonth" value="">
+    </div>
+  </div>
+  <div id="listWrap"></div>
+</div>
+
+<div class="total-wrap">
+  <div class="total-card">
+    <span class="total-label">Total affiché</span>
+    <span class="total-amount" id="totalAmount">0 HTG</span>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    deleteDoc,
+    doc,
+    query,
+    orderBy,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAaNOl7j9xReumR69PIiyTPrwncJ7-ysG8",
+    authDomain: "tresor-de-l-eglise.firebaseapp.com",
+    projectId: "tresor-de-l-eglise",
+    storageBucket: "tresor-de-l-eglise.firebasestorage.app",
+    messagingSenderId: "702537717579",
+    appId: "1:702537717579:web:e1e8726ab66a89b355face"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  if (sessionStorage.getItem('trezoLoggedIn') !== 'true') {
+    window.location.href = 'index.html';
+  }
+
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('ofDate').value = today;
+
+  const form = document.getElementById('ofrandeForm');
+  const btnSave = document.getElementById('btnSave');
+  const statusMsg = document.getElementById('statusMsg');
+  const listWrap = document.getElementById('listWrap');
+  const totalAmount = document.getElementById('totalAmount');
+  const filterType = document.getElementById('filterType');
+  const filterMonth = document.getElementById('filterMonth');
+  const btnReset = document.getElementById('btnResetFilters');
+
+  // GESTION JAVASCRIPT DES LISTES PERSONNALISÉES (Type, Filtre Type, Filtre Mois)
+  const allDropdownWrappers = [];
+
+  function setupCustomSelect(wrapperId, triggerId, hiddenInputId, onSelect){
+    const wrapperEl = document.getElementById(wrapperId);
+    const triggerEl = document.getElementById(triggerId);
+    const hiddenEl = document.getElementById(hiddenInputId);
+    allDropdownWrappers.push(wrapperEl);
+
+    triggerEl.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = wrapperEl.classList.contains('open');
+      allDropdownWrappers.forEach(w => w.classList.remove('open'));
+      if (!isOpen) wrapperEl.classList.add('open');
+    });
+
+    wrapperEl.querySelectorAll('.custom-option').forEach(option => {
+      option.addEventListener('click', function(){
+        const val = this.getAttribute('data-value');
+        triggerEl.textContent = val || this.textContent.trim();
+        hiddenEl.value = val;
+        wrapperEl.classList.remove('open');
+        if (onSelect) onSelect(val);
+      });
+    });
+
+    return { wrapperEl, triggerEl, hiddenEl };
+  }
+
+  const typeDD = setupCustomSelect('customSelectWrapper', 'customSelectTrigger', 'ofType');
+  const filterTypeDD = setupCustomSelect('filterTypeWrapper', 'filterTypeTrigger', 'filterType', () => renderList());
+  const filterMonthDD = setupCustomSelect('filterMonthWrapper', 'filterMonthTrigger', 'filterMonth', () => renderList());
+
+  const trigger = typeDD.triggerEl;
+  const hiddenInput = typeDD.hiddenEl;
+
+  window.addEventListener('click', () => {
+    allDropdownWrappers.forEach(w => w.classList.remove('open'));
+  });
+
+  // Initialise le filtre mois sur le mois actuel (valeur + texte affiché)
+  const moisNomsComplets = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  const moisActuelNum = String(new Date().getMonth() + 1).padStart(2, '0');
+  filterMonth.value = moisActuelNum;
+  filterMonthDD.triggerEl.textContent = moisNomsComplets[new Date().getMonth()];
+
+  let allOffrandes = [];
+
+  function showStatus(msg, type){
+    statusMsg.textContent = msg;
+    statusMsg.className = 'status-msg show ' + type;
+    if (type === 'ok') setTimeout(() => statusMsg.classList.remove('show'), 3000);
+  }
+
+  function formatMontant(m){
+    return Number(m).toLocaleString('fr-FR') + ' HTG';
+  }
+
+  function formatDate(dateStr){
+    if (!dateStr) return '';
+    const moisAbbrev = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+    const [y, m, d] = dateStr.split('-');
+    const jour = parseInt(d, 10);
+    const moisNom = moisAbbrev[parseInt(m, 10) - 1] || m;
+    return `${jour} ${moisNom} ${y}`;
+  }
+
+  function getTypeIcon(type){
+    const t = (type || '').toLowerCase();
+    if (t.includes('dimanche')) return '🙏';
+    if (t.includes('mardi') || t.includes('école')) return '📖';
+    if (t.includes('réveil') || t.includes('veillée')) return '✨';
+    if (t.includes('prière') || t.includes('jeûne')) return '🕊️';
+    if (t.includes('don')) return '🎁';
+    return '⭐';
+  }
+
+  function renderList(){
+    const typeFilter = filterType.value;
+    const monthFilter = filterMonth.value;
+
+    const filtered = allOffrandes.filter(o => {
+      const matchType = !typeFilter || o.type === typeFilter;
+      const matchMonth = !monthFilter || (o.date && o.date.slice(5, 7) === monthFilter);
+      return matchType && matchMonth;
+    });
+
+    filtered.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+    listWrap.innerHTML = '';
+
+    if (filtered.length === 0) {
+      listWrap.innerHTML = '<p class="empty-state">Aucune offrande trouvée.</p>';
+      totalAmount.textContent = formatMontant(0);
+      return;
+    }
+
+    let total = 0;
+
+    filtered.forEach(o => {
+      total += Number(o.montant) || 0;
+
+      const item = document.createElement('div');
+      item.className = 'offrande-item';
+      item.innerHTML = `
+        <div class="offrande-item-top">
+          <div class="offrande-type-wrap">
+            <span class="offrande-icon">${getTypeIcon(o.type)}</span>
+            <span class="offrande-type">${o.type || ''}</span>
+          </div>
+          <span class="offrande-montant">${formatMontant(o.montant)}</span>
+        </div>
+        <span class="offrande-date">📅 ${formatDate(o.date)}</span>
+        ${o.note ? `<span class="offrande-note">${o.note}</span>` : ''}
+        <button class="offrande-delete" data-id="${o.id}" title="Supprimer">✕</button>
+      `;
+
+      item.querySelector('.offrande-delete').addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const confirmed = confirm(`Supprimer cette offrande (${o.type} — ${formatMontant(o.montant)}) ?`);
+        if (!confirmed) return;
+        try {
+          await deleteDoc(doc(db, 'offrandes', o.id));
+          allOffrandes = allOffrandes.filter(x => x.id !== o.id);
+          renderList();
+        } catch (err) {
+          alert('Erreur lors de la suppression : ' + err.message);
+        }
+      });
+
+      listWrap.appendChild(item);
+    });
+
+    totalAmount.textContent = formatMontant(total);
+  }
+
+  async function loadOffrandes(){
+    listWrap.innerHTML = '<p class="empty-state">Chargement...</p>';
+    try {
+      const snapshot = await getDocs(collection(db, 'offrandes'));
+      allOffrandes = [];
+      snapshot.forEach(docSnap => {
+        allOffrandes.push({ id: docSnap.id, ...docSnap.data() });
+      });
+      renderList();
+    } catch (err) {
+      listWrap.innerHTML = '<p class="empty-state">Erreur : ' + err.message + '</p>';
+    }
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (!hiddenInput.value) {
+      showStatus('Veuillez choisir un type avant d\'enregistrer.', 'err');
+      return;
+    }
+
+    btnSave.disabled = true;
+    showStatus('Enregistrement en cours...', 'info');
+
+    try {
+      const data = {
+        date: document.getElementById('ofDate').value,
+        type: hiddenInput.value,
+        montant: parseFloat(document.getElementById('ofMontant').value) || 0,
+        note: document.getElementById('ofNote').value.trim() || null,
+        creeLe: serverTimestamp()
+      };
+
+      const docRef = await addDoc(collection(db, 'offrandes'), data);
+      allOffrandes.push({ id: docRef.id, ...data });
+      renderList();
+
+      document.getElementById('ofMontant').value = '';
+      document.getElementById('ofNote').value = '';
+      showStatus('Offrande enregistrée avec succès.', 'ok');
+    } catch (err) {
+      showStatus('Erreur : ' + err.message, 'err');
+    } finally {
+      btnSave.disabled = false;
+    }
+  });
+
+  // (Le filtrage se déclenche déjà directement depuis les listes personnalisées ci-dessus)
+
+  // --- BOUTON RÉINITIALISER : supprime définitivement les offrandes (mois ou année) ---
+  const resetModal = document.getElementById('resetModal');
+  const resetModalText = document.getElementById('resetModalText');
+  const btnResetMonth = document.getElementById('btnResetMonth');
+  const btnResetYear = document.getElementById('btnResetYear');
+  const btnResetCancel = document.getElementById('btnResetCancel');
+
+  function openResetModal(){
+    if (allOffrandes.length === 0) {
+      showStatus('Aucune offrande à supprimer.', 'info');
+      return;
+    }
+    resetModal.classList.add('open');
+  }
+  function closeResetModal(){ resetModal.classList.remove('open'); }
+
+  btnReset.addEventListener('click', openResetModal);
+  btnResetCancel.addEventListener('click', closeResetModal);
+  resetModal.addEventListener('click', (e) => { if (e.target === resetModal) closeResetModal(); });
+
+  // --- Modal de confirmation finale personnalisé (remplace confirm() du téléphone) ---
+  const confirmModalOverlay = document.getElementById('confirmModalOverlay');
+  const confirmModalTitle = document.getElementById('confirmModalTitle');
+  const confirmModalText = document.getElementById('confirmModalText');
+  const confirmModalYes = document.getElementById('confirmModalYes');
+  const confirmModalNo = document.getElementById('confirmModalNo');
+
+  function showConfirmModal(title, html, onConfirm){
+    confirmModalTitle.textContent = title;
+    confirmModalText.innerHTML = html;
+    confirmModalOverlay.classList.add('open');
+
+    const cleanup = () => {
+      confirmModalOverlay.classList.remove('open');
+      confirmModalYes.removeEventListener('click', yesHandler);
+      confirmModalNo.removeEventListener('click', noHandler);
+    };
+    const yesHandler = () => { cleanup(); onConfirm(); };
+    const noHandler = () => { cleanup(); };
+
+    confirmModalYes.addEventListener('click', yesHandler);
+    confirmModalNo.addEventListener('click', noHandler);
+  }
+
+  confirmModalOverlay.addEventListener('click', (e) => {
+    if (e.target === confirmModalOverlay) confirmModalOverlay.classList.remove('open');
+  });
+
+  async function deleteBatch(list, label){
+    if (list.length === 0) {
+      showStatus(`Aucune offrande pour ${label}.`, 'info');
+      return;
+    }
+
+    showConfirmModal(
+      'Supprimer ces offrandes ?',
+      `Vous êtes sur le point de supprimer définitivement <strong>${list.length} offrande(s)</strong> pour ${label}. Cette action est irréversible.`,
+      async () => {
+        closeResetModal();
+        btnReset.disabled = true;
+        showStatus(`Suppression en cours pour ${label}...`, 'info');
+
+        try {
+          for (const o of list) {
+            await deleteDoc(doc(db, 'offrandes', o.id));
+          }
+          const idsRemoved = new Set(list.map(o => o.id));
+          allOffrandes = allOffrandes.filter(o => !idsRemoved.has(o.id));
+          renderList();
+          showStatus(`${list.length} offrande(s) supprimée(s) pour ${label}.`, 'ok');
+        } catch (err) {
+          showStatus('Erreur lors de la suppression : ' + err.message, 'err');
+        } finally {
+          btnReset.disabled = false;
+        }
+      }
+    );
+  }
+
+  btnResetMonth.addEventListener('click', () => {
+    const now = new Date();
+    const y = String(now.getFullYear());
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const list = allOffrandes.filter(o => o.date && o.date.slice(0, 4) === y && o.date.slice(5, 7) === m);
+    deleteBatch(list, `ce mois (${m}/${y})`);
+  });
+
+  btnResetYear.addEventListener('click', () => {
+    const y = String(new Date().getFullYear());
+    const list = allOffrandes.filter(o => o.date && o.date.slice(0, 4) === y);
+    deleteBatch(list, `l'année ${y}`);
+  });
+
+  loadOffrandes();
+</script>
+
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  }
+</script>
+</body>
+</html>

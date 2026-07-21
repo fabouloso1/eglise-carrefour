@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Dépenses — Église de Dieu de la Prophétie de Waney 93</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0A1F44">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  /* Fond de page plus chaleureux et légèrement plus foncé (thème Dépenses) */
+  body{
+    background: linear-gradient(160deg, #F5E3D8 0%, #EAD0BF 55%, #E0C0AC 100%) !important;
+  }
+
+  .section-title{
+    font-size:26px !important;
+    font-weight:800 !important;
+  }
+  .section-sub{
+    font-size:16.5px !important;
+    font-weight:700 !important;
+  }
+
+  .field-label{
+    font-weight:800 !important;
+  }
+
+  input[type="text"], input[type="number"], input[type="date"], select{
+    font-weight:700 !important;
+  }
+
+  .form-card{
+    width:100%;
+    max-width:520px;
+    padding:0 24px 8px;
+  }
+
+  .form-card form{
+    background:#fff;
+    border-radius:14px;
+    padding:22px 20px 24px;
+    box-shadow:0 10px 30px -16px rgba(10,31,68,0.22), 0 0 0 1px rgba(0,0,0,0.03);
+  }
+
+  .form-row-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+
+  .btn-enregistrer{
+    width:100%;
+    margin-top:18px;
+    padding:17px;
+    background:linear-gradient(165deg, #C9543A 0%, var(--error) 100%);
+    color:#fff;
+    border:none;
+    border-radius:12px;
+    font-size:17px;
+    font-weight:800;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    cursor:pointer;
+    box-shadow:0 6px 16px -6px rgba(179,67,43,0.5);
+    transition:transform 0.12s ease, box-shadow 0.2s ease;
+  }
+
+  .btn-enregistrer:hover{transform:translateY(-2px);box-shadow:0 10px 22px -8px rgba(179,67,43,0.55);}
+  .btn-enregistrer:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+
+  /* Liste des dépenses */
+  .list-section{
+    width:100%;
+    max-width:520px;
+    padding:20px 24px 8px;
+  }
+
+  .list-title{
+    font-family:'Fraunces',serif;
+    font-weight:800;
+    font-size:19px;
+    color:var(--navy-deep);
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    margin-bottom:0;
+  }
+
+  .list-header-box{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:14px;
+  }
+
+  .btn-reset-depenses{
+    background: linear-gradient(180deg, #D4553A, #8E1F0F) !important;
+    color: #fff !important;
+    border: none !important;
+    border-bottom: 4px solid #5E1409 !important;
+    border-radius: 20px !important;
+    padding: 9px 16px !important;
+    font-size: 13.5px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    box-shadow: 0 6px 0 -2px #5E1409, 0 8px 18px -6px rgba(142,31,15,0.5);
+  }
+  .btn-reset-depenses:hover{ transform: translateY(-2px); }
+  .btn-reset-depenses:active{ transform: translateY(3px); border-bottom-width: 2px !important; }
+  .btn-reset-depenses:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
+
+  .filter-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-bottom:14px;
+  }
+
+  .filter-row select{
+    font-size:14.5px;
+    padding:10px 12px;
+  }
+
+  .depense-item{
+    background:linear-gradient(165deg, #ffffff 0%, #fdfaf8 100%);
+    border:1.5px solid #E3DDC9;
+    border-left:4px solid var(--error);
+    border-radius:8px;
+    padding:13px 16px;
+    margin-bottom:9px;
+    box-shadow:0 3px 10px -6px rgba(179,67,43,0.1);
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+    position:relative;
+  }
+
+  .depense-item-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+
+  .depense-type{
+    font-size:16px;
+    font-weight:800;
+    color:var(--navy-deep);
+  }
+
+  .depense-montant{
+    font-family:'Fraunces',serif;
+    font-weight:800;
+    font-size:17px;
+    color:var(--error);
+    white-space:nowrap;
+  }
+
+  .depense-montant::before{
+    content:"− ";
+  }
+
+  .depense-date{
+    font-size:13.5px;
+    font-weight:700;
+    color:#8A7A6A;
+  }
+
+  .depense-note{
+    font-size:14px;
+    font-weight:600;
+    color:#6B6457;
+    font-style:italic;
+  }
+
+  .depense-delete{
+    position:absolute;
+    top:10px;
+    right:10px;
+    background:none;
+    border:none;
+    color:#D8C9B0;
+    font-size:17px;
+    cursor:pointer;
+    padding:2px 6px;
+    border-radius:4px;
+    transition:color 0.15s ease;
+    display:none;
+  }
+
+  .depense-item:hover .depense-delete{display:block;}
+  .depense-delete:hover{color:var(--error);}
+
+  .total-wrap{
+    width:100%;
+    max-width:520px;
+    padding:12px 24px 32px;
+  }
+
+  .total-card{
+    background:linear-gradient(155deg, #8E3522 0%, #5E2316 100%);
+    border-radius:8px;
+    padding:18px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:0 10px 24px -10px rgba(142,53,34,0.45);
+  }
+
+  .total-label{
+    font-size:15.5px;
+    font-weight:700;
+    color:rgba(255,255,255,0.8);
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+  }
+
+  .total-amount{
+    font-family:'Fraunces',serif;
+    font-weight:800;
+    font-size:26px;
+    color:#fff;
+  }
+
+  .empty-state{
+    text-align:center;
+    padding:28px 16px;
+    color:#9A9182;
+    font-size:15px;
+    font-weight:600;
+  }
+
+  .status-msg{
+    display:none;
+    margin-top:12px;
+    padding:12px 14px;
+    border-radius:6px;
+    font-size:14.5px;
+    font-weight:700;
+  }
+  .status-msg.show{display:block;}
+  .status-msg.ok{background:#F2F9F5;border-left:3px solid var(--success);color:var(--success);}
+  .status-msg.err{background:#FBEDE8;border-left:3px solid var(--error);color:var(--error);}
+  .status-msg.info{background:#F2F5FA;border-left:3px solid var(--navy-mid);color:var(--navy-mid);}
+
+  /* Modal de choix pour la réinitialisation (mois / année) */
+  .reset-modal{
+    display:none;
+    position:fixed; inset:0;
+    background:rgba(30,15,10,0.55);
+    align-items:center; justify-content:center;
+    z-index:200;
+    padding:24px;
+  }
+  .reset-modal.open{ display:flex; }
+  .reset-modal-box{
+    background:#fff;
+    border-radius:18px;
+    padding:24px 22px;
+    width:100%; max-width:360px;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.4);
+  }
+  .reset-modal-title{
+    font-family:'Fraunces',serif;
+    font-weight:800; font-size:20px;
+    color:#5E2316; margin-bottom:6px;
+  }
+  .reset-modal-text{
+    font-size:14.5px; font-weight:700; color:#7A5C4E; margin-bottom:18px; line-height:1.4;
+  }
+  .reset-modal-btn{
+    width:100%; padding:14px; margin-bottom:10px;
+    border:none; border-radius:10px;
+    font-size:15.5px; font-weight:800;
+    cursor:pointer; transition:transform 0.1s ease;
+  }
+  .reset-modal-btn:active{ transform:scale(0.98); }
+  .reset-modal-btn.month{ background:#F5E3D8; color:#8E3522; border:2px solid #E3C4AE; }
+  .reset-modal-btn.year{ background:linear-gradient(180deg,#D4553A,#8E1F0F); color:#fff; }
+  .reset-modal-btn.cancel{ background:none; color:#7A5C4E; margin-bottom:0; font-weight:700; }
+
+  /* Modal de confirmation finale (avec icône d'alerte) */
+  .confirm-modal-overlay{
+    display:none;
+    position:fixed; inset:0;
+    background:rgba(30,15,10,0.62);
+    z-index:400;
+    align-items:center; justify-content:center;
+    padding:24px;
+  }
+  .confirm-modal-overlay.open{ display:flex; }
+  .confirm-modal-box{
+    background:#fff;
+    border-radius:20px;
+    width:100%; max-width:360px;
+    padding:28px 24px 24px;
+    text-align:center;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.45);
+    border-top:5px solid #8E1F0F;
+    animation:confirmPopD 0.2s ease-out;
+  }
+  @keyframes confirmPopD{
+    from{ transform:scale(0.92); opacity:0; }
+    to{ transform:scale(1); opacity:1; }
+  }
+  .confirm-modal-icon{
+    width:64px; height:64px;
+    border-radius:50%;
+    background:#FBEAE6;
+    display:flex; align-items:center; justify-content:center;
+    font-size:32px;
+    margin:0 auto 14px;
+  }
+  .confirm-modal-title{
+    font-family:'Fraunces',serif;
+    font-weight:800; font-size:19px;
+    color:#5E2316; margin-bottom:8px;
+  }
+  .confirm-modal-text{
+    font-size:14.5px; font-weight:700; color:#7A5C4E;
+    line-height:1.5; margin-bottom:22px;
+  }
+  .confirm-modal-text strong{ color:#8E1F0F; font-weight:800; }
+  .confirm-modal-btn{
+    width:100%; padding:14px; border:none; border-radius:12px;
+    font-size:15.5px; font-weight:800; letter-spacing:0.02em;
+    cursor:pointer; margin-bottom:10px; transition:transform 0.1s ease;
+  }
+  .confirm-modal-btn:active{ transform:translateY(2px); }
+  .confirm-modal-btn.danger{
+    background:linear-gradient(180deg,#D4553A,#8E1F0F);
+    color:#fff; border-bottom:4px solid #5E1409; text-transform:uppercase;
+  }
+  .confirm-modal-btn.cancel{
+    background:none; color:#7A5C4E; font-weight:700; margin-bottom:0; padding:10px;
+  }
+
+  /* Toast de notification personnalisé */
+  .toast-notif{
+    position:fixed; top:-100px; left:50%; transform:translateX(-50%);
+    max-width:90vw; width:400px; background:#fff; border-radius:14px;
+    padding:16px 18px; display:flex; align-items:center; gap:12px;
+    box-shadow:0 16px 36px -10px rgba(0,0,0,0.35);
+    z-index:500; transition:top 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .toast-notif.show{ top:18px; }
+  .toast-notif.ok{ border-left:5px solid var(--success); }
+  .toast-notif.err{ border-left:5px solid var(--error); }
+  .toast-notif-icon{
+    width:34px; height:34px; flex-shrink:0; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-size:17px;
+  }
+  .toast-notif.ok .toast-notif-icon{ background:#E8F5EE; }
+  .toast-notif.err .toast-notif-icon{ background:#FBEDE8; }
+  .toast-notif-text{ font-size:14.5px; font-weight:800; color:#5E2316; line-height:1.35; }
+
+  /* --- Listes personnalisées (Catégorie / Filtres) --- */
+  .custom-select-wrapper{ position:relative; user-select:none; }
+
+  .custom-select-trigger{
+    width:100%;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:13px 16px;
+    font-size:16.5px;
+    font-weight:700;
+    color:var(--ink);
+    background-color:#FBF7F4;
+    border:2px solid #E3C4AE;
+    border-radius:12px;
+    cursor:pointer;
+    transition:all 0.15s ease;
+  }
+  .custom-select-trigger.placeholder{ color:#A8968E; font-weight:600; }
+  .custom-select-trigger:after{
+    content:""; width:0; height:0; flex-shrink:0; margin-left:8px;
+    border-left:5px solid transparent;
+    border-right:5px solid transparent;
+    border-top:6px solid #8E3522;
+    transition:transform 0.2s ease;
+  }
+  .custom-select-wrapper.open .custom-select-trigger{
+    border-color:#8E3522;
+    box-shadow:0 0 0 4px rgba(142,53,34,0.14);
+  }
+  .custom-select-wrapper.open .custom-select-trigger:after{ transform:rotate(180deg); }
+
+  .custom-options{
+    position:absolute; top:calc(100% + 6px);
+    width:250px;
+    max-width:calc(100vw - 56px);
+    background:#fff;
+    border:2px solid #8E3522;
+    border-radius:12px;
+    max-height:280px;
+    overflow-y:auto;
+    z-index:120;
+    opacity:0; visibility:hidden;
+    transform:translateY(-8px);
+    transition:all 0.15s ease;
+    box-shadow:0 12px 28px rgba(142,53,34,0.2);
+    display: flex;
+    flex-direction: column;
+  }
+  .custom-select-wrapper.open .custom-options{
+    opacity:1; visibility:visible; transform:translateY(0);
+  }
+  .custom-option{
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding:13px 16px;
+    font-size:16px;
+    font-weight:700;
+    color:var(--ink);
+    cursor:pointer;
+    transition:background 0.1s ease;
+    text-align: left;
+  }
+  .custom-option:hover{ background:#F5E3D8; color:#8E3522; }
+
+  /* Champ "Catégorie" du formulaire (colonne DROITE) : le panneau s'ouvre vers la GAUCHE */
+  #dpTypeWrapper .custom-options{ right:0; left:auto; }
+
+  /* Filtre "catégorie" (colonne GAUCHE du filtre) : le panneau s'ouvre vers la DROITE */
+  #filterTypeWrapper .custom-options{ left:0; right:auto; }
+
+  /* Filtre "mois" (colonne DROITE du filtre) : le panneau s'ouvre vers la GAUCHE */
+  #filterMonthWrapper .custom-options{ right:0; left:auto; }
+
+/* --- Effet 3D (relief) ajoute automatiquement --- */
+.btn-enregistrer{
+  border-bottom: 4px solid rgba(0,0,0,0.28) !important;
+  transition: transform .1s ease, box-shadow .1s ease, filter .1s ease !important;
+}
+.btn-enregistrer:active{
+  transform: translateY(3px) !important;
+  border-bottom-width: 2px !important;
+  filter: brightness(0.97);
+}
+
+/* ===== AFFICHAGE PC / GRAND ÉCRAN ===== */
+@media (min-width: 700px){
+  .form-card{ max-width: 650px; }
+  .list-section, .total-wrap{ max-width: 760px; }
+  #listWrap{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 16px;
+  }
+  .depense-item{ margin-bottom: 12px; }
+}
+@media (min-width: 1000px){
+  .form-card{ max-width: 700px; }
+  .list-section, .total-wrap{ max-width: 900px; }
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="back-link">← Retour</a>
+  <div class="seal"><img src="images.jpeg" alt="Logo Église de Dieu de la Prophétie"></div>
+  <h1>Église de Dieu de la Prophétie</h1>
+  <p>Waney 93</p>
+</div>
+
+<p class="section-title">Dépenses</p>
+<p class="section-sub">Enregistrer une dépense de l'église</p>
+
+<!-- Formulaire -->
+<div class="form-card">
+  <form id="depenseForm" autocomplete="off">
+
+    <div class="form-row-2">
+      <div class="field-group">
+        <label class="field-label" for="dpDate">Date</label>
+        <input type="date" id="dpDate" required>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Catégorie</label>
+        <div class="custom-select-wrapper" id="dpTypeWrapper">
+          <div class="custom-select-trigger placeholder" id="dpTypeTrigger">Choisir...</div>
+          <div class="custom-options">
+            <span class="custom-option" data-value="Carburant pour groupe électrogène">Carburant pour groupe électrogène</span>
+            <span class="custom-option" data-value="Eau">Eau</span>
+            <span class="custom-option" data-value="Boisson">Boisson</span>
+            <span class="custom-option" data-value="Livres École du dimanche">Livres École du dimanche</span>
+            <span class="custom-option" data-value="Veuf(ve)">Veuf(ve)</span>
+            <span class="custom-option" data-value="Autre dépense">Autre dépense</span>
+          </div>
+        </div>
+        <input type="hidden" id="dpType" value="">
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="dpMontant">Montant (HTG)</label>
+      <input type="number" id="dpMontant" min="0" step="1" placeholder="0" required>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="dpNote">Description (optionnel)</label>
+      <input type="text" id="dpNote" placeholder="Ex. : Aide pour sœur Marie, achat de 5 gallons...">
+    </div>
+
+    <button type="submit" class="btn-enregistrer" id="btnSave">Enregistrer</button>
+    <div class="status-msg" id="statusMsg"></div>
+  </form>
+</div>
+
+<!-- Filtres + liste -->
+<div class="list-section">
+  <div class="list-header-box">
+    <p class="list-title">Historique</p>
+    <button type="button" class="btn-reset-depenses" id="btnReset">🗑️ Réinitialiser</button>
+  </div>
+
+  <!-- Modal de choix pour la réinitialisation -->
+  <div class="reset-modal" id="resetModal">
+    <div class="reset-modal-box">
+      <p class="reset-modal-title">Supprimer les dépenses</p>
+      <p class="reset-modal-text">Choisissez les dépenses à supprimer définitivement. Cette action est irréversible.</p>
+      <button type="button" class="reset-modal-btn month" id="btnResetMonth">Supprimer les dépenses de ce mois</button>
+      <button type="button" class="reset-modal-btn year" id="btnResetYear">Supprimer les dépenses de toute l'année</button>
+      <button type="button" class="reset-modal-btn cancel" id="btnResetCancel">Annuler</button>
+    </div>
+  </div>
+
+  <!-- Modal de confirmation finale (avec icône d'alerte) -->
+  <div class="confirm-modal-overlay" id="confirmModalOverlay">
+    <div class="confirm-modal-box">
+      <div class="confirm-modal-icon">⚠️</div>
+      <p class="confirm-modal-title" id="confirmModalTitle">Attention</p>
+      <p class="confirm-modal-text" id="confirmModalText">Cette action est irréversible.</p>
+      <button type="button" class="confirm-modal-btn danger" id="confirmModalYes">🗑️ Oui, supprimer</button>
+      <button type="button" class="confirm-modal-btn cancel" id="confirmModalNo">Annuler</button>
+    </div>
+  </div>
+
+  <!-- Toast de notification -->
+  <div class="toast-notif" id="toastNotif">
+    <span class="toast-notif-icon" id="toastNotifIcon">✅</span>
+    <span class="toast-notif-text" id="toastNotifText">Message</span>
+  </div>
+
+  <div class="filter-row">
+    <div class="field-group">
+      <div class="custom-select-wrapper" id="filterTypeWrapper">
+        <div class="custom-select-trigger" id="filterTypeTrigger">Toutes les catégories</div>
+        <div class="custom-options">
+          <span class="custom-option" data-value="">Toutes les catégories</span>
+          <span class="custom-option" data-value="Carburant pour groupe électrogène">Carburant pour groupe électrogène</span>
+          <span class="custom-option" data-value="Eau">Eau</span>
+          <span class="custom-option" data-value="Boisson">Boisson</span>
+          <span class="custom-option" data-value="Livres École du dimanche">Livres École du dimanche</span>
+          <span class="custom-option" data-value="Veuf(ve)">Veuf(ve)</span>
+          <span class="custom-option" data-value="Autre dépense">Autre dépense</span>
+        </div>
+      </div>
+      <input type="hidden" id="filterType" value="">
+    </div>
+
+    <div class="field-group">
+      <div class="custom-select-wrapper" id="filterMonthWrapper">
+        <div class="custom-select-trigger" id="filterMonthTrigger">Tous les mois</div>
+        <div class="custom-options">
+          <span class="custom-option" data-value="">Tous les mois</span>
+          <span class="custom-option" data-value="01">Janvier</span>
+          <span class="custom-option" data-value="02">Février</span>
+          <span class="custom-option" data-value="03">Mars</span>
+          <span class="custom-option" data-value="04">Avril</span>
+          <span class="custom-option" data-value="05">Mai</span>
+          <span class="custom-option" data-value="06">Juin</span>
+          <span class="custom-option" data-value="07">Juillet</span>
+          <span class="custom-option" data-value="08">Août</span>
+          <span class="custom-option" data-value="09">Septembre</span>
+          <span class="custom-option" data-value="10">Octobre</span>
+          <span class="custom-option" data-value="11">Novembre</span>
+          <span class="custom-option" data-value="12">Décembre</span>
+        </div>
+      </div>
+      <input type="hidden" id="filterMonth" value="">
+    </div>
+  </div>
+  </div>
+  <div id="listWrap"></div>
+</div>
+
+<div class="total-wrap">
+  <div class="total-card">
+    <span class="total-label">Total des dépenses affichées</span>
+    <span class="total-amount" id="totalAmount">0 HTG</span>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    deleteDoc,
+    doc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAaNOl7j9xReumR69PIiyTPrwncJ7-ysG8",
+    authDomain: "tresor-de-l-eglise.firebaseapp.com",
+    projectId: "tresor-de-l-eglise",
+    storageBucket: "tresor-de-l-eglise.firebasestorage.app",
+    messagingSenderId: "702537717579",
+    appId: "1:702537717579:web:e1e8726ab66a89b355face"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  if (sessionStorage.getItem('trezoLoggedIn') !== 'true') {
+    window.location.href = 'index.html';
+  }
+
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('dpDate').value = today;
+
+  const form = document.getElementById('depenseForm');
+  const btnSave = document.getElementById('btnSave');
+  const statusMsg = document.getElementById('statusMsg');
+  const listWrap = document.getElementById('listWrap');
+  const totalAmount = document.getElementById('totalAmount');
+  const filterType = document.getElementById('filterType');
+  const filterMonth = document.getElementById('filterMonth');
+
+  // GESTION DES LISTES PERSONNALISÉES (Catégorie, Filtre catégorie, Filtre mois)
+  const allDropdownWrappers = [];
+
+  function setupCustomSelect(wrapperId, triggerId, hiddenInputId, onSelect){
+    const wrapperEl = document.getElementById(wrapperId);
+    const triggerEl = document.getElementById(triggerId);
+    const hiddenEl = document.getElementById(hiddenInputId);
+    allDropdownWrappers.push(wrapperEl);
+
+    triggerEl.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = wrapperEl.classList.contains('open');
+      allDropdownWrappers.forEach(w => w.classList.remove('open'));
+      if (!isOpen) wrapperEl.classList.add('open');
+    });
+
+    wrapperEl.querySelectorAll('.custom-option').forEach(option => {
+      option.addEventListener('click', function(){
+        const val = this.getAttribute('data-value');
+        triggerEl.textContent = val || this.textContent.trim();
+        triggerEl.classList.remove('placeholder');
+        hiddenEl.value = val;
+        wrapperEl.classList.remove('open');
+        if (onSelect) onSelect(val);
+      });
+    });
+
+    return { wrapperEl, triggerEl, hiddenEl };
+  }
+
+  setupCustomSelect('dpTypeWrapper', 'dpTypeTrigger', 'dpType');
+  const filterTypeDD = setupCustomSelect('filterTypeWrapper', 'filterTypeTrigger', 'filterType', () => renderList());
+  const filterMonthDD = setupCustomSelect('filterMonthWrapper', 'filterMonthTrigger', 'filterMonth', () => renderList());
+
+  window.addEventListener('click', () => {
+    allDropdownWrappers.forEach(w => w.classList.remove('open'));
+  });
+
+  // Initialise le filtre mois sur le mois actuel (valeur + texte affiché)
+  const moisNomsComplets = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  filterMonth.value = String(new Date().getMonth() + 1).padStart(2, '0');
+  filterMonthDD.triggerEl.textContent = moisNomsComplets[new Date().getMonth()];
+
+  let allDepenses = [];
+
+  // --- Toast de notification personnalisé ---
+  const toastNotif = document.getElementById('toastNotif');
+  const toastNotifIcon = document.getElementById('toastNotifIcon');
+  const toastNotifText = document.getElementById('toastNotifText');
+  let toastTimeout;
+
+  function showToast(message, type){
+    clearTimeout(toastTimeout);
+    toastNotif.className = 'toast-notif show ' + type;
+    toastNotifIcon.textContent = type === 'ok' ? '✅' : '❌';
+    toastNotifText.textContent = message;
+    toastTimeout = setTimeout(() => { toastNotif.classList.remove('show'); }, 3200);
+  }
+
+  // --- Modal de confirmation finale personnalisé ---
+  const confirmModalOverlay = document.getElementById('confirmModalOverlay');
+  const confirmModalTitle = document.getElementById('confirmModalTitle');
+  const confirmModalText = document.getElementById('confirmModalText');
+  const confirmModalYes = document.getElementById('confirmModalYes');
+  const confirmModalNo = document.getElementById('confirmModalNo');
+
+  function showConfirmModal(title, html, onConfirm){
+    confirmModalTitle.textContent = title;
+    confirmModalText.innerHTML = html;
+    confirmModalOverlay.classList.add('open');
+
+    const cleanup = () => {
+      confirmModalOverlay.classList.remove('open');
+      confirmModalYes.removeEventListener('click', yesHandler);
+      confirmModalNo.removeEventListener('click', noHandler);
+    };
+    const yesHandler = () => { cleanup(); onConfirm(); };
+    const noHandler = () => { cleanup(); };
+
+    confirmModalYes.addEventListener('click', yesHandler);
+    confirmModalNo.addEventListener('click', noHandler);
+  }
+
+  confirmModalOverlay.addEventListener('click', (e) => {
+    if (e.target === confirmModalOverlay) confirmModalOverlay.classList.remove('open');
+  });
+
+  // --- Modal de choix (mois / année) + bouton Réinitialiser ---
+  const btnReset = document.getElementById('btnReset');
+  const resetModal = document.getElementById('resetModal');
+  const btnResetMonth = document.getElementById('btnResetMonth');
+  const btnResetYear = document.getElementById('btnResetYear');
+  const btnResetCancel = document.getElementById('btnResetCancel');
+
+  function openResetModal(){
+    if (allDepenses.length === 0) {
+      showStatus('Aucune dépense à supprimer.', 'info');
+      return;
+    }
+    resetModal.classList.add('open');
+  }
+  function closeResetModal(){ resetModal.classList.remove('open'); }
+
+  btnReset.addEventListener('click', openResetModal);
+  btnResetCancel.addEventListener('click', closeResetModal);
+  resetModal.addEventListener('click', (e) => { if (e.target === resetModal) closeResetModal(); });
+
+  async function deleteBatchDepenses(list, label){
+    if (list.length === 0) {
+      showStatus(`Aucune dépense pour ${label}.`, 'info');
+      return;
+    }
+
+    showConfirmModal(
+      'Supprimer ces dépenses ?',
+      `Vous êtes sur le point de supprimer définitivement <strong>${list.length} dépense(s)</strong> pour ${label}. Cette action est irréversible.`,
+      async () => {
+        closeResetModal();
+        btnReset.disabled = true;
+        showStatus(`Suppression en cours pour ${label}...`, 'info');
+
+        try {
+          for (const d of list) {
+            await deleteDoc(doc(db, 'depenses', d.id));
+          }
+          const idsRemoved = new Set(list.map(d => d.id));
+          allDepenses = allDepenses.filter(d => !idsRemoved.has(d.id));
+          renderList();
+          showToast(`${list.length} dépense(s) supprimée(s) pour ${label}.`, 'ok');
+        } catch (err) {
+          showToast('Erreur : ' + err.message, 'err');
+        } finally {
+          btnReset.disabled = false;
+        }
+      }
+    );
+  }
+
+  btnResetMonth.addEventListener('click', () => {
+    const now = new Date();
+    const y = String(now.getFullYear());
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const list = allDepenses.filter(d => d.date && d.date.slice(0, 4) === y && d.date.slice(5, 7) === m);
+    deleteBatchDepenses(list, `ce mois (${m}/${y})`);
+  });
+
+  btnResetYear.addEventListener('click', () => {
+    const y = String(new Date().getFullYear());
+    const list = allDepenses.filter(d => d.date && d.date.slice(0, 4) === y);
+    deleteBatchDepenses(list, `l'année ${y}`);
+  });
+
+  function showStatus(msg, type){
+    statusMsg.textContent = msg;
+    statusMsg.className = 'status-msg show ' + type;
+    if (type === 'ok') setTimeout(() => statusMsg.classList.remove('show'), 3000);
+  }
+
+  function formatMontant(m){
+    return Number(m).toLocaleString('fr-FR') + ' HTG';
+  }
+
+  function formatDate(dateStr){
+    if (!dateStr) return '';
+    const [y, m, d] = dateStr.split('-');
+    return `${d}/${m}/${y}`;
+  }
+
+  function renderList(){
+    const typeFilter = filterType.value;
+    const monthFilter = filterMonth.value;
+
+    const filtered = allDepenses.filter(d => {
+      const matchType = !typeFilter || d.type === typeFilter;
+      const matchMonth = !monthFilter || (d.date && d.date.slice(5, 7) === monthFilter);
+      return matchType && matchMonth;
+    });
+
+    filtered.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+    listWrap.innerHTML = '';
+
+    if (filtered.length === 0) {
+      listWrap.innerHTML = '<p class="empty-state">Aucune dépense trouvée.</p>';
+      totalAmount.textContent = formatMontant(0);
+      return;
+    }
+
+    let total = 0;
+
+    filtered.forEach(d => {
+      total += Number(d.montant) || 0;
+
+      const item = document.createElement('div');
+      item.className = 'depense-item';
+      item.innerHTML = `
+        <div class="depense-item-top">
+          <span class="depense-type">${d.type || ''}</span>
+          <span class="depense-montant">${formatMontant(d.montant)}</span>
+        </div>
+        <span class="depense-date">${formatDate(d.date)}</span>
+        ${d.note ? `<span class="depense-note">${d.note}</span>` : ''}
+        <button class="depense-delete" data-id="${d.id}" title="Supprimer">✕</button>
+      `;
+
+      item.querySelector('.depense-delete').addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const confirmed = confirm(`Supprimer cette dépense (${d.type} — ${formatMontant(d.montant)}) ?`);
+        if (!confirmed) return;
+        try {
+          await deleteDoc(doc(db, 'depenses', d.id));
+          allDepenses = allDepenses.filter(x => x.id !== d.id);
+          renderList();
+        } catch (err) {
+          alert('Erreur lors de la suppression : ' + err.message);
+        }
+      });
+
+      listWrap.appendChild(item);
+    });
+
+    totalAmount.textContent = formatMontant(total);
+  }
+
+  async function loadDepenses(){
+    listWrap.innerHTML = '<p class="empty-state">Chargement...</p>';
+    try {
+      const snapshot = await getDocs(collection(db, 'depenses'));
+      allDepenses = [];
+      snapshot.forEach(docSnap => {
+        allDepenses.push({ id: docSnap.id, ...docSnap.data() });
+      });
+      renderList();
+    } catch (err) {
+      listWrap.innerHTML = '<p class="empty-state">Erreur : ' + err.message + '</p>';
+    }
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (!document.getElementById('dpType').value) {
+      showStatus('Veuillez choisir une catégorie avant d\'enregistrer.', 'err');
+      return;
+    }
+
+    btnSave.disabled = true;
+    showStatus('Enregistrement en cours...', 'info');
+
+    try {
+      const data = {
+        date: document.getElementById('dpDate').value,
+        type: document.getElementById('dpType').value,
+        montant: parseFloat(document.getElementById('dpMontant').value) || 0,
+        note: document.getElementById('dpNote').value.trim() || null,
+        creeLe: serverTimestamp()
+      };
+
+      const docRef = await addDoc(collection(db, 'depenses'), data);
+      allDepenses.push({ id: docRef.id, ...data });
+      renderList();
+
+      document.getElementById('dpMontant').value = '';
+      document.getElementById('dpNote').value = '';
+      showStatus('Dépense enregistrée avec succès.', 'ok');
+    } catch (err) {
+      showStatus('Erreur : ' + err.message, 'err');
+    } finally {
+      btnSave.disabled = false;
+    }
+  });
+
+  // (Le filtrage se déclenche déjà directement depuis les listes personnalisées ci-dessus)
+
+  loadDepenses();
+</script>
+
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  }
+</script>
+</body>
+</html>
